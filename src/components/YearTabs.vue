@@ -47,6 +47,7 @@ watch(() => store.selectedYear, scrollToActiveTab)
           if (store.availableYears.includes(year)) {
             store.selectYear(year)
             ;($event.target as HTMLElement).blur()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
           }
         "
       >
