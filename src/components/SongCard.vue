@@ -38,8 +38,8 @@ const handleAlbumClick = async () => {
   await ensureLoaded()
 
   ytPlayer = new window.YT!.Player(playerContainer.value!, {
-    width: '1',
-    height: '1',
+    width: '320',
+    height: '180',
     playerVars: {
       listType: 'search',
       list: `${props.song.artist} ${props.song.title} song`,
@@ -152,8 +152,14 @@ onUnmounted(() => {
 
     <div
       ref="playerContainer"
-      class="absolute overflow-hidden w-px h-px"
-      style="left: -9999px"
+      style="
+        position: fixed;
+        top: -400px;
+        left: 0;
+        width: 320px;
+        height: 180px;
+        pointer-events: none;
+      "
     />
   </article>
 </template>
