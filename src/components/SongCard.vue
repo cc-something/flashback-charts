@@ -7,12 +7,17 @@ const props = defineProps<{ song: Song }>()
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
+const getFallbackImageUrl = (rank: number) =>
+  `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="#333"/><text x="40" y="44" fill="#aaa" font-size="28" text-anchor="middle" font-family="system-ui, sans-serif">${rank}</text></svg>`,
+  )}`
+
 const isHovered = ref(false)
 const playerState = ref<PlayerState>('idle')
 const playerContainer = ref<HTMLDivElement>()
 let ytPlayer: YTPlayer | null = null
 
-const { ensureLoaded } = useYouTubeApi()
+const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
 
 const showOverlay = computed(
   () => isHovered.value || playerState.value !== 'idle',
@@ -20,7 +25,16 @@ const showOverlay = computed(
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement
-  img.src = `https://placehold.co/80x80/333/aaa?text=${encodeURIComponent(props.song.rank.toString())}`
+  if (img.dataset.fallbackApplied) return
+  img.dataset.fallbackApplied = 'true'
+  img.src = getFallbackImageUrl(props.song.rank)
+}
+
+const stopPlayback = () => {
+  ytPlayer?.destroy()
+  ytPlayer = null
+  playerState.value = 'idle'
+  clearActive()
 }
 
 const handleAlbumClick = async () => {
@@ -32,10 +46,16 @@ const handleAlbumClick = async () => {
     ytPlayer?.playVideo()
     return
   }
-  if (playerState.value === 'loading') return
+  if (playerState.value === 'loading') {
+    stopPlayback()
+    return
+  }
 
   playerState.value = 'loading'
+  registerActive(stopPlayback)
   await ensureLoaded()
+
+  if (playerState.value !== 'loading') return
 
   ytPlayer = new window.YT!.Player(playerContainer.value!, {
     width: '320',
@@ -55,7 +75,10 @@ const handleAlbumClick = async () => {
         if (event.data === 1) playerState.value = 'playing'
         else if (event.data === 2) playerState.value = 'paused'
         else if (event.data === 3) playerState.value = 'loading'
-        else if (event.data === 0) playerState.value = 'idle'
+        else if (event.data === 0) {
+          playerState.value = 'idle'
+          clearActive()
+        }
       },
     },
   })
@@ -81,10 +104,7 @@ onUnmounted(() => {
       @click="handleAlbumClick"
     >
       <img
-        :src="
-          song.coverUrl ||
-          `https://placehold.co/80x80/333/aaa?text=${encodeURIComponent(song.rank.toString())}`
-        "
+        :src="song.thumbnailPath"
         :alt="`${song.title} by ${song.artist}`"
         class="w-20 h-20 rounded object-cover shadow-md"
         @error="handleImageError"

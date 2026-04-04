@@ -3,6 +3,7 @@ const readyPromise = new Promise<void>((resolve) => {
   resolveReady = resolve
 })
 let scriptAppended = false
+let activeStop: (() => void) | null = null
 
 export const useYouTubeApi = () => {
   const ensureLoaded = (): Promise<void> => {
@@ -17,5 +18,14 @@ export const useYouTubeApi = () => {
     return readyPromise
   }
 
-  return { ensureLoaded }
+  const registerActive = (stop: () => void) => {
+    activeStop?.()
+    activeStop = stop
+  }
+
+  const clearActive = () => {
+    activeStop = null
+  }
+
+  return { ensureLoaded, registerActive, clearActive }
 }
