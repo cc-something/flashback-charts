@@ -12,6 +12,13 @@ import songs1949, { source as source1949 } from './years/1949'
 import songs1950, { source as source1950 } from './years/1950'
 import songs1951, { source as source1951 } from './years/1951'
 import songs1952, { source as source1952 } from './years/1952'
+import songs1953, { source as source1953 } from './years/1953'
+import songs1954, { source as source1954 } from './years/1954'
+import songs1955, { source as source1955 } from './years/1955'
+import songs1956, { source as source1956 } from './years/1956'
+import songs1957, { source as source1957 } from './years/1957'
+import songs1958, { source as source1958 } from './years/1958'
+import songs1959, { source as source1959 } from './years/1959'
 import songs1960, { source as source1960 } from './years/1960'
 import songs1961, { source as source1961 } from './years/1961'
 import songs1962, { source as source1962 } from './years/1962'
@@ -141,6 +148,34 @@ const yearData: Record<number, YearChartData> = {
   1952: {
     songs: songs1952,
     source: source1952,
+  },
+  1953: {
+    songs: songs1953,
+    source: source1953,
+  },
+  1954: {
+    songs: songs1954,
+    source: source1954,
+  },
+  1955: {
+    songs: songs1955,
+    source: source1955,
+  },
+  1956: {
+    songs: songs1956,
+    source: source1956,
+  },
+  1957: {
+    songs: songs1957,
+    source: source1957,
+  },
+  1958: {
+    songs: songs1958,
+    source: source1958,
+  },
+  1959: {
+    songs: songs1959,
+    source: source1959,
   },
   1960: {
     songs: songs1960,
