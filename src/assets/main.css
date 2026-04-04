@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: var(--theme-background);
+  --color-surface: var(--theme-surface);
+  --color-primary: var(--theme-primary);
+  --color-secondary: var(--theme-secondary);
+  --color-text: var(--theme-text);
+  --color-text-muted: var(--theme-text-muted);
+  --color-accent: var(--theme-accent);
+  --color-tab-active: var(--theme-tab-active);
+  --color-tab-inactive: var(--theme-tab-inactive);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--theme-background);
+  color: var(--theme-text);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
