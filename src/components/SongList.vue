@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onUnmounted } from 'vue'
+import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { getYearData } from '@/data'
@@ -8,12 +9,19 @@ import SongCard from './SongCard.vue'
 const store = useChartStore()
 const player = usePlayerStore()
 
+const getSortedSongs = (year: number) => {
+  const songs = getYearData(year)
+  if (!songs) return null
+  if (store.sortOrder === 'desc') return [...songs].reverse()
+  return songs
+}
+
 const playNextSong = () => {
   const song = player.playingSong
   const year = player.playingYear
   if (!song || year === null) return
 
-  const songs = getYearData(year)
+  const songs = getSortedSongs(year)
   if (!songs) return
 
   const currentIndex = songs.findIndex(
@@ -35,7 +43,7 @@ const playNextSong = () => {
   const nextYear = store.availableYears[nextYearIndex + 1]
   if (nextYear === undefined) return
 
-  const nextYearSongs = getYearData(nextYear)
+  const nextYearSongs = getSortedSongs(nextYear)
   if (!nextYearSongs?.length) return
 
   store.selectYear(nextYear)
@@ -48,17 +56,31 @@ onUnmounted(() => player.setOnEnded(null))
 
 <template>
   <main class="max-w-2xl mx-auto px-4 py-6">
-    <header class="mb-6">
-      <h1 class="text-3xl font-bold text-primary">{{ store.selectedYear }}</h1>
-      <a
-        v-if="store.currentSource"
-        :href="store.currentSource.url"
-        class="mt-1 inline-block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
-        rel="noreferrer"
-        target="_blank"
+    <header class="mb-6 flex items-start justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-primary">
+          {{ store.selectedYear }}
+        </h1>
+        <a
+          v-if="store.currentSource"
+          :href="store.currentSource.url"
+          class="mt-1 inline-block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Source: {{ store.currentSource.label }}
+        </a>
+      </div>
+      <button
+        type="button"
+        class="flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-sm font-medium text-text-muted transition-colors duration-150 hover:text-text"
+        :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
+        @click="store.toggleSortOrder()"
       >
-        Source: {{ store.currentSource.label }}
-      </a>
+        <ArrowUpNarrowWide v-if="store.sortOrder === 'asc'" class="h-4 w-4" />
+        <ArrowDownNarrowWide v-else class="h-4 w-4" />
+        {{ store.sortOrder === 'asc' ? '1 → 10' : '10 → 1' }}
+      </button>
     </header>
 
     <Transition name="year-content" mode="out-in">
