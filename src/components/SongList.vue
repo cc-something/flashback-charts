@@ -28,7 +28,7 @@ const store = useChartStore()
     >
       <SongCard
         v-for="song in store.currentSongs"
-        :key="song.rank"
+        :key="`${store.selectedYear}-${song.rank}`"
         :song="song"
       />
     </TransitionGroup>
