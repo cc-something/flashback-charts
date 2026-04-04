@@ -16,7 +16,7 @@ const store = useChartStore()
         rel="noreferrer"
         target="_blank"
       >
-        {{ store.currentSource.label }}
+        Source: {{ store.currentSource.label }}
       </a>
     </header>
 
