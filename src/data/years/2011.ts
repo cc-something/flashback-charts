@@ -90,7 +90,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/4/4f/Adele_-_Rolling_in_the_Deep.png',
+        'https://upload.wikimedia.org/wikipedia/en/7/74/Adele_-_Rolling_in_the_Deep.png',
       artist: null,
     },
   }),
