@@ -18,6 +18,8 @@ const playerContainer = ref<HTMLDivElement>()
 const currentTimeSeconds = ref(0)
 const durationSeconds = ref(0)
 const progressTimerId = ref<number | null>(null)
+const isSeekDragging = ref(false)
+const seekPreviewSeconds = ref<number | null>(null)
 let ytPlayer: YTPlayer | null = null
 
 const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
@@ -28,10 +30,23 @@ const showOverlay = computed(
 const showSeekBar = computed(
   () => playerState.value !== 'idle' && durationSeconds.value > 0,
 )
+const displayedTimeSeconds = computed(
+  () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
+)
 const seekProgressWidth = computed(() => {
   if (durationSeconds.value <= 0) return '0%'
 
-  return `${Math.min((currentTimeSeconds.value / durationSeconds.value) * 100, 100)}%`
+  return `${Math.min((displayedTimeSeconds.value / durationSeconds.value) * 100, 100)}%`
+})
+const seekThumbLeft = computed(() => {
+  if (durationSeconds.value <= 0) return '0px'
+
+  const seekPercent = Math.min(
+    displayedTimeSeconds.value / durationSeconds.value,
+    1,
+  )
+
+  return `clamp(0px, calc(${seekPercent * 100}% - 7px), calc(100% - 14px))`
 })
 
 const handleImageError = (e: Event) => {
@@ -47,6 +62,11 @@ const clearProgressTimer = () => {
   progressTimerId.value = null
 }
 
+const clearSeekPreview = () => {
+  isSeekDragging.value = false
+  seekPreviewSeconds.value = null
+}
+
 const syncPlaybackProgress = () => {
   if (!ytPlayer) return
 
@@ -60,6 +80,16 @@ const syncPlaybackProgress = () => {
     nextCurrentTimeSeconds,
     durationSeconds.value,
   )
+
+  if (!isSeekDragging.value && seekPreviewSeconds.value !== null) {
+    const seekDelta = Math.abs(
+      currentTimeSeconds.value - seekPreviewSeconds.value,
+    )
+
+    if (seekDelta < 0.75 || playerState.value !== 'loading') {
+      seekPreviewSeconds.value = null
+    }
+  }
 }
 
 const startProgressTimer = () => {
@@ -75,20 +105,46 @@ const stopPlayback = () => {
   playerState.value = 'idle'
   currentTimeSeconds.value = 0
   durationSeconds.value = 0
+  clearSeekPreview()
   clearActive()
 }
 
-const handleSeekInput = (event: Event) => {
-  if (!ytPlayer) return
-
+const getSeekValue = (event: Event) => {
   const input = event.target as HTMLInputElement
   const nextCurrentTimeSeconds = Number(input.value)
 
-  if (Number.isNaN(nextCurrentTimeSeconds)) return
+  return Number.isNaN(nextCurrentTimeSeconds) ? null : nextCurrentTimeSeconds
+}
 
-  currentTimeSeconds.value = nextCurrentTimeSeconds
+const handleSeekStart = () => {
+  isSeekDragging.value = true
+}
+
+const handleSeekInput = (event: Event) => {
+  const nextCurrentTimeSeconds = getSeekValue(event)
+
+  if (nextCurrentTimeSeconds === null) return
+
+  seekPreviewSeconds.value = nextCurrentTimeSeconds
+}
+
+const handleSeekCommit = (event: Event) => {
+  if (!ytPlayer) {
+    clearSeekPreview()
+    return
+  }
+
+  const nextCurrentTimeSeconds = getSeekValue(event)
+
+  if (nextCurrentTimeSeconds === null) {
+    clearSeekPreview()
+    return
+  }
+
+  isSeekDragging.value = false
+  seekPreviewSeconds.value = nextCurrentTimeSeconds
+  playerState.value = 'loading'
   ytPlayer.seekTo(nextCurrentTimeSeconds, true)
-  syncPlaybackProgress()
 }
 
 const handleAlbumClick = async () => {
@@ -252,14 +308,20 @@ onUnmounted(() => {
           :style="{ width: seekProgressWidth }"
         />
         <input
-          :value="currentTimeSeconds"
+          :value="displayedTimeSeconds"
           :max="durationSeconds"
           aria-label="Seek playback"
-          class="seek-slider pointer-events-auto absolute inset-x-0 bottom-0 h-4 w-full"
+          class="seek-hitbox absolute inset-x-0 bottom-0 h-5 w-full"
           min="0"
           step="0.1"
           type="range"
+          @change="handleSeekCommit"
           @input="handleSeekInput"
+          @pointerdown="handleSeekStart"
+        />
+        <div
+          class="pointer-events-none absolute bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)]"
+          :style="{ left: seekThumbLeft }"
         />
         <div
           class="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
@@ -302,60 +364,47 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-.seek-slider {
+.seek-hitbox {
   appearance: none;
   background: transparent;
   cursor: pointer;
+  opacity: 0;
   touch-action: none;
 }
 
-.seek-slider::-webkit-slider-runnable-track {
+.seek-hitbox::-webkit-slider-runnable-track {
   appearance: none;
   background: transparent;
-  height: 16px;
+  height: 20px;
 }
 
-.seek-slider::-webkit-slider-thumb {
+.seek-hitbox::-webkit-slider-thumb {
   appearance: none;
-  background: var(--color-primary);
-  border: 2px solid rgb(255 255 255 / 90%);
-  border-radius: 9999px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
-  height: 12px;
-  margin-top: 2px;
-  width: 12px;
+  height: 20px;
+  width: 20px;
 }
 
-.seek-slider::-moz-range-track {
+.seek-hitbox::-moz-range-track {
   background: transparent;
   border: 0;
-  height: 16px;
+  height: 20px;
 }
 
-.seek-slider::-moz-range-progress {
+.seek-hitbox::-moz-range-progress {
   background: transparent;
 }
 
-.seek-slider::-moz-range-thumb {
-  background: var(--color-primary);
-  border: 2px solid rgb(255 255 255 / 90%);
-  border-radius: 9999px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
-  height: 12px;
-  width: 12px;
+.seek-hitbox::-moz-range-thumb {
+  border: 0;
+  height: 20px;
+  width: 20px;
 }
 
-.seek-slider:focus-visible {
+.seek-hitbox:focus-visible {
   outline: none;
 }
 
-.seek-slider:focus-visible::-webkit-slider-thumb {
-  box-shadow:
-    0 0 0 2px rgb(255 255 255 / 90%),
-    0 0 0 4px rgb(0 0 0 / 18%);
-}
-
-.seek-slider:focus-visible::-moz-range-thumb {
+.seek-hitbox:focus-visible + div {
   box-shadow:
     0 0 0 2px rgb(255 255 255 / 90%),
     0 0 0 4px rgb(0 0 0 / 18%);
