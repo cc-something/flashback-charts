@@ -2,6 +2,8 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
+import { useChartStore } from '@/stores/chart'
+import { getYearData } from '@/data'
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
@@ -214,6 +216,80 @@ export const usePlayerStore = defineStore('player', () => {
     playingYear.value === year &&
     playerState.value !== 'idle'
 
+  const getSortedYearData = (year: number) => {
+    const songs = getYearData(year)
+    if (!songs) return null
+    const chart = useChartStore()
+    if (chart.sortOrder === 'desc') return [...songs].reverse()
+    return songs
+  }
+
+  const getCurrentIndex = () => {
+    const song = playingSong.value
+    const year = playingYear.value
+    if (!song || year === null) return { songs: null, index: -1, year: null }
+    const songs = getSortedYearData(year)
+    if (!songs) return { songs: null, index: -1, year: null }
+    const index = songs.findIndex(
+      (s) => s.youtubeVideoId === song.youtubeVideoId,
+    )
+    return { songs, index, year }
+  }
+
+  const playNext = () => {
+    const chart = useChartStore()
+    const { songs, index, year } = getCurrentIndex()
+    if (!songs || index === -1 || year === null) return
+
+    if (index < songs.length - 1) {
+      const nextSong = songs[index + 1]
+      if (nextSong) play(nextSong, year)
+      return
+    }
+
+    const yearIdx = chart.availableYears.indexOf(year)
+    if (yearIdx === -1 || yearIdx >= chart.availableYears.length - 1) return
+    const nextYear = chart.availableYears[yearIdx + 1]
+    if (nextYear === undefined) return
+    const nextYearSongs = getSortedYearData(nextYear)
+    if (!nextYearSongs?.length) return
+    chart.selectYear(nextYear)
+    play(nextYearSongs[0], nextYear)
+  }
+
+  const playPrev = () => {
+    const chart = useChartStore()
+    const { songs, index, year } = getCurrentIndex()
+    if (!songs || index === -1 || year === null) return
+
+    if (index > 0) {
+      const prevSong = songs[index - 1]
+      if (prevSong) play(prevSong, year)
+      return
+    }
+
+    const yearIdx = chart.availableYears.indexOf(year)
+    if (yearIdx <= 0) return
+    const prevYear = chart.availableYears[yearIdx - 1]
+    if (prevYear === undefined) return
+    const prevYearSongs = getSortedYearData(prevYear)
+    if (!prevYearSongs?.length) return
+    chart.selectYear(prevYear)
+    play(prevYearSongs[prevYearSongs.length - 1], prevYear)
+  }
+
+  const goToSong = () => {
+    const chart = useChartStore()
+    if (playingYear.value === null || !playingSong.value) return
+    chart.selectYear(playingYear.value)
+    requestAnimationFrame(() => {
+      const el = document.querySelector(
+        `[data-song-id="${playingSong.value?.youtubeVideoId}"]`,
+      )
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+  }
+
   return {
     playingSong,
     playingYear,
@@ -234,5 +310,8 @@ export const usePlayerStore = defineStore('player', () => {
     handleSeekInput,
     handleSeekCommit,
     isSongActive,
+    playNext,
+    playPrev,
+    goToSong,
   }
 })

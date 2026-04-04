@@ -3,54 +3,12 @@ import { onUnmounted } from 'vue'
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
-import { getYearData } from '@/data'
 import SongCard from './SongCard.vue'
 
 const store = useChartStore()
 const player = usePlayerStore()
 
-const getSortedSongs = (year: number) => {
-  const songs = getYearData(year)
-  if (!songs) return null
-  if (store.sortOrder === 'desc') return [...songs].reverse()
-  return songs
-}
-
-const playNextSong = () => {
-  const song = player.playingSong
-  const year = player.playingYear
-  if (!song || year === null) return
-
-  const songs = getSortedSongs(year)
-  if (!songs) return
-
-  const currentIndex = songs.findIndex(
-    (s) => s.youtubeVideoId === song.youtubeVideoId,
-  )
-
-  // Play next song in same year
-  if (currentIndex < songs.length - 1) {
-    const nextSong = songs[currentIndex + 1]
-    if (nextSong) player.play(nextSong, year)
-    return
-  }
-
-  // Advance to next available year
-  const nextYearIndex = store.availableYears.indexOf(year)
-  if (nextYearIndex === -1 || nextYearIndex >= store.availableYears.length - 1)
-    return
-
-  const nextYear = store.availableYears[nextYearIndex + 1]
-  if (nextYear === undefined) return
-
-  const nextYearSongs = getSortedSongs(nextYear)
-  if (!nextYearSongs?.length) return
-
-  store.selectYear(nextYear)
-  player.play(nextYearSongs[0], nextYear)
-}
-
-player.setOnEnded(playNextSong)
+player.setOnEnded(() => player.playNext())
 onUnmounted(() => player.setOnEnded(null))
 </script>
 
