@@ -215,10 +215,7 @@ onUnmounted(() => {
 
 <template>
   <article
-    :class="[
-      'relative flex items-center gap-4 overflow-hidden rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80',
-      showSeekBar ? 'pb-10' : '',
-    ]"
+    class="relative flex items-center gap-4 overflow-hidden rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
   >
     <span class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary">
       {{ song.rank }}
@@ -302,7 +299,7 @@ onUnmounted(() => {
     <Transition name="seek">
       <div
         v-if="showSeekBar"
-        class="absolute inset-x-4 bottom-0 flex items-end gap-3 pb-3"
+        class="pointer-events-none absolute inset-x-0 bottom-0"
       >
         <SliderRoot
           :max="durationSeconds"
@@ -310,15 +307,15 @@ onUnmounted(() => {
           :model-value="seekSliderValue"
           :step="0.1"
           aria-label="Seek playback"
-          class="seek-slider relative flex-1 touch-manipulation items-center"
+          class="seek-slider pointer-events-auto relative flex w-full touch-manipulation items-center px-1"
           @update:model-value="handleSeekInput"
           @value-commit="handleSeekCommit"
         >
           <SliderTrack
-            class="seek-track relative h-1.5 w-full overflow-hidden rounded-full bg-black/10"
+            class="seek-track relative h-1.5 w-full overflow-hidden rounded-none bg-black/10"
           >
             <SliderRange
-              class="seek-range absolute h-full rounded-full bg-primary"
+              class="seek-range absolute h-full rounded-none bg-primary"
             />
             <div
               class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
@@ -328,8 +325,9 @@ onUnmounted(() => {
             class="seek-thumb block h-4 w-4 rounded-full border-2 border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
           />
         </SliderRoot>
-
-        <p class="min-w-fit text-xs font-medium tabular-nums text-text-muted">
+        <p
+          class="pointer-events-none absolute bottom-3 right-4 min-w-fit bg-surface/85 px-1.5 text-xs font-medium tabular-nums text-text-muted"
+        >
           {{ formattedCurrentTime }}/{{ formattedDuration }}
         </p>
       </div>
