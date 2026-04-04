@@ -119,7 +119,7 @@ const songs: Song[] = [
     artist: 'Michael Bolton',
     album: 'Soul Provider',
     youtubeVideoId: 'a9NOcMnXkYw',
-    imageSelection: 'album',
+    imageSelection: 'artist',
     imageSources: {
       album:
         'https://upload.wikimedia.org/wikipedia/en/5/5b/LauraBranigan_HowAmISupposed.jpg',
