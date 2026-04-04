@@ -134,9 +134,10 @@ const songs: Song[] = [
     artist: 'Wendy Matthews',
     album: 'New Wave',
     youtubeVideoId: 'T8fgmfM2zeQ',
-    imageSelection: 'artist',
+    imageSelection: 'album',
     imageSources: {
-      album: null,
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/b/b5/The_Day_You_Went_Away_single_cover.jpeg',
       artist: null,
     },
   }),
