@@ -2,8 +2,6 @@ import { watch } from 'vue'
 import { useChartStore } from '@/stores/chart'
 import { getThemeForYear } from '@/themes'
 
-let fontLinkEl: HTMLLinkElement | null = null
-
 const applyTheme = (year: number) => {
   const theme = getThemeForYear(year)
   const root = document.documentElement
@@ -19,13 +17,6 @@ const applyTheme = (year: number) => {
   root.style.setProperty('--theme-tab-inactive', theme.colors.tabInactive)
 
   document.body.style.fontFamily = theme.fontFamily
-
-  if (!fontLinkEl) {
-    fontLinkEl = document.createElement('link')
-    fontLinkEl.rel = 'stylesheet'
-    document.head.appendChild(fontLinkEl)
-  }
-  fontLinkEl.href = theme.fontUrl
 }
 
 export const useDecadeTheme = () => {

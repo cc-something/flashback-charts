@@ -6,15 +6,15 @@ const theme: DecadeTheme = {
   fontUrl:
     'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap',
   colors: {
-    background: '#2c1f0e',
-    surface: '#3d2b12',
-    primary: '#c9a84c',
-    secondary: '#8b6914',
-    text: '#f5e6c8',
-    textMuted: '#a89060',
-    accent: '#d4a843',
-    tabActive: '#c9a84c',
-    tabInactive: '#5a3e1b',
+    background: '#1a0a0a',
+    surface: '#2e1216',
+    primary: '#e8b830',
+    secondary: '#c0392b',
+    text: '#fdf0d5',
+    textMuted: '#c9a96e',
+    accent: '#d4af37',
+    tabActive: '#e8b830',
+    tabInactive: '#3a1520',
   },
 }
 
