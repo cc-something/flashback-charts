@@ -8,9 +8,9 @@ const props = defineProps<{ song: Song }>()
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
-const getFallbackImageUrl = (rank: number) =>
+const getFallbackImageUrl = () =>
   `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="#333"/><text x="40" y="44" fill="#aaa" font-size="28" text-anchor="middle" font-family="system-ui, sans-serif">${rank}</text></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none"><rect width="80" height="80" fill="#333"/><circle cx="40" cy="40" r="21" stroke="#aaa" stroke-width="3"/><circle cx="40" cy="40" r="7" stroke="#aaa" stroke-width="3"/><path d="M40 19a21 21 0 0 1 21 21" stroke="#aaa" stroke-width="3" stroke-linecap="round"/></svg>`,
   )}`
 
 const isHovered = ref(false)
@@ -55,7 +55,7 @@ const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement
   if (img.dataset.fallbackApplied) return
   img.dataset.fallbackApplied = 'true'
-  img.src = getFallbackImageUrl(props.song.rank)
+  img.src = getFallbackImageUrl()
 }
 
 const clearProgressTimer = () => {
