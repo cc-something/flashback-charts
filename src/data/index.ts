@@ -10,6 +10,12 @@ import songs1970, { source as source1970 } from './years/1970'
 import songs1971, { source as source1971 } from './years/1971'
 import songs1972, { source as source1972 } from './years/1972'
 import songs1973, { source as source1973 } from './years/1973'
+import songs1974, { source as source1974 } from './years/1974'
+import songs1975, { source as source1975 } from './years/1975'
+import songs1976, { source as source1976 } from './years/1976'
+import songs1977, { source as source1977 } from './years/1977'
+import songs1978, { source as source1978 } from './years/1978'
+import songs1979, { source as source1979 } from './years/1979'
 import songs1980, { source as source1980 } from './years/1980'
 import songs1981, { source as source1981 } from './years/1981'
 import songs1982, { source as source1982 } from './years/1982'
@@ -20,17 +26,16 @@ import songs1986, { source as source1986 } from './years/1986'
 import songs1987, { source as source1987 } from './years/1987'
 import songs1988, { source as source1988 } from './years/1988'
 import songs1989, { source as source1989 } from './years/1989'
-import songs1974, { source as source1974 } from './years/1974'
-import songs1975, { source as source1975 } from './years/1975'
-import songs1976, { source as source1976 } from './years/1976'
-import songs1977, { source as source1977 } from './years/1977'
-import songs1978, { source as source1978 } from './years/1978'
-import songs1979, { source as source1979 } from './years/1979'
 import songs1990, { source as source1990 } from './years/1990'
 import songs1991, { source as source1991 } from './years/1991'
 import songs1992, { source as source1992 } from './years/1992'
 import songs1993, { source as source1993 } from './years/1993'
+import songs1994, { source as source1994 } from './years/1994'
+import songs1995, { source as source1995 } from './years/1995'
+import songs1996, { source as source1996 } from './years/1996'
 import songs1997, { source as source1997 } from './years/1997'
+import songs1998, { source as source1998 } from './years/1998'
+import songs1999, { source as source1999 } from './years/1999'
 import songs2000, { source as source2000 } from './years/2000'
 import songs2001, { source as source2001 } from './years/2001'
 import songs2002, { source as source2002 } from './years/2002'
@@ -95,6 +100,30 @@ const yearData: Record<number, YearChartData> = {
     songs: songs1973,
     source: source1973,
   },
+  1974: {
+    songs: songs1974,
+    source: source1974,
+  },
+  1975: {
+    songs: songs1975,
+    source: source1975,
+  },
+  1976: {
+    songs: songs1976,
+    source: source1976,
+  },
+  1977: {
+    songs: songs1977,
+    source: source1977,
+  },
+  1978: {
+    songs: songs1978,
+    source: source1978,
+  },
+  1979: {
+    songs: songs1979,
+    source: source1979,
+  },
   1980: {
     songs: songs1980,
     source: source1980,
@@ -135,30 +164,6 @@ const yearData: Record<number, YearChartData> = {
     songs: songs1989,
     source: source1989,
   },
-  1974: {
-    songs: songs1974,
-    source: source1974,
-  },
-  1975: {
-    songs: songs1975,
-    source: source1975,
-  },
-  1976: {
-    songs: songs1976,
-    source: source1976,
-  },
-  1977: {
-    songs: songs1977,
-    source: source1977,
-  },
-  1978: {
-    songs: songs1978,
-    source: source1978,
-  },
-  1979: {
-    songs: songs1979,
-    source: source1979,
-  },
   1990: {
     songs: songs1990,
     source: source1990,
@@ -175,9 +180,29 @@ const yearData: Record<number, YearChartData> = {
     songs: songs1993,
     source: source1993,
   },
+  1994: {
+    songs: songs1994,
+    source: source1994,
+  },
+  1995: {
+    songs: songs1995,
+    source: source1995,
+  },
+  1996: {
+    songs: songs1996,
+    source: source1996,
+  },
   1997: {
     songs: songs1997,
     source: source1997,
+  },
+  1998: {
+    songs: songs1998,
+    source: source1998,
+  },
+  1999: {
+    songs: songs1999,
+    source: source1999,
   },
   2000: {
     songs: songs2000,
