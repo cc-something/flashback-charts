@@ -12,3 +12,4 @@ out
 # Agents
 .codex
 .claude
+.worktrees/
