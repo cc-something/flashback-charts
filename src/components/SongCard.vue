@@ -28,26 +28,17 @@ const showOverlay = computed(
 const showSeekBar = computed(
   () => playerState.value !== 'idle' && durationSeconds.value > 0,
 )
-const formattedCurrentTime = computed(() =>
-  getFormattedTime(currentTimeSeconds.value),
-)
-const formattedDuration = computed(() =>
-  getFormattedTime(durationSeconds.value),
-)
+const seekProgressWidth = computed(() => {
+  if (durationSeconds.value <= 0) return '0%'
+
+  return `${Math.min((currentTimeSeconds.value / durationSeconds.value) * 100, 100)}%`
+})
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement
   if (img.dataset.fallbackApplied) return
   img.dataset.fallbackApplied = 'true'
   img.src = getFallbackImageUrl(props.song.rank)
-}
-
-const getFormattedTime = (value: number) => {
-  const totalSeconds = Math.max(0, Math.floor(value))
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = String(totalSeconds % 60).padStart(2, '0')
-
-  return `${minutes}:${seconds}`
 }
 
 const clearProgressTimer = () => {
@@ -169,107 +160,109 @@ onUnmounted(() => {
 
 <template>
   <article
-    class="relative flex flex-col gap-3 rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
+    class="relative flex items-center gap-4 overflow-hidden rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
   >
-    <div class="flex items-center gap-4">
-      <span
-        class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary"
-      >
-        {{ song.rank }}
-      </span>
+    <span class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary">
+      {{ song.rank }}
+    </span>
 
-      <button
-        type="button"
-        :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
-        class="relative h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-        @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false"
-        @click="handleAlbumClick"
-      >
-        <img
-          :src="song.thumbnailPath"
-          :alt="`${song.title} by ${song.artist}`"
-          class="block h-full w-full object-cover"
-          @error="handleImageError"
-        />
+    <button
+      type="button"
+      :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
+      class="relative h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      @mouseenter="isHovered = true"
+      @mouseleave="isHovered = false"
+      @click="handleAlbumClick"
+    >
+      <img
+        :src="song.thumbnailPath"
+        :alt="`${song.title} by ${song.artist}`"
+        class="block h-full w-full object-cover"
+        @error="handleImageError"
+      />
 
-        <Transition name="overlay">
-          <div
-            v-if="showOverlay"
-            class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50"
+      <Transition name="overlay">
+        <div
+          v-if="showOverlay"
+          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50"
+        >
+          <!-- spinner -->
+          <svg
+            v-if="playerState === 'loading'"
+            class="h-7 w-7 animate-spin text-white"
+            viewBox="0 0 24 24"
+            fill="none"
           >
-            <!-- spinner -->
-            <svg
-              v-if="playerState === 'loading'"
-              class="h-7 w-7 animate-spin text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              />
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-
-            <!-- pause icon -->
-            <svg
-              v-else-if="playerState === 'playing'"
-              class="h-7 w-7 text-white drop-shadow"
-              viewBox="0 0 24 24"
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
               fill="currentColor"
-            >
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-            </svg>
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            />
+          </svg>
 
-            <!-- play icon -->
-            <svg
-              v-else
-              class="h-7 w-7 text-white drop-shadow"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </Transition>
-      </button>
+          <!-- pause icon -->
+          <svg
+            v-else-if="playerState === 'playing'"
+            class="h-7 w-7 text-white drop-shadow"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
 
-      <div class="min-w-0 flex-1 flex flex-col gap-1">
-        <h2 class="truncate text-base font-bold leading-tight text-text">
-          {{ song.title }}
-        </h2>
-        <p class="truncate text-sm text-text-muted">{{ song.artist }}</p>
-        <p v-if="song.album" class="truncate text-xs italic text-text-muted/60">
-          {{ song.album }}
-        </p>
-      </div>
+          <!-- play icon -->
+          <svg
+            v-else
+            class="h-7 w-7 text-white drop-shadow"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+      </Transition>
+    </button>
+
+    <div class="min-w-0 flex-1 flex flex-col gap-1">
+      <h2 class="truncate text-base font-bold leading-tight text-text">
+        {{ song.title }}
+      </h2>
+      <p class="truncate text-sm text-text-muted">{{ song.artist }}</p>
+      <p v-if="song.album" class="truncate text-xs italic text-text-muted/60">
+        {{ song.album }}
+      </p>
     </div>
 
     <Transition name="seek">
-      <div v-if="showSeekBar" class="w-full">
+      <div
+        v-if="showSeekBar"
+        class="pointer-events-none absolute inset-x-0 bottom-0 h-4"
+      >
+        <div class="absolute inset-x-0 bottom-0 h-1 bg-black/10" />
         <div
-          class="mb-1 flex items-center justify-between text-[11px] text-text-muted/80"
-        >
-          <span>{{ formattedCurrentTime }}</span>
-          <span>{{ formattedDuration }}</span>
-        </div>
+          class="absolute bottom-0 left-0 h-1 bg-primary"
+          :style="{ width: seekProgressWidth }"
+        />
         <input
           :value="currentTimeSeconds"
           :max="durationSeconds"
-          class="seek-slider w-full"
+          aria-label="Seek playback"
+          class="seek-slider pointer-events-auto absolute inset-x-0 bottom-0 h-4 w-full"
           min="0"
           step="0.1"
           type="range"
           @input="handleSeekInput"
+        />
+        <div
+          class="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
         />
       </div>
     </Transition>
@@ -301,18 +294,70 @@ onUnmounted(() => {
 
 .seek-enter-active,
 .seek-leave-active {
-  transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
 .seek-enter-from,
 .seek-leave-to {
   opacity: 0;
-  transform: translateY(-4px);
 }
 
 .seek-slider {
-  accent-color: var(--color-primary);
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.seek-slider::-webkit-slider-runnable-track {
+  appearance: none;
+  background: transparent;
+  height: 16px;
+}
+
+.seek-slider::-webkit-slider-thumb {
+  appearance: none;
+  background: var(--color-primary);
+  border: 2px solid rgb(255 255 255 / 90%);
+  border-radius: 9999px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
+  height: 12px;
+  margin-top: 2px;
+  width: 12px;
+}
+
+.seek-slider::-moz-range-track {
+  background: transparent;
+  border: 0;
+  height: 16px;
+}
+
+.seek-slider::-moz-range-progress {
+  background: transparent;
+}
+
+.seek-slider::-moz-range-thumb {
+  background: var(--color-primary);
+  border: 2px solid rgb(255 255 255 / 90%);
+  border-radius: 9999px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 25%);
+  height: 12px;
+  width: 12px;
+}
+
+.seek-slider:focus-visible {
+  outline: none;
+}
+
+.seek-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 2px rgb(255 255 255 / 90%),
+    0 0 0 4px rgb(0 0 0 / 18%);
+}
+
+.seek-slider:focus-visible::-moz-range-thumb {
+  box-shadow:
+    0 0 0 2px rgb(255 255 255 / 90%),
+    0 0 0 4px rgb(0 0 0 / 18%);
 }
 </style>
