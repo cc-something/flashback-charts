@@ -1,7 +1,16 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["vite.config.ts", "*.config.ts", "*.config.mjs"]
+  "include": [
+    "vite.config.ts",
+    "*.config.ts",
+    "*.config.mjs",
+    "scripts/**/*.ts"
+  ]
 }
