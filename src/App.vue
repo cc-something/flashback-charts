@@ -6,6 +6,7 @@ import YearTabs from '@/components/YearTabs.vue'
 import SongList from '@/components/SongList.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
+import ErrorToast from '@/components/ErrorToast.vue'
 
 useDecadeTheme()
 
@@ -59,5 +60,6 @@ onMounted(() => {
       ref="playerContainer"
       class="fixed bottom-0 left-0 h-px w-px opacity-[0.01]"
     />
+    <ErrorToast />
   </div>
 </template>

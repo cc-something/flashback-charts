@@ -3,9 +3,12 @@ import { defineStore } from 'pinia'
 import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
 import { useChartStore } from '@/stores/chart'
+import { useToastStore } from '@/stores/toast'
 import { getYearData } from '@/data'
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
+
+const MAX_RETRIES = 2
 
 export const usePlayerStore = defineStore('player', () => {
   const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
@@ -22,6 +25,9 @@ export const usePlayerStore = defineStore('player', () => {
   let progressTimerId: number | null = null
   let playerContainerEl: HTMLDivElement | null = null
   let onEndedCallback: ((song: Song, year: number) => void) | null = null
+  let retryCount = 0
+  let currentPlaySong: Song | null = null
+  let offlineHandler: (() => void) | null = null
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -98,52 +104,24 @@ export const usePlayerStore = defineStore('player', () => {
     playingYear.value = null
     currentTimeSeconds.value = 0
     durationSeconds.value = 0
+    retryCount = 0
+    currentPlaySong = null
     clearSeekPreview()
     clearActive()
+    if (offlineHandler) {
+      window.removeEventListener('offline', offlineHandler)
+      offlineHandler = null
+    }
   }
 
-  const play = async (song: Song, year: number) => {
-    if (!song.youtubeVideoId) return
-
-    // Toggle if same song
-    if (
-      playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
-      playingYear.value === year
-    ) {
-      if (playerState.value === 'playing') {
-        ytPlayer?.pauseVideo()
-        return
-      }
-      if (playerState.value === 'paused') {
-        ytPlayer?.playVideo()
-        return
-      }
-      if (playerState.value === 'loading') {
-        stop()
-        return
-      }
-    }
-
-    // Stop any current playback
-    if (isActive.value) stop()
-
-    playingSong.value = song
-    playingYear.value = year
-    playerState.value = 'loading'
-    registerActive(stop)
-
-    try {
-      await ensureLoaded()
-    } catch {
-      stop()
-      return
-    }
-
-    if (playerState.value !== 'loading') return
+  const attemptPlay = (song: Song) => {
     if (!playerContainerEl) {
       stop()
       return
     }
+
+    ytPlayer?.destroy()
+    ytPlayer = null
 
     ytPlayer = new window.YT!.Player(playerContainerEl, {
       width: '480',
@@ -175,9 +153,86 @@ export const usePlayerStore = defineStore('player', () => {
           }
           syncPlaybackProgress()
         },
-        onError: () => stop(),
+        onError: () => {
+          if (!navigator.onLine) {
+            useToastStore().show('No internet connection — playback stopped')
+            stop()
+            return
+          }
+          if (retryCount < MAX_RETRIES) {
+            retryCount++
+            playerState.value = 'loading'
+            window.setTimeout(() => {
+              if (playerState.value === 'loading' && currentPlaySong)
+                attemptPlay(currentPlaySong)
+            }, 1000 * retryCount)
+          } else {
+            const failedSong = playingSong.value
+            const failedYear = playingYear.value
+            useToastStore().show(`Failed to play "${song.title}" — skipping`)
+            stop()
+            if (failedSong && failedYear !== null)
+              playNext(failedSong, failedYear)
+          }
+        },
       },
     })
+  }
+
+  const play = async (song: Song, year: number) => {
+    if (!song.youtubeVideoId) return
+
+    // Toggle if same song
+    if (
+      playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
+      playingYear.value === year
+    ) {
+      if (playerState.value === 'playing') {
+        ytPlayer?.pauseVideo()
+        return
+      }
+      if (playerState.value === 'paused') {
+        ytPlayer?.playVideo()
+        return
+      }
+      if (playerState.value === 'loading') {
+        stop()
+        return
+      }
+    }
+
+    if (!navigator.onLine) {
+      useToastStore().show('No internet connection — cannot play')
+      return
+    }
+
+    // Stop any current playback
+    if (isActive.value) stop()
+
+    playingSong.value = song
+    playingYear.value = year
+    playerState.value = 'loading'
+    retryCount = 0
+    currentPlaySong = song
+    registerActive(stop)
+
+    offlineHandler = () => {
+      useToastStore().show('No internet connection — playback stopped')
+      stop()
+    }
+    window.addEventListener('offline', offlineHandler, { once: true })
+
+    try {
+      await ensureLoaded()
+    } catch {
+      useToastStore().show('Failed to load player — check your connection')
+      stop()
+      return
+    }
+
+    if (playerState.value !== 'loading') return
+
+    attemptPlay(song)
   }
 
   const togglePlayback = () => {
