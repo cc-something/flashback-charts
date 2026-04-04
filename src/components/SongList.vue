@@ -8,7 +8,7 @@ import SongCard from './SongCard.vue'
 const store = useChartStore()
 const player = usePlayerStore()
 
-player.setOnEnded(() => player.playNext())
+player.setOnEnded((song, year) => player.playNext(song, year))
 onUnmounted(() => player.setOnEnded(null))
 </script>
 

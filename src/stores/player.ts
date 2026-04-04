@@ -21,7 +21,7 @@ export const usePlayerStore = defineStore('player', () => {
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
   let playerContainerEl: HTMLDivElement | null = null
-  let onEndedCallback: (() => void) | null = null
+  let onEndedCallback: ((song: Song, year: number) => void) | null = null
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -51,7 +51,7 @@ export const usePlayerStore = defineStore('player', () => {
     playerContainerEl = el
   }
 
-  const setOnEnded = (cb: (() => void) | null) => {
+  const setOnEnded = (cb: ((song: Song, year: number) => void) | null) => {
     onEndedCallback = cb
   }
 
@@ -167,8 +167,11 @@ export const usePlayerStore = defineStore('player', () => {
           else if (event.data === 2) playerState.value = 'paused'
           else if (event.data === 3) playerState.value = 'loading'
           else if (event.data === 0) {
+            const endedSong = playingSong.value
+            const endedYear = playingYear.value
             stop()
-            onEndedCallback?.()
+            if (endedSong && endedYear !== null)
+              onEndedCallback?.(endedSong, endedYear)
           }
           syncPlaybackProgress()
         },
@@ -236,10 +239,19 @@ export const usePlayerStore = defineStore('player', () => {
     return { songs, index, year }
   }
 
-  const playNext = () => {
+  const playNext = (fromSong?: Song, fromYear?: number) => {
     const chart = useChartStore()
-    const { songs, index, year } = getCurrentIndex()
-    if (!songs || index === -1 || year === null) return
+    const song = fromSong ?? playingSong.value
+    const year = fromYear ?? playingYear.value
+    if (!song || year === null || year === undefined)
+      return { songs: null, index: -1, year: null }
+    const songs = getSortedYearData(year)
+    if (!songs) return
+
+    const index = songs.findIndex(
+      (s) => s.youtubeVideoId === song.youtubeVideoId,
+    )
+    if (index === -1) return
 
     if (index < songs.length - 1) {
       const nextSong = songs[index + 1]
