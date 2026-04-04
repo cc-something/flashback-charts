@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { getSongThumbnailPath } from '@/data/imageAsset'
-import songs from './1973'
+import songs, { source } from './1973'
 
 const year = 1973
 
@@ -44,5 +44,10 @@ describe('1973 image metadata', () => {
 
       expect(existsSync(publicFilePath)).toBe(true)
     }
+  })
+
+  it('has a source link for the year', () => {
+    expect(source.label).toBeTruthy()
+    expect(() => new URL(source.url)).not.toThrow()
   })
 })

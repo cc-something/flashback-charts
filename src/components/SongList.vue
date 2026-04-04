@@ -9,7 +9,20 @@ const store = useChartStore()
   <main class="max-w-2xl mx-auto px-4 py-6">
     <header class="mb-6">
       <h1 class="text-3xl font-bold text-primary">{{ store.selectedYear }}</h1>
-      <p class="text-text-muted text-sm mt-1">Australia's Top 10 Songs</p>
+      <p class="mt-1 text-sm text-text-muted">
+        Australia's Top 10 Songs
+        <template v-if="store.currentSource">
+          <span aria-hidden="true">·</span>
+          <a
+            :href="store.currentSource.url"
+            class="underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Source: {{ store.currentSource.label }}
+          </a>
+        </template>
+      </p>
     </header>
 
     <TransitionGroup

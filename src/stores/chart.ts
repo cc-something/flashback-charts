@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { range } from 'lodash-es'
-import { getYearData, getAvailableYears } from '@/data'
+import { getYearData, getAvailableYears, getYearSource } from '@/data'
 import { getDecadeForYear } from '@/themes'
 
 export const useChartStore = defineStore('chart', () => {
@@ -11,6 +11,7 @@ export const useChartStore = defineStore('chart', () => {
   const availableYears = getAvailableYears()
 
   const currentSongs = computed(() => getYearData(selectedYear.value) ?? [])
+  const currentSource = computed(() => getYearSource(selectedYear.value))
   const currentDecade = computed(() => getDecadeForYear(selectedYear.value))
   const hasData = computed(() => currentSongs.value.length > 0)
 
@@ -23,6 +24,7 @@ export const useChartStore = defineStore('chart', () => {
     yearRange,
     availableYears,
     currentSongs,
+    currentSource,
     currentDecade,
     hasData,
     selectYear,
