@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useChartStore } from '@/stores/chart'
 
 const store = useChartStore()
 const scrollContainer = ref<HTMLElement | null>(null)
 
-const scrollToActiveTab = () => {
+const scrollToActiveTab = async () => {
+  await nextTick()
+
   const container = scrollContainer.value
   if (!container) return
   const activeTab = container.querySelector<HTMLElement>('[data-active="true"]')
   if (!activeTab) return
-  const containerRect = container.getBoundingClientRect()
-  const tabRect = activeTab.getBoundingClientRect()
-  const offset =
-    tabRect.left -
-    containerRect.left -
-    containerRect.width / 2 +
-    tabRect.width / 2
-  container.scrollBy({ left: offset, behavior: 'smooth' })
+  const targetScrollLeft =
+    activeTab.offsetLeft - container.clientWidth / 2 + activeTab.clientWidth / 2
+  const maxScrollLeft = container.scrollWidth - container.clientWidth
+  const nextScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft))
+
+  container.scrollTo({ left: nextScrollLeft, behavior: 'smooth' })
 }
 
 onMounted(scrollToActiveTab)
