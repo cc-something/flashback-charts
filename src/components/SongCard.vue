@@ -215,7 +215,7 @@ onUnmounted(() => {
 
 <template>
   <article
-    class="relative flex items-center gap-4 overflow-hidden rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
+    class="relative flex items-center gap-4 overflow-visible rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
   >
     <span class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary">
       {{ song.rank }}
