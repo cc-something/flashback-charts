@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted } from 'vue'
+import { onUnmounted, watch } from 'vue'
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
@@ -10,6 +10,11 @@ const player = usePlayerStore()
 
 player.setOnEnded((song, year) => player.playNext(song, year))
 onUnmounted(() => player.setOnEnded(null))
+
+watch(
+  () => store.selectedYear,
+  () => window.scrollTo({ top: 0, behavior: 'instant' }),
+)
 </script>
 
 <template>
