@@ -34,6 +34,7 @@ const handleClick = () => player.play(props.song, props.year)
 
 <template>
   <article
+    :data-song-id="song.youtubeVideoId"
     class="relative flex items-center gap-4 overflow-visible rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
   >
     <span class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary">
@@ -152,7 +153,7 @@ const handleClick = () => player.play(props.song, props.year)
           />
         </SliderRoot>
         <p
-          class="pointer-events-none absolute bottom-2.5 left-1 min-w-fit bg-surface/85 px-0.5 text-[0.45rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-3.5 left-1 min-w-fit bg-surface/85 px-0.5 text-[0.45rem] font-medium tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
