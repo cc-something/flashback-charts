@@ -11,6 +11,8 @@ Each completed year must include:
 - `src/data/years/YYYY.ts`
 - `public/images/years/YYYY/*.webp`
 - top-of-file source comments for the chart ranking
+- year-level source export:
+  - `export const source = { label: 'Source Name', url: 'https://...' }`
 - `Song[]` entries matching the current repo contract:
   - `rank`
   - `title`
@@ -60,6 +62,15 @@ Use this priority order for chart ranking:
 2. Australian chart book / archive source cited by a stable secondary source
 3. Wikipedia only when the page clearly cites the underlying chart source
 
+Year source metadata rules:
+
+- `label` must be concise and user-facing
+- use clean labels like `Kent Music Report`, not `Source: ...`
+- do not include `(via Wikipedia)` in `label`
+- `url` should be the page we want the UI to open
+- if Wikipedia is the best available page, that is acceptable
+- if no reliable source URL is available, call it out in handoff instead of guessing
+
 Use this priority order for images:
 
 1. Album or single artwork
@@ -78,19 +89,21 @@ For each assigned year:
 
 1. Find the authoritative year-end top 10 for Australia.
 2. Create `src/data/years/YYYY.ts` by copying the 1973 structure.
-3. Add one source comment block at the top naming the chart source.
-4. For each song, fill all required fields.
-5. Prefer album art in `imageSources.album`; set `imageSources.artist` only when needed as fallback.
-6. Set `imageSelection` to the asset expected to succeed when `pnpm cache:images YYYY` runs.
-7. Generate thumbnails with `pnpm cache:images YYYY`.
-8. Confirm `public/images/years/YYYY/` contains one `.webp` per song.
-9. Run `pnpm check`.
+3. Export a year-level `source` object with clean `label` and UI-open `url`.
+4. Add one source comment block at the top naming the chart source.
+5. For each song, fill all required fields.
+6. Prefer album art in `imageSources.album`; set `imageSources.artist` only when needed as fallback.
+7. Set `imageSelection` to the asset expected to succeed when `pnpm cache:images YYYY` runs.
+8. Generate thumbnails with `pnpm cache:images YYYY`.
+9. Confirm `public/images/years/YYYY/` contains one `.webp` per song.
+10. Run `pnpm check`.
 
 ## Required Formatting Rules
 
 Each year file should follow the same pattern as 1973:
 
 - local `const year = YYYY`
+- exported `source` object near the top of the file
 - local `getSong` helper returning `thumbnailPath`
 - songs ordered by `rank`
 - one song object per chart position
@@ -119,15 +132,16 @@ A decade is complete only when:
 After one or more decade branches are ready, the integrator agent:
 
 1. merges or cherry-picks the decade branches
-2. updates `src/data/index.ts` to register newly added years
-3. runs `pnpm check`
-4. resolves any duplicate year or registry conflicts
+2. imports each new year's `source` from `src/data/years/YYYY.ts`
+3. updates `src/data/index.ts` to register `songs: songsYYYY` and `source: sourceYYYY`
+4. runs `pnpm check`
+5. resolves any duplicate year or registry conflicts
 
 ## Agent Prompt Template
 
 Use this prompt shape when handing off a decade:
 
-> Source all Australia top-10 songs for the `<DECADE>` decade using the existing `1973.ts` format. Create only `src/data/years/YYYY.ts` files for your assigned years and `public/images/years/YYYY/` thumbnails for those years. Do not edit shared registry or UI files. Use album art first, artist image only as fallback, generate thumbnails with `pnpm cache:images YYYY`, and finish with `pnpm check`.
+> Source all Australia top-10 songs for the `<DECADE>` decade using the existing `1973.ts` format. For each year file, export `source = { label, url }` with a concise user-facing label and the URL the UI should open. Create only `src/data/years/YYYY.ts` files for your assigned years and `public/images/years/YYYY/` thumbnails for those years. Do not edit shared registry or UI files. Use album art first, artist image only as fallback, generate local thumbnails with `pnpm cache:images YYYY`, and if a reliable source URL is unavailable call it out explicitly instead of guessing. Finish with `pnpm check`.
 
 ## Suggested Execution Order
 
