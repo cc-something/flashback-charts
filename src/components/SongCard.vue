@@ -1,53 +1,26 @@
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { Disc3 } from 'lucide-vue-next'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import type { Song } from '@/types/song'
-import { useYouTubeApi } from '@/composables/useYouTubeApi'
+import { usePlayerStore } from '@/stores/player'
 
-const props = defineProps<{ song: Song }>()
-const emit = defineEmits<{ ended: [] }>()
+const props = defineProps<{ song: Song; year: number }>()
 
-type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
-
+const player = usePlayerStore()
 const isHovered = ref(false)
 const hasThumbnailError = ref(false)
-const playerState = ref<PlayerState>('idle')
-const playerContainer = ref<HTMLDivElement>()
-const currentTimeSeconds = ref(0)
-const durationSeconds = ref(0)
-const progressTimerId = ref<number | null>(null)
-const isSeekDragging = ref(false)
-const seekPreviewSeconds = ref<number | null>(null)
-let ytPlayer: YTPlayer | null = null
 
-const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
-
+const isThisSongActive = computed(() =>
+  player.isSongActive(props.song, props.year),
+)
+const thisPlayerState = computed(() =>
+  isThisSongActive.value ? player.playerState : 'idle',
+)
 const showOverlay = computed(
-  () => isHovered.value || playerState.value !== 'idle',
+  () => isHovered.value || thisPlayerState.value !== 'idle',
 )
-const showSeekBar = computed(
-  () => playerState.value !== 'idle' && durationSeconds.value > 0,
-)
-const seekSliderValue = computed(() => [displayedTimeSeconds.value])
-const displayedTimeSeconds = computed(
-  () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
-)
-const formatPlaybackTime = (timeSeconds: number) => {
-  if (!Number.isFinite(timeSeconds) || timeSeconds <= 0) return '0:00'
-
-  const wholeSeconds = Math.floor(timeSeconds)
-  const minutes = Math.floor(wholeSeconds / 60)
-  const seconds = wholeSeconds % 60
-
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
-}
-const formattedCurrentTime = computed(() =>
-  formatPlaybackTime(displayedTimeSeconds.value),
-)
-const formattedDuration = computed(() =>
-  formatPlaybackTime(durationSeconds.value),
-)
+const showSeekBar = computed(() => isThisSongActive.value && player.showSeekBar)
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement
@@ -56,164 +29,7 @@ const handleImageError = (e: Event) => {
   hasThumbnailError.value = true
 }
 
-const clearProgressTimer = () => {
-  if (progressTimerId.value === null) return
-  window.clearInterval(progressTimerId.value)
-  progressTimerId.value = null
-}
-
-const clearSeekPreview = () => {
-  isSeekDragging.value = false
-  seekPreviewSeconds.value = null
-}
-
-const syncPlaybackProgress = () => {
-  if (!ytPlayer) return
-
-  const nextDurationSeconds = ytPlayer.getDuration()
-  const nextCurrentTimeSeconds = ytPlayer.getCurrentTime()
-
-  if (nextDurationSeconds > 0) durationSeconds.value = nextDurationSeconds
-  if (durationSeconds.value <= 0) return
-
-  currentTimeSeconds.value = Math.min(
-    nextCurrentTimeSeconds,
-    durationSeconds.value,
-  )
-
-  if (!isSeekDragging.value && seekPreviewSeconds.value !== null) {
-    const seekDelta = Math.abs(
-      currentTimeSeconds.value - seekPreviewSeconds.value,
-    )
-
-    if (seekDelta < 0.75 || playerState.value !== 'loading') {
-      seekPreviewSeconds.value = null
-    }
-  }
-}
-
-const startProgressTimer = () => {
-  clearProgressTimer()
-  syncPlaybackProgress()
-  progressTimerId.value = window.setInterval(syncPlaybackProgress, 250)
-}
-
-const stopPlayback = () => {
-  clearProgressTimer()
-  ytPlayer?.destroy()
-  ytPlayer = null
-  playerState.value = 'idle'
-  currentTimeSeconds.value = 0
-  durationSeconds.value = 0
-  clearSeekPreview()
-  clearActive()
-}
-
-const getSeekValue = (nextValue: number[]) => {
-  const [nextCurrentTimeSeconds] = nextValue
-
-  if (nextCurrentTimeSeconds === undefined) return null
-  return Number.isNaN(nextCurrentTimeSeconds) ? null : nextCurrentTimeSeconds
-}
-
-const handleSeekInput = (nextValue: number[]) => {
-  const nextCurrentTimeSeconds = getSeekValue(nextValue)
-
-  if (nextCurrentTimeSeconds === null) return
-
-  isSeekDragging.value = true
-  seekPreviewSeconds.value = nextCurrentTimeSeconds
-}
-
-const handleSeekCommit = (nextValue: number[]) => {
-  if (!ytPlayer) {
-    clearSeekPreview()
-    return
-  }
-
-  const nextCurrentTimeSeconds = getSeekValue(nextValue)
-
-  if (nextCurrentTimeSeconds === null) {
-    clearSeekPreview()
-    return
-  }
-
-  isSeekDragging.value = false
-  seekPreviewSeconds.value = nextCurrentTimeSeconds
-  playerState.value = 'loading'
-  ytPlayer.seekTo(nextCurrentTimeSeconds, true)
-}
-
-const handleAlbumClick = async () => {
-  if (!props.song.youtubeVideoId) return
-
-  if (playerState.value === 'playing') {
-    ytPlayer?.pauseVideo()
-    return
-  }
-  if (playerState.value === 'paused') {
-    ytPlayer?.playVideo()
-    return
-  }
-  if (playerState.value === 'loading') {
-    stopPlayback()
-    return
-  }
-
-  playerState.value = 'loading'
-  registerActive(stopPlayback)
-
-  try {
-    await ensureLoaded()
-  } catch {
-    stopPlayback()
-    return
-  }
-
-  if (playerState.value !== 'loading') return
-  if (!playerContainer.value) {
-    stopPlayback()
-    return
-  }
-
-  ytPlayer = new window.YT!.Player(playerContainer.value, {
-    width: '480',
-    height: '270',
-    videoId: props.song.youtubeVideoId,
-    host: 'https://www.youtube-nocookie.com',
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      playsinline: 1,
-      rel: 0,
-      origin: window.location.origin,
-    },
-    events: {
-      onReady: (event) => {
-        startProgressTimer()
-        event.target.playVideo()
-      },
-      onStateChange: (event: YTPlayerEvent) => {
-        if (event.data === 1) playerState.value = 'playing'
-        else if (event.data === 2) playerState.value = 'paused'
-        else if (event.data === 3) playerState.value = 'loading'
-        else if (event.data === 0) {
-          stopPlayback()
-          emit('ended')
-        }
-
-        syncPlaybackProgress()
-      },
-      onError: () => stopPlayback(),
-    },
-  })
-}
-
-onUnmounted(() => {
-  stopPlayback()
-})
-
-defineExpose({ play: handleAlbumClick })
+const handleClick = () => player.play(props.song, props.year)
 </script>
 
 <template>
@@ -230,7 +46,7 @@ defineExpose({ play: handleAlbumClick })
       class="relative h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
-      @click="handleAlbumClick"
+      @click="handleClick"
     >
       <img
         v-if="!hasThumbnailError"
@@ -253,7 +69,7 @@ defineExpose({ play: handleAlbumClick })
         >
           <!-- spinner -->
           <svg
-            v-if="playerState === 'loading'"
+            v-if="thisPlayerState === 'loading'"
             class="h-7 w-7 animate-spin text-white"
             viewBox="0 0 24 24"
             fill="none"
@@ -275,7 +91,7 @@ defineExpose({ play: handleAlbumClick })
 
           <!-- pause icon -->
           <svg
-            v-else-if="playerState === 'playing'"
+            v-else-if="thisPlayerState === 'playing'"
             class="h-7 w-7 text-white drop-shadow"
             viewBox="0 0 24 24"
             fill="currentColor"
@@ -312,14 +128,14 @@ defineExpose({ play: handleAlbumClick })
         class="pointer-events-none absolute inset-x-0 bottom-0"
       >
         <SliderRoot
-          :max="durationSeconds"
+          :max="player.durationSeconds"
           :min="0"
-          :model-value="seekSliderValue"
+          :model-value="player.seekSliderValue"
           :step="0.1"
           aria-label="Seek playback"
           class="seek-slider pointer-events-auto relative z-10 flex w-full touch-manipulation items-center"
-          @update:model-value="handleSeekInput"
-          @value-commit="handleSeekCommit"
+          @update:model-value="player.handleSeekInput"
+          @value-commit="player.handleSeekCommit"
         >
           <SliderTrack
             class="seek-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
@@ -336,27 +152,12 @@ defineExpose({ play: handleAlbumClick })
           />
         </SliderRoot>
         <p
-          class="pointer-events-none absolute bottom-3.5 left-2 min-w-fit bg-surface/85 px-1 text-[0.55rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-1.5 left-2 min-w-fit bg-surface/85 px-1 text-[0.55rem] font-medium tabular-nums text-text-muted"
         >
-          {{ formattedCurrentTime }}/{{ formattedDuration }}
+          {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
       </div>
     </Transition>
-
-    <!-- Kept on-screen so mobile browsers don't block playback -->
-    <div
-      ref="playerContainer"
-      style="
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 1px;
-        height: 1px;
-        opacity: 0.01;
-        overflow: hidden;
-        pointer-events: none;
-      "
-    />
   </article>
 </template>
 
