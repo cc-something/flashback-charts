@@ -21,6 +21,7 @@ interface YTPlayerOptions {
   height?: string
   playerVars?: Record<string, string | number>
   events?: {
+    onReady?: (event: { target: YTPlayer }) => void
     onStateChange?: (event: YTPlayerEvent) => void
   }
 }

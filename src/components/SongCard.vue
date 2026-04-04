@@ -48,6 +48,9 @@ const handleAlbumClick = async () => {
       modestbranding: 1,
     },
     events: {
+      onReady: (event) => {
+        event.target.playVideo()
+      },
       onStateChange: (event: YTPlayerEvent) => {
         if (event.data === 1) playerState.value = 'playing'
         else if (event.data === 2) playerState.value = 'paused'
