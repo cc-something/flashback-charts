@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
+import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
 
@@ -30,24 +31,25 @@ const showOverlay = computed(
 const showSeekBar = computed(
   () => playerState.value !== 'idle' && durationSeconds.value > 0,
 )
+const seekSliderValue = computed(() => [displayedTimeSeconds.value])
 const displayedTimeSeconds = computed(
   () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
 )
-const seekProgressWidth = computed(() => {
-  if (durationSeconds.value <= 0) return '0%'
+const formatPlaybackTime = (timeSeconds: number) => {
+  if (!Number.isFinite(timeSeconds) || timeSeconds <= 0) return '0:00'
 
-  return `${Math.min((displayedTimeSeconds.value / durationSeconds.value) * 100, 100)}%`
-})
-const seekThumbLeft = computed(() => {
-  if (durationSeconds.value <= 0) return '0px'
+  const wholeSeconds = Math.floor(timeSeconds)
+  const minutes = Math.floor(wholeSeconds / 60)
+  const seconds = wholeSeconds % 60
 
-  const seekPercent = Math.min(
-    displayedTimeSeconds.value / durationSeconds.value,
-    1,
-  )
-
-  return `clamp(0px, calc(${seekPercent * 100}% - 7px), calc(100% - 14px))`
-})
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+}
+const formattedCurrentTime = computed(() =>
+  formatPlaybackTime(displayedTimeSeconds.value),
+)
+const formattedDuration = computed(() =>
+  formatPlaybackTime(durationSeconds.value),
+)
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement
@@ -109,32 +111,29 @@ const stopPlayback = () => {
   clearActive()
 }
 
-const getSeekValue = (event: Event) => {
-  const input = event.target as HTMLInputElement
-  const nextCurrentTimeSeconds = Number(input.value)
+const getSeekValue = (nextValue: number[]) => {
+  const [nextCurrentTimeSeconds] = nextValue
 
+  if (nextCurrentTimeSeconds === undefined) return null
   return Number.isNaN(nextCurrentTimeSeconds) ? null : nextCurrentTimeSeconds
 }
 
-const handleSeekStart = () => {
-  isSeekDragging.value = true
-}
-
-const handleSeekInput = (event: Event) => {
-  const nextCurrentTimeSeconds = getSeekValue(event)
+const handleSeekInput = (nextValue: number[]) => {
+  const nextCurrentTimeSeconds = getSeekValue(nextValue)
 
   if (nextCurrentTimeSeconds === null) return
 
+  isSeekDragging.value = true
   seekPreviewSeconds.value = nextCurrentTimeSeconds
 }
 
-const handleSeekCommit = (event: Event) => {
+const handleSeekCommit = (nextValue: number[]) => {
   if (!ytPlayer) {
     clearSeekPreview()
     return
   }
 
-  const nextCurrentTimeSeconds = getSeekValue(event)
+  const nextCurrentTimeSeconds = getSeekValue(nextValue)
 
   if (nextCurrentTimeSeconds === null) {
     clearSeekPreview()
@@ -216,7 +215,10 @@ onUnmounted(() => {
 
 <template>
   <article
-    class="relative flex items-center gap-4 overflow-hidden rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
+    :class="[
+      'relative flex items-center gap-4 overflow-hidden rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80',
+      showSeekBar ? 'pb-10' : '',
+    ]"
   >
     <span class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary">
       {{ song.rank }}
@@ -300,32 +302,36 @@ onUnmounted(() => {
     <Transition name="seek">
       <div
         v-if="showSeekBar"
-        class="pointer-events-none absolute inset-x-0 bottom-0 h-4"
+        class="absolute inset-x-4 bottom-0 flex items-end gap-3 pb-3"
       >
-        <div class="absolute inset-x-0 bottom-0 h-1 bg-black/10" />
-        <div
-          class="absolute bottom-0 left-0 h-1 bg-primary"
-          :style="{ width: seekProgressWidth }"
-        />
-        <input
-          :value="displayedTimeSeconds"
+        <SliderRoot
           :max="durationSeconds"
+          :min="0"
+          :model-value="seekSliderValue"
+          :step="0.1"
           aria-label="Seek playback"
-          class="seek-hitbox absolute inset-x-0 bottom-0 h-5 w-full"
-          min="0"
-          step="0.1"
-          type="range"
-          @change="handleSeekCommit"
-          @input="handleSeekInput"
-          @pointerdown="handleSeekStart"
-        />
-        <div
-          class="pointer-events-none absolute bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)]"
-          :style="{ left: seekThumbLeft }"
-        />
-        <div
-          class="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
-        />
+          class="seek-slider relative flex-1 touch-manipulation items-center"
+          @update:model-value="handleSeekInput"
+          @value-commit="handleSeekCommit"
+        >
+          <SliderTrack
+            class="seek-track relative h-1.5 w-full overflow-hidden rounded-full bg-black/10"
+          >
+            <SliderRange
+              class="seek-range absolute h-full rounded-full bg-primary"
+            />
+            <div
+              class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
+            />
+          </SliderTrack>
+          <SliderThumb
+            class="seek-thumb block h-4 w-4 rounded-full border-2 border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
+          />
+        </SliderRoot>
+
+        <p class="min-w-fit text-xs font-medium tabular-nums text-text-muted">
+          {{ formattedCurrentTime }}/{{ formattedDuration }}
+        </p>
       </div>
     </Transition>
 
@@ -364,47 +370,29 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-.seek-hitbox {
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  opacity: 0;
-  touch-action: none;
+.seek-slider[data-orientation='horizontal'] {
+  display: flex;
 }
 
-.seek-hitbox::-webkit-slider-runnable-track {
-  appearance: none;
-  background: transparent;
-  height: 20px;
+.seek-track[data-orientation='horizontal'] {
+  flex: 1;
 }
 
-.seek-hitbox::-webkit-slider-thumb {
-  appearance: none;
-  height: 20px;
-  width: 20px;
+.seek-range[data-orientation='horizontal'] {
+  left: 0;
 }
 
-.seek-hitbox::-moz-range-track {
-  background: transparent;
-  border: 0;
-  height: 20px;
+.seek-thumb {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.seek-hitbox::-moz-range-progress {
-  background: transparent;
+.seek-thumb:hover {
+  transform: scale(1.08);
 }
 
-.seek-hitbox::-moz-range-thumb {
-  border: 0;
-  height: 20px;
-  width: 20px;
-}
-
-.seek-hitbox:focus-visible {
-  outline: none;
-}
-
-.seek-hitbox:focus-visible + div {
+.seek-thumb:focus-visible {
   box-shadow:
     0 0 0 2px rgb(255 255 255 / 90%),
     0 0 0 4px rgb(0 0 0 / 18%);
