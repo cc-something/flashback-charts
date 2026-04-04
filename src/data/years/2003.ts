@@ -50,8 +50,7 @@ const songs: Song[] = [
     youtubeVideoId: '7YuAzR2XVAM',
     imageSelection: 'album',
     imageSources: {
-      album:
-        'https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Lose_Yourself.jpg/330px-Lose_Yourself.jpg',
+      album: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Lose_Yourself.jpg',
       artist: null,
     },
   }),
@@ -128,7 +127,8 @@ const songs: Song[] = [
     youtubeVideoId: '5llcBScGuAE',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/c/cb/Las_ketchup.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/b/bd/Las_Hijas_Del_Tomate.jpg',
       artist: null,
     },
   }),

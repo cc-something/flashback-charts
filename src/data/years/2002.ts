@@ -37,7 +37,8 @@ const songs: Song[] = [
     youtubeVideoId: 'YVkUvmDQ3HY',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/7/7a/Without_Me.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/a/ad/Eminem_-_Without_Me_CD_cover.jpg',
       artist: null,
     },
   }),
@@ -50,7 +51,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/1/1d/Shakira_Whenever_Wherever.jpg',
+        'https://upload.wikimedia.org/wikipedia/en/2/2a/Shakira_-_Whenever%2C_Wherever.png',
       artist: null,
     },
   }),
@@ -63,7 +64,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/8/84/Las_Ketchup_-_The_Ketchup_Song.jpg',
+        'https://upload.wikimedia.org/wikipedia/en/b/bd/Las_Hijas_Del_Tomate.jpg',
       artist: null,
     },
   }),
@@ -76,7 +77,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/a/a6/Dilemma_Nelly_Rowland.jpg',
+        'https://upload.wikimedia.org/wikipedia/en/6/61/Nelly_featuring_Kelly_Rowland_-_Dilemma_CD_cover.jpg',
       artist: null,
     },
   }),
@@ -89,7 +90,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/8/8f/A_little_less_conversation_cover.jpg',
+        'https://upload.wikimedia.org/wikipedia/en/6/61/ElvisVSJXLCDSingleCover.jpg',
       artist: null,
     },
   }),
@@ -101,7 +102,8 @@ const songs: Song[] = [
     youtubeVideoId: 'Cwkej79U3ek',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/9/9d/ATMsingle.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/f/fd/A_Thousand_Miles.jpg',
       artist: null,
     },
   }),
@@ -114,7 +116,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/4/49/Delta_Goodrem_-_Born_to_Try.png',
+        'https://upload.wikimedia.org/wikipedia/en/3/34/Delta_Goodrem_-_Born_to_Try.png',
       artist: null,
     },
   }),
@@ -127,7 +129,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/0/08/Not_Pretty_Enough.jpg',
+        'https://upload.wikimedia.org/wikipedia/en/c/ce/NotPrettyEnough.jpg',
       artist: null,
     },
   }),
@@ -140,7 +142,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/4/45/Complicated_%28Avril_Lavigne_song%29.jpg',
+        'https://upload.wikimedia.org/wikipedia/en/7/76/Complicated_cover.png',
       artist: null,
     },
   }),
@@ -153,7 +155,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/d/d3/Holly_valance_kiss_kiss.JPG',
+        'https://upload.wikimedia.org/wikipedia/en/0/0e/Holly_Valance_-_Footprints.png',
       artist: null,
     },
   }),
