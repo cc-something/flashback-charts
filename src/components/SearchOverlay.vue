@@ -36,7 +36,7 @@ defineExpose({ focusInput })
     @click.self="emit('close')"
     @keydown="handleKeydown"
   >
-    <div class="mx-auto flex max-w-[900px] flex-col px-4 pt-0">
+    <div class="mx-auto flex max-w-[900px] flex-col px-4 pt-16">
       <!-- Search bar -->
       <div
         class="sticky top-0 z-10 flex items-center gap-3 border-b border-primary/20 bg-surface px-4 py-3"
