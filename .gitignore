@@ -1,0 +1,14 @@
+# Front-end
+node_modules
+dist
+dist-electron
+out
+*.tsbuildinfo
+
+# Env
+.env
+.DS_Store
+
+# Agents
+.codex
+.claude
