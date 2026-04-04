@@ -307,15 +307,15 @@ onUnmounted(() => {
           :model-value="seekSliderValue"
           :step="0.1"
           aria-label="Seek playback"
-          class="seek-slider pointer-events-auto relative flex w-full touch-manipulation items-center px-1"
+          class="seek-slider pointer-events-auto relative flex w-full touch-manipulation items-center"
           @update:model-value="handleSeekInput"
           @value-commit="handleSeekCommit"
         >
           <SliderTrack
-            class="seek-track relative h-1.5 w-full overflow-hidden rounded-none bg-black/10"
+            class="seek-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
           >
             <SliderRange
-              class="seek-range absolute h-full rounded-none bg-primary"
+              class="seek-range absolute h-full rounded-bl-lg bg-primary"
             />
             <div
               class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
