@@ -37,7 +37,8 @@ const songs: Song[] = [
     youtubeVideoId: 'mMo67Nb-jeA',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/9/9d/Angels_Brought_Me_Here.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/9/9d/Angels_Brought_Me_Here.jpg',
       artist: null,
     },
   }),
@@ -49,7 +50,8 @@ const songs: Song[] = [
     youtubeVideoId: '7YuAzR2XVAM',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Lose_Yourself.jpg/330px-Lose_Yourself.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Lose_Yourself.jpg/330px-Lose_Yourself.jpg',
       artist: null,
     },
   }),
@@ -61,7 +63,8 @@ const songs: Song[] = [
     youtubeVideoId: 'WpYeekQkAdc',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/a/a1/Whereisthelove_cover.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/a/a1/Whereisthelove_cover.jpg',
       artist: null,
     },
   }),
@@ -73,7 +76,8 @@ const songs: Song[] = [
     youtubeVideoId: 'qTBOJ71ypRw',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/3/34/Delta_Goodrem_-_Born_to_Try.png',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/3/34/Delta_Goodrem_-_Born_to_Try.png',
       artist: null,
     },
   }),
@@ -85,7 +89,8 @@ const songs: Song[] = [
     youtubeVideoId: '5qm8PH4xAss',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/1/12/50_Cent_-_In_Da_Club_-_CD_cover.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/1/12/50_Cent_-_In_Da_Club_-_CD_cover.jpg',
       artist: null,
     },
   }),
@@ -97,7 +102,8 @@ const songs: Song[] = [
     youtubeVideoId: '3YxaaGgTQYM',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/b/bb/Evanescence_-_Bring_Me_to_Life.png',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/b/bb/Evanescence_-_Bring_Me_to_Life.png',
       artist: null,
     },
   }),
@@ -109,7 +115,8 @@ const songs: Song[] = [
     youtubeVideoId: 'YMYUYtsUGgg',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/b/b7/DeltaGoodremLostWithoutYou.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/b/b7/DeltaGoodremLostWithoutYou.jpg',
       artist: null,
     },
   }),
@@ -133,7 +140,8 @@ const songs: Song[] = [
     youtubeVideoId: 'mhj0Q8wUlqs',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/0/07/Big_Brovaz_-_Nu_Flow_%28CD_1%29.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/0/07/Big_Brovaz_-_Nu_Flow_%28CD_1%29.jpg',
       artist: null,
     },
   }),

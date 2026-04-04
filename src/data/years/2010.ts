@@ -37,7 +37,8 @@ const songs: Song[] = [
     youtubeVideoId: 'acMtKzTbAAU',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/e/ed/Love_the_Way_You_Lie_cover.png',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/e/ed/Love_the_Way_You_Lie_cover.png',
       artist: null,
     },
   }),
@@ -49,7 +50,8 @@ const songs: Song[] = [
     youtubeVideoId: '1RnPB76mjxI',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/4/4c/OMG_Usher_song.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/4/4c/OMG_Usher_song.jpg',
       artist: null,
     },
   }),
@@ -74,7 +76,8 @@ const songs: Song[] = [
     youtubeVideoId: 'YcEX_PpeC-k',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/1/15/Hey_Soul_Sister.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/1/15/Hey_Soul_Sister.jpg',
       artist: null,
     },
   }),
@@ -86,7 +89,8 @@ const songs: Song[] = [
     youtubeVideoId: 'F57P9C4SAW4',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/8/84/California_Gurls_cover.png',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/8/84/California_Gurls_cover.png',
       artist: null,
     },
   }),
@@ -98,7 +102,8 @@ const songs: Song[] = [
     youtubeVideoId: 'qSsAEZa_fb0',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Owlcity_fireflies_cover.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/b/ba/Owlcity_fireflies_cover.jpg',
       artist: null,
     },
   }),
@@ -110,7 +115,8 @@ const songs: Song[] = [
     youtubeVideoId: '-ySWIyJj3I0',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/a/ab/Only_Girl_%28In_the_World%29.png',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/a/ab/Only_Girl_%28In_the_World%29.png',
       artist: null,
     },
   }),
@@ -122,7 +128,8 @@ const songs: Song[] = [
     youtubeVideoId: 'E-UJTGXof6Q',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/f/fa/Bruno-mars-just-the-way-you-are.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/f/fa/Bruno-mars-just-the-way-you-are.jpg',
       artist: null,
     },
   }),
@@ -134,7 +141,8 @@ const songs: Song[] = [
     youtubeVideoId: '4-4lclep19A',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/5/5c/Teenage_Dream_single_cover.png',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/5/5c/Teenage_Dream_single_cover.png',
       artist: null,
     },
   }),
@@ -146,7 +154,8 @@ const songs: Song[] = [
     youtubeVideoId: 'C-dvTjK_07c',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/2/29/Usherdjgotusfallininlove_Pitbull.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/2/29/Usherdjgotusfallininlove_Pitbull.jpg',
       artist: null,
     },
   }),
