@@ -37,7 +37,7 @@ defineExpose({ focusInput })
     @click.self="emit('close')"
     @keydown="handleKeydown"
   >
-    <div class="mx-auto flex h-full max-w-[900px] flex-col px-4 pt-16">
+    <div class="mx-auto flex h-full max-w-[900px] flex-col px-4 pt-8">
       <!-- Search bar -->
       <div class="z-10 flex-shrink-0 border-b border-primary/20 bg-surface">
         <p v-if="query" class="px-4 pt-2 text-xs text-text-muted">
@@ -75,7 +75,7 @@ defineExpose({ focusInput })
           No results for "{{ query }}"
         </p>
 
-        <div v-else class="flex flex-col gap-2 py-3">
+        <div v-else class="flex flex-col gap-2 pb-8 pt-3">
           <div
             v-for="({ song, year }, i) in results"
             :key="`${year}-${song.rank}-${i}`"
