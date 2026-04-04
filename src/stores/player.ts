@@ -216,11 +216,19 @@ export const usePlayerStore = defineStore('player', () => {
     playingYear.value === year &&
     playerState.value !== 'idle'
 
+  const getSortedYearData = (year: number) => {
+    const songs = getYearData(year)
+    if (!songs) return null
+    const chart = useChartStore()
+    if (chart.sortOrder === 'desc') return [...songs].reverse()
+    return songs
+  }
+
   const getCurrentIndex = () => {
     const song = playingSong.value
     const year = playingYear.value
     if (!song || year === null) return { songs: null, index: -1, year: null }
-    const songs = getYearData(year)
+    const songs = getSortedYearData(year)
     if (!songs) return { songs: null, index: -1, year: null }
     const index = songs.findIndex(
       (s) => s.youtubeVideoId === song.youtubeVideoId,
@@ -243,7 +251,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (yearIdx === -1 || yearIdx >= chart.availableYears.length - 1) return
     const nextYear = chart.availableYears[yearIdx + 1]
     if (nextYear === undefined) return
-    const nextYearSongs = getYearData(nextYear)
+    const nextYearSongs = getSortedYearData(nextYear)
     if (!nextYearSongs?.length) return
     chart.selectYear(nextYear)
     play(nextYearSongs[0], nextYear)
@@ -264,7 +272,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (yearIdx <= 0) return
     const prevYear = chart.availableYears[yearIdx - 1]
     if (prevYear === undefined) return
-    const prevYearSongs = getYearData(prevYear)
+    const prevYearSongs = getSortedYearData(prevYear)
     if (!prevYearSongs?.length) return
     chart.selectYear(prevYear)
     play(prevYearSongs[prevYearSongs.length - 1], prevYear)
