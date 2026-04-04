@@ -1,4 +1,4 @@
-import { mkdir } from 'node:fs/promises'
+import { access, mkdir } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
@@ -14,6 +14,13 @@ interface SongImageCandidate {
 const outputSize = 160
 const outputQuality = 76
 const publicDirName = 'public'
+const maxFetchAttempts = 4
+const baseRetryDelayMs = 1500
+
+const sleep = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
 
 export const getSongImageCandidates = (song: Song): SongImageCandidate[] =>
   [
@@ -28,15 +35,53 @@ export const getSongImageCandidates = (song: Song): SongImageCandidate[] =>
 const getOutputFilePath = (song: Song) =>
   join(process.cwd(), publicDirName, song.thumbnailPath.replace(/^\//, ''))
 
-const fetchImageBuffer = async (url: string) => {
-  const response = await fetch(url, {
-    headers: {
-      'user-agent': 'aussie-top-ten-image-cache/1.0',
-    },
-  })
+const getRetryDelayMs = (response: Response | null, attempt: number) => {
+  const retryAfterHeader = response?.headers.get('retry-after')
+  const retryAfterSeconds = retryAfterHeader
+    ? Number.parseInt(retryAfterHeader, 10)
+    : Number.NaN
 
-  if (!response.ok) throw new Error(`Request failed with ${response.status}`)
-  return Buffer.from(await response.arrayBuffer())
+  if (Number.isInteger(retryAfterSeconds) && retryAfterSeconds > 0)
+    return retryAfterSeconds * 1000
+
+  return baseRetryDelayMs * 2 ** attempt
+}
+
+const shouldRetryResponse = (response: Response) =>
+  response.status === 429 || response.status >= 500
+
+const fetchImageBuffer = async (url: string) => {
+  let lastError: Error | null = null
+
+  for (let attempt = 0; attempt < maxFetchAttempts; attempt += 1) {
+    let response: Response | null = null
+
+    try {
+      response = await fetch(url, {
+        headers: {
+          'user-agent': 'aussie-top-ten-image-cache/1.0',
+        },
+      })
+
+      if (!response.ok) {
+        if (shouldRetryResponse(response) && attempt < maxFetchAttempts - 1) {
+          await sleep(getRetryDelayMs(response, attempt))
+          continue
+        }
+
+        throw new Error(`Request failed with ${response.status}`)
+      }
+
+      return Buffer.from(await response.arrayBuffer())
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error))
+
+      if (attempt >= maxFetchAttempts - 1) break
+      await sleep(getRetryDelayMs(response, attempt))
+    }
+  }
+
+  throw lastError || new Error('Unknown image fetch failure')
 }
 
 const writeOptimizedImage = async (song: Song, buffer: Buffer) => {
@@ -53,7 +98,23 @@ const writeOptimizedImage = async (song: Song, buffer: Buffer) => {
     .toFile(outputFilePath)
 }
 
+const hasCachedImage = async (song: Song) => {
+  try {
+    await access(getOutputFilePath(song))
+    return true
+  } catch {
+    return false
+  }
+}
+
 const cacheSongImage = async (year: number, song: Song) => {
+  if (await hasCachedImage(song)) {
+    console.log(
+      `cached ${year} #${song.rank} ${song.title} -> ${song.thumbnailPath} (existing)`,
+    )
+    return
+  }
+
   const imageCandidates = getSongImageCandidates(song)
   if (!imageCandidates.length)
     throw new Error(`Missing image sources for ${year} #${song.rank}`)
