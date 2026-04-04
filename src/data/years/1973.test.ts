@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import songs from './1973'
@@ -28,6 +30,18 @@ describe('1973 image metadata', () => {
     for (const song of songs) {
       expect(song.imageSources.album || song.imageSources.artist).toBeTruthy()
       expect(song.imageSources[song.imageSelection]).toBeTruthy()
+    }
+  })
+
+  it('has a generated local thumbnail for each song', () => {
+    for (const song of songs) {
+      const publicFilePath = join(
+        process.cwd(),
+        'public',
+        song.thumbnailPath.replace(/^\//, ''),
+      )
+
+      expect(existsSync(publicFilePath)).toBe(true)
     }
   })
 })
