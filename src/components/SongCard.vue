@@ -15,12 +15,24 @@ const getFallbackImageUrl = (rank: number) =>
 const isHovered = ref(false)
 const playerState = ref<PlayerState>('idle')
 const playerContainer = ref<HTMLDivElement>()
+const currentTimeSeconds = ref(0)
+const durationSeconds = ref(0)
+const progressTimerId = ref<number | null>(null)
 let ytPlayer: YTPlayer | null = null
 
 const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
 
 const showOverlay = computed(
   () => isHovered.value || playerState.value !== 'idle',
+)
+const showSeekBar = computed(
+  () => playerState.value !== 'idle' && durationSeconds.value > 0,
+)
+const formattedCurrentTime = computed(() =>
+  getFormattedTime(currentTimeSeconds.value),
+)
+const formattedDuration = computed(() =>
+  getFormattedTime(durationSeconds.value),
 )
 
 const handleImageError = (e: Event) => {
@@ -30,11 +42,62 @@ const handleImageError = (e: Event) => {
   img.src = getFallbackImageUrl(props.song.rank)
 }
 
+const getFormattedTime = (value: number) => {
+  const totalSeconds = Math.max(0, Math.floor(value))
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = String(totalSeconds % 60).padStart(2, '0')
+
+  return `${minutes}:${seconds}`
+}
+
+const clearProgressTimer = () => {
+  if (progressTimerId.value === null) return
+  window.clearInterval(progressTimerId.value)
+  progressTimerId.value = null
+}
+
+const syncPlaybackProgress = () => {
+  if (!ytPlayer) return
+
+  const nextDurationSeconds = ytPlayer.getDuration()
+  const nextCurrentTimeSeconds = ytPlayer.getCurrentTime()
+
+  if (nextDurationSeconds > 0) durationSeconds.value = nextDurationSeconds
+  if (durationSeconds.value <= 0) return
+
+  currentTimeSeconds.value = Math.min(
+    nextCurrentTimeSeconds,
+    durationSeconds.value,
+  )
+}
+
+const startProgressTimer = () => {
+  clearProgressTimer()
+  syncPlaybackProgress()
+  progressTimerId.value = window.setInterval(syncPlaybackProgress, 250)
+}
+
 const stopPlayback = () => {
+  clearProgressTimer()
   ytPlayer?.destroy()
   ytPlayer = null
   playerState.value = 'idle'
+  currentTimeSeconds.value = 0
+  durationSeconds.value = 0
   clearActive()
+}
+
+const handleSeekInput = (event: Event) => {
+  if (!ytPlayer) return
+
+  const input = event.target as HTMLInputElement
+  const nextCurrentTimeSeconds = Number(input.value)
+
+  if (Number.isNaN(nextCurrentTimeSeconds)) return
+
+  currentTimeSeconds.value = nextCurrentTimeSeconds
+  ytPlayer.seekTo(nextCurrentTimeSeconds, true)
+  syncPlaybackProgress()
 }
 
 const handleAlbumClick = async () => {
@@ -83,6 +146,7 @@ const handleAlbumClick = async () => {
     },
     events: {
       onReady: (event) => {
+        startProgressTimer()
         event.target.playVideo()
       },
       onStateChange: (event: YTPlayerEvent) => {
@@ -90,6 +154,8 @@ const handleAlbumClick = async () => {
         else if (event.data === 2) playerState.value = 'paused'
         else if (event.data === 3) playerState.value = 'loading'
         else if (event.data === 0) stopPlayback()
+
+        syncPlaybackProgress()
       },
       onError: () => stopPlayback(),
     },
@@ -103,86 +169,110 @@ onUnmounted(() => {
 
 <template>
   <article
-    class="relative flex items-center gap-4 p-4 rounded-lg bg-surface hover:bg-surface/80 transition-colors duration-150"
+    class="relative flex flex-col gap-3 rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
   >
-    <span class="text-2xl font-bold text-primary w-8 text-center flex-shrink-0">
-      {{ song.rank }}
-    </span>
+    <div class="flex items-center gap-4">
+      <span
+        class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary"
+      >
+        {{ song.rank }}
+      </span>
 
-    <button
-      type="button"
-      :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
-      class="relative w-20 h-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-      @mouseenter="isHovered = true"
-      @mouseleave="isHovered = false"
-      @click="handleAlbumClick"
-    >
-      <img
-        :src="song.thumbnailPath"
-        :alt="`${song.title} by ${song.artist}`"
-        class="block w-full h-full object-cover"
-        @error="handleImageError"
-      />
+      <button
+        type="button"
+        :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
+        class="relative h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        @mouseenter="isHovered = true"
+        @mouseleave="isHovered = false"
+        @click="handleAlbumClick"
+      >
+        <img
+          :src="song.thumbnailPath"
+          :alt="`${song.title} by ${song.artist}`"
+          class="block h-full w-full object-cover"
+          @error="handleImageError"
+        />
 
-      <Transition name="overlay">
-        <div
-          v-if="showOverlay"
-          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50"
-        >
-          <!-- spinner -->
-          <svg
-            v-if="playerState === 'loading'"
-            class="w-7 h-7 text-white animate-spin"
-            viewBox="0 0 24 24"
-            fill="none"
+        <Transition name="overlay">
+          <div
+            v-if="showOverlay"
+            class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50"
           >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            />
-            <path
-              class="opacity-75"
+            <!-- spinner -->
+            <svg
+              v-if="playerState === 'loading'"
+              class="h-7 w-7 animate-spin text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              />
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+
+            <!-- pause icon -->
+            <svg
+              v-else-if="playerState === 'playing'"
+              class="h-7 w-7 text-white drop-shadow"
+              viewBox="0 0 24 24"
               fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            />
-          </svg>
+            >
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
 
-          <!-- pause icon -->
-          <svg
-            v-else-if="playerState === 'playing'"
-            class="w-7 h-7 text-white drop-shadow"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-          </svg>
+            <!-- play icon -->
+            <svg
+              v-else
+              class="h-7 w-7 text-white drop-shadow"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </Transition>
+      </button>
 
-          <!-- play icon -->
-          <svg
-            v-else
-            class="w-7 h-7 text-white drop-shadow"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </div>
-      </Transition>
-    </button>
-
-    <div class="flex flex-col gap-1 min-w-0">
-      <h2 class="text-text font-bold text-base leading-tight truncate">
-        {{ song.title }}
-      </h2>
-      <p class="text-text-muted text-sm truncate">{{ song.artist }}</p>
-      <p v-if="song.album" class="text-text-muted/60 text-xs truncate italic">
-        {{ song.album }}
-      </p>
+      <div class="min-w-0 flex-1 flex flex-col gap-1">
+        <h2 class="truncate text-base font-bold leading-tight text-text">
+          {{ song.title }}
+        </h2>
+        <p class="truncate text-sm text-text-muted">{{ song.artist }}</p>
+        <p v-if="song.album" class="truncate text-xs italic text-text-muted/60">
+          {{ song.album }}
+        </p>
+      </div>
     </div>
+
+    <Transition name="seek">
+      <div v-if="showSeekBar" class="w-full">
+        <div
+          class="mb-1 flex items-center justify-between text-[11px] text-text-muted/80"
+        >
+          <span>{{ formattedCurrentTime }}</span>
+          <span>{{ formattedDuration }}</span>
+        </div>
+        <input
+          :value="currentTimeSeconds"
+          :max="durationSeconds"
+          class="seek-slider w-full"
+          min="0"
+          step="0.1"
+          type="range"
+          @input="handleSeekInput"
+        />
+      </div>
+    </Transition>
 
     <div
       ref="playerContainer"
@@ -207,5 +297,22 @@ onUnmounted(() => {
 .overlay-enter-from,
 .overlay-leave-to {
   opacity: 0;
+}
+
+.seek-enter-active,
+.seek-leave-active {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.seek-enter-from,
+.seek-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.seek-slider {
+  accent-color: var(--color-primary);
 }
 </style>

@@ -13,6 +13,9 @@ interface YTPlayerEvent {
 interface YTPlayer {
   pauseVideo(): void
   playVideo(): void
+  seekTo(seconds: number, allowSeekAhead?: boolean): void
+  getCurrentTime(): number
+  getDuration(): number
   destroy(): void
 }
 
