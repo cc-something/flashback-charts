@@ -127,9 +127,9 @@ const songs: Song[] = [
     artist: 'Jon & Sandra Steele; Marlin Sisters',
     album: 'My Happiness',
     youtubeVideoId: 'ewCRI04Sq10',
-    imageSelection: 'artist',
+    imageSelection: 'album',
     imageSources: {
-      album: null,
+      album: 'https://upload.wikimedia.org/wikipedia/en/8/82/My_Happiness.png',
       artist: null,
     },
   }),
