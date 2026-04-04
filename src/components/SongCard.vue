@@ -336,7 +336,7 @@ defineExpose({ play: handleAlbumClick })
           />
         </SliderRoot>
         <p
-          class="pointer-events-none absolute bottom-1.5 left-2 min-w-fit bg-surface/85 px-1 text-[0.55rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-3.5 left-2 min-w-fit bg-surface/85 px-1 text-[0.55rem] font-medium tabular-nums text-text-muted"
         >
           {{ formattedCurrentTime }}/{{ formattedDuration }}
         </p>
