@@ -19,10 +19,13 @@ interface YTPlayer {
 interface YTPlayerOptions {
   width?: string
   height?: string
+  videoId?: string
+  host?: string
   playerVars?: Record<string, string | number>
   events?: {
     onReady?: (event: { target: YTPlayer }) => void
     onStateChange?: (event: YTPlayerEvent) => void
+    onError?: (event: YTPlayerEvent) => void
   }
 }
 

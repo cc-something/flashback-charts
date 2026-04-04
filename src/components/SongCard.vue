@@ -38,6 +38,8 @@ const stopPlayback = () => {
 }
 
 const handleAlbumClick = async () => {
+  if (!props.song.youtubeVideoId) return
+
   if (playerState.value === 'playing') {
     ytPlayer?.pauseVideo()
     return
@@ -53,19 +55,32 @@ const handleAlbumClick = async () => {
 
   playerState.value = 'loading'
   registerActive(stopPlayback)
-  await ensureLoaded()
+
+  try {
+    await ensureLoaded()
+  } catch {
+    stopPlayback()
+    return
+  }
 
   if (playerState.value !== 'loading') return
+  if (!playerContainer.value) {
+    stopPlayback()
+    return
+  }
 
-  ytPlayer = new window.YT!.Player(playerContainer.value!, {
+  ytPlayer = new window.YT!.Player(playerContainer.value, {
     width: '320',
     height: '180',
+    videoId: props.song.youtubeVideoId,
+    host: 'https://www.youtube-nocookie.com',
     playerVars: {
-      listType: 'search',
-      list: `${props.song.artist} ${props.song.title} song`,
       autoplay: 1,
       controls: 0,
       modestbranding: 1,
+      playsinline: 1,
+      rel: 0,
+      origin: window.location.origin,
     },
     events: {
       onReady: (event) => {
@@ -75,17 +90,15 @@ const handleAlbumClick = async () => {
         if (event.data === 1) playerState.value = 'playing'
         else if (event.data === 2) playerState.value = 'paused'
         else if (event.data === 3) playerState.value = 'loading'
-        else if (event.data === 0) {
-          playerState.value = 'idle'
-          clearActive()
-        }
+        else if (event.data === 0) stopPlayback()
       },
+      onError: () => stopPlayback(),
     },
   })
 }
 
 onUnmounted(() => {
-  ytPlayer?.destroy()
+  stopPlayback()
 })
 </script>
 

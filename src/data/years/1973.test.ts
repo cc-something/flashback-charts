@@ -30,6 +30,7 @@ describe('1973 image metadata', () => {
     for (const song of songs) {
       expect(song.imageSources.album || song.imageSources.artist).toBeTruthy()
       expect(song.imageSources[song.imageSelection]).toBeTruthy()
+      expect(song.youtubeVideoId).toMatch(/^[\w-]{11}$/)
     }
   })
 

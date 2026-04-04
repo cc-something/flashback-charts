@@ -8,6 +8,7 @@ const getSong = ({
   title,
   artist,
   album,
+  youtubeVideoId,
   imageSelection,
   imageSources,
 }: Omit<Song, 'thumbnailPath'>): Song => ({
@@ -15,6 +16,7 @@ const getSong = ({
   title,
   artist,
   album,
+  youtubeVideoId,
   imageSelection,
   imageSources,
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
@@ -28,6 +30,7 @@ const songs: Song[] = [
     title: 'Tie a Yellow Ribbon Round the Ole Oak Tree',
     artist: 'Tony Orlando and Dawn',
     album: 'Tie a Yellow Ribbon',
+    youtubeVideoId: 'PxG9XFqHSFw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -40,6 +43,7 @@ const songs: Song[] = [
     title: 'Never Never Never',
     artist: 'Shirley Bassey',
     album: 'Never Never Never',
+    youtubeVideoId: 'suclM4sWffA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -52,6 +56,7 @@ const songs: Song[] = [
     title: "You're So Vain",
     artist: 'Carly Simon',
     album: 'No Secrets',
+    youtubeVideoId: 'j13oJajXx0M',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -64,6 +69,7 @@ const songs: Song[] = [
     title: "Heaven Is My Woman's Love",
     artist: 'Col Joye',
     album: "Heaven Is My Woman's Love",
+    youtubeVideoId: 'KkZdZI3Ogrc',
     // No album cover on Wikimedia Commons; using Col Joye artist photo (1957)
     imageSelection: 'artist',
     imageSources: {
@@ -77,6 +83,7 @@ const songs: Song[] = [
     title: 'Crocodile Rock',
     artist: 'Elton John',
     album: "Don't Shoot Me I'm Only the Piano Player",
+    youtubeVideoId: 'LGB4PZ13ruw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,6 +96,7 @@ const songs: Song[] = [
     title: 'Delta Dawn',
     artist: 'Helen Reddy',
     album: 'Long Hard Climb',
+    youtubeVideoId: 'n5SOZ_6sHFY',
     // Original single cover not on Wikimedia; using US reissue vinyl label image
     imageSelection: 'album',
     imageSources: {
@@ -102,6 +110,7 @@ const songs: Song[] = [
     title: 'Can the Can',
     artist: 'Suzi Quatro',
     album: 'Suzi Quatro',
+    youtubeVideoId: '2ODM3eYnepA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,6 +123,7 @@ const songs: Song[] = [
     title: "I'd Love You to Want Me",
     artist: 'Lobo',
     album: 'Of a Simple Man',
+    youtubeVideoId: '1m-AEmKcLyc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -126,6 +136,7 @@ const songs: Song[] = [
     title: 'And I Love You So',
     artist: 'Perry Como',
     album: 'And I Love You So',
+    youtubeVideoId: 'GqLMHaEUu68',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -138,6 +149,7 @@ const songs: Song[] = [
     title: 'Daisy a Day',
     artist: 'Jud Strunk',
     album: 'Daisy a Day',
+    youtubeVideoId: 'LJj1CQLJM30',
     imageSelection: 'album',
     imageSources: {
       album:

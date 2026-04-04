@@ -12,8 +12,17 @@ export const useYouTubeApi = () => {
       scriptAppended = true
       window.onYouTubeIframeAPIReady = () => resolveReady?.()
       const script = document.createElement('script')
+      const parentElement = document.head ?? document.body
+
       script.src = 'https://www.youtube.com/iframe_api'
-      document.head.appendChild(script)
+      script.async = true
+
+      if (!parentElement) {
+        scriptAppended = false
+        return Promise.reject(new Error('YouTube API parent element missing'))
+      }
+
+      parentElement.appendChild(script)
     }
     return readyPromise
   }

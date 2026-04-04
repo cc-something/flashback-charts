@@ -10,6 +10,7 @@ export interface Song {
   title: string
   artist: string
   album: string
+  youtubeVideoId: string | null
   thumbnailPath: string
   imageSelection: SongImageSelection
   imageSources: SongImageSources
