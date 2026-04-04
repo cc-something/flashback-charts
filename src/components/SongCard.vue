@@ -109,8 +109,10 @@ onUnmounted(() => {
       {{ song.rank }}
     </span>
 
-    <div
-      class="relative w-20 h-20 flex-shrink-0 cursor-pointer"
+    <button
+      type="button"
+      :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
+      class="relative w-20 h-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
       @click="handleAlbumClick"
@@ -118,14 +120,14 @@ onUnmounted(() => {
       <img
         :src="song.thumbnailPath"
         :alt="`${song.title} by ${song.artist}`"
-        class="w-20 h-20 rounded object-cover shadow-md"
+        class="block w-full h-full object-cover"
         @error="handleImageError"
       />
 
       <Transition name="overlay">
         <div
           v-if="showOverlay"
-          class="absolute inset-0 rounded bg-black/50 flex items-center justify-center"
+          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50"
         >
           <!-- spinner -->
           <svg
@@ -170,7 +172,7 @@ onUnmounted(() => {
           </svg>
         </div>
       </Transition>
-    </div>
+    </button>
 
     <div class="flex flex-col gap-1 min-w-0">
       <h2 class="text-text font-bold text-base leading-tight truncate">
