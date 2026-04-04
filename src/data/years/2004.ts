@@ -141,8 +141,7 @@ const songs: Song[] = [
     youtubeVideoId: 'FArZFCGMwgE',
     imageSelection: 'album',
     imageSources: {
-      album:
-        'https://upload.wikimedia.org/wikipedia/en/a/a1/Elephunk.jpg',
+      album: 'https://upload.wikimedia.org/wikipedia/en/a/a1/Elephunk.jpg',
       artist: null,
     },
   }),
@@ -154,8 +153,7 @@ const songs: Song[] = [
     youtubeVideoId: '6rgStv12dwA',
     imageSelection: 'album',
     imageSources: {
-      album:
-        'https://upload.wikimedia.org/wikipedia/en/b/bb/Sugasuga.jpg',
+      album: 'https://upload.wikimedia.org/wikipedia/en/b/bb/Sugasuga.jpg',
       artist: null,
     },
   }),
