@@ -343,14 +343,17 @@ defineExpose({ play: handleAlbumClick })
       </div>
     </Transition>
 
+    <!-- Kept on-screen so mobile browsers don't block playback -->
     <div
       ref="playerContainer"
       style="
         position: fixed;
-        top: -9999px;
-        left: -9999px;
-        width: 480px;
-        height: 270px;
+        bottom: 0;
+        left: 0;
+        width: 1px;
+        height: 1px;
+        opacity: 0.01;
+        overflow: hidden;
         pointer-events: none;
       "
     />
