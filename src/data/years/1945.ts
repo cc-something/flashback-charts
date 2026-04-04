@@ -105,7 +105,7 @@ const songs: Song[] = [
     imageSources: {
       album: null,
       artist:
-        'https://upload.wikimedia.org/wikipedia/commons/7/77/Les_Brown_1947.JPG',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Les_Brown_1947.JPG/330px-Les_Brown_1947.JPG',
     },
   }),
   getSong({
