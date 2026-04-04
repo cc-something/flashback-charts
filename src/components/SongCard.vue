@@ -126,7 +126,7 @@ const handleClick = () => player.play(props.song, props.year)
     <Transition name="seek">
       <div
         v-if="showSeekBar"
-        class="pointer-events-none absolute inset-x-0 bottom-0"
+        class="pointer-events-none absolute inset-x-0 -bottom-1 overflow-visible"
       >
         <SliderRoot
           :max="player.durationSeconds"

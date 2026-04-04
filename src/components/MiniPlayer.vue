@@ -1,18 +1,40 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import { usePlayerStore } from '@/stores/player'
+import { getThemeForYear } from '@/themes'
 
 const player = usePlayerStore()
+
+const themeVars = computed(() => {
+  if (player.playingYear === null) return {}
+  const t = getThemeForYear(player.playingYear)
+  return {
+    '--theme-background': t.colors.background,
+    '--theme-surface': t.colors.surface,
+    '--theme-primary': t.colors.primary,
+    '--theme-secondary': t.colors.secondary,
+    '--theme-text': t.colors.text,
+    '--theme-text-muted': t.colors.textMuted,
+    '--theme-accent': t.colors.accent,
+    '--theme-tab-active': t.colors.tabActive,
+    '--theme-tab-inactive': t.colors.tabInactive,
+    'font-family': t.fontFamily,
+  } as Record<string, string>
+})
 </script>
 
 <template>
   <Transition name="mini-player">
     <aside
       v-if="player.isActive && player.playingSong"
-      class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-hidden rounded-lg bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
+      :style="themeVars"
+      class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-visible rounded-lg bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
     >
       <!-- Controls row -->
-      <div class="flex items-center gap-1 border-b border-white/5 px-2 py-1.5">
+      <div
+        class="flex items-center gap-1 rounded-t-lg border-b border-white/5 bg-surface px-2 py-1.5"
+      >
         <!-- Prev -->
         <button
           type="button"
@@ -167,7 +189,7 @@ const player = usePlayerStore()
       </div>
 
       <!-- Seek bar -->
-      <div v-if="player.showSeekBar">
+      <div v-if="player.showSeekBar" class="overflow-visible">
         <SliderRoot
           :max="player.durationSeconds"
           :min="0"
@@ -179,7 +201,7 @@ const player = usePlayerStore()
           @value-commit="player.handleSeekCommit"
         >
           <SliderTrack
-            class="mini-track relative h-1 w-full overflow-hidden bg-black/20"
+            class="mini-track relative h-1 w-full overflow-hidden rounded-b-lg bg-black/20"
           >
             <SliderRange class="mini-range absolute h-full bg-primary" />
           </SliderTrack>
