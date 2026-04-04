@@ -1,27 +1,34 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
 
 const player = usePlayerStore()
 
-const themeVars = computed(() => {
-  if (player.playingYear === null) return {}
-  const t = getThemeForYear(player.playingYear)
-  return {
-    '--theme-background': t.colors.background,
-    '--theme-surface': t.colors.surface,
-    '--theme-primary': t.colors.primary,
-    '--theme-secondary': t.colors.secondary,
-    '--theme-text': t.colors.text,
-    '--theme-text-muted': t.colors.textMuted,
-    '--theme-accent': t.colors.accent,
-    '--theme-tab-active': t.colors.tabActive,
-    '--theme-tab-inactive': t.colors.tabInactive,
-    'font-family': t.fontFamily,
-  } as Record<string, string>
-})
+// Keep last valid theme — never cleared on null so leave-animation retains its decade theme
+const themeVars = ref<Record<string, string>>({})
+
+watch(
+  () => player.playingYear,
+  (year) => {
+    if (year === null) return
+    const t = getThemeForYear(year)
+    themeVars.value = {
+      '--theme-background': t.colors.background,
+      '--theme-surface': t.colors.surface,
+      '--theme-primary': t.colors.primary,
+      '--theme-secondary': t.colors.secondary,
+      '--theme-text': t.colors.text,
+      '--theme-text-muted': t.colors.textMuted,
+      '--theme-accent': t.colors.accent,
+      '--theme-tab-active': t.colors.tabActive,
+      '--theme-tab-inactive': t.colors.tabInactive,
+      'font-family': t.fontFamily,
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
