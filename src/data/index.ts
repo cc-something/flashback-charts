@@ -1,6 +1,12 @@
 import type { Song } from '@/types/song'
 import songs1940, { source as source1940 } from './years/1940'
 import songs1941, { source as source1941 } from './years/1941'
+import songs1942, { source as source1942 } from './years/1942'
+import songs1943, { source as source1943 } from './years/1943'
+import songs1944, { source as source1944 } from './years/1944'
+import songs1945, { source as source1945 } from './years/1945'
+import songs1946, { source as source1946 } from './years/1946'
+import songs1947, { source as source1947 } from './years/1947'
 import songs1948, { source as source1948 } from './years/1948'
 import songs1949, { source as source1949 } from './years/1949'
 import songs1950, { source as source1950 } from './years/1950'
@@ -91,6 +97,30 @@ const yearData: Record<number, YearChartData> = {
   1941: {
     songs: songs1941,
     source: source1941,
+  },
+  1942: {
+    songs: songs1942,
+    source: source1942,
+  },
+  1943: {
+    songs: songs1943,
+    source: source1943,
+  },
+  1944: {
+    songs: songs1944,
+    source: source1944,
+  },
+  1945: {
+    songs: songs1945,
+    source: source1945,
+  },
+  1946: {
+    songs: songs1946,
+    source: source1946,
+  },
+  1947: {
+    songs: songs1947,
+    source: source1947,
   },
   1948: {
     songs: songs1948,
