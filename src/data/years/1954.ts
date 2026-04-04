@@ -36,9 +36,9 @@ const songs: Song[] = [
     artist: 'Frank Weir',
     album: 'The Happy Wanderer',
     youtubeVideoId: 'xW09Osnr7Yo',
-    imageSelection: 'artist',
+    imageSelection: 'album',
     imageSources: {
-      album: null,
+      album: 'https://upload.wikimedia.org/wikipedia/en/4/44/Happywanderer.jpg',
       artist: null,
     },
   }),

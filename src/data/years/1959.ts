@@ -78,7 +78,8 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist: null,
+      artist:
+        'https://upload.wikimedia.org/wikipedia/en/b/b8/Johnny_Horton.jpg',
     },
   }),
   getSong({
@@ -103,7 +104,8 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist: null,
+      artist:
+        'https://upload.wikimedia.org/wikipedia/en/0/06/Col_Joye_1957.jpg',
     },
   }),
   getSong({
@@ -115,7 +117,7 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist: null,
+      artist: 'https://upload.wikimedia.org/wikipedia/en/3/37/The_Browns.jpg',
     },
   }),
   getSong({

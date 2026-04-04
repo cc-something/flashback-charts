@@ -153,9 +153,9 @@ const songs: Song[] = [
     artist: 'Terry Gilkyson and the Easy Riders',
     album: 'Marianne',
     youtubeVideoId: 'bUYDl-foMpk',
-    imageSelection: 'artist',
+    imageSelection: 'album',
     imageSources: {
-      album: null,
+      album: 'https://img.youtube.com/vi/bUYDl-foMpk/hqdefault.jpg',
       artist: null,
     },
   }),

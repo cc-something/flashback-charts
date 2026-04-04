@@ -114,9 +114,10 @@ const songs: Song[] = [
     artist: 'Laurie London',
     album: "He's Got the Whole World in His Hands",
     youtubeVideoId: 'WFpGQoOBrLY',
-    imageSelection: 'artist',
+    imageSelection: 'album',
     imageSources: {
-      album: null,
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/c/c6/Laurie_London_Whole_World.jpeg',
       artist: null,
     },
   }),
