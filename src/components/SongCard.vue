@@ -70,14 +70,13 @@ const handleAlbumClick = async () => {
   }
 
   ytPlayer = new window.YT!.Player(playerContainer.value, {
-    width: '320',
-    height: '180',
+    width: '480',
+    height: '270',
     videoId: props.song.youtubeVideoId,
     host: 'https://www.youtube-nocookie.com',
     playerVars: {
       autoplay: 1,
       controls: 0,
-      modestbranding: 1,
       playsinline: 1,
       rel: 0,
       origin: window.location.origin,
@@ -187,10 +186,10 @@ onUnmounted(() => {
       ref="playerContainer"
       style="
         position: fixed;
-        top: -400px;
-        left: 0;
-        width: 320px;
-        height: 180px;
+        top: -9999px;
+        left: -9999px;
+        width: 480px;
+        height: 270px;
         pointer-events: none;
       "
     />
