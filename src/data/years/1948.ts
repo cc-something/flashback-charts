@@ -39,7 +39,8 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist: null,
+      artist:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Andrews_Sisters_Billboard_4.jpg/330px-Andrews_Sisters_Billboard_4.jpg',
     },
   }),
   getSong({
@@ -77,7 +78,8 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist: null,
+      artist:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Art_Mooney_Billboard.jpg/330px-Art_Mooney_Billboard.jpg',
     },
   }),
   getSong({
@@ -89,7 +91,8 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist: null,
+      artist:
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Al_Jolson_-_publicity.JPG/330px-Al_Jolson_-_publicity.JPG',
     },
   }),
   getSong({

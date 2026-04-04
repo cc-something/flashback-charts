@@ -104,7 +104,8 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist: null,
+      artist:
+        'https://upload.wikimedia.org/wikipedia/commons/8/88/Dick_Robertson.jpg',
     },
   }),
   getSong({
