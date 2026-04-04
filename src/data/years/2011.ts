@@ -70,14 +70,27 @@ const songs: Song[] = [
   }),
   getSong({
     rank: 4,
-    title: 'Someone Like You" Adele 1 7 5 "Rolling In the Deep" 3',
-    artist: '',
+    title: 'Someone Like You',
+    artist: 'Adele',
     album: '21',
-    youtubeVideoId: 'NF8bf21XHT4',
+    youtubeVideoId: 'hLQl3WQQoQ0',
     imageSelection: 'album',
     imageSources: {
       album:
         'https://upload.wikimedia.org/wikipedia/en/7/7a/Adele_-_Someone_Like_You.png',
+      artist: null,
+    },
+  }),
+  getSong({
+    rank: 5,
+    title: 'Rolling in the Deep',
+    artist: 'Adele',
+    album: '21',
+    youtubeVideoId: 'rYEDA3JcQqw',
+    imageSelection: 'album',
+    imageSources: {
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/4/4f/Adele_-_Rolling_in_the_Deep.png',
       artist: null,
     },
   }),
