@@ -101,7 +101,7 @@ const songs: Song[] = [
     imageSelection: 'album',
     imageSources: {
       album:
-        'https://upload.wikimedia.org/wikipedia/en/d/d5/Timbaland_-_Apologize.jpg',
+        'https://upload.wikimedia.org/wikipedia/en/8/85/Dreaming_Out_Loud_cover.png',
       artist: null,
     },
   }),
