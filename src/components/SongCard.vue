@@ -291,11 +291,11 @@ onUnmounted(() => {
     </button>
 
     <div class="min-w-0 flex-1 flex flex-col gap-1">
-      <h2 class="truncate text-base font-bold leading-tight text-text">
+      <h2 class="text-base font-bold leading-tight text-text">
         {{ song.title }}
       </h2>
-      <p class="truncate text-sm text-text-muted">{{ song.artist }}</p>
-      <p v-if="song.album" class="truncate text-xs italic text-text-muted/60">
+      <p class="text-sm text-text-muted">{{ song.artist }}</p>
+      <p v-if="song.album" class="text-xs italic text-text-muted/60">
         {{ song.album }}
       </p>
     </div>
