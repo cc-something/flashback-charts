@@ -4,7 +4,7 @@ import type { Song } from '@/types/song'
 const year = 1973
 
 export const source = {
-  label: 'Kent Music Report (via Wikipedia)',
+  label: 'Kent Music Report via Wikipedia',
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_1973_in_Australia',
 }
 
