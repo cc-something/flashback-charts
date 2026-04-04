@@ -8,9 +8,7 @@ export const useChartStore = defineStore('chart', () => {
   const selectedYear = ref(1973)
 
   const yearRange = range(1940, 2026)
-  const availableYears = getAvailableYears().filter(
-    (y) => y >= 1960 && y <= 1999,
-  )
+  const availableYears = getAvailableYears()
 
   const currentSongs = computed(() => getYearData(selectedYear.value) ?? [])
   const currentSource = computed(() => getYearSource(selectedYear.value))
