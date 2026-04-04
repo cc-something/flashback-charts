@@ -43,7 +43,12 @@ watch(() => store.selectedYear, scrollToActiveTab)
               ? 'text-text hover:bg-tab-inactive hover:text-text'
               : 'text-text-muted opacity-40 cursor-default',
         ]"
-        @click="store.availableYears.includes(year) && store.selectYear(year)"
+        @click="
+          if (store.availableYears.includes(year)) {
+            store.selectYear(year)
+            ;($event.target as HTMLElement).blur()
+          }
+        "
       >
         {{ year }}
       </button>

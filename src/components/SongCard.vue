@@ -330,7 +330,7 @@ onUnmounted(() => {
           />
         </SliderRoot>
         <p
-          class="pointer-events-none absolute bottom-3 right-4 min-w-fit bg-surface/85 px-1.5 text-xs font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-3 left-4 min-w-fit bg-surface/85 px-1.5 text-[0.65rem] font-medium tabular-nums text-text-muted"
         >
           {{ formattedCurrentTime }}/{{ formattedDuration }}
         </p>
