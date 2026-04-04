@@ -6,6 +6,7 @@ import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
 
 const props = defineProps<{ song: Song }>()
+const emit = defineEmits<{ ended: [] }>()
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
@@ -196,7 +197,10 @@ const handleAlbumClick = async () => {
         if (event.data === 1) playerState.value = 'playing'
         else if (event.data === 2) playerState.value = 'paused'
         else if (event.data === 3) playerState.value = 'loading'
-        else if (event.data === 0) stopPlayback()
+        else if (event.data === 0) {
+          stopPlayback()
+          emit('ended')
+        }
 
         syncPlaybackProgress()
       },
@@ -208,6 +212,8 @@ const handleAlbumClick = async () => {
 onUnmounted(() => {
   stopPlayback()
 })
+
+defineExpose({ play: handleAlbumClick })
 </script>
 
 <template>
@@ -330,7 +336,7 @@ onUnmounted(() => {
           />
         </SliderRoot>
         <p
-          class="pointer-events-none absolute bottom-3 left-4 min-w-fit bg-surface/85 px-1.5 text-[0.65rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-1.5 left-2 min-w-fit bg-surface/85 px-1 text-[0.55rem] font-medium tabular-nums text-text-muted"
         >
           {{ formattedCurrentTime }}/{{ formattedDuration }}
         </p>
