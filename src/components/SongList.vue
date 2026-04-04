@@ -3,6 +3,7 @@ import { onUnmounted, watch } from 'vue'
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
+import { applyPendingTheme } from '@/composables/useDecadeTheme'
 import SongCard from './SongCard.vue'
 
 const store = useChartStore()
@@ -46,7 +47,11 @@ watch(
       </button>
     </header>
 
-    <Transition name="year-content" mode="out-in">
+    <Transition
+      name="year-content"
+      mode="out-in"
+      @after-leave="applyPendingTheme"
+    >
       <div :key="store.selectedYear" class="year-content">
         <div v-if="store.hasData" class="flex flex-col gap-3">
           <SongCard
