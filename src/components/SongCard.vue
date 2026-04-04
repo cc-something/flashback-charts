@@ -317,7 +317,7 @@ defineExpose({ play: handleAlbumClick })
           :model-value="seekSliderValue"
           :step="0.1"
           aria-label="Seek playback"
-          class="seek-slider pointer-events-auto relative flex w-full touch-manipulation items-center"
+          class="seek-slider pointer-events-auto relative z-10 flex w-full touch-manipulation items-center"
           @update:model-value="handleSeekInput"
           @value-commit="handleSeekCommit"
         >
