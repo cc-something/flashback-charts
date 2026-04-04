@@ -451,3 +451,21 @@ export const getYearSource = (year: number): YearSource | null =>
 
 export const getAvailableYears = (): number[] =>
   Object.keys(yearData).map(Number)
+
+export const searchSongs = (query: string): { song: Song; year: number }[] => {
+  if (!query.trim()) return []
+  const q = query.toLowerCase()
+  const results: { song: Song; year: number }[] = []
+  for (const [yearStr, data] of Object.entries(yearData)) {
+    const year = Number(yearStr)
+    for (const song of data.songs) {
+      if (
+        song.title.toLowerCase().includes(q) ||
+        song.artist.toLowerCase().includes(q) ||
+        song.album?.toLowerCase().includes(q)
+      )
+        results.push({ song, year })
+    }
+  }
+  return results
+}
