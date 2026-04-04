@@ -91,8 +91,7 @@ const songs: Song[] = [
     imageSelection: 'artist',
     imageSources: {
       album: null,
-      artist:
-        'https://upload.wikimedia.org/wikipedia/en/3/33/Donaldpeers.jpg',
+      artist: 'https://upload.wikimedia.org/wikipedia/en/3/33/Donaldpeers.jpg',
     },
   }),
   getSong({
