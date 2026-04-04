@@ -33,7 +33,7 @@ onMounted(() => {
     <button
       type="button"
       aria-label="Search songs"
-      class="fixed right-4 top-2.5 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
+      class="fixed right-4 top-12 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
       @click="openSearch"
     >
       <svg
