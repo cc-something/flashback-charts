@@ -129,7 +129,8 @@ const songs: Song[] = [
     youtubeVideoId: 'B32yjbCSVpU',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/b/b1/Chapin_cradle_cover.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/b/b1/Chapin_cradle_cover.jpg',
       artist: null,
     },
   }),
@@ -154,7 +155,8 @@ const songs: Song[] = [
     youtubeVideoId: '9EHAo6rEuas',
     imageSelection: 'album',
     imageSources: {
-      album: 'https://upload.wikimedia.org/wikipedia/en/9/90/Please_forgive_me.jpg',
+      album:
+        'https://upload.wikimedia.org/wikipedia/en/9/90/Please_forgive_me.jpg',
       artist: null,
     },
   }),

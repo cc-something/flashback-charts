@@ -32,7 +32,7 @@ const songs: Song[] = [
     rank: 1,
     title: "Gangsta's Paradise",
     artist: 'Coolio',
-    album: 'Gangsta\'s Paradise',
+    album: "Gangsta's Paradise",
     youtubeVideoId: 'fPO76Jlnz6c',
     imageSelection: 'album',
     imageSources: {
