@@ -10,6 +10,16 @@ import songs1970, { source as source1970 } from './years/1970'
 import songs1971, { source as source1971 } from './years/1971'
 import songs1972, { source as source1972 } from './years/1972'
 import songs1973, { source as source1973 } from './years/1973'
+import songs1980, { source as source1980 } from './years/1980'
+import songs1981, { source as source1981 } from './years/1981'
+import songs1982, { source as source1982 } from './years/1982'
+import songs1983, { source as source1983 } from './years/1983'
+import songs1984, { source as source1984 } from './years/1984'
+import songs1985, { source as source1985 } from './years/1985'
+import songs1986, { source as source1986 } from './years/1986'
+import songs1987, { source as source1987 } from './years/1987'
+import songs1988, { source as source1988 } from './years/1988'
+import songs1989, { source as source1989 } from './years/1989'
 import songs1974, { source as source1974 } from './years/1974'
 import songs1975, { source as source1975 } from './years/1975'
 import songs1976, { source as source1976 } from './years/1976'
@@ -84,6 +94,46 @@ const yearData: Record<number, YearChartData> = {
   1973: {
     songs: songs1973,
     source: source1973,
+  },
+  1980: {
+    songs: songs1980,
+    source: source1980,
+  },
+  1981: {
+    songs: songs1981,
+    source: source1981,
+  },
+  1982: {
+    songs: songs1982,
+    source: source1982,
+  },
+  1983: {
+    songs: songs1983,
+    source: source1983,
+  },
+  1984: {
+    songs: songs1984,
+    source: source1984,
+  },
+  1985: {
+    songs: songs1985,
+    source: source1985,
+  },
+  1986: {
+    songs: songs1986,
+    source: source1986,
+  },
+  1987: {
+    songs: songs1987,
+    source: source1987,
+  },
+  1988: {
+    songs: songs1988,
+    source: source1988,
+  },
+  1989: {
+    songs: songs1989,
+    source: source1989,
   },
   1974: {
     songs: songs1974,
