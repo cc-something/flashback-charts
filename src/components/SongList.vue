@@ -20,41 +20,42 @@ const store = useChartStore()
       </a>
     </header>
 
-    <TransitionGroup
-      v-if="store.hasData"
-      name="list"
-      tag="div"
-      class="flex flex-col gap-3"
-    >
-      <SongCard
-        v-for="song in store.currentSongs"
-        :key="`${store.selectedYear}-${song.rank}`"
-        :song="song"
-      />
-    </TransitionGroup>
+    <Transition name="year-content" mode="out-in">
+      <div :key="store.selectedYear" class="year-content">
+        <div v-if="store.hasData" class="flex flex-col gap-3">
+          <SongCard
+            v-for="song in store.currentSongs"
+            :key="`${store.selectedYear}-${song.rank}`"
+            :song="song"
+          />
+        </div>
 
-    <div
-      v-else
-      class="flex flex-col items-center justify-center py-24 text-center gap-3"
-    >
-      <span class="text-5xl opacity-30">🎵</span>
-      <p class="text-text-muted text-lg">
-        No data yet for {{ store.selectedYear }}
-      </p>
-      <p class="text-text-muted/60 text-sm">Chart data coming soon</p>
-    </div>
+        <div
+          v-else
+          class="flex flex-col items-center justify-center gap-3 py-24 text-center"
+        >
+          <span class="text-5xl opacity-30">🎵</span>
+          <p class="text-lg text-text-muted">
+            No data yet for {{ store.selectedYear }}
+          </p>
+          <p class="text-sm text-text-muted/60">Chart data coming soon</p>
+        </div>
+      </div>
+    </Transition>
   </main>
 </template>
 
 <style scoped>
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
+.year-content-enter-active,
+.year-content-leave-active {
+  transition: opacity 0.28s ease;
 }
 
-.list-enter-from,
-.list-leave-to {
+.year-content-enter-from {
   opacity: 0;
-  transform: translateY(8px);
+}
+
+.year-content-leave-to {
+  opacity: 0;
 }
 </style>
