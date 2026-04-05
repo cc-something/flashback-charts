@@ -45,12 +45,14 @@ onMounted(() => {
 <template>
   <!-- Desktop: fixed side banners centered in margins -->
   <aside
-    class="hidden lg:flex fixed left-0 top-12 bottom-0 w-44 items-center justify-center z-10"
+    class="hidden xl:flex fixed left-0 top-12 bottom-0 items-center justify-center z-10"
+    style="width: calc((100vw - 768px) / 2)"
   >
     <AdBanner label="AD LEFT" class="h-[300px] w-36 rounded shadow-lg" />
   </aside>
   <aside
-    class="hidden lg:flex fixed right-0 top-12 bottom-0 w-44 items-center justify-center z-10"
+    class="hidden xl:flex fixed right-0 top-12 bottom-0 items-center justify-center z-10"
+    style="width: calc((100vw - 768px) / 2)"
   >
     <AdBanner label="AD RIGHT" class="h-[300px] w-36 rounded shadow-lg" />
   </aside>
@@ -102,19 +104,16 @@ onMounted(() => {
     </button>
 
     <!-- Mobile: inline top strip -->
-    <AdBanner label="AD TOP" class="w-full h-[50px] lg:hidden" />
+    <AdBanner label="AD TOP" class="w-full h-[50px] xl:hidden" />
 
-    <!-- Content with desktop margin to clear fixed side ads -->
-    <div class="lg:mx-44">
-      <router-view v-slot="{ Component }">
-        <Transition name="page" mode="out-in">
-          <component :is="Component" />
-        </Transition>
-      </router-view>
-    </div>
+    <router-view v-slot="{ Component }">
+      <Transition name="page" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </router-view>
 
     <!-- Mobile: inline bottom strip -->
-    <AdBanner label="AD BOTTOM" class="w-full h-[50px] lg:hidden" />
+    <AdBanner label="AD BOTTOM" class="w-full h-[50px] xl:hidden" />
 
     <MiniPlayer />
     <SearchOverlay
