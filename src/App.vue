@@ -45,6 +45,31 @@ onMounted(() => {
   <div class="min-h-screen bg-background text-text">
     <YearTabs />
 
+    <router-link
+      to="/"
+      aria-label="Home"
+      class="fixed left-4 top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
+    >
+      <svg
+        class="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          d="M3 11 12 3l9 8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M5 10v10h14V10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </router-link>
+
     <button
       type="button"
       aria-label="Search songs"
