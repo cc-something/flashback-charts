@@ -43,15 +43,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- Mobile: top + bottom inset fixed banners -->
-  <AdBanner
-    label="AD TOP"
-    class="fixed top-2 left-4 right-4 z-50 h-[50px] rounded shadow-lg lg:hidden"
-  />
-  <AdBanner
-    label="AD BOTTOM"
-    class="fixed bottom-2 left-4 right-4 z-50 h-[50px] rounded shadow-lg lg:hidden"
-  />
+  <!-- Desktop: fixed side banners centered in margins -->
+  <aside
+    class="hidden lg:flex fixed left-0 top-0 bottom-0 w-44 items-center justify-center z-10"
+  >
+    <AdBanner label="AD LEFT" class="h-[300px] w-36 rounded shadow-lg" />
+  </aside>
+  <aside
+    class="hidden lg:flex fixed right-0 top-0 bottom-0 w-44 items-center justify-center z-10"
+  >
+    <AdBanner label="AD RIGHT" class="h-[300px] w-36 rounded shadow-lg" />
+  </aside>
 
   <div class="min-h-screen bg-background text-text">
     <YearTabs />
@@ -99,26 +101,16 @@ onMounted(() => {
       </svg>
     </button>
 
-    <!-- Desktop: sticky side banners inside page flow -->
-    <div class="flex">
-      <aside class="hidden lg:block w-44 shrink-0 p-3">
-        <AdBanner
-          label="AD LEFT"
-          class="sticky top-3 h-[300px] rounded shadow-lg"
-        />
-      </aside>
+    <!-- Mobile: inline top strip -->
+    <AdBanner label="AD TOP" class="w-full h-[50px] lg:hidden" />
 
-      <div class="flex-1 min-w-0">
-        <router-view />
-      </div>
-
-      <aside class="hidden lg:block w-44 shrink-0 p-3">
-        <AdBanner
-          label="AD RIGHT"
-          class="sticky top-3 h-[300px] rounded shadow-lg"
-        />
-      </aside>
+    <!-- Content with desktop margin to clear fixed side ads -->
+    <div class="lg:mx-44">
+      <router-view />
     </div>
+
+    <!-- Mobile: inline bottom strip -->
+    <AdBanner label="AD BOTTOM" class="w-full h-[50px] lg:hidden" />
 
     <MiniPlayer />
     <SearchOverlay
