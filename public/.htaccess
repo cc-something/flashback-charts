@@ -1,0 +1,30 @@
+# Aussie Top Ten — Apache config for cPanel hosting.
+# vite-ssg prerenders /index.html and /YYYY/index.html for every year.
+# Serve prerendered files directly; fall back to /index.html for any unmatched
+# path so deep links and refreshes continue to work via SPA hydration.
+
+Options -MultiViews
+RewriteEngine On
+
+# Skip rewrite for real files and directories (assets, prerendered HTML, sitemap, etc.).
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Fall back to the SPA entry for everything else.
+RewriteRule ^ index.html [L]
+
+# Long-cache hashed assets.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2|woff|ttf|svg|png|jpg|jpeg|webp|avif)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Gzip text responses.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>

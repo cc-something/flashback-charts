@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useChartStore } from '@/stores/chart'
+import { useRouter } from 'vue-router'
 import { usePlayerStore } from '@/stores/player'
 import { searchSongs } from '@/data'
 
 const emit = defineEmits<{ close: [] }>()
 
-const chart = useChartStore()
+const router = useRouter()
 const player = usePlayerStore()
 const query = ref('')
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -15,7 +15,7 @@ const allResults = computed(() => searchSongs(query.value))
 const results = computed(() => allResults.value.slice(0, 50))
 
 const goToYear = (year: number) => {
-  chart.selectYear(year)
+  router.push(`/${year}`)
   emit('close')
 }
 

@@ -127,7 +127,7 @@ watch(
         <!-- Time -->
         <p
           v-if="player.showSeekBar"
-          class="text-[0.5rem] tabular-nums text-text-muted"
+          class="font-mono text-[0.5rem] tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
@@ -208,12 +208,17 @@ watch(
           @value-commit="player.handleSeekCommit"
         >
           <SliderTrack
-            class="mini-track relative h-1 w-full overflow-hidden rounded-b-lg bg-black/20"
+            class="mini-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
           >
-            <SliderRange class="mini-range absolute h-full bg-primary" />
+            <SliderRange
+              class="mini-range absolute h-full rounded-bl-lg bg-primary"
+            />
+            <div
+              class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
+            />
           </SliderTrack>
           <SliderThumb
-            class="mini-thumb block h-2.5 w-2.5 rounded-full bg-primary shadow outline-none"
+            class="mini-thumb block h-3 w-3 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
           />
         </SliderRoot>
       </div>

@@ -209,12 +209,15 @@ export const usePlayerStore = defineStore('player', () => {
     // Stop any current playback
     if (isActive.value) stop()
 
+    const chart = useChartStore()
     playingSong.value = song
     playingYear.value = year
     playerState.value = 'loading'
     retryCount = 0
     currentPlaySong = song
     registerActive(stop)
+
+    if (chart.selectedYear === year) scrollSongIntoView(song)
 
     offlineHandler = () => {
       useToastStore().show('No internet connection — playback stopped')
@@ -345,16 +348,20 @@ export const usePlayerStore = defineStore('player', () => {
     play(prevYearSongs[prevYearSongs.length - 1], prevYear)
   }
 
+  const scrollSongIntoView = (song: Song) => {
+    requestAnimationFrame(() => {
+      const el = document.querySelector(
+        `[data-song-id="${song.youtubeVideoId}"]`,
+      )
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+  }
+
   const goToSong = () => {
     const chart = useChartStore()
     if (playingYear.value === null || !playingSong.value) return
     chart.selectYear(playingYear.value)
-    requestAnimationFrame(() => {
-      const el = document.querySelector(
-        `[data-song-id="${playingSong.value?.youtubeVideoId}"]`,
-      )
-      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    })
+    scrollSongIntoView(playingSong.value)
   }
 
   return {

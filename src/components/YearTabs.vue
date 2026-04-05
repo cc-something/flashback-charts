@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 
 const store = useChartStore()
+const router = useRouter()
 const scrollContainer = ref<HTMLElement | null>(null)
 
 const scrollToActiveTab = async () => {
@@ -18,6 +20,14 @@ const scrollToActiveTab = async () => {
   const nextScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft))
 
   container.scrollTo({ left: nextScrollLeft, behavior: 'smooth' })
+}
+
+const goToYear = (year: number, target: EventTarget | null) => {
+  if (!store.availableYears.includes(year)) return
+  router.push(`/${year}`)
+  ;(target as HTMLElement | null)?.blur()
+  if (typeof window !== 'undefined')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 onMounted(scrollToActiveTab)
@@ -43,13 +53,7 @@ watch(() => store.selectedYear, scrollToActiveTab)
               ? 'text-text hover:bg-tab-inactive hover:text-text'
               : 'text-text-muted opacity-40 cursor-default',
         ]"
-        @click="
-          if (store.availableYears.includes(year)) {
-            store.selectYear(year)
-            ;($event.target as HTMLElement).blur()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }
-        "
+        @click="goToYear(year, $event.target)"
       >
         {{ year }}
       </button>
