@@ -28,36 +28,34 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- Mobile: top + bottom banners -->
+  <!-- Mobile: top + bottom floating banners -->
   <AdBanner
     label="AD TOP"
-    class="fixed top-0 left-0 right-0 z-50 h-[50px] lg:hidden"
+    class="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[320px] h-[50px] rounded shadow-lg lg:hidden"
   />
   <AdBanner
     label="AD BOTTOM"
-    class="fixed bottom-0 left-0 right-0 z-50 h-[50px] lg:hidden"
+    class="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 w-[320px] h-[50px] rounded shadow-lg lg:hidden"
   />
 
-  <!-- Desktop: left + right banners -->
+  <!-- Desktop: left + right floating banners -->
   <AdBanner
     label="AD LEFT"
-    class="fixed top-0 left-0 bottom-0 z-50 w-40 hidden lg:flex"
+    class="fixed top-1/2 left-2 -translate-y-1/2 z-50 w-[160px] h-[600px] rounded shadow-lg hidden lg:flex"
   />
   <AdBanner
     label="AD RIGHT"
-    class="fixed top-0 right-0 bottom-0 z-50 w-40 hidden lg:flex"
+    class="fixed top-1/2 right-2 -translate-y-1/2 z-50 w-[160px] h-[600px] rounded shadow-lg hidden lg:flex"
   />
 
-  <div
-    class="min-h-screen bg-background text-text pt-[50px] pb-[50px] lg:pt-0 lg:pb-0 lg:mx-40"
-  >
+  <div class="min-h-screen bg-background text-text">
     <YearTabs />
 
     <!-- Search toggle -->
     <button
       type="button"
       aria-label="Search songs"
-      class="fixed right-4 top-[calc(4rem+50px)] lg:top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
+      class="fixed right-4 top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
       @click="openSearch"
     >
       <svg
