@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 
 const store = useChartStore()
 const router = useRouter()
+const route = useRoute()
 const scrollContainer = ref<HTMLElement | null>(null)
 
 const scrollToActiveTab = async () => {
@@ -44,10 +45,10 @@ watch(() => store.selectedYear, scrollToActiveTab)
       <button
         v-for="year in store.yearRange"
         :key="year"
-        :data-active="year === store.selectedYear"
+        :data-active="route.name !== 'home' && year === store.selectedYear"
         :class="[
           'flex-shrink-0 px-3 py-1.5 rounded text-sm font-medium transition-all duration-200',
-          year === store.selectedYear
+          route.name !== 'home' && year === store.selectedYear
             ? 'bg-tab-active text-background font-bold scale-105'
             : store.availableYears.includes(year)
               ? 'text-text hover:bg-tab-inactive hover:text-text'

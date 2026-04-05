@@ -3,13 +3,16 @@ import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
 import { groupBy } from 'lodash-es'
 import { getAvailableYears } from '@/data'
-import { getDecadeForYear } from '@/themes'
+import { getDecadeForYear, getThemeForYear } from '@/themes'
 
 const years = getAvailableYears().sort((a, b) => a - b)
 const decades = computed(() => {
   const grouped = groupBy(years, (year) => getDecadeForYear(year))
   return Object.entries(grouped)
-    .map(([decade, decadeYears]) => ({ decade, years: decadeYears }))
+    .map(([decade, decadeYears]) => {
+      const theme = getThemeForYear(parseInt(decade))
+      return { decade, years: decadeYears, theme }
+    })
     .sort((a, b) => a.decade.localeCompare(b.decade))
 })
 
@@ -52,22 +55,44 @@ useHead({
     <section
       v-for="group in decades"
       :key="group.decade"
-      class="mb-8"
-      aria-labelledby="`decade-${group.decade}`"
+      class="mb-8 rounded-xl p-4"
+      :style="{
+        backgroundColor: group.theme.colors.background + '99',
+        border: `1px solid ${group.theme.colors.primary}33`,
+      }"
+      :aria-labelledby="`decade-${group.decade}`"
     >
       <h2
         :id="`decade-${group.decade}`"
-        class="text-xl font-bold text-text mb-3"
+        class="text-xl font-bold mb-3"
+        :style="{
+          color: group.theme.colors.primary,
+          fontFamily: group.theme.fontFamily,
+        }"
       >
         {{ group.decade }}
       </h2>
-      <ul class="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-5">
+      <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
         <li v-for="year in group.years" :key="year">
           <router-link
             :to="`/${year}`"
-            class="block rounded-md bg-surface px-3 py-2 text-sm font-medium text-text transition-colors hover:bg-tab-inactive"
+            class="flex items-center justify-center aspect-square rounded-lg text-sm font-bold text-center transition-all duration-200 hover:scale-105 hover:shadow-lg"
+            :style="{
+              backgroundColor: group.theme.colors.surface,
+              color: group.theme.colors.text,
+              border: `1px solid ${group.theme.colors.primary}44`,
+              fontFamily: group.theme.fontFamily,
+            }"
           >
-            Australia Top 10 Songs {{ year }}
+            <span>
+              <span
+                class="block text-base leading-tight"
+                :style="{ color: group.theme.colors.primary }"
+              >
+                {{ year }}
+              </span>
+              <span class="block text-xs leading-tight opacity-70">Top 10</span>
+            </span>
           </router-link>
         </li>
       </ul>
