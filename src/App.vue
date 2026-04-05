@@ -9,6 +9,7 @@ import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
+import AdBanner from '@/components/AdBanner.vue'
 
 useDecadeTheme()
 const { loadFathom } = useFathomAnalytics()
@@ -42,6 +43,16 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- Mobile: top + bottom inset fixed banners -->
+  <AdBanner
+    label="AD TOP"
+    class="fixed top-2 left-4 right-4 z-50 h-[50px] rounded shadow-lg lg:hidden"
+  />
+  <AdBanner
+    label="AD BOTTOM"
+    class="fixed bottom-2 left-4 right-4 z-50 h-[50px] rounded shadow-lg lg:hidden"
+  />
+
   <div class="min-h-screen bg-background text-text">
     <YearTabs />
 
@@ -88,7 +99,26 @@ onMounted(() => {
       </svg>
     </button>
 
-    <router-view />
+    <!-- Desktop: sticky side banners inside page flow -->
+    <div class="flex">
+      <aside class="hidden lg:block w-44 shrink-0 p-3">
+        <AdBanner
+          label="AD LEFT"
+          class="sticky top-3 h-[300px] rounded shadow-lg"
+        />
+      </aside>
+
+      <div class="flex-1 min-w-0">
+        <router-view />
+      </div>
+
+      <aside class="hidden lg:block w-44 shrink-0 p-3">
+        <AdBanner
+          label="AD RIGHT"
+          class="sticky top-3 h-[300px] rounded shadow-lg"
+        />
+      </aside>
+    </div>
 
     <MiniPlayer />
     <SearchOverlay
