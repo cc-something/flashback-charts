@@ -7,6 +7,7 @@ import SongList from '@/components/SongList.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
+import AdBanner from '@/components/AdBanner.vue'
 
 useDecadeTheme()
 
@@ -27,14 +28,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background text-text">
+  <!-- Mobile: top + bottom banners -->
+  <AdBanner
+    label="AD TOP"
+    class="fixed top-0 left-0 right-0 z-50 h-[50px] lg:hidden"
+  />
+  <AdBanner
+    label="AD BOTTOM"
+    class="fixed bottom-0 left-0 right-0 z-50 h-[50px] lg:hidden"
+  />
+
+  <!-- Desktop: left + right banners -->
+  <AdBanner
+    label="AD LEFT"
+    class="fixed top-0 left-0 bottom-0 z-50 w-40 hidden lg:flex"
+  />
+  <AdBanner
+    label="AD RIGHT"
+    class="fixed top-0 right-0 bottom-0 z-50 w-40 hidden lg:flex"
+  />
+
+  <div
+    class="min-h-screen bg-background text-text pt-[50px] pb-[50px] lg:pt-0 lg:pb-0 lg:mx-40"
+  >
     <YearTabs />
 
     <!-- Search toggle -->
     <button
       type="button"
       aria-label="Search songs"
-      class="fixed right-4 top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
+      class="fixed right-4 top-[calc(4rem+50px)] lg:top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
       @click="openSearch"
     >
       <svg
