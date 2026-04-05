@@ -28,49 +28,59 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- Mobile: top + bottom floating banners -->
+  <!-- Mobile: top + bottom inset fixed banners -->
   <AdBanner
     label="AD TOP"
-    class="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[320px] h-[50px] rounded shadow-lg lg:hidden"
+    class="fixed top-2 left-4 right-4 z-50 h-[50px] rounded shadow-lg lg:hidden"
   />
   <AdBanner
     label="AD BOTTOM"
-    class="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 w-[320px] h-[50px] rounded shadow-lg lg:hidden"
-  />
-
-  <!-- Desktop: left + right floating banners -->
-  <AdBanner
-    label="AD LEFT"
-    class="fixed top-1/2 left-2 -translate-y-1/2 z-50 w-[160px] h-[600px] rounded shadow-lg hidden lg:flex"
-  />
-  <AdBanner
-    label="AD RIGHT"
-    class="fixed top-1/2 right-2 -translate-y-1/2 z-50 w-[160px] h-[600px] rounded shadow-lg hidden lg:flex"
+    class="fixed bottom-2 left-4 right-4 z-50 h-[50px] rounded shadow-lg lg:hidden"
   />
 
   <div class="min-h-screen bg-background text-text">
     <YearTabs />
 
-    <!-- Search toggle -->
-    <button
-      type="button"
-      aria-label="Search songs"
-      class="fixed right-4 top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
-      @click="openSearch"
-    >
-      <svg
-        class="h-5 w-5"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="m21 21-4.35-4.35" stroke-linecap="round" />
-      </svg>
-    </button>
+    <!-- Desktop: sticky side banners inside page flow -->
+    <div class="flex">
+      <aside class="hidden lg:block w-44 shrink-0 p-3">
+        <AdBanner
+          label="AD LEFT"
+          class="sticky top-3 h-[300px] rounded shadow-lg"
+        />
+      </aside>
 
-    <SongList />
+      <!-- Search toggle -->
+      <button
+        type="button"
+        aria-label="Search songs"
+        class="fixed right-4 top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
+        @click="openSearch"
+      >
+        <svg
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <div class="flex-1 min-w-0">
+        <SongList />
+      </div>
+
+      <aside class="hidden lg:block w-44 shrink-0 p-3">
+        <AdBanner
+          label="AD RIGHT"
+          class="sticky top-3 h-[300px] rounded shadow-lg"
+        />
+      </aside>
+    </div>
+
     <MiniPlayer />
     <SearchOverlay
       v-if="isSearchOpen"
