@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onUnmounted } from 'vue'
+import { onUnmounted, watch } from 'vue'
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
+import { applyPendingTheme } from '@/composables/useDecadeTheme'
 import SongCard from './SongCard.vue'
 
 const store = useChartStore()
@@ -10,6 +11,11 @@ const player = usePlayerStore()
 
 player.setOnEnded((song, year) => player.playNext(song, year))
 onUnmounted(() => player.setOnEnded(null))
+
+watch(
+  () => store.selectedYear,
+  () => window.scrollTo({ top: 0, behavior: 'instant' }),
+)
 </script>
 
 <template>
@@ -41,7 +47,11 @@ onUnmounted(() => player.setOnEnded(null))
       </button>
     </header>
 
-    <Transition name="year-content" mode="out-in">
+    <Transition
+      name="year-content"
+      mode="out-in"
+      @after-leave="applyPendingTheme"
+    >
       <div :key="store.selectedYear" class="year-content">
         <div v-if="store.hasData" class="flex flex-col gap-3">
           <SongCard
