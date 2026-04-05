@@ -15,15 +15,15 @@ watch(
     if (year === null) return
     const t = getThemeForYear(year)
     themeVars.value = {
-      '--theme-background': t.colors.background,
-      '--theme-surface': t.colors.surface,
-      '--theme-primary': t.colors.primary,
-      '--theme-secondary': t.colors.secondary,
-      '--theme-text': t.colors.text,
-      '--theme-text-muted': t.colors.textMuted,
-      '--theme-accent': t.colors.accent,
-      '--theme-tab-active': t.colors.tabActive,
-      '--theme-tab-inactive': t.colors.tabInactive,
+      '--color-background': t.colors.background,
+      '--color-surface': t.colors.surface,
+      '--color-primary': t.colors.primary,
+      '--color-secondary': t.colors.secondary,
+      '--color-text': t.colors.text,
+      '--color-text-muted': t.colors.textMuted,
+      '--color-accent': t.colors.accent,
+      '--color-tab-active': t.colors.tabActive,
+      '--color-tab-inactive': t.colors.tabInactive,
       'font-family': t.fontFamily,
     }
   },
