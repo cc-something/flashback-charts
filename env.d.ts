@@ -1,6 +1,8 @@
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {}
+interface ImportMetaEnv {
+  readonly VITE_FATHOM_SITE_ID?: string
+}
 
 interface ImportMeta {
   readonly env: ImportMetaEnv

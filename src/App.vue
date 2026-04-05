@@ -2,6 +2,7 @@
 import { ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
+import { useFathomAnalytics } from '@/composables/useFathomAnalytics'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import YearTabs from '@/components/YearTabs.vue'
@@ -10,6 +11,7 @@ import SearchOverlay from '@/components/SearchOverlay.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 
 useDecadeTheme()
+const { loadFathom } = useFathomAnalytics()
 
 const route = useRoute()
 const router = useRouter()
@@ -35,6 +37,7 @@ watch(
 
 onMounted(() => {
   if (playerContainer.value) player.setPlayerContainer(playerContainer.value)
+  loadFathom()
 })
 </script>
 
