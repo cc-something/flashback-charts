@@ -1,4 +1,4 @@
-# Aussie Top Ten
+# Flashback Charts Australia
 
 Top 10 songs in Australia by year, from 1940 to present.
 

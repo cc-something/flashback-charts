@@ -2,7 +2,7 @@
 import { useHead } from '@unhead/vue'
 
 useHead({
-  title: 'Page not found | Aussie Top Ten',
+  title: 'Page not found | Flashback Charts Australia',
   meta: [{ name: 'robots', content: 'noindex' }],
 })
 </script>

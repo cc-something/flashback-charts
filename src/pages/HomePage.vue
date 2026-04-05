@@ -17,7 +17,8 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   /\/$/,
   '',
 )
-const title = 'Aussie Top Ten — Australia Top 10 Songs by Year, 1940 to 2025'
+const title =
+  'Flashback Charts Australia — Australia Top 10 Songs by Year, 1940 to 2025'
 const description =
   'Browse the top 10 songs in Australia for every year from 1940 to the present. Listen to the biggest Aussie hits by decade, year, and artist.'
 
@@ -40,7 +41,9 @@ useHead({
 <template>
   <main class="max-w-3xl mx-auto px-4 py-10">
     <header class="mb-8">
-      <h1 class="text-4xl font-bold text-primary">Aussie Top Ten</h1>
+      <h1 class="text-4xl font-bold text-primary">
+        Flashback Charts Australia
+      </h1>
       <p class="mt-2 text-text-muted">
         The top 10 songs in Australia for every year from 1940 to the present.
       </p>

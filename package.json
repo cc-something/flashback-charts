@@ -1,9 +1,9 @@
 {
-  "name": "aussie-top-ten",
-  "description": "Top 10 songs in Australia by year, from 1940 to present",
+  "name": "flashback-charts",
+  "description": "Flashback Charts Australia — top 10 songs in Australia by year, from 1940 to present",
   "version": "0.1.0",
   "private": true,
-  "repository": "https://github.com/saxoncameron/aussie-top-ten",
+  "repository": "https://github.com/saxoncameron/flashback-charts",
   "type": "module",
   "license": "UNLICENSED",
   "packageManager": "pnpm@9.15.3",

@@ -59,7 +59,7 @@ const fetchImageBuffer = async (url: string) => {
     try {
       response = await fetch(url, {
         headers: {
-          'user-agent': 'aussie-top-ten-image-cache/1.0',
+          'user-agent': 'flashback-charts-image-cache/1.0',
         },
       })
 

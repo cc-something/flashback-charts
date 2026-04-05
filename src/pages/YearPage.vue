@@ -14,7 +14,8 @@ const player = usePlayerStore()
 
 const yearNumber = computed(() => Number(props.year))
 const title = computed(
-  () => `Australia Top 10 Songs ${yearNumber.value} | Aussie Top Ten`,
+  () =>
+    `Australia Top 10 Songs ${yearNumber.value} | Flashback Charts Australia`,
 )
 const topSong = computed(() => store.currentSongs[0] ?? null)
 const description = computed(() => {

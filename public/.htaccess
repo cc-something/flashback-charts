@@ -1,4 +1,4 @@
-# Aussie Top Ten — Apache config for cPanel hosting.
+# Flashback Charts Australia — Apache config for cPanel hosting.
 # vite-ssg prerenders /index.html and /YYYY/index.html for every year.
 # Serve prerendered files directly; fall back to /index.html for any unmatched
 # path so deep links and refreshes continue to work via SPA hydration.
