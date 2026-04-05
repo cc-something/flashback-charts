@@ -153,7 +153,7 @@ const handleClick = () => player.play(props.song, props.year)
           />
         </SliderRoot>
         <p
-          class="pointer-events-none absolute bottom-3.5 left-1 min-w-fit bg-surface/85 px-0.5 text-[0.45rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-3.5 left-1 min-w-fit bg-surface/85 px-0.5 font-mono text-[0.45rem] font-medium tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>

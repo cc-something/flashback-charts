@@ -127,7 +127,7 @@ watch(
         <!-- Time -->
         <p
           v-if="player.showSeekBar"
-          class="text-[0.5rem] tabular-nums text-text-muted"
+          class="font-mono text-[0.5rem] tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
