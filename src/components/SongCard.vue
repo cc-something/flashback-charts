@@ -35,16 +35,16 @@ const handleClick = () => player.play(props.song, props.year)
 <template>
   <article
     :data-song-id="song.youtubeVideoId"
-    class="relative flex items-center gap-4 overflow-visible rounded-lg bg-surface p-4 transition-colors duration-150 hover:bg-surface/80"
+    class="relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3 py-2.5 transition-colors duration-150 hover:bg-surface/80"
   >
-    <span class="w-8 flex-shrink-0 text-center text-2xl font-bold text-primary">
+    <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
       {{ song.rank }}
     </span>
 
     <button
       type="button"
       :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
-      class="relative h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="relative h-14 w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
       @click="handleClick"
@@ -60,7 +60,7 @@ const handleClick = () => player.play(props.song, props.year)
         v-else
         class="flex h-full w-full items-center justify-center bg-[#333]"
       >
-        <Disc3 class="h-10 w-10 text-[#aaa]" />
+        <Disc3 class="h-7 w-7 text-[#aaa]" />
       </div>
 
       <Transition name="overlay">
@@ -113,11 +113,11 @@ const handleClick = () => player.play(props.song, props.year)
       </Transition>
     </button>
 
-    <div class="min-w-0 flex-1 flex flex-col gap-1">
-      <h2 class="text-base font-bold leading-tight text-text">
+    <div class="min-w-0 flex-1 flex flex-col gap-0.5">
+      <h2 class="text-sm font-bold leading-tight text-text">
         {{ song.title }}
       </h2>
-      <p class="text-sm text-text-muted">{{ song.artist }}</p>
+      <p class="text-xs text-text-muted">{{ song.artist }}</p>
       <p v-if="song.album" class="text-xs italic text-text-muted/60">
         {{ song.album }}
       </p>
@@ -149,7 +149,7 @@ const handleClick = () => player.play(props.song, props.year)
             />
           </SliderTrack>
           <SliderThumb
-            class="seek-thumb block h-4 w-4 rounded-full border-2 border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
+            class="seek-thumb block h-3 w-3 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
           />
         </SliderRoot>
         <p
