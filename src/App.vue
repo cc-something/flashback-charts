@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
+import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import YearTabs from '@/components/YearTabs.vue'
-import SongList from '@/components/SongList.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 
 useDecadeTheme()
 
+const route = useRoute()
+const router = useRouter()
+const chart = useChartStore()
 const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const isSearchOpen = ref(false)
@@ -21,6 +25,14 @@ const openSearch = async () => {
   searchOverlay.value?.focusInput()
 }
 
+watch(
+  () => chart.selectedYear,
+  (year) => {
+    if (route.name === 'year' && Number(route.params.year) === year) return
+    router.push(`/${year}`)
+  },
+)
+
 onMounted(() => {
   if (playerContainer.value) player.setPlayerContainer(playerContainer.value)
 })
@@ -30,7 +42,6 @@ onMounted(() => {
   <div class="min-h-screen bg-background text-text">
     <YearTabs />
 
-    <!-- Search toggle -->
     <button
       type="button"
       aria-label="Search songs"
@@ -49,7 +60,8 @@ onMounted(() => {
       </svg>
     </button>
 
-    <SongList />
+    <router-view />
+
     <MiniPlayer />
     <SearchOverlay
       v-if="isSearchOpen"

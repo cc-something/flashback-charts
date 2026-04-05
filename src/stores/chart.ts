@@ -23,6 +23,10 @@ export const useChartStore = defineStore('chart', () => {
   const currentDecade = computed(() => getDecadeForYear(selectedYear.value))
   const hasData = computed(() => currentSongs.value.length > 0)
 
+  const setYear = (year: number) => {
+    selectedYear.value = year
+  }
+
   const selectYear = (year: number) => {
     selectedYear.value = year
   }
@@ -40,6 +44,7 @@ export const useChartStore = defineStore('chart', () => {
     currentSource,
     currentDecade,
     hasData,
+    setYear,
     selectYear,
     toggleSortOrder,
   }

@@ -5,6 +5,7 @@ import { getThemeForYear } from '@/themes'
 const getDecade = (year: number) => Math.floor(year / 10)
 
 const applyTheme = (year: number) => {
+  if (typeof document === 'undefined') return
   const theme = getThemeForYear(year)
   const root = document.documentElement
 

@@ -1,0 +1,176 @@
+<script setup lang="ts">
+import { computed, onUnmounted, watch } from 'vue'
+import { useHead } from '@unhead/vue'
+import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
+import { useChartStore } from '@/stores/chart'
+import { usePlayerStore } from '@/stores/player'
+import { applyPendingTheme } from '@/composables/useDecadeTheme'
+import SongCard from '@/components/SongCard.vue'
+
+const props = defineProps<{ year: string }>()
+
+const store = useChartStore()
+const player = usePlayerStore()
+
+const yearNumber = computed(() => Number(props.year))
+const title = computed(
+  () => `Australia Top 10 Songs ${yearNumber.value} | Aussie Top Ten`,
+)
+const topSong = computed(() => store.currentSongs[0] ?? null)
+const description = computed(() => {
+  const base = `The 10 biggest hit songs in Australia in ${yearNumber.value}.`
+  if (!topSong.value) return base
+  return `${base} ${topSong.value.title} by ${topSong.value.artist} topped the chart.`
+})
+const siteUrl = computed(() => {
+  const env = import.meta.env.VITE_SITE_URL as string | undefined
+  return env?.replace(/\/$/, '') ?? ''
+})
+const canonical = computed(() =>
+  siteUrl.value ? `${siteUrl.value}/${yearNumber.value}` : undefined,
+)
+const ogImage = computed(() =>
+  topSong.value?.thumbnailPath
+    ? `${siteUrl.value}${topSong.value.thumbnailPath}`
+    : undefined,
+)
+
+const jsonLd = computed(() => {
+  if (!store.currentSongs.length) return null
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'MusicPlaylist',
+    'name': `Australia Top 10 Songs ${yearNumber.value}`,
+    'description': description.value,
+    'url': canonical.value,
+    'numTracks': store.currentSongs.length,
+    'track': store.currentSongs.map((song) => ({
+      '@type': 'MusicRecording',
+      'name': song.title,
+      'byArtist': { '@type': 'MusicGroup', 'name': song.artist },
+      ...(song.album && {
+        inAlbum: { '@type': 'MusicAlbum', 'name': song.album },
+      }),
+      'position': song.rank,
+    })),
+  }
+})
+
+useHead(() => ({
+  title: title.value,
+  meta: [
+    { name: 'description', content: description.value },
+    { property: 'og:type', content: 'music.playlist' },
+    { property: 'og:title', content: title.value },
+    { property: 'og:description', content: description.value },
+    ...(canonical.value
+      ? [{ property: 'og:url', content: canonical.value }]
+      : []),
+    ...(ogImage.value
+      ? [{ property: 'og:image', content: ogImage.value }]
+      : []),
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title.value },
+    { name: 'twitter:description', content: description.value },
+  ],
+  link: canonical.value ? [{ rel: 'canonical', href: canonical.value }] : [],
+  script: jsonLd.value
+    ? [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(jsonLd.value),
+        },
+      ]
+    : [],
+}))
+
+player.setOnEnded((song, year) => player.playNext(song, year))
+onUnmounted(() => player.setOnEnded(null))
+
+watch(
+  yearNumber,
+  (next) => {
+    if (!Number.isNaN(next)) store.setYear(next)
+  },
+  { immediate: true },
+)
+
+watch(yearNumber, () => {
+  if (typeof window !== 'undefined')
+    window.scrollTo({ top: 0, behavior: 'instant' })
+})
+</script>
+
+<template>
+  <main class="max-w-2xl mx-auto px-4 py-6">
+    <header class="mb-6 flex items-start justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-primary">
+          Australia Top 10 Songs {{ yearNumber }}
+        </h1>
+        <a
+          v-if="store.currentSource"
+          :href="store.currentSource.url"
+          class="mt-1 inline-block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Source: {{ store.currentSource.label }}
+        </a>
+      </div>
+      <button
+        type="button"
+        class="flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-sm font-medium text-text-muted transition-colors duration-150 hover:text-text"
+        :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
+        @click="store.toggleSortOrder()"
+      >
+        <ArrowUpNarrowWide v-if="store.sortOrder === 'asc'" class="h-4 w-4" />
+        <ArrowDownNarrowWide v-else class="h-4 w-4" />
+        {{ store.sortOrder === 'asc' ? '1 → 10' : '10 → 1' }}
+      </button>
+    </header>
+
+    <Transition
+      name="year-content"
+      mode="out-in"
+      @after-leave="applyPendingTheme"
+    >
+      <div :key="yearNumber" class="year-content">
+        <div v-if="store.hasData" class="flex flex-col gap-1.5">
+          <SongCard
+            v-for="song in store.currentSongs"
+            :key="`${yearNumber}-${song.rank}`"
+            :song="song"
+            :year="yearNumber"
+          />
+        </div>
+
+        <div
+          v-else
+          class="flex flex-col items-center justify-center gap-3 py-24 text-center"
+        >
+          <span class="text-5xl opacity-30">🎵</span>
+          <p class="text-lg text-text-muted">
+            No data yet for {{ yearNumber }}
+          </p>
+          <p class="text-sm text-text-muted/60">Chart data coming soon</p>
+        </div>
+      </div>
+    </Transition>
+  </main>
+</template>
+
+<style scoped>
+.year-content-enter-active,
+.year-content-leave-active {
+  transition: opacity 0.28s ease;
+}
+
+.year-content-enter-from {
+  opacity: 0;
+}
+
+.year-content-leave-to {
+  opacity: 0;
+}
+</style>
