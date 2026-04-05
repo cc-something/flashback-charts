@@ -45,12 +45,12 @@ onMounted(() => {
 <template>
   <!-- Desktop: fixed side banners centered in margins -->
   <aside
-    class="hidden lg:flex fixed left-0 top-12 bottom-0 w-44 pl-3 items-center justify-center z-10"
+    class="hidden lg:flex fixed left-0 top-12 bottom-0 w-44 items-center justify-center z-10"
   >
     <AdBanner label="AD LEFT" class="h-[300px] w-36 rounded shadow-lg" />
   </aside>
   <aside
-    class="hidden lg:flex fixed right-0 top-12 bottom-0 w-44 pr-3 items-center justify-center z-10"
+    class="hidden lg:flex fixed right-0 top-12 bottom-0 w-44 items-center justify-center z-10"
   >
     <AdBanner label="AD RIGHT" class="h-[300px] w-36 rounded shadow-lg" />
   </aside>
