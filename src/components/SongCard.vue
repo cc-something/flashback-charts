@@ -2,11 +2,13 @@
 import { ref, computed } from 'vue'
 import { Disc3 } from 'lucide-vue-next'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
+import { useRouter } from 'vue-router'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 
 const props = defineProps<{ song: Song; year: number }>()
 
+const router = useRouter()
 const player = usePlayerStore()
 const isHovered = ref(false)
 const hasThumbnailError = ref(false)
@@ -30,6 +32,11 @@ const handleImageError = (e: Event) => {
 }
 
 const handleClick = () => player.play(props.song, props.year)
+const goToSong = () =>
+  router.push({
+    path: `/${props.year}`,
+    query: { song: String(props.song.rank) },
+  })
 const youtubeVideoUrl = computed(() =>
   props.song.youtubeVideoId
     ? `https://www.youtube.com/watch?v=${props.song.youtubeVideoId}`
@@ -43,7 +50,15 @@ const youtubeVideoUrl = computed(() =>
     :data-song-rank="song.rank"
     :data-song-id="song.youtubeVideoId"
     class="group relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3.5 py-3 transition-colors duration-150 hover:bg-surface/80"
+    @mouseenter="isHovered = true"
+    @mouseleave="isHovered = false"
   >
+    <button
+      type="button"
+      :aria-label="`Jump to ${song.title} by ${song.artist}`"
+      class="absolute inset-0 z-0 cursor-pointer rounded-lg"
+      @click="goToSong"
+    />
     <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
       {{ song.rank }}
     </span>
@@ -51,10 +66,8 @@ const youtubeVideoUrl = computed(() =>
     <button
       type="button"
       :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
-      class="relative h-14 w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-      @mouseenter="isHovered = true"
-      @mouseleave="isHovered = false"
-      @click="handleClick"
+      class="relative z-10 h-14 w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      @click.stop="handleClick"
     >
       <img
         v-if="!hasThumbnailError"
@@ -120,7 +133,7 @@ const youtubeVideoUrl = computed(() =>
       </Transition>
     </button>
 
-    <div class="theme-body min-w-0 flex-1 flex flex-col gap-0.5">
+    <div class="theme-body relative z-10 min-w-0 flex-1 flex flex-col gap-0.5">
       <h2 class="text-base font-bold leading-snug text-text">
         {{ song.title }}
       </h2>
@@ -137,7 +150,7 @@ const youtubeVideoUrl = computed(() =>
       v-if="song.youtubeVideoId"
       :aria-label="`Open ${song.title} by ${song.artist} on YouTube`"
       :href="youtubeVideoUrl"
-      class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="relative z-20 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       rel="noreferrer"
       target="_blank"
     >
@@ -156,7 +169,7 @@ const youtubeVideoUrl = computed(() =>
     <Transition name="seek">
       <div
         v-if="showSeekBar"
-        class="pointer-events-none absolute inset-x-0 -bottom-1 overflow-visible"
+        class="pointer-events-none absolute inset-x-0 -bottom-1 z-20 overflow-visible"
       >
         <SliderRoot
           :max="player.durationSeconds"

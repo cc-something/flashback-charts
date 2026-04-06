@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { X } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { usePlayerStore } from '@/stores/player'
 import { searchSongs } from '@/data'
@@ -39,41 +40,43 @@ defineExpose({ focusInput })
   >
     <div class="mx-auto flex h-full max-w-[900px] flex-col px-4 pt-8">
       <!-- Search bar -->
-      <div class="z-10 flex-shrink-0 border-b border-primary/20 bg-surface">
-        <p v-if="query" class="px-4 pt-2 text-xs text-text-muted">
-          {{ allResults.length }} results
-        </p>
-        <div class="flex items-center gap-3 px-4 py-3">
-          <div class="flex flex-1 items-center gap-3">
-            <input
-              ref="inputRef"
-              v-model="query"
-              type="text"
-              placeholder="Search songs, artists, albums…"
-              class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
-              @keydown.escape="emit('close')"
-            />
-            <!-- Search icon -->
-            <svg
-              class="h-5 w-5 flex-shrink-0 text-text-muted"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" stroke-linecap="round" />
-            </svg>
+      <div class="z-10 flex flex-shrink-0 items-center gap-3">
+        <div class="min-w-0 flex-1 border-b border-primary/20 bg-surface">
+          <p v-if="query" class="px-4 pt-2 text-xs text-text-muted">
+            {{ allResults.length }} results
+          </p>
+          <div class="flex items-center gap-3 px-4 py-3">
+            <div class="flex flex-1 items-center gap-3">
+              <input
+                ref="inputRef"
+                v-model="query"
+                type="text"
+                placeholder="Search songs, artists, albums…"
+                class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
+                @keydown.escape="emit('close')"
+              />
+              <!-- Search icon -->
+              <svg
+                class="h-5 w-5 flex-shrink-0 text-text-muted"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" stroke-linecap="round" />
+              </svg>
+            </div>
           </div>
-          <button
-            type="button"
-            aria-label="Close search"
-            class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-primary/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-            @click="emit('close')"
-          >
-            <span class="text-base font-semibold leading-none">(X)</span>
-          </button>
         </div>
+        <button
+          type="button"
+          aria-label="Close search"
+          class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-surface/88 text-text-muted shadow-lg shadow-black/10 ring-1 ring-primary/20 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          @click="emit('close')"
+        >
+          <X class="h-4 w-4" />
+        </button>
       </div>
 
       <!-- Results -->
