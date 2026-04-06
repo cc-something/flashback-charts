@@ -3,7 +3,7 @@ import type { DecadeTheme } from '@/types/theme'
 const theme: DecadeTheme = {
   name: '1990s',
   description:
-    "Grunge, alternative rock, and indie made their mark on Australian charts in the 1990s, as Triple J grew into a cultural force and homegrown rock scenes flourished. R  name: '1990s',B, hip-hop, and electronic dance music also broke into the mainstream, reflecting the decade's restless genre diversity.",
+    'Alternative rock, glossy dance-pop, and R&B all took turns running the Australian charts in the 1990s. Triple J and local guitar scenes mattered more than ever, while hip-hop and club music pushed the mainstream into a broader, messier shape.',
   fontFamily: "'Space Grotesk', sans-serif",
   fontUrl:
     'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap',

@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'Relief and celebration poured through the charts as the war ended, with carefree singalongs and breezy crooner numbers capturing the mood of a country ready to move on. Sentimental wartime ballads still lingered, but the tone had clearly brightened, and even the biggest tearjerkers felt more nostalgic than heartbroken.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?option=com_content&task=view&id=937&Itemid=53',

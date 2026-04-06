@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  'Disco, new wave, and power pop collided on the Australian charts in 1979, making it one of the most eclectic years of the decade. The dancefloor still ruled, but guitar-driven pop and early post-punk were starting to sneak in, hinting at the sharper, synth-driven sound that would define the eighties.'
+
 // Source: Kent Music Report 1979 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1979 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

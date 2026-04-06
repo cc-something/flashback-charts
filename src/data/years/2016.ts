@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2016 was cooler and more restrained, with minimal production and club tracks sharing space at the top. The sound stayed clean and moody.'
+  'Minimal pop, moody club tracks, and clean, restrained production shaped 2016. The charts sounded cooler and more inward than the years around it, even when the hooks were huge.'
 
 const year = 2016
 

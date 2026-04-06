@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  '2023 leaned into clean pop songwriting, country-pop spillover, and viral hooks that moved fast online and on radio. The overall feel was lighter and more direct than the years before it, with emotional singalongs and a few darker turns keeping things balanced.'
+  '2023 leaned on crisp pop writing, country spillover, and viral hooks that travelled quickly from phones to radio. The mood was lighter than the years just before it, though a darker edge still slipped into the best songs.'
 
 const getSong = ({
   rank,

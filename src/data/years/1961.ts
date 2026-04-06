@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1961
 
+export const description =
+  'Teenage pop and rock and roll kept driving the Australian charts, with a strong taste for upbeat, danceable singles and the occasional sentimental ballad. Orchestral instrumentals had a surprising presence, and local artists were carving out a bigger slice of the charts alongside the usual American favourites.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1961_in_Australia',

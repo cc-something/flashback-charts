@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1963
 
+export const description =
+  'The British Invasion hit Australia like a freight train, with beat pop flooding the charts and changing everything almost overnight. Surf rock instrumentals and sweet teen pop still had a foothold, but the excitement around UK groups was impossible to ignore. Local rock and roll acts were holding on, feeding off the new energy coming from overseas.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1963_in_Australia',

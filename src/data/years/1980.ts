@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1980
 
+export const description =
+  'New wave and post-punk were crashing into the Australian mainstream, but disco and pop holdovers still had a firm grip on the charts. Local acts were starting to find their voice with quirky, guitar-driven singles, while funk and novelty tracks kept dancefloors packed across the country.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1980_in_Australia',

@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'Crooner-led ballads and dreamy romantic numbers dominated the Australian charts, with songs about moonlight, waltzes, and missing loved ones giving the year a deeply sentimental feel. The war still loomed over everything, and several hits openly wished for the lights to come back on, but the mood was more wistful than grim.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?option=com_content&task=view&id=939&Itemid=53',

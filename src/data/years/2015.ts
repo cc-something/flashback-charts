@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2015 had a laid-back feel, with pop, R&B, and tropical touches keeping things warm rather than frantic. It sounded like summer playlists.'
+  '2015 softened the edges, leaning on laid-back pop, warm R&B, and tropical touches that made the whole year feel sunlit. Even the sadder hits sounded smooth and unhurried.'
 
 const year = 2015
 

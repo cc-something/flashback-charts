@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1955
 
+export const description =
+  'Rock and roll crashed the Australian charts for the first time, sitting right alongside gentle ballads and Latin-flavoured instrumentals. The old guard of traditional pop was still holding strong, but the energy had unmistakably changed, and teenagers were starting to drive what got played on the radio.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_1955_in_Australia',

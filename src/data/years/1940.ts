@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'Big band swing and sentimental dance numbers set the mood for Australian listeners as the war kicked off. British bandleaders dominated the charts alongside American crooners, and novelty singalongs like polkas and waltzes gave people something cheerful to hold onto while the news from Europe grew darker.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?Itemid=49&id=942&option=com_content&task=view',

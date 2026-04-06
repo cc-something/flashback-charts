@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  'Pop hooks, club beats, and rap features set the pace in 2010. It was glossy, high-energy, and made for radio.'
+  'Bright dance-pop, rap features, and huge chorus-first singles set the pace in 2010. The charts felt loud, glossy, and built for radio countdowns.'
 
 const year = 2010
 

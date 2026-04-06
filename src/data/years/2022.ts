@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'The 2022 charts were slicker and more varied, mixing piano-led pop, dance-floor lift, and a run of songs that pushed sentiment straight to the front. It was a year of big choruses, clean production, and plenty of crossover between pop, rap, and soft rock territory.'
+  '2022 opened back up, mixing piano ballads, dance-floor lift, and clean crossover pop with very little genre loyalty. Big choruses returned, but the production stayed tidy and controlled.'
 
 const getSong = ({
   rank,

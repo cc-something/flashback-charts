@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1950
 
+export const description =
+  'Film themes and smooth crooners owned the Australian charts, with lush orchestral arrangements and heartfelt ballads setting the mood. Novelty tunes and easy-listening pop filled out the rest, and the postwar optimism was impossible to miss.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?Itemid=49&id=1012&option=com_content&task=view',

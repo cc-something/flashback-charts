@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1957
 
+export const description =
+  'Teen pop and rock and roll were now a permanent fixture on the Australian charts, but the old-school crooners still managed to claim the top spots. Love songs dominated either way, whether delivered with a smooth vocal or a driving beat. Country flavours crept in at the edges, giving the year a slightly looser, more casual feel.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_1957_in_Australia',

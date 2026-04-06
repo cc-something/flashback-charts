@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'With the war hitting close to home after Pearl Harbor, Australians turned to sentimental wartime ballads and hopeful singalongs for comfort. Latin rhythms and swing still packed the dance halls, but the biggest hits carried an unmistakable longing for peace, with songs about white cliffs and hearts on fire topping the charts.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?option=com_content&task=view&id=940&Itemid=53',

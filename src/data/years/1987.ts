@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1987
 
+export const description =
+  'Australian pop found a new megastar from the world of TV soap operas, and the local charts embraced a bubbly, stock-Aitken-Waterman-influenced pop sound alongside classic rock revivalism. Europop, hi-NRG dance tracks, and Antipodean indie-pop all fought for the top spots, making it one of the most varied years of the decade.'
+
 export const source = {
   label: 'Australian Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1987_in_Australia',

@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2013 leaned into sleek pop, EDM flashes, and a few heavier ballads. The mix swung between glossy and emotional.'
+  'Sleek pop, EDM surges, and heavy-hearted ballads all found room in 2013. The year swung between shiny festival energy and songs built to linger after the chorus.'
 
 const year = 2013
 

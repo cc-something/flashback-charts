@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  "The charts were packed with smooth crooner vocals and close-harmony vocal groups, as Australian audiences craved warmth and romance during the war's final stretch. Victory polkas and novelty numbers hinted at growing optimism, while soulful ballads about love and longing remained the reliable top-sellers."
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?option=com_content&task=view&id=938&Itemid=49',

@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'Sweet, easygoing pop and novelty tunes ruled the year, with upbeat singalongs and sentimental ballads splitting the charts almost evenly. The Maori farewell song craze showed how much Australians loved a good emotional tearjerker, and old-fashioned Irish and folk-tinged numbers were surprisingly popular alongside the slick American bandleaders.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index2.php?do_pdf=1&id=934&option=com_content',

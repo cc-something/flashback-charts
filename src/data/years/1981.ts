@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1981
 
+export const description =
+  'New wave fully arrived on Australian charts, with jerky rhythms and synth-laced pop sitting alongside soft rock ballads and novelty medleys. Countdown was the kingmaker on TV, and Aussie and Kiwi guitar pop competed fiercely with slick British imports for airtime.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1981_in_Australia',

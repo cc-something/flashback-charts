@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2011 stayed in polished pop territory, with big choruses and dancefloor lift carrying most of the weight. It was bright, direct, and easy to replay.'
+  '2011 kept the floor-filling pop sound rolling, with pounding beats, breakup ballads, and polished crossover hooks everywhere. It was a direct, crowd-pleasing year with very little dead air.'
 
 const year = 2011
 

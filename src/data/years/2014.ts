@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2014 was upbeat and accessible, with pop, crossover hits, and feel-good energy carrying the year. Songs landed quickly and stuck around.'
+  '2014 had an easy confidence to it, with crossover pop, acoustic warmth, and big feel-good hooks doing most of the work. The biggest songs arrived fast and hung around for ages.'
 
 const year = 2014
 

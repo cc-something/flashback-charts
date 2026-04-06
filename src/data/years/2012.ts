@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2012 mixed bright pop, electronic polish, and a few viral outliers. The charts moved fast and stayed playful.'
+  '2012 was all bright synths, novelty flash, and pop songs that spread fast online as well as on radio. The charts moved quickly and had a playful, slightly unruly streak.'
 
 const year = 2012
 

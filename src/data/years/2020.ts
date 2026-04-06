@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'Escape-pop, glossy R&B, and disco revival sounds defined 2020 on the Australian charts. The year feels polished and restless at the same time, with big hooks carrying songs built for phones, cars, and empty dancefloors.'
+  '2020 was full of escape-pop, glossy R&B, and disco-revival hooks, with songs built to feel good even when the world did not. The charts were polished and restless, split between bedroom listening and fantasies of a packed dancefloor.'
 
 const getSong = ({
   rank,

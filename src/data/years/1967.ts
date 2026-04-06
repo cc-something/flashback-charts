@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1967
 
+export const description =
+  'Psychedelia was knocking on the door, but the Australian charts still leaned heavily toward romantic ballads, easy listening, and polished pop. The Summer of Love filtered through in flashes, with baroque pop and dreamy production creeping into the mix. Folk-pop vocal groups remained hugely popular, giving the year a warm, singalong quality.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1967_in_Australia',

@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1951
 
+export const description =
+  'Waltzes, country crossovers, and sweet vocal pop dominated the Australian airwaves, with sentimental love songs proving nearly impossible to escape. Novelty numbers and playful singalongs gave the charts a lighter side, and the mood was warm and uncomplicated.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?Itemid=49&id=931&option=com_content&task=view',

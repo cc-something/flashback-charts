@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1962
 
+export const description =
+  'Polished pop and big emotional ballads dominated the Australian charts, with country crossover and easy listening instrumentals filling out the top spots. The twist craze was everywhere, and novelty instrumentals like space-age pop gave the year a playful, optimistic feel.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1962_in_Australia',

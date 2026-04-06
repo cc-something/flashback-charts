@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2019 was shaped by trap-pop, sparse beats, and mood-first songwriting. It had a loose, internet-native energy.'
+  'Sparse beats, trap-pop drift, and mood-first songwriting shaped 2019. The charts felt looser and more internet-native, with less need for traditional radio polish.'
 
 const year = 2019
 

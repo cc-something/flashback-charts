@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1965
 
+export const description =
+  'Australian pop was thriving, with homegrown beat groups and folk-pop acts finally holding their own against the British heavyweights. The charts mixed guitar-driven pop with lush vocal harmonies and the occasional sentimental ballad. Conscription for Vietnam had just begun, and a subtle undercurrent of unease was starting to creep into the culture.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1965_in_Australia',

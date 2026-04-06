@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  'The sixties hangover was still going strong on the Australian charts in 1970, with heartfelt ballads, swamp rock, and folk-tinged pop leading the way. Singer-songwriters and soft rock acts dominated, and the local scene was just starting to find a voice separate from its British and American influences.'
+
 // Source: Kent Music Report 1970 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1970 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

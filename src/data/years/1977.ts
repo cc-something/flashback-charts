@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  'Soft pop and musical theatre dominated the Australian charts in 1977, with lush, melodic ballads and breezy rock and roll crowd-pleasers setting the tone. Punk was exploding in London and New York, but Australian radio largely stuck with the safe and the sentimental.'
+
 // Source: Kent Music Report 1977 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1977 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

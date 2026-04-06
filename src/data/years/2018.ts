@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  '2018 mixed pop, hip-hop, and low-key heartbreak, with slick production giving everything a polished edge. The result was modern and slightly bruised.'
+  'Pop, hip-hop, and bruised late-night ballads shared the charts in 2018. The production was sleek, but there was a worn, low-lit mood running through much of the year.'
 
 const getSong = ({
   rank,

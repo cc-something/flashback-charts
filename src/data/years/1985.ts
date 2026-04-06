@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1985
 
+export const description =
+  'Charity supergroups and earnest pop ballads set the tone, but Australian guitar bands held their own with catchy, polished rock singles. Synth-pop, reggae-pop, and arena rock all jostled for chart space, giving the year a wide-open, eclectic feel.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1985_in_Australia',

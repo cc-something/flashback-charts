@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  'The Australian charts in 1975 were a proper battle between glam rock, homegrown pub rock, and slick European pop. Local acts were finally holding their own against international heavyweights, and the Dismissal gave the whole country a restless, defiant energy that showed up in the music.'
+
 // Source: Kent Music Report 1975 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1975 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

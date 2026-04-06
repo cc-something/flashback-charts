@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  '2021 kept the chart mood intimate and a little worn down, with moody pop, confessional lyrics, and softer electronic textures leading the way. A few brighter singalongs broke through, but the year mostly felt reflective and locked into streaming-friendly hooks.'
+  '2021 kept things intimate and a little worn down, with moody pop, confessional writing, and soft electronic textures all over the charts. Brighter singalongs still broke through, but the year mostly stayed reflective.'
 
 const getSong = ({
   rank,

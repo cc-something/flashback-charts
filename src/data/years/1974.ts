@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  'Glam rock finally hit Australia hard in 1974, bringing stomping beats and cheeky swagger to the charts alongside tearjerker ballads and novelty comedy singles. The pub rock movement kicked into gear too, with loud, sweaty guitar rock starting to claim serious chart real estate for the first time.'
+
 // Source: Kent Music Report 1974 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1974 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  '2024 was built on hook-first pop, glossy dance production, and a steady stream of songs that crossed between radio, streaming, and playlist life. The mood stayed upbeat on the surface, but the strongest tracks still carried a bruised or nostalgic edge.'
+  '2024 ran on hook-first pop and glossy dance production, with songs built to bounce between radio, streaming, and short-form clips. Under the bright surface, a lot of the year still carried a bruised, nostalgic streak.'
 
 const getSong = ({
   rank,

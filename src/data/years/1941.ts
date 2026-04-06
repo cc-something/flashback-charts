@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'Swing was king on Australian radios, with uptempo big band numbers and romantic ballads split right down the middle of the charts. Wartime service songs and British morale-boosters sat comfortably alongside cowboy tunes and Latin-flavoured novelties, reflecting how much Australian tastes leaned on both sides of the Atlantic.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?Itemid=54&id=941&option=com_content&task=view',

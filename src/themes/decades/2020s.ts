@@ -3,7 +3,7 @@ import type { DecadeTheme } from '@/types/theme'
 const theme: DecadeTheme = {
   name: '2020s',
   description:
-    "The 2020s brought bedroom pop, hip-hop, and genre-blending pop-R  name: '2020s',B to the top of Australian charts, shaped by streaming, TikTok, and the creative surge that followed the pandemic years. Homegrown indie folk, alternative, and pop acts continued to punch above their weight on the global stage.",
+    'The 2020s have been shaped by streaming speed, TikTok lift, and a blur between pop, hip-hop, R&B, dance, and indie. Bedroom-pop intimacy sits next to glossy crossover singles, and Australian hits now move between local radio and global playlists almost instantly.',
   fontFamily: "'DM Sans', sans-serif",
   fontUrl:
     'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap',
