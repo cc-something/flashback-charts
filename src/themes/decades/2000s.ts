@@ -3,9 +3,9 @@ import type { DecadeTheme } from '@/types/theme'
 const theme: DecadeTheme = {
   name: '2000s',
   description:
-    'Pop punk, R&B, and hip-hop led Australian charts through the 2000s, alongside the rise of reality TV pop and the early digital download era reshaping how music was consumed. Indie rock and electropop also carved out space on the charts as the decade moved away from the guitar-driven sounds of the nineties.',
-  fontFamily: "'Michroma', sans-serif",
+    'The 2000s mixed reality-TV pop, pop R&B, rap crossover, and the last big wave of chart rock. Downloads changed how hits spread, and the decade drifted from guitar radio toward shinier, more electronic pop.',
   bodyFontFamily: "'Inter', sans-serif",
+  fontFamily: "'Michroma', sans-serif",
   fontUrl: 'https://fonts.googleapis.com/css2?family=Michroma&display=swap',
   colors: {
     background: '#07111f',

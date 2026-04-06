@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2012_in_Australia',
 }
 
+export const description =
+  '2012 was all bright synths, novelty flash, and pop songs that spread fast online as well as on radio. The charts moved quickly and had a playful, slightly unruly streak.'
+
 const year = 2012
 
 const getSong = ({

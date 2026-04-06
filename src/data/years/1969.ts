@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1969
 
+export const description =
+  'The decade went out with a bang as psychedelic rock, countercultural anthems, and raw blues-rock muscled their way onto the Australian charts. Local acts were producing genuinely ambitious, experimental pop that could stand next to anything from overseas. The mood was restless and creative, with the old easy listening guard giving way to something louder and more urgent.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1969_in_Australia',

@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1973
 
+export const description =
+  "Sentimental pop and easy listening ruled the Australian charts in 1973, with lush orchestral ballads and feel-good singalongs dominating the top spots. Glam rock was making noise overseas but hadn't fully broken through here yet, and the homegrown pub rock scene was still finding its legs in inner-city venues."
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_1973_in_Australia',

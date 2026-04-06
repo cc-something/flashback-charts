@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2001_in_Australia',
 }
 
+export const description =
+  'In 2001, the charts leaned on polished pop, smooth R&B, and club-ready singles that were built to stick fast. It was a bright, radio-first year with plenty of chorus-led songs and not much patience for anything subtle.'
+
 const getSong = ({
   rank,
   title,

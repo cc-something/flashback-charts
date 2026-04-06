@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1986
 
+export const description =
+  'Dance-pop and hi-NRG production took over, with uptempo floor-fillers and polished pop vocals pushing the charts toward pure fun. Movie soundtracks continued to deliver huge singles, and homegrown synth-pop acts were finally breaking through alongside the British and American heavyweights.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1986_in_Australia',

@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'The decade closed with a mix of whimsical novelty hits and lush crooner ballads, as Australian radio listeners seemed ready for something a little more playful. Western-themed numbers and folk-tinged pop hinted at new directions, while the reliable formula of smooth vocals over gentle orchestration still moved the most records.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?id=933&option=com_content&task=view',

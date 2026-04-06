@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1964
 
+export const description =
+  'British beat groups utterly dominated the Australian charts this year, with Merseybeat practically becoming the national soundtrack. The local scene responded with its own wave of beat combos and pop acts, and the sheer enthusiasm for guitar-driven pop was unlike anything Australia had seen before.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1964_in_Australia',

@@ -2,7 +2,12 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { range } from 'lodash-es'
 import { useStorage } from '@vueuse/core'
-import { getYearData, getAvailableYears, getYearSource } from '@/data'
+import {
+  getYearData,
+  getAvailableYears,
+  getYearSource,
+  getYearDescription,
+} from '@/data'
 import { getDecadeForYear } from '@/themes'
 
 export type SortOrder = 'asc' | 'desc'
@@ -21,6 +26,9 @@ export const useChartStore = defineStore('chart', () => {
     return songs
   })
   const currentSource = computed(() => getYearSource(selectedYear.value))
+  const currentDescription = computed(() =>
+    getYearDescription(selectedYear.value),
+  )
   const currentDecade = computed(() => getDecadeForYear(selectedYear.value))
   const hasData = computed(() => currentSongs.value.length > 0)
 
@@ -43,6 +51,7 @@ export const useChartStore = defineStore('chart', () => {
     availableYears,
     currentSongs,
     currentSource,
+    currentDescription,
     currentDecade,
     hasData,
     setYear,

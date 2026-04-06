@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'Post-war optimism gave the Australian charts a lighter, jazzier feel, with vocal harmony groups and big-voiced crooners leading the way. Show tunes and movie soundtrack numbers were everywhere, and the mood had firmly tipped from wartime longing to peacetime fun. Songs openly celebrated friendship, good times, and looking ahead.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?option=com_content&task=view&id=936&Itemid=53',

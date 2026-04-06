@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2021/singles-chart',
 }
 
+export const description =
+  '2021 kept things intimate and a little worn down, with moody pop, confessional writing, and soft electronic textures all over the charts. Brighter singalongs still broke through, but the year mostly stayed reflective.'
+
 const getSong = ({
   rank,
   title,

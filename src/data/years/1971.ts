@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  'Australian rock got its first real anthem in 1971, and the local charts started to feel homegrown for the first time. Easy listening and country-pop still had a firm grip, but a scrappy new wave of Aussie bands was crashing through with raw energy and good-time rock and roll.'
+
 // Source: Kent Music Report 1971 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1971 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

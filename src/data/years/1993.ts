@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1993
 
+export const description =
+  '1993 felt emotionally louder than the year before, with soaring ballads, laid-back groove tracks, and a few novelty turns keeping things loose. The chart had plenty of contrast, moving from stadium-size sentiment to lighter, more playful cuts.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1993_in_Australia',
@@ -28,7 +31,7 @@ const getSong = ({
 })
 
 // Source: ARIA End of Year singles chart 1993 year-end chart
-// Via: Wikipedia — List of top 25 singles for 1993 in Australia
+// Via: Wikipedia - List of top 25 singles for 1993 in Australia
 const songs: Song[] = [
   getSong({
     rank: 1,

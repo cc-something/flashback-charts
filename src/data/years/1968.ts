@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1968
 
+export const description =
+  'Sentimental pop and whimsical novelty hits sat comfortably alongside more ambitious, experimental singles on the Australian charts. Folk and Irish singalong numbers were surprisingly popular, while orchestral easy listening still pulled big numbers. Underneath it all, psychedelic rock and protest culture were gaining real momentum as the Vietnam War weighed heavily on the national mood.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1968_in_Australia',

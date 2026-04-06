@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2010_in_Australia',
 }
 
+export const description =
+  'Bright dance-pop, rap features, and huge chorus-first singles set the pace in 2010. The charts felt loud, glossy, and built for radio countdowns.'
+
 const year = 2010
 
 const getSong = ({

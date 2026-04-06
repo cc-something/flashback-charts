@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2020/singles-chart',
 }
 
+export const description =
+  '2020 was full of escape-pop, glossy R&B, and disco-revival hooks, with songs built to feel good even when the world did not. The charts were polished and restless, split between bedroom listening and fantasies of a packed dancefloor.'
+
 const getSong = ({
   rank,
   title,

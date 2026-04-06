@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1984
 
+export const description =
+  "Slick pop production and feel-good anthems ruled 1984, with movie tie-in singles and bubbly synth-pop dominating radio and Countdown alike. Heartland rock made a big impression too, and the charts had a playful, optimistic energy that matched the decade's confident mood."
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1984_in_Australia',

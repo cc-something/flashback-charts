@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_2019_in_Australia',
 }
 
+export const description =
+  'Sparse beats, trap-pop drift, and mood-first songwriting shaped 2019. The charts felt looser and more internet-native, with less need for traditional radio polish.'
+
 const year = 2019
 
 const getSong = ({

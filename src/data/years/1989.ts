@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1989
 
+export const description =
+  'The decade closed with a rush of polished pop-rock and sentimental power ballads, as Scandinavian pop and boy band mania hinted at what the 90s would bring. Australian artists held strong with soulful, sophisticated singles, and the charts had a bittersweet, end-of-an-era quality to them.'
+
 export const source = {
   label: 'ARIA Charts',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1989_in_Australia',

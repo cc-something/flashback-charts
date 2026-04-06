@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2016_in_Australia',
 }
 
+export const description =
+  'Minimal pop, moody club tracks, and clean, restrained production shaped 2016. The charts sounded cooler and more inward than the years around it, even when the hooks were huge.'
+
 const year = 2016
 
 const getSong = ({

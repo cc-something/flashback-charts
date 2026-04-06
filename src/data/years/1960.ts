@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1960
 
+export const description =
+  'Rock and roll still had a firm grip on the Australian charts, but smooth crooners and novelty acts held their own alongside it. Skiffle was fading fast, and the local pop scene was buzzing with energy as homegrown acts started competing seriously with American and British imports.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1960_in_Australia',

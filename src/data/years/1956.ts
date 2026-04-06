@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1956
 
+export const description =
+  'Rock and roll kept gaining ground but the crooners and easy-listening acts refused to budge, making for a fascinating tug-of-war on the Australian charts. Television arrived in time for the Melbourne Olympics, giving Australians a whole new way to discover music. Doo-wop, novelty pop, and jazz standards all jostled for attention alongside the newer, harder-edged sounds.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_1956_in_Australia',

@@ -1,6 +1,9 @@
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
+export const description =
+  'Polished crooners and smooth vocal pop completely owned the Australian charts, with romantic ballads and bittersweet love songs accounting for nearly every top hit. Broadway-flavoured numbers were gaining ground too, and there was a notable nostalgia kick as older standards got fresh recordings that found massive audiences all over again.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index.php?option=com_content&task=view&id=935&Itemid=53',

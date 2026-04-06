@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1988
 
+export const description =
+  'Romantic soundtrack ballads and polished pop dominated, with the Dirty Dancing phenomenon sweeping Australian charts well into the year. Homegrown artists were hitting peak confidence, and a nostalgic streak ran through the top ten, blending new pop gloss with classic rock warmth.'
+
 export const source = {
   label: 'ARIA Charts',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1988_in_Australia',

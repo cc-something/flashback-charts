@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  "Disco arrived in full force on the Australian charts in 1978, with dancefloor anthems and soundtrack tie-ins pushing guitar rock to the margins. Movie music was huge, and the feelgood, escapist vibe of the year's biggest hits reflected a country ready to let loose after a turbulent mid-decade."
+
 // Source: Kent Music Report 1978 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1978 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

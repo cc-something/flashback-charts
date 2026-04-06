@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1952
 
+export const description =
+  'Romantic ballads and show tunes ran the Australian charts, with operatic vocals and orchestral pop delivering plenty of drama. The big crooners were still firmly in charge, and the overall sound leaned lush, polished, and deeply sentimental.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://hitsofalldecades.com/chart_hits/index2.php?do_pdf=1&id=1010&option=com_content',

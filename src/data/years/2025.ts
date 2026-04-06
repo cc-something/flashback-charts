@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2025/singles-chart',
 }
 
+export const description =
+  '2025 stayed broad and a little unpredictable, with polished crossover pop, acoustic sentiment, and a few left turns all sharing space near the top. It never locked into one dominant lane, which gave the year a looser, more mixed-up character.'
+
 const getSong = ({
   rank,
   title,

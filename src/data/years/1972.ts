@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  'Teen idol pop and sentimental ballads owned the Australian charts in 1972, with swooning love songs and novelty hits filling the top spots. The local blues-rock underground was bubbling away, but the mainstream still leaned heavily toward polished, radio-friendly fare from overseas.'
+
 // Source: Kent Music Report 1972 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1972 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1990
 
+export const description =
+  '1990 leaned toward polished pop, slow-burn ballads, and glossy radio singles that stuck around for months. Dance music was getting louder, but the year still had a soft edge, with plenty of tracks built for cruising and late-night singalongs.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1990_in_Australia',
@@ -28,7 +31,7 @@ const getSong = ({
 })
 
 // Source: ARIA End of Year singles chart 1990 year-end chart
-// Via: Wikipedia — List of top 25 singles for 1990 in Australia
+// Via: Wikipedia - List of top 25 singles for 1990 in Australia
 const songs: Song[] = [
   getSong({
     rank: 1,

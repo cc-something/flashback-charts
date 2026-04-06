@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1958
 
+export const description =
+  'Folk music made a surprise splash alongside the now-established rock and roll, and novelty songs continued to find an eager audience. Australian country music also broke through with a homegrown pub anthem that became a genuine cultural moment. The charts were wide open, bouncing between polished pop, vocal harmony groups, and good-time singalongs.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_1958_in_Australia',

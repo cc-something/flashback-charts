@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1966
 
+export const description =
+  'Pop was getting more adventurous, with local beat groups pushing boundaries alongside the usual British and American chart-toppers. Novelty pop and lush orchestral numbers still charted well, but there was a clear sense that something grittier and more experimental was bubbling up from the club circuit.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1966_in_Australia',

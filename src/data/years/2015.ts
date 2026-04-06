@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2015_in_Australia',
 }
 
+export const description =
+  '2015 softened the edges, leaning on laid-back pop, warm R&B, and tropical touches that made the whole year feel sunlit. Even the sadder hits sounded smooth and unhurried.'
+
 const year = 2015
 
 const getSong = ({

@@ -3,7 +3,7 @@ import type { DecadeTheme } from '@/types/theme'
 const theme: DecadeTheme = {
   name: '2010s',
   description:
-    'Streaming changed everything in the 2010s, with indie pop, EDM, and hip-hop building a new chart landscape driven by algorithms and playlist culture. Australian artists crossed over to global audiences more than ever before, riding waves of tropical pop, dark pop, and R&B crossover.',
+    'Streaming rewired the charts in the 2010s, favouring fast-moving pop, EDM drops, rap features, and moodier R&B. Australian acts broke through globally with regularity, and hit songs started sounding more at home on playlists than in record stores.',
   fontFamily: "'Manrope', sans-serif",
   fontUrl:
     'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap',

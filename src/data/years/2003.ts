@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2003_in_Australia',
 }
 
+export const description =
+  'The 2003 charts mixed sleek pop, punchier guitar songs, and a growing pile of breakup anthems that were easy to shout along to. There was more bite in the mix, but the biggest records still chased clean hooks and easy replay value.'
+
 const getSong = ({
   rank,
   title,

@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1953
 
+export const description =
+  'Novelty hits and breezy vocal pop shared the spotlight with dreamy waltzes and film-inspired love songs. Australian audiences still had a strong appetite for charm and whimsy, and the charts felt lighthearted, even a little playful.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://en.wikipedia.org/wiki/List_of_number-one_singles_in_Australia_during_the_1950s',

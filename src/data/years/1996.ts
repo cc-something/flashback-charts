@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1996
 
+export const description =
+  '1996 had a bright, crowd-pleasing sound, with dance-pop, glossy ballads, and lighter crossover hits doing most of the work. The mood was easygoing but not bland, with a few bigger swings giving the year some edge.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1996_in_Australia',

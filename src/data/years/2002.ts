@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2002_in_Australia',
 }
 
+export const description =
+  '2002 sat between glossy pop and the rougher edges that were starting to creep in, so the charts moved between ballads, dance cuts, and guitar-led singles. The mood was familiar but a little less spotless than the year before.'
+
 const getSong = ({
   rank,
   title,

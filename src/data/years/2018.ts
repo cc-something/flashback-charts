@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2018_in_Australia',
 }
 
+export const description =
+  'Pop, hip-hop, and bruised late-night ballads shared the charts in 2018. The production was sleek, but there was a worn, low-lit mood running through much of the year.'
+
 const getSong = ({
   rank,
   title,

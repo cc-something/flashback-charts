@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2022/singles-chart',
 }
 
+export const description =
+  '2022 opened back up, mixing piano ballads, dance-floor lift, and clean crossover pop with very little genre loyalty. Big choruses returned, but the production stayed tidy and controlled.'
+
 const getSong = ({
   rank,
   title,

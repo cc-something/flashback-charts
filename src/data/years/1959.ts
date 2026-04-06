@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1959
 
+export const description =
+  'Local rock and roll acts finally cracked the Australian top ten, proving the sound had truly taken root on home soil. Vocal harmony groups, teen idols, and country-flavoured storytelling songs all competed for chart space. The decade closed with a real sense of momentum, as Australian pop started to find its own voice separate from its American and British influences.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_1959_in_Australia',

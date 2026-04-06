@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1983
 
+export const description =
+  "Pop went global and dramatic, with power ballads and flashy dance-pop flooding the Australian charts thanks to MTV's growing influence. Comedy and novelty records still had a uniquely strong showing here, and local humour sat comfortably next to massive international pop crossover hits."
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1983_in_Australia',

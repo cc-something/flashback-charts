@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1982
 
+export const description =
+  'Synth-pop and hard-edged rock split the charts down the middle, with dark electronic tracks and anthemic guitar songs both pulling huge numbers. Movie soundtracks and TV themes had real commercial power, and Australian acts were proving they could hang with the biggest international names.'
+
 export const source = {
   label: 'Kent Music Report',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1982_in_Australia',

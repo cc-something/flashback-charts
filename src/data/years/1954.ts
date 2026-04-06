@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1954
 
+export const description =
+  'Cheerful singalongs and polished crooner ballads still topped the Australian charts, but a few early hints of something new were creeping in. Doo-wop harmonies started turning up alongside the more traditional fare, and the gap between old-school pop and the coming rock sound was beginning to narrow.'
+
 export const source = {
   label: 'Australian Chart Book',
   url: 'https://en.wikipedia.org/wiki/List_of_number-one_singles_in_Australia_during_the_1950s',

@@ -22,6 +22,9 @@ const getSong = ({
   thumbnailPath: getSongThumbnailPath({ year, rank, title }),
 })
 
+export const description =
+  "European pop swept the Australian charts in 1976, with catchy, polished disco-pop sitting alongside bombastic arena rock and homegrown pub favourites. Aussie rock acts kept punching above their weight, and the charts had a confident, party-ready feel that matched the country's post-crisis mood."
+
 // Source: Kent Music Report 1976 year-end chart
 // Via: Wikipedia — List of Top 25 singles for 1976 in Australia (cites David Kent's Australian Chart Book 1970–1992)
 export const source = {

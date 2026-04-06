@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2017_in_Australia',
 }
 
+export const description =
+  '2017 pushed polished pop and festival-sized dance records to the front, while trap rhythms and softer ballads gave the year some contrast. It was glossy, efficient, and hook-driven.'
+
 const year = 2017
 
 const getSong = ({
