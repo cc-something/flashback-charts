@@ -109,8 +109,9 @@ useHead({
               style="
                 background: linear-gradient(
                   to top,
-                  rgb(0 0 0 / 75%) 0%,
-                  transparent 60%
+                  rgb(0 0 0 / 95%) 0%,
+                  rgb(0 0 0 / 60%) 40%,
+                  transparent 75%
                 );
               "
             />
