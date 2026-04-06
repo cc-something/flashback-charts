@@ -16,6 +16,12 @@ export const getLatestYear = () => latestYear
 export const getNumberOneThumbnail = (year: number) =>
   getYearData(year)?.[0]?.thumbnailPath ?? null
 
+export const getTopSongThumbnails = (year: number, limit = 4) =>
+  (getYearData(year) ?? [])
+    .slice(0, limit)
+    .map((song) => song.thumbnailPath)
+    .filter(Boolean)
+
 export const getYearPageTitle = (year: number) =>
   `Australia Top 10 Songs ${year} | Flashback Charts Australia`
 

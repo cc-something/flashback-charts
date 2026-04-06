@@ -8,6 +8,7 @@ import {
   getDecadePageSubtitle,
   getDecadePageTitle,
   getDecadeYears,
+  getTopSongThumbnails,
   getYearPageDescription,
 } from '@/content/chartContent'
 import { getThemeForYear } from '@/themes'
@@ -103,12 +104,59 @@ useHead(() => ({
       <article
         v-for="year in years"
         :key="year"
-        class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[1fr_auto]"
+        class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr_auto]"
         :style="{
           backgroundColor: `${theme.colors.background}99`,
           borderColor: `${theme.colors.primary}33`,
         }"
       >
+        <router-link
+          :to="`/${year}`"
+          class="group relative block aspect-square overflow-hidden rounded-xl"
+          :style="{
+            backgroundColor: theme.colors.surface,
+            border: `1px solid ${theme.colors.primary}44`,
+          }"
+        >
+          <div class="grid h-full grid-cols-2 grid-rows-2">
+            <img
+              v-for="(thumbnail, index) in getTopSongThumbnails(year)"
+              :key="`${year}-${index}`"
+              :src="thumbnail"
+              :alt="`Top song ${index + 1} of ${year}`"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <div
+            class="absolute inset-0"
+            style="
+              background: linear-gradient(
+                to top,
+                rgb(0 0 0 / 95%) 0%,
+                rgb(0 0 0 / 55%) 36%,
+                transparent 78%
+              );
+            "
+          />
+          <div
+            class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+          >
+            <ArrowRight class="h-7 w-7 text-white drop-shadow-lg" />
+          </div>
+          <span class="absolute bottom-0 left-0 right-0 z-20 pb-2 text-center">
+            <span
+              class="block text-base font-bold leading-tight"
+              :style="{
+                color: theme.colors.primary,
+                fontFamily: theme.fontFamily,
+              }"
+            >
+              {{ year }}
+            </span>
+            <span class="block text-xs leading-tight text-white/70">Top 4</span>
+          </span>
+        </router-link>
+
         <div>
           <h2
             class="text-2xl font-bold"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { computed, ref, onMounted, nextTick, watch } from 'vue'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
@@ -23,6 +24,39 @@ const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const isSearchOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
+const pageTransitionName = ref('page')
+
+const getDecadeStartYear = (
+  routeLocation: Pick<RouteLocationNormalizedLoaded, 'name' | 'params'> | null,
+) => {
+  if (routeLocation?.name !== 'decade') return null
+  const decade = Number.parseInt(String(routeLocation.params.decade), 10)
+  return Number.isNaN(decade) ? null : decade
+}
+
+const getPageTransitionName = (
+  fromRoute: Pick<RouteLocationNormalizedLoaded, 'name' | 'params'> | null,
+  toRoute: Pick<RouteLocationNormalizedLoaded, 'name' | 'params'>,
+) => {
+  if (
+    (fromRoute?.name === 'home' && toRoute.name === 'decade') ||
+    (fromRoute?.name === 'decade' && toRoute.name === 'home')
+  )
+    return 'page-home-decade'
+
+  if (fromRoute?.name === 'decade' && toRoute.name === 'decade') {
+    const fromDecadeStartYear = getDecadeStartYear(fromRoute)
+    const toDecadeStartYear = getDecadeStartYear(toRoute)
+    if (fromDecadeStartYear !== null && toDecadeStartYear !== null)
+      return toDecadeStartYear > fromDecadeStartYear
+        ? 'page-decade-forward'
+        : 'page-decade-back'
+  }
+
+  return 'page'
+}
+
+const pageTransitionKey = computed(() => route.fullPath)
 
 const openSearch = async () => {
   isSearchOpen.value = true
@@ -36,6 +70,16 @@ watch(
     if (route.name === 'year' && Number(route.params.year) === year) return
     router.push(`/${year}`)
   },
+)
+
+watch(
+  () => route.fullPath,
+  (newPath, oldPath) => {
+    const fromRoute = oldPath ? router.resolve(oldPath) : null
+    const toRoute = router.resolve(newPath)
+    pageTransitionName.value = getPageTransitionName(fromRoute, toRoute)
+  },
+  { immediate: true },
 )
 
 onMounted(async () => {
@@ -98,8 +142,8 @@ onMounted(async () => {
     </button>
 
     <router-view v-slot="{ Component }">
-      <Transition name="page" mode="out-in">
-        <component :is="Component" />
+      <Transition :name="pageTransitionName" mode="out-in">
+        <component :is="Component" :key="pageTransitionKey" />
       </Transition>
     </router-view>
 
@@ -138,5 +182,55 @@ onMounted(async () => {
 .page-leave-to {
   opacity: 0;
   transform: translateY(-8px);
+}
+
+.page-home-decade-enter-active,
+.page-home-decade-leave-active,
+.page-decade-forward-enter-active,
+.page-decade-forward-leave-active,
+.page-decade-back-enter-active,
+.page-decade-back-leave-active {
+  transition:
+    opacity 0.34s ease,
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.34s ease;
+}
+
+.page-home-decade-enter-from,
+.page-home-decade-leave-to {
+  opacity: 0;
+  filter: blur(10px);
+}
+
+.page-home-decade-enter-from {
+  transform: translateY(24px) scale(0.985);
+}
+
+.page-home-decade-leave-to {
+  transform: translateY(-18px) scale(1.01);
+}
+
+.page-decade-forward-enter-from,
+.page-decade-back-enter-from,
+.page-decade-forward-leave-to,
+.page-decade-back-leave-to {
+  opacity: 0;
+  filter: blur(6px);
+}
+
+.page-decade-forward-enter-from {
+  transform: translateX(36px);
+}
+
+.page-decade-forward-leave-to {
+  transform: translateX(-28px);
+}
+
+.page-decade-back-enter-from {
+  transform: translateX(-36px);
+}
+
+.page-decade-back-leave-to {
+  transform: translateX(28px);
 }
 </style>
