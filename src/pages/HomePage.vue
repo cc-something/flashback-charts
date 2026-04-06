@@ -2,17 +2,25 @@
 import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
 import { groupBy } from 'lodash-es'
-import { getAvailableYears } from '@/data'
+import { getAvailableYears, getYearData } from '@/data'
 import { getDecadeForYear, getThemeForYear } from '@/themes'
 
 const years = getAvailableYears().sort((a, b) => a - b)
 const latestYear = years[years.length - 1]
+
+const getNumberOneThumbnail = (year: number) =>
+  getYearData(year)?.[0]?.thumbnailPath ?? null
+
 const decades = computed(() => {
   const grouped = groupBy(years, (year) => getDecadeForYear(year))
   return Object.entries(grouped)
     .map(([decade, decadeYears]) => {
       const theme = getThemeForYear(parseInt(decade))
-      return { decade, years: decadeYears, theme }
+      const yearTiles = decadeYears.map((year) => ({
+        year,
+        thumbnail: decade === '1940s' ? getNumberOneThumbnail(year) : null,
+      }))
+      return { decade, years: yearTiles, theme }
     })
     .sort((a, b) => a.decade.localeCompare(b.decade))
 })
@@ -80,25 +88,43 @@ useHead({
         {{ group.theme.description }}
       </p>
       <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
-        <li v-for="year in group.years" :key="year">
+        <li v-for="tile in group.years" :key="tile.year">
           <router-link
-            :to="`/${year}`"
-            class="flex items-center justify-center aspect-square rounded-lg text-sm font-bold text-center transition-all duration-200 hover:scale-105 hover:shadow-lg"
+            :to="`/${tile.year}`"
+            class="relative flex items-center justify-center aspect-square rounded-lg overflow-hidden font-bold text-center transition-all duration-200 hover:scale-105 hover:shadow-lg"
             :style="{
               backgroundColor: group.theme.colors.surface,
-              color: group.theme.colors.text,
               border: `1px solid ${group.theme.colors.primary}44`,
               fontFamily: group.theme.fontFamily,
             }"
           >
-            <span>
+            <img
+              v-if="tile.thumbnail"
+              :src="tile.thumbnail"
+              :alt="`#1 song of ${tile.year}`"
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+            <div
+              class="absolute inset-0"
+              :style="{
+                background: tile.thumbnail
+                  ? `linear-gradient(to top, ${group.theme.colors.background}ee 0%, ${group.theme.colors.background}88 50%, ${group.theme.colors.background}44 100%)`
+                  : undefined,
+              }"
+            />
+            <span class="relative z-10">
               <span
                 class="block text-base leading-tight"
                 :style="{ color: group.theme.colors.primary }"
               >
-                {{ year }}
+                {{ tile.year }}
               </span>
-              <span class="block text-xs leading-tight opacity-70">Top 10</span>
+              <span
+                class="block text-xs leading-tight"
+                :style="{ color: group.theme.colors.text, opacity: 0.7 }"
+              >
+                Top 10
+              </span>
             </span>
           </router-link>
         </li>
