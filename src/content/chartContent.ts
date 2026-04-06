@@ -53,7 +53,7 @@ export const getAvailableDecades = () =>
   [...new Set(years.map((year) => getDecadeForYear(year)))].sort()
 
 export const getDecadePageTitle = (decade: string) =>
-  `Australia's Top 10 Songs in the ${decade}`
+  `Top 10 Songs in ${decade} Australia`
 
 export const getDecadePageSubtitle = (decade: string) => {
   const decadeStartYear = getDecadeStartYear(decade)
