@@ -60,10 +60,10 @@ onMounted(async () => {
     <YearTabs />
 
     <router-link
-      v-if="route.path !== '/' && route.name !== 'decade'"
+      v-if="route.path !== '/'"
       to="/"
       aria-label="Home"
-      class="fixed left-4 top-20 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="fixed left-4 top-24 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
     >
       <svg
         class="h-5 w-5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]"

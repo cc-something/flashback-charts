@@ -99,38 +99,12 @@ useHead(() => ({
       >
         💿 Flashback Charts
       </p>
-      <div class="flex items-center justify-between gap-4">
-        <h1
-          class="theme-display text-4xl font-bold text-primary"
-          :style="{ fontFamily: theme.fontFamily }"
-        >
-          {{ title }}
-        </h1>
-        <router-link
-          to="/"
-          aria-label="Home"
-          class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-        >
-          <svg
-            class="h-5 w-5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M3 11 12 3l9 8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M5 10v10h14V10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </router-link>
-      </div>
+      <h1
+        class="theme-display text-4xl font-bold text-primary"
+        :style="{ fontFamily: theme.fontFamily }"
+      >
+        {{ title }}
+      </h1>
       <p
         v-if="theme.description"
         class="mt-4 max-w-3xl text-base leading-relaxed"
