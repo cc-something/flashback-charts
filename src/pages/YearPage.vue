@@ -2,6 +2,10 @@
 import { computed, onUnmounted, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
+import {
+  getYearPageDescription,
+  getYearPageTitle,
+} from '@/content/chartContent'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { applyPendingTheme } from '@/composables/useDecadeTheme'
@@ -13,16 +17,8 @@ const store = useChartStore()
 const player = usePlayerStore()
 
 const yearNumber = computed(() => Number(props.year))
-const title = computed(
-  () =>
-    `Australia Top 10 Songs ${yearNumber.value} | Flashback Charts Australia`,
-)
-const topSong = computed(() => store.currentSongs[0] ?? null)
-const description = computed(() => {
-  const base = `The 10 biggest hit songs in Australia in ${yearNumber.value}.`
-  if (!topSong.value) return base
-  return `${base} ${topSong.value.title} by ${topSong.value.artist} topped the chart.`
-})
+const title = computed(() => getYearPageTitle(yearNumber.value))
+const description = computed(() => getYearPageDescription(yearNumber.value))
 const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''

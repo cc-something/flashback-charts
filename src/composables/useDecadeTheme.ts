@@ -4,6 +4,7 @@ import { useChartStore } from '@/stores/chart'
 import { getHomeTheme, getThemeForYear } from '@/themes'
 
 const getDecade = (year: number) => Math.floor(year / 10)
+const getDecadeStartYear = (decade: string) => Number.parseInt(decade, 10)
 
 const applyTheme = (year: number) => {
   if (typeof document === 'undefined') return
@@ -62,6 +63,14 @@ export const useDecadeTheme = () => {
       const routeYear = Number(route.params.year)
       if (!Number.isNaN(routeYear)) {
         applyTheme(routeYear)
+        return
+      }
+    }
+
+    if (route.name === 'decade') {
+      const routeDecade = getDecadeStartYear(String(route.params.decade))
+      if (!Number.isNaN(routeDecade)) {
+        applyTheme(routeDecade)
         return
       }
     }

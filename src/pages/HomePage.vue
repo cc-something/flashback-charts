@@ -1,35 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
-import { groupBy } from 'lodash-es'
 import { ArrowRight } from 'lucide-vue-next'
-import { getAvailableYears, getYearData } from '@/data'
-import { getDecadeForYear, getThemeForYear } from '@/themes'
-
-const years = getAvailableYears().sort((a, b) => a - b)
-const latestYear = years[years.length - 1]
-
-const getNumberOneThumbnail = (year: number) =>
-  getYearData(year)?.[0]?.thumbnailPath ?? null
-
-const decades = computed(() => {
-  const grouped = groupBy(years, (year) => getDecadeForYear(year))
-  return Object.entries(grouped)
-    .map(([decade, decadeYears]) => {
-      const theme = getThemeForYear(parseInt(decade))
-      const yearTiles = decadeYears.map((year) => ({
-        year,
-        thumbnail: getNumberOneThumbnail(year),
-      }))
-      return { decade, years: yearTiles, theme }
-    })
-    .sort((a, b) => a.decade.localeCompare(b.decade))
-})
+import { getDecadeSummaries, getLatestYear } from '@/content/chartContent'
 
 const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   /\/$/,
   '',
 )
+const decades = getDecadeSummaries()
+const latestYear = getLatestYear()
 const title = `Flashback Charts Australia — Australia Top 10 Songs by Year, 1940 to ${latestYear}`
 const description = `Browse the top 10 songs in Australia for every year from 1940 to ${latestYear}. Listen to the biggest Aussie hits by decade, year, and artist.`
 
@@ -74,13 +53,18 @@ useHead({
       >
         <h2
           :id="`decade-${group.decade}`"
-          class="text-xl font-bold mb-3"
+          class="mb-3 text-xl font-bold"
           :style="{
             color: group.theme.colors.primary,
             fontFamily: group.theme.fontFamily,
           }"
         >
-          {{ group.decade }}
+          <router-link
+            :to="`/${group.decade}`"
+            class="transition-opacity duration-150 hover:opacity-80"
+          >
+            {{ group.decade }}
+          </router-link>
         </h2>
         <p
           v-if="group.theme.description"

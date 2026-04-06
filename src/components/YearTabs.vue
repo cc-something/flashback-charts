@@ -45,10 +45,10 @@ watch(() => store.selectedYear, scrollToActiveTab)
       <button
         v-for="year in store.yearRange"
         :key="year"
-        :data-active="route.name !== 'home' && year === store.selectedYear"
+        :data-active="route.name === 'year' && year === store.selectedYear"
         :class="[
           'flex-shrink-0 px-3 py-1.5 rounded text-sm font-medium transition-all duration-200',
-          route.name !== 'home' && year === store.selectedYear
+          route.name === 'year' && year === store.selectedYear
             ? 'bg-tab-active text-background font-bold scale-105'
             : store.availableYears.includes(year)
               ? 'text-text hover:bg-tab-inactive hover:text-text'
