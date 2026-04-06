@@ -2,15 +2,18 @@
 import { ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
+import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
+import EmailSignupModal from '@/components/EmailSignupModal.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 
 useDecadeTheme()
+const emailSignup = useEmailSignup()
 const { loadScript, trackPageview } = usePlausibleAnalytics()
 
 const route = useRoute()
@@ -105,6 +108,11 @@ onMounted(async () => {
       v-if="isSearchOpen"
       ref="searchOverlay"
       @close="isSearchOpen = false"
+    />
+    <EmailSignupModal
+      v-if="emailSignup.show.value"
+      @dismiss="emailSignup.dismiss"
+      @submit="emailSignup.submit"
     />
     <div
       ref="playerContainer"
