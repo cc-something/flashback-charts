@@ -52,7 +52,7 @@ useHead({
   <main class="max-w-[1300px] mx-auto px-4 py-10">
     <header class="mb-8">
       <h1 class="text-4xl font-bold text-primary">
-        Flashback Charts Australia
+        💿 Flashback Charts Australia
       </h1>
       <p class="mt-2 text-text-muted">
         The top 10 songs in Australia for every year from 1940 to
