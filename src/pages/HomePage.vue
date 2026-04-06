@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
 import { groupBy } from 'lodash-es'
+import { ArrowRight } from 'lucide-vue-next'
 import { getAvailableYears, getYearData } from '@/data'
 import { getDecadeForYear, getThemeForYear } from '@/themes'
 
@@ -88,11 +89,17 @@ useHead({
         >
           {{ group.theme.description }}
         </p>
+        <p
+          class="text-xs mb-3"
+          :style="{ color: group.theme.colors.textMuted }"
+        >
+          Click on a year to see the Top 10 songs:
+        </p>
         <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
           <li v-for="tile in group.years" :key="tile.year">
             <router-link
               :to="`/${tile.year}`"
-              class="relative block aspect-square rounded-lg overflow-hidden font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              class="group relative block aspect-square rounded-lg overflow-hidden font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
               :style="{
                 backgroundColor: group.theme.colors.surface,
                 border: `1px solid ${group.theme.colors.primary}44`,
@@ -116,8 +123,13 @@ useHead({
                   );
                 "
               />
+              <div
+                class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              >
+                <ArrowRight class="w-6 h-6 text-white drop-shadow-lg" />
+              </div>
               <span
-                class="absolute bottom-0 left-0 right-0 z-10 pb-1.5 text-center"
+                class="absolute bottom-0 left-0 right-0 z-20 pb-1.5 text-center"
               >
                 <span
                   class="block text-sm leading-tight font-bold"
