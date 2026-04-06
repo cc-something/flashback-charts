@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Disc3 } from 'lucide-vue-next'
+import { Disc3, Youtube } from 'lucide-vue-next'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
@@ -30,6 +30,11 @@ const handleImageError = (e: Event) => {
 }
 
 const handleClick = () => player.play(props.song, props.year)
+const youtubeVideoUrl = computed(() =>
+  props.song.youtubeVideoId
+    ? `https://www.youtube.com/watch?v=${props.song.youtubeVideoId}`
+    : '',
+)
 </script>
 
 <template>
@@ -125,6 +130,17 @@ const handleClick = () => player.play(props.song, props.year)
         {{ song.album }}
       </p>
     </div>
+
+    <a
+      v-if="song.youtubeVideoId"
+      :aria-label="`Open ${song.title} by ${song.artist} on YouTube`"
+      :href="youtubeVideoUrl"
+      class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:bg-black/8 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      rel="noreferrer"
+      target="_blank"
+    >
+      <Youtube class="h-5 w-5" />
+    </a>
 
     <Transition name="seek">
       <div
