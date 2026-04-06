@@ -2,6 +2,8 @@ import type { DecadeTheme } from '@/types/theme'
 
 const theme: DecadeTheme = {
   name: '1980s',
+  description:
+    'Synth-pop, new wave, and electronic dance music dominated Australian charts in the 1980s, as the MTV era made image as important as sound. Power ballads, post-punk, and a globally successful wave of Australian new wave acts put the country firmly on the international pop map.',
   fontFamily: "'Orbitron', sans-serif",
   fontUrl:
     'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap',
