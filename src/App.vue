@@ -57,6 +57,10 @@ const getPageTransitionName = (
 }
 
 const pageTransitionKey = computed(() => route.fullPath)
+const resetPageScroll = () => {
+  if (typeof window === 'undefined') return
+  window.scrollTo({ top: 0, behavior: 'instant' })
+}
 
 const openSearch = async () => {
   isSearchOpen.value = true
@@ -142,7 +146,11 @@ onMounted(async () => {
     </button>
 
     <router-view v-slot="{ Component }">
-      <Transition :name="pageTransitionName" mode="out-in">
+      <Transition
+        :name="pageTransitionName"
+        mode="out-in"
+        @after-enter="resetPageScroll"
+      >
         <component :is="Component" :key="pageTransitionKey" />
       </Transition>
     </router-view>
