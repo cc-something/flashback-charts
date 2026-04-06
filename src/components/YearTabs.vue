@@ -62,7 +62,7 @@ watch(() => store.selectedYear, scrollToActiveTab)
         :data-active="route.name === 'year' && year === store.selectedYear"
         :style="getTabThemeStyle(year)"
         :class="[
-          'year-tab flex-shrink-0 px-3 py-1.5 rounded text-sm font-medium transition-all duration-200',
+          'year-tab inline-flex h-10 flex-shrink-0 items-center justify-center px-3 rounded text-sm font-medium transition-all duration-200',
           route.name === 'year' && year === store.selectedYear
             ? 'year-tab-active font-bold scale-105'
             : store.availableYears.includes(year)
@@ -82,6 +82,7 @@ watch(() => store.selectedYear, scrollToActiveTab)
   background-color: transparent;
   color: var(--year-tab-text-muted);
   font-family: var(--year-tab-font-family);
+  line-height: 1;
 }
 
 .year-tab-active {
