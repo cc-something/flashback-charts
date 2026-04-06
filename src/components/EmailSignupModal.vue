@@ -69,17 +69,20 @@ defineExpose({ focusInput })
             just the hits.
           </p>
 
-          <form class="mt-5 flex gap-2" @submit.prevent="handleSubmit">
+          <form
+            class="mt-5 flex flex-col gap-2 sm:flex-row"
+            @submit.prevent="handleSubmit"
+          >
             <input
               ref="inputEl"
               v-model="email"
               type="email"
               placeholder="your@email.com"
-              class="flex-1 rounded-lg border border-text-muted/20 bg-background px-3.5 py-2.5 text-sm text-text placeholder-text-muted/50 outline-none transition-colors focus:border-primary"
+              class="min-w-0 flex-1 rounded-lg border border-text-muted/20 bg-background px-3.5 py-2.5 text-sm text-text placeholder-text-muted/50 outline-none transition-colors focus:border-primary"
             />
             <button
               type="submit"
-              class="cursor-pointer rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-background transition-opacity hover:opacity-90"
+              class="w-full cursor-pointer rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-background transition-opacity hover:opacity-90 sm:w-auto"
             >
               Subscribe
             </button>
