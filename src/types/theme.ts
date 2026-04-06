@@ -2,6 +2,7 @@ export interface DecadeTheme {
   name: string
   fontFamily: string
   fontUrl: string
+  description?: string
   colors: {
     background: string
     surface: string

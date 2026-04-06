@@ -72,6 +72,13 @@ useHead({
       >
         {{ group.decade }}
       </h2>
+      <p
+        v-if="group.theme.description"
+        class="text-sm leading-relaxed mb-4"
+        :style="{ color: group.theme.colors.textMuted }"
+      >
+        {{ group.theme.description }}
+      </p>
       <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
         <li v-for="year in group.years" :key="year">
           <router-link
