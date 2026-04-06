@@ -2,13 +2,11 @@
 import { ref, computed } from 'vue'
 import { Disc3 } from 'lucide-vue-next'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
-import { useRouter } from 'vue-router'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 
 const props = defineProps<{ song: Song; year: number }>()
 
-const router = useRouter()
 const player = usePlayerStore()
 const isHovered = ref(false)
 const hasThumbnailError = ref(false)
@@ -32,11 +30,6 @@ const handleImageError = (e: Event) => {
 }
 
 const handleClick = () => player.play(props.song, props.year)
-const goToSong = () =>
-  router.push({
-    path: `/${props.year}`,
-    query: { song: String(props.song.rank) },
-  })
 const youtubeVideoUrl = computed(() =>
   props.song.youtubeVideoId
     ? `https://www.youtube.com/watch?v=${props.song.youtubeVideoId}`
@@ -55,9 +48,9 @@ const youtubeVideoUrl = computed(() =>
   >
     <button
       type="button"
-      :aria-label="`Jump to ${song.title} by ${song.artist}`"
+      :aria-label="`Play ${song.title} by ${song.artist}`"
       class="absolute inset-0 z-0 cursor-pointer rounded-lg"
-      @click="goToSong"
+      @click="handleClick"
     />
     <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
       {{ song.rank }}

@@ -173,16 +173,6 @@ watch(
       </button>
     </header>
 
-    <a
-      v-if="store.currentSource"
-      :href="store.currentSource.url"
-      class="mb-4 block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
-      rel="noreferrer"
-      target="_blank"
-    >
-      Source: {{ store.currentSource.label }}
-    </a>
-
     <p
       v-if="store.currentDescription"
       class="mb-5 text-sm leading-relaxed text-text-muted"
@@ -227,6 +217,16 @@ watch(
             :song="song"
             :year="yearNumber"
           />
+
+          <a
+            v-if="store.currentSource"
+            :href="store.currentSource.url"
+            class="mt-3 block text-xs text-text-muted/80 underline decoration-primary/30 underline-offset-4 transition-colors duration-150 hover:text-primary"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Source: {{ store.currentSource.label }}
+          </a>
         </div>
 
         <div

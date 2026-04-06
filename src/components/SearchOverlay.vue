@@ -41,7 +41,12 @@ defineExpose({ focusInput })
     <div class="mx-auto flex h-full max-w-[900px] flex-col px-4 pt-8">
       <!-- Search bar -->
       <div class="z-10 flex flex-shrink-0 flex-col gap-2">
-        <p v-if="query" class="px-1 text-xs text-text-muted">
+        <p
+          :class="[
+            'px-1 text-xs text-text-muted transition-opacity',
+            query ? 'opacity-100' : 'opacity-0',
+          ]"
+        >
           {{ allResults.length }} results
         </p>
 
@@ -95,7 +100,7 @@ defineExpose({ focusInput })
           <div
             v-for="({ song, year }, i) in results"
             :key="`${year}-${song.rank}-${i}`"
-            class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface p-3 transition-colors hover:bg-surface/80"
+            class="group flex cursor-pointer items-center gap-3 rounded-lg border border-transparent bg-surface p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-surface/75 hover:shadow-lg hover:shadow-black/10 focus-visible:-translate-y-0.5 focus-visible:border-primary/30 focus-visible:bg-surface/75 focus-visible:shadow-lg focus-visible:shadow-black/10"
             role="button"
             tabindex="0"
             @click="goToSong(year, song.rank)"
@@ -105,7 +110,7 @@ defineExpose({ focusInput })
             <!-- Thumbnail / play -->
             <button
               type="button"
-              class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation"
+              class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md ring-1 ring-black/10 transition duration-150 group-hover:scale-[1.03] group-hover:shadow-lg group-hover:shadow-black/20 hover:ring-primary/35 touch-manipulation"
               @click.stop="playSong(song, year)"
             >
               <img
@@ -119,7 +124,7 @@ defineExpose({ focusInput })
                 "
               />
               <div
-                class="absolute inset-0 flex items-center justify-center bg-black/40"
+                class="absolute inset-0 flex items-center justify-center bg-black/40 transition-colors duration-150 group-hover:bg-black/55"
               >
                 <svg
                   v-if="
