@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
+import { ArrowLeft, ArrowRight } from 'lucide-vue-next'
 import {
+  getAvailableDecades,
   getDecadePageDescription,
   getDecadePageSubtitle,
   getDecadePageTitle,
@@ -15,6 +17,16 @@ const props = defineProps<{ decade: string }>()
 const decadeStartYear = computed(() => Number.parseInt(props.decade, 10))
 const theme = computed(() => getThemeForYear(decadeStartYear.value))
 const years = computed(() => getDecadeYears(props.decade))
+const decades = getAvailableDecades()
+const decadeIndex = computed(() => decades.indexOf(props.decade))
+const previousDecade = computed(() =>
+  decadeIndex.value > 0 ? decades[decadeIndex.value - 1] : null,
+)
+const nextDecade = computed(() =>
+  decadeIndex.value >= 0 && decadeIndex.value < decades.length - 1
+    ? decades[decadeIndex.value + 1]
+    : null,
+)
 const title = computed(() => getDecadePageTitle(props.decade))
 const subtitle = computed(() => getDecadePageSubtitle(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
@@ -126,5 +138,35 @@ useHead(() => ({
         </div>
       </article>
     </section>
+
+    <nav class="mt-8 flex items-center justify-between gap-4">
+      <router-link
+        v-if="previousDecade"
+        :to="`/${previousDecade}`"
+        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
+        :style="{
+          borderColor: `${theme.colors.primary}33`,
+          color: theme.colors.text,
+        }"
+      >
+        <ArrowLeft class="h-4 w-4" />
+        {{ previousDecade }}
+      </router-link>
+      <div v-else />
+
+      <router-link
+        v-if="nextDecade"
+        :to="`/${nextDecade}`"
+        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
+        :style="{
+          borderColor: `${theme.colors.primary}33`,
+          color: theme.colors.text,
+        }"
+      >
+        {{ nextDecade }}
+        <ArrowRight class="h-4 w-4" />
+      </router-link>
+      <div v-else />
+    </nav>
   </main>
 </template>

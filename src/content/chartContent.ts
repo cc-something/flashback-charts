@@ -29,6 +29,9 @@ export const getYearPageDescription = (year: number) => {
 export const getDecadeYears = (decade: string) =>
   years.filter((year) => getDecadeForYear(year) === decade)
 
+export const getAvailableDecades = () =>
+  [...new Set(years.map((year) => getDecadeForYear(year)))].sort()
+
 export const getDecadePageTitle = (decade: string) =>
   `Australia's Top 10 Songs in the ${decade}`
 
