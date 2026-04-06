@@ -30,7 +30,7 @@ export const getDecadeYears = (decade: string) =>
   years.filter((year) => getDecadeForYear(year) === decade)
 
 export const getDecadePageTitle = (decade: string) =>
-  `Australia Top 10 Songs of the ${decade} | Flashback Charts Australia`
+  `Australia's Top 10 Songs in the ${decade}`
 
 export const getDecadePageSubtitle = (decade: string) => {
   const decadeStartYear = getDecadeStartYear(decade)
