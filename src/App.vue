@@ -129,11 +129,16 @@ onMounted(async () => {
 <style scoped>
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.14s ease;
+  transition: opacity 0.22s ease;
+  will-change: opacity;
 }
 
 .page-enter-from {
   opacity: 0;
+}
+
+.page-enter-to {
+  opacity: 1;
 }
 
 .page-leave-to {
