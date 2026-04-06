@@ -35,15 +35,14 @@ watch(
   },
 )
 
-watch(
-  () => route.path,
-  () => trackPageview(),
-)
-
 onMounted(async () => {
   if (playerContainer.value) player.setPlayerContainer(playerContainer.value)
   await loadScript()
   trackPageview()
+  watch(
+    () => route.path,
+    () => trackPageview(),
+  )
 })
 </script>
 
