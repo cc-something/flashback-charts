@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'The 2003 charts mixed sleek pop, punchier guitar songs, and a growing pile of breakup anthems that were easy to shout along to. There was more bite in the mix, but the biggest records still chased clean hooks and easy replay value.'
+  '2003 mixed sleek pop, punchier guitar songs, and a growing pile of breakup anthems that were easy to shout along to. There was more bite in the mix, but the biggest records still chased clean hooks and easy replay value.'
 
 const getSong = ({
   rank,

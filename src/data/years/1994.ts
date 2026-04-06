@@ -4,7 +4,7 @@ import type { Song } from '@/types/song'
 const year = 1994
 
 export const description =
-  '1994 was full of slow-building ballads and easy-to-sing pop, with a warm, sentimental tone running through the whole year. The chart leaned into soft edges and big hooks, but there was still enough grit to keep it from feeling too neat.'
+  '1994 was heavy on slow-building ballads and easy-to-sing pop, with a warm, sentimental tone running through the whole year. The chart leaned into soft edges and big hooks, but there was still enough grit to keep it from feeling too neat.'
 
 export const source = {
   label: 'ARIA End of Year singles chart',

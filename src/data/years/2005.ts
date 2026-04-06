@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  '2005 leaned hard into club-pop, polished R&B, and emotional singalongs that could fill a car stereo or a dance floor without much effort. Guitar bands were still around, but the charts were mostly chasing shine and momentum.'
+  '2005 leaned hard into club-pop, polished R&B, and emotional singalongs that could fill a car stereo or a dance floor without much effort. Guitar bands were still around, but most of the chart was chasing shine and momentum.'
 
 const getSong = ({
   rank,

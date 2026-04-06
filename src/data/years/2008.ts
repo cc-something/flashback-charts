@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'By 2008, the charts were getting more electronic, with bright synths, club beats, and dramatic pop melodies all pushing together. The year felt glossy and a little restless, like mainstream pop had started to speed up.'
+  'By 2008, things were getting more electronic, with bright synths, club beats, and dramatic pop melodies all pushing together. The year felt glossy and a little restless, like mainstream pop had started to speed up.'
 
 const getSong = ({
   rank,

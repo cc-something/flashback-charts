@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'In 2004, the charts settled into a strong run of pop-rock, rap crossover, and slick ballads that all wanted the same thing: a huge hook. The year felt confident, loud, and very comfortable living on the radio.'
+  'In 2004, pop-rock, rap crossover, and slick ballads settled into a strong run, all chasing the same thing: a huge hook. The year felt confident, loud, and very comfortable living on the radio.'
 
 const getSong = ({
   rank,
