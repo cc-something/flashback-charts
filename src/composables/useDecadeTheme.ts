@@ -10,6 +10,7 @@ const applyTheme = (year: number) => {
   if (typeof document === 'undefined') return
   const theme = getThemeForYear(year)
   const root = document.documentElement
+  const bodyFontFamily = theme.bodyFontFamily ?? theme.fontFamily
 
   root.style.setProperty('--theme-background', theme.colors.background)
   root.style.setProperty('--theme-surface', theme.colors.surface)
@@ -20,14 +21,17 @@ const applyTheme = (year: number) => {
   root.style.setProperty('--theme-accent', theme.colors.accent)
   root.style.setProperty('--theme-tab-active', theme.colors.tabActive)
   root.style.setProperty('--theme-tab-inactive', theme.colors.tabInactive)
+  root.style.setProperty('--theme-display-font-family', theme.fontFamily)
+  root.style.setProperty('--theme-body-font-family', bodyFontFamily)
 
-  document.body.style.fontFamily = theme.fontFamily
+  document.body.style.fontFamily = bodyFontFamily
 }
 
 const applyHomeTheme = () => {
   if (typeof document === 'undefined') return
   const theme = getHomeTheme()
   const root = document.documentElement
+  const bodyFontFamily = theme.bodyFontFamily ?? theme.fontFamily
 
   root.style.setProperty('--theme-background', theme.colors.background)
   root.style.setProperty('--theme-surface', theme.colors.surface)
@@ -38,8 +42,10 @@ const applyHomeTheme = () => {
   root.style.setProperty('--theme-accent', theme.colors.accent)
   root.style.setProperty('--theme-tab-active', theme.colors.tabActive)
   root.style.setProperty('--theme-tab-inactive', theme.colors.tabInactive)
+  root.style.setProperty('--theme-display-font-family', theme.fontFamily)
+  root.style.setProperty('--theme-body-font-family', bodyFontFamily)
 
-  document.body.style.fontFamily = theme.fontFamily
+  document.body.style.fontFamily = bodyFontFamily
 }
 
 let pendingThemeYear: number | null = null

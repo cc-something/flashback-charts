@@ -9,6 +9,7 @@ import {
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { applyPendingTheme } from '@/composables/useDecadeTheme'
+import { getThemeForYear } from '@/themes'
 import SongCard from '@/components/SongCard.vue'
 
 const props = defineProps<{ year: string }>()
@@ -17,6 +18,7 @@ const store = useChartStore()
 const player = usePlayerStore()
 
 const yearNumber = computed(() => Number(props.year))
+const theme = computed(() => getThemeForYear(yearNumber.value))
 const topSong = computed(() => store.currentSongs[0] ?? null)
 const title = computed(() => getYearPageTitle(yearNumber.value))
 const description = computed(() => getYearPageDescription(yearNumber.value))
@@ -103,13 +105,16 @@ watch(yearNumber, () => {
   <main class="max-w-2xl mx-auto px-4 py-6">
     <header class="mb-6 flex items-start justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-primary">
+        <h1
+          class="theme-display text-3xl font-bold text-primary"
+          :style="{ fontFamily: theme.fontFamily }"
+        >
           Australia Top 10 Songs {{ yearNumber }}
         </h1>
         <a
           v-if="store.currentSource"
           :href="store.currentSource.url"
-          class="mt-1 inline-block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
+          class="mt-1 inline-block text-base text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
           rel="noreferrer"
           target="_blank"
         >
@@ -118,7 +123,7 @@ watch(yearNumber, () => {
       </div>
       <button
         type="button"
-        class="flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-sm font-medium text-text-muted transition-colors duration-150 hover:text-text"
+        class="flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
         :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
         @click="store.toggleSortOrder()"
       >
@@ -151,7 +156,7 @@ watch(yearNumber, () => {
           <p class="text-lg text-text-muted">
             No data yet for {{ yearNumber }}
           </p>
-          <p class="text-sm text-text-muted/60">Chart data coming soon</p>
+          <p class="text-base text-text-muted/70">Chart data coming soon</p>
         </div>
       </div>
     </Transition>

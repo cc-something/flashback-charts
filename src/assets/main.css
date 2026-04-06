@@ -12,15 +12,30 @@
   --color-tab-inactive: var(--theme-tab-inactive);
 }
 
+:root {
+  --theme-display-font-family: 'Space Grotesk', sans-serif;
+  --theme-body-font-family: 'Space Grotesk', sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  font-size: 18px;
+  line-height: 1.5;
   background-color: var(--theme-background);
   color: var(--theme-text);
   transition:
     background-color 0.4s ease,
     color 0.4s ease;
+}
+
+.theme-display {
+  font-family: var(--theme-display-font-family);
+}
+
+.theme-body {
+  font-family: var(--theme-body-font-family);
 }

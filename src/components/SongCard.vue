@@ -35,7 +35,7 @@ const handleClick = () => player.play(props.song, props.year)
 <template>
   <article
     :data-song-id="song.youtubeVideoId"
-    class="relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3 py-2.5 transition-colors duration-150 hover:bg-surface/80"
+    class="relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3.5 py-3 transition-colors duration-150 hover:bg-surface/80"
   >
     <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
       {{ song.rank }}
@@ -113,12 +113,15 @@ const handleClick = () => player.play(props.song, props.year)
       </Transition>
     </button>
 
-    <div class="min-w-0 flex-1 flex flex-col gap-0.5">
-      <h2 class="text-sm font-bold leading-tight text-text">
+    <div class="theme-body min-w-0 flex-1 flex flex-col gap-0.5">
+      <h2 class="text-base font-bold leading-snug text-text">
         {{ song.title }}
       </h2>
-      <p class="text-xs text-text-muted">{{ song.artist }}</p>
-      <p v-if="song.album" class="text-xs italic text-text-muted/60">
+      <p class="text-sm leading-snug text-text-muted">{{ song.artist }}</p>
+      <p
+        v-if="song.album"
+        class="text-sm leading-snug italic text-text-muted/75"
+      >
         {{ song.album }}
       </p>
     </div>
@@ -153,7 +156,7 @@ const handleClick = () => player.play(props.song, props.year)
           />
         </SliderRoot>
         <p
-          class="pointer-events-none absolute bottom-3.5 left-1 min-w-fit bg-surface/85 px-0.5 font-mono text-[0.45rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-3.5 left-1 min-w-fit bg-surface/85 px-1 py-0.5 font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>

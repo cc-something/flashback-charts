@@ -79,10 +79,13 @@ useHead(() => ({
 <template>
   <main class="mx-auto max-w-5xl px-4 py-8">
     <header class="mb-8">
-      <h1 class="text-4xl font-bold text-primary">
+      <h1
+        class="theme-display text-4xl font-bold text-primary"
+        :style="{ fontFamily: theme.fontFamily }"
+      >
         {{ title }}
       </h1>
-      <p class="mt-2 text-text-muted">
+      <p class="mt-2 text-lg text-text-muted">
         {{ subtitle }}
       </p>
       <p
@@ -149,12 +152,12 @@ useHead(() => ({
           >
             {{ year }}
           </h2>
-          <p class="mt-2 text-sm leading-relaxed text-text-muted">
+          <p class="mt-2 text-base leading-relaxed text-text-muted">
             {{ getYearPageDescription(year) }}
           </p>
           <router-link
             :to="`/${year}`"
-            class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-sm font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
+            class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
             :style="{
               backgroundColor: theme.colors.primary,
               color: theme.colors.background,
@@ -171,7 +174,7 @@ useHead(() => ({
       <router-link
         v-if="previousDecade"
         :to="`/${previousDecade}`"
-        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
+        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
         :style="{
           borderColor: `${theme.colors.primary}33`,
           color: theme.colors.text,
@@ -185,7 +188,7 @@ useHead(() => ({
       <router-link
         v-if="nextDecade"
         :to="`/${nextDecade}`"
-        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
+        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
         :style="{
           borderColor: `${theme.colors.primary}33`,
           color: theme.colors.text,

@@ -31,10 +31,10 @@ useHead({
 <template>
   <main class="max-w-[1300px] mx-auto px-4 py-10">
     <header class="mb-8">
-      <h1 class="text-4xl font-bold text-primary">
+      <h1 class="theme-display text-4xl font-bold text-primary">
         💿 Flashback Charts Australia
       </h1>
-      <p class="mt-2 text-text-muted">
+      <p class="mt-2 text-lg text-text-muted">
         The top 10 songs in Australia for every year from 1940 to
         {{ latestYear }}.
       </p>
@@ -68,14 +68,14 @@ useHead({
         </h2>
         <p
           v-if="group.theme.description"
-          class="text-sm leading-relaxed mb-4"
+          class="mb-4 text-base leading-relaxed"
           :style="{ color: group.theme.colors.textMuted }"
         >
           {{ group.theme.description }}
         </p>
         <div class="mt-auto pt-4">
           <p
-            class="mb-3 text-xs"
+            class="mb-3 text-sm"
             :style="{ color: group.theme.colors.textMuted }"
           >
             Click on a year to see the Top 10:
@@ -117,7 +117,7 @@ useHead({
                   class="absolute bottom-0 left-0 right-0 z-20 pb-1.5 text-center"
                 >
                   <span
-                    class="block text-sm leading-tight font-bold"
+                    class="block text-base font-bold leading-tight"
                     :style="{ color: group.theme.colors.primary }"
                   >
                     {{ tile.year }}
