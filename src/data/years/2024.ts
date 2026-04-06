@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2024/singles-chart',
 }
 
+export const description =
+  '2024 was built on hook-first pop, glossy dance production, and a steady stream of songs that crossed between radio, streaming, and playlist life. The mood stayed upbeat on the surface, but the strongest tracks still carried a bruised or nostalgic edge.'
+
 const getSong = ({
   rank,
   title,

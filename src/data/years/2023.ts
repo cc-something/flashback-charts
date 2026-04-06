@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2023/singles-chart',
 }
 
+export const description =
+  '2023 leaned into clean pop songwriting, country-pop spillover, and viral hooks that moved fast online and on radio. The overall feel was lighter and more direct than the years before it, with emotional singalongs and a few darker turns keeping things balanced.'
+
 const getSong = ({
   rank,
   title,

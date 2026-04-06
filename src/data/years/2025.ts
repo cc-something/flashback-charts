@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2025/singles-chart',
 }
 
+export const description =
+  '2025 so far has been broad and a little unpredictable, with big pop hooks, polished crossover tracks, and more acoustic sentiment than the chart balance might suggest. It feels less locked to one genre than the years before it, which gives the year a looser, more mixed-up energy.'
+
 const getSong = ({
   rank,
   title,

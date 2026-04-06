@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2022/singles-chart',
 }
 
+export const description =
+  'The 2022 charts were slicker and more varied, mixing piano-led pop, dance-floor lift, and a run of songs that pushed sentiment straight to the front. It was a year of big choruses, clean production, and plenty of crossover between pop, rap, and soft rock territory.'
+
 const getSong = ({
   rank,
   title,

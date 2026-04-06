@@ -8,6 +8,9 @@ export const source = {
   url: 'https://www.aria.com.au/charts/2020/singles-chart',
 }
 
+export const description =
+  'Escape-pop, glossy R&B, and disco revival sounds defined 2020 on the Australian charts. The year feels polished and restless at the same time, with big hooks carrying songs built for phones, cars, and empty dancefloors.'
+
 const getSong = ({
   rank,
   title,
