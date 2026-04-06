@@ -97,7 +97,7 @@ useHead(() => ({
         class="mb-2 text-xl font-bold text-primary"
         :style="{ fontFamily: homeTheme.fontFamily }"
       >
-        💿 Flashback Charts
+        💿 Flashback Charts Australia
       </p>
       <h1
         class="theme-display text-4xl font-bold text-primary"

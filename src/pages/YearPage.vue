@@ -125,13 +125,13 @@ watch(
           class="mb-2 text-xl font-bold text-primary"
           :style="{ fontFamily: homeTheme.fontFamily }"
         >
-          💿 Flashback Charts
+          💿 Flashback Charts Australia
         </p>
         <h1
           class="theme-display text-3xl font-bold text-primary"
           :style="{ fontFamily: theme.fontFamily }"
         >
-          Top 10 Songs in {{ yearNumber }} Australia
+          Top 10 Songs {{ yearNumber }}
         </h1>
         <a
           v-if="store.currentSource"
