@@ -2,6 +2,7 @@
 import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
+import { getThemeForYear } from '@/themes'
 
 const store = useChartStore()
 const router = useRouter()
@@ -21,6 +22,42 @@ const scrollToActiveTab = async () => {
   const nextScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft))
 
   container.scrollTo({ left: nextScrollLeft, behavior: 'smooth' })
+}
+
+const getTabTheme = (year: number) => getThemeForYear(year)
+
+const getTabStyle = (year: number) => {
+  const theme = getTabTheme(year)
+  return {
+    fontFamily: theme.fontFamily,
+    color: theme.colors.text,
+  }
+}
+
+const getActiveTabStyle = (year: number) => {
+  const theme = getTabTheme(year)
+  return {
+    ...getTabStyle(year),
+    backgroundColor: theme.colors.tabActive,
+    borderColor: theme.colors.tabActive,
+    color: theme.colors.background,
+  }
+}
+
+const getInactiveTabStyle = (year: number) => {
+  const theme = getTabTheme(year)
+  return {
+    ...getTabStyle(year),
+    borderColor: `${theme.colors.primary}44`,
+  }
+}
+
+const getDisabledTabStyle = (year: number) => {
+  const theme = getTabTheme(year)
+  return {
+    ...getInactiveTabStyle(year),
+    color: theme.colors.textMuted,
+  }
 }
 
 const goToYear = (year: number, target: EventTarget | null) => {
@@ -47,13 +84,20 @@ watch(() => store.selectedYear, scrollToActiveTab)
         :key="year"
         :data-active="route.name !== 'home' && year === store.selectedYear"
         :class="[
-          'flex-shrink-0 px-3 py-1.5 rounded text-sm font-medium transition-all duration-200',
+          'flex-shrink-0 rounded border px-3 py-1.5 text-sm font-medium transition-all duration-200',
           route.name !== 'home' && year === store.selectedYear
-            ? 'bg-tab-active text-background font-bold scale-105'
+            ? 'font-bold scale-105'
             : store.availableYears.includes(year)
-              ? 'text-text hover:bg-tab-inactive hover:text-text'
+              ? 'hover:opacity-80'
               : 'text-text-muted opacity-40 cursor-default',
         ]"
+        :style="
+          route.name !== 'home' && year === store.selectedYear
+            ? getActiveTabStyle(year)
+            : store.availableYears.includes(year)
+              ? getInactiveTabStyle(year)
+              : getDisabledTabStyle(year)
+        "
         @click="goToYear(year, $event.target)"
       >
         {{ year }}
