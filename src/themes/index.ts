@@ -1,4 +1,5 @@
 import type { DecadeTheme } from '@/types/theme'
+import homeTheme from './home'
 import theme1940s from './decades/1940s'
 import theme1950s from './decades/1950s'
 import theme1960s from './decades/1960s'
@@ -30,3 +31,5 @@ export const getThemeForYear = (year: number): DecadeTheme => {
   const decade = getDecadeForYear(year)
   return decadeThemes[decade] ?? theme1970s
 }
+
+export const getHomeTheme = (): DecadeTheme => homeTheme
