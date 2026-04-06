@@ -98,7 +98,7 @@ useHead(() => ({
       <article
         v-for="year in years"
         :key="year"
-        class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr_auto]"
+        class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr]"
         :style="{
           backgroundColor: `${theme.colors.background}99`,
           borderColor: `${theme.colors.primary}33`,
@@ -137,21 +137,9 @@ useHead(() => ({
           >
             <ArrowRight class="h-7 w-7 text-white drop-shadow-lg" />
           </div>
-          <span class="absolute bottom-0 left-0 right-0 z-20 pb-2 text-center">
-            <span
-              class="block text-base font-bold leading-tight"
-              :style="{
-                color: theme.colors.primary,
-                fontFamily: theme.fontFamily,
-              }"
-            >
-              {{ year }}
-            </span>
-            <span class="block text-xs leading-tight text-white/70">Top 4</span>
-          </span>
         </router-link>
 
-        <div>
+        <div class="flex flex-col">
           <h2
             class="text-2xl font-bold"
             :style="{
@@ -164,18 +152,16 @@ useHead(() => ({
           <p class="mt-2 text-sm leading-relaxed text-text-muted">
             {{ getYearPageDescription(year) }}
           </p>
-        </div>
-
-        <div class="flex items-center md:justify-end">
           <router-link
             :to="`/${year}`"
-            class="inline-flex min-w-[220px] items-center justify-center rounded-xl px-6 py-4 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
+            class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-sm font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
             :style="{
               backgroundColor: theme.colors.primary,
               color: theme.colors.background,
             }"
           >
-            View {{ year }} Top 10
+            View Top 10
+            <ArrowRight class="h-5 w-5" />
           </router-link>
         </div>
       </article>
