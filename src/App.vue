@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide, ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useDecadeTheme } from '@/composables/useDecadeTheme'
+import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 import { useChartStore } from '@/stores/chart'
@@ -105,7 +105,12 @@ onMounted(async () => {
     </button>
 
     <router-view v-slot="{ Component }">
-      <Transition name="page" mode="out-in" @after-enter="resetPageScroll">
+      <Transition
+        name="page"
+        mode="out-in"
+        @after-enter="resetPageScroll"
+        @after-leave="applyPendingTheme"
+      >
         <component :is="Component" :key="route.fullPath" />
       </Transition>
     </router-view>

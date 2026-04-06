@@ -48,12 +48,11 @@ const applyHomeTheme = () => {
   document.body.style.fontFamily = bodyFontFamily
 }
 
-let pendingThemeYear: number | null = null
+let pendingThemeApplication: (() => void) | null = null
 
 export const applyPendingTheme = () => {
-  if (pendingThemeYear === null) return
-  applyTheme(pendingThemeYear)
-  pendingThemeYear = null
+  pendingThemeApplication?.()
+  pendingThemeApplication = null
 }
 
 export const useDecadeTheme = () => {
@@ -83,6 +82,9 @@ export const useDecadeTheme = () => {
 
     applyTheme(store.selectedYear)
   }
+  const queueRouteTheme = () => {
+    pendingThemeApplication = applyRouteTheme
+  }
 
   applyRouteTheme()
 
@@ -90,12 +92,13 @@ export const useDecadeTheme = () => {
     () => store.selectedYear,
     (year, oldYear) => {
       if (route.name !== 'year') return
-      if (getDecade(year) !== getDecade(oldYear)) pendingThemeYear = year
+      if (getDecade(year) !== getDecade(oldYear))
+        pendingThemeApplication = () => applyTheme(year)
     },
   )
 
   watch(
-    () => route.name,
-    () => applyRouteTheme(),
+    () => route.fullPath,
+    () => queueRouteTheme(),
   )
 }
