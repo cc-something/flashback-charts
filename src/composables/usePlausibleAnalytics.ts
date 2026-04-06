@@ -1,7 +1,9 @@
 let scriptAppended = false
 let plausibleReady = false
 
-const SCRIPT_SRC = 'https://plausible.io/js/pa-gD0FxLEq89YQCoqWIxRMg.js'
+const SCRIPT_BASE = 'https://plausible.io/js/pa-gD0FxLEq89YQCoqWIxRMg'
+const isDev = import.meta.env.DEV
+const SCRIPT_SRC = isDev ? `${SCRIPT_BASE}.local.js` : `${SCRIPT_BASE}.js`
 
 const loadScript = (): Promise<void> =>
   new Promise((resolve) => {
