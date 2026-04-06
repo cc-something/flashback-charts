@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2017 pushed polished pop and festival-sized dance records to the front, while trap rhythms and softer ballads gave the year some contrast. It was glossy, efficient, and hook-driven.'
+  '2017 pushed polished pop and festival-sized dance records to the front, while trap rhythms and softer ballads gave the year some contrast. It was glossy, streamlined, and hook-driven.'
 
 const year = 2017
 

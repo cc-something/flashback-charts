@@ -7,7 +7,7 @@ export const source = {
 }
 
 export const description =
-  '2011 kept the floor-filling pop sound rolling, with pounding beats, breakup ballads, and polished crossover hooks everywhere. It was a direct, crowd-pleasing year with very little dead air.'
+  '2011 kept the floor-filling pop sound rolling, with pounding beats, breakup ballads, and polished crossover hooks all over the place. It was a direct, crowd-pleasing year with very little dead air.'
 
 const year = 2011
 

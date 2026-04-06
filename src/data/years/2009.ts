@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'In 2009, bright synth-pop and club-ready hooks had fully taken over the top end of the charts. The sound was slick, high-energy, and built for repetition, with fewer rough edges than earlier in the decade.'
+  'In 2009, bright synth-pop and club-ready hooks had fully taken over the top end. The sound was slick, high-energy, and built for repetition, with fewer rough edges than earlier in the decade.'
 
 const getSong = ({
   rank,

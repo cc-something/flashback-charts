@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'The year 2000 still carried a lot of late-90s polish, with glossy pop, dance tracks, and big radio hooks doing most of the heavy lifting. The charts felt upbeat and clean-cut, with only a little room for grit.'
+  '2000 still carried a lot of late-90s polish, with glossy pop, dance tracks, and big radio hooks doing most of the heavy lifting. The charts felt upbeat and clean-cut, with only a little room for grit.'
 
 const getSong = ({
   rank,

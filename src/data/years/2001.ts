@@ -9,7 +9,7 @@ export const source = {
 }
 
 export const description =
-  'In 2001, the charts leaned on polished pop, smooth R&B, and club-ready singles that were built to stick fast. It was a bright, radio-first year with plenty of chorus-led songs and not much patience for anything subtle.'
+  'In 2001, polished pop, smooth R&B, and club-ready singles did most of the work. It was a bright, radio-first year with plenty of chorus-led songs and not much patience for anything subtle.'
 
 const getSong = ({
   rank,

@@ -4,7 +4,7 @@ import type { Song } from '@/types/song'
 const year = 1993
 
 export const description =
-  '1993 felt emotionally louder than the year before, with soaring ballads, laid-back groove tracks, and a few novelty turns keeping things loose. The chart had plenty of contrast, moving from stadium-size sentiment to lighter, more playful cuts.'
+  '1993 turned the emotion up, with soaring ballads, laid-back groove tracks, and a few novelty turns keeping things loose. The chart had plenty of contrast, moving from stadium-size sentiment to lighter, more playful cuts.'
 
 export const source = {
   label: 'ARIA End of Year singles chart',
