@@ -28,8 +28,6 @@ const goToYear = (year: number, target: EventTarget | null) => {
   if (!store.availableYears.includes(year)) return
   router.push(`/${year}`)
   ;(target as HTMLElement | null)?.blur()
-  if (typeof window !== 'undefined')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const getTabThemeStyle = (year: number) => {

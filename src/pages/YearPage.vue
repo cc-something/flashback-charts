@@ -114,11 +114,6 @@ watch(
   },
   { immediate: true },
 )
-
-watch(yearNumber, () => {
-  if (typeof window !== 'undefined')
-    window.scrollTo({ top: 0, behavior: 'instant' })
-})
 </script>
 
 <template>

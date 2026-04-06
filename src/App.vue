@@ -23,8 +23,9 @@ const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const isSearchOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
-const resetPageScroll = () => {
+const handlePageAfterLeave = () => {
   if (typeof window === 'undefined') return
+  applyPendingTheme()
   window.scrollTo({ top: 0, behavior: 'instant' })
 }
 
@@ -89,7 +90,10 @@ onMounted(async () => {
       v-if="route.path !== '/'"
       type="button"
       aria-label="Search songs"
-      class="fixed right-4 top-20 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      :class="[
+        'fixed right-4 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60',
+        route.name === 'decade' ? 'top-24' : 'top-20',
+      ]"
       @click="openSearch"
     >
       <svg
@@ -105,12 +109,7 @@ onMounted(async () => {
     </button>
 
     <router-view v-slot="{ Component }">
-      <Transition
-        name="page"
-        mode="out-in"
-        @after-enter="resetPageScroll"
-        @after-leave="applyPendingTheme"
-      >
+      <Transition name="page" mode="out-in" @after-leave="handlePageAfterLeave">
         <component :is="Component" :key="route.fullPath" />
       </Transition>
     </router-view>
