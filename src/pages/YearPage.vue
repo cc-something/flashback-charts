@@ -133,15 +133,6 @@ watch(
         >
           Top 10 Songs {{ yearNumber }}
         </h1>
-        <a
-          v-if="store.currentSource"
-          :href="store.currentSource.url"
-          class="mt-1 inline-block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
-          rel="noreferrer"
-          target="_blank"
-        >
-          Source: {{ store.currentSource.label }}
-        </a>
       </div>
       <button
         type="button"
@@ -154,6 +145,16 @@ watch(
         {{ store.sortOrder === 'asc' ? '1 → 10' : '10 → 1' }}
       </button>
     </header>
+
+    <a
+      v-if="store.currentSource"
+      :href="store.currentSource.url"
+      class="mb-4 block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
+      rel="noreferrer"
+      target="_blank"
+    >
+      Source: {{ store.currentSource.label }}
+    </a>
 
     <p
       v-if="store.currentDescription"
