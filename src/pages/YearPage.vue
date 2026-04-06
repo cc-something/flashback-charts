@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { computed, onUnmounted, watch } from 'vue'
 import { useHead } from '@unhead/vue'
-import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-vue-next'
 import {
+  ArrowDownNarrowWide,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpNarrowWide,
+} from 'lucide-vue-next'
+import {
+  getAdjacentYears,
   getYearPageDescription,
   getYearPageTitle,
 } from '@/content/chartContent'
@@ -19,6 +25,9 @@ const player = usePlayerStore()
 
 const yearNumber = computed(() => Number(props.year))
 const theme = computed(() => getThemeForYear(yearNumber.value))
+const adjacentYears = computed(() => getAdjacentYears(yearNumber.value))
+const previousYear = computed(() => adjacentYears.value.previousYear)
+const nextYear = computed(() => adjacentYears.value.nextYear)
 const topSong = computed(() => store.currentSongs[0] ?? null)
 const title = computed(() => getYearPageTitle(yearNumber.value))
 const description = computed(() => getYearPageDescription(yearNumber.value))
@@ -139,6 +148,36 @@ watch(yearNumber, () => {
     >
       {{ store.currentDescription }}
     </p>
+
+    <nav class="mb-5 flex items-center justify-between gap-3">
+      <router-link
+        v-if="previousYear"
+        :to="`/${previousYear}`"
+        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
+        :style="{
+          borderColor: `${theme.colors.primary}33`,
+          color: theme.colors.text,
+        }"
+      >
+        <ArrowLeft class="h-3.5 w-3.5" />
+        {{ previousYear }}
+      </router-link>
+      <div v-else />
+
+      <router-link
+        v-if="nextYear"
+        :to="`/${nextYear}`"
+        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
+        :style="{
+          borderColor: `${theme.colors.primary}33`,
+          color: theme.colors.text,
+        }"
+      >
+        {{ nextYear }}
+        <ArrowRight class="h-3.5 w-3.5" />
+      </router-link>
+      <div v-else />
+    </nav>
 
     <Transition
       name="year-content"

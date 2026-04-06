@@ -13,6 +13,17 @@ const getDecadeStartYear = (decade: string) => Number.parseInt(decade, 10)
 
 export const getLatestYear = () => latestYear
 
+export const getAdjacentYears = (year: number) => {
+  const yearIndex = years.indexOf(year)
+  return {
+    previousYear: yearIndex > 0 ? years[yearIndex - 1] : null,
+    nextYear:
+      yearIndex >= 0 && yearIndex < years.length - 1
+        ? years[yearIndex + 1]
+        : null,
+  }
+}
+
 export const getNumberOneThumbnail = (year: number) =>
   getYearData(year)?.[0]?.thumbnailPath ?? null
 
