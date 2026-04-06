@@ -9,7 +9,6 @@ import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
-import AdBanner from '@/components/AdBanner.vue'
 
 useDecadeTheme()
 const { loadScript, trackPageview } = usePlausibleAnalytics()
@@ -49,20 +48,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- Desktop: fixed side banners centered in margins -->
-  <aside
-    class="hidden xl:flex fixed left-0 top-12 bottom-0 items-center justify-center z-10"
-    style="width: calc((100vw - 768px) / 2)"
-  >
-    <AdBanner label="AD LEFT" class="h-[300px] w-36 rounded shadow-lg" />
-  </aside>
-  <aside
-    class="hidden xl:flex fixed right-0 top-12 bottom-0 items-center justify-center z-10"
-    style="width: calc((100vw - 768px) / 2)"
-  >
-    <AdBanner label="AD RIGHT" class="h-[300px] w-36 rounded shadow-lg" />
-  </aside>
-
   <div class="min-h-screen bg-background text-text">
     <YearTabs />
 
@@ -109,17 +94,11 @@ onMounted(async () => {
       </svg>
     </button>
 
-    <!-- Mobile: inline top strip -->
-    <AdBanner label="AD TOP" class="w-full h-[50px] xl:hidden" />
-
     <router-view v-slot="{ Component }">
       <Transition name="page" mode="out-in">
         <component :is="Component" />
       </Transition>
     </router-view>
-
-    <!-- Mobile: inline bottom strip -->
-    <AdBanner label="AD BOTTOM" class="w-full h-[50px] xl:hidden" />
 
     <MiniPlayer />
     <SearchOverlay

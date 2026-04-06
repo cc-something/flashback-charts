@@ -1,9 +1,10 @@
 let scriptAppended = false
 let plausibleReady = false
 
-const SCRIPT_BASE = 'https://plausible.io/js/pa-gD0FxLEq89YQCoqWIxRMg'
-const isDev = import.meta.env.DEV
-const SCRIPT_SRC = isDev ? `${SCRIPT_BASE}.local.js` : `${SCRIPT_BASE}.js`
+const SCRIPT_SRC = import.meta.env.DEV
+  ? 'https://plausible.io/js/script.local.js'
+  : 'https://plausible.io/js/pa-gD0FxLEq89YQCoqWIxRMg.js'
+const DATA_DOMAIN = 'flashbackcharts.com'
 
 const loadScript = (): Promise<void> =>
   new Promise((resolve) => {
@@ -20,6 +21,7 @@ const loadScript = (): Promise<void> =>
     const script = document.createElement('script')
     script.src = SCRIPT_SRC
     script.async = true
+    script.dataset.domain = DATA_DOMAIN
     script.onload = () => {
       plausibleReady = true
       resolve()
