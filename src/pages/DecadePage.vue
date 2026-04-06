@@ -79,12 +79,6 @@ useHead(() => ({
 <template>
   <main class="mx-auto max-w-5xl px-4 py-8">
     <header class="mb-8">
-      <p
-        class="mb-2 text-sm font-semibold uppercase tracking-[0.24em]"
-        :style="{ color: theme.colors.secondary }"
-      >
-        Flashback Charts Australia
-      </p>
       <h1 class="text-4xl font-bold text-primary">
         {{ title }}
       </h1>
