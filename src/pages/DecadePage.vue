@@ -37,7 +37,8 @@ const getDecadeNavStyle = (decade: string) => {
 
   return {
     '--nav-border': `${decadeTheme.colors.primary}33`,
-    '--nav-text': decadeTheme.colors.text,
+    '--nav-text': decadeTheme.colors.textMuted,
+    '--nav-text-hover': decadeTheme.colors.text,
     '--nav-hover': decadeTheme.colors.tabInactive,
     '--nav-font-family': decadeTheme.bodyFontFamily ?? decadeTheme.fontFamily,
   }
@@ -230,5 +231,6 @@ useHead(() => ({
 
 .decade-nav-button:hover {
   background-color: var(--nav-hover);
+  color: var(--nav-text-hover);
 }
 </style>

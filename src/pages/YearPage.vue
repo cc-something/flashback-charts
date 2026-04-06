@@ -33,7 +33,8 @@ const getYearNavStyle = (year: number) => {
 
   return {
     '--nav-border': `${yearTheme.colors.primary}33`,
-    '--nav-text': yearTheme.colors.text,
+    '--nav-text': yearTheme.colors.textMuted,
+    '--nav-text-hover': yearTheme.colors.text,
     '--nav-hover': yearTheme.colors.tabInactive,
     '--nav-font-family': yearTheme.bodyFontFamily ?? yearTheme.fontFamily,
   }
@@ -235,5 +236,6 @@ watch(yearNumber, () => {
 
 .year-nav-button:hover {
   background-color: var(--nav-hover);
+  color: var(--nav-text-hover);
 }
 </style>
