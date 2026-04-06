@@ -1,5 +1,5 @@
 import { groupBy } from 'lodash-es'
-import { getAvailableYears, getYearData } from '@/data'
+import { getAvailableYears, getYearData, getYearDescription } from '@/data'
 import { getDecadeForYear, getThemeForYear } from '@/themes'
 
 const years = getAvailableYears().sort(
@@ -31,6 +31,9 @@ export const getYearPageDescription = (year: number) => {
   if (!topSong) return baseDescription
   return `${baseDescription} ${topSong.title} by ${topSong.artist} topped the chart.`
 }
+
+export const getYearSummaryText = (year: number) =>
+  getYearDescription(year) ?? getYearPageDescription(year)
 
 export const getDecadeYears = (decade: string) =>
   years.filter((year) => getDecadeForYear(year) === decade)

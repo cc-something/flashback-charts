@@ -9,7 +9,7 @@ import {
   getDecadePageTitle,
   getDecadeYears,
   getTopSongThumbnails,
-  getYearPageDescription,
+  getYearSummaryText,
 } from '@/content/chartContent'
 import { getThemeForYear } from '@/themes'
 
@@ -29,6 +29,9 @@ const nextDecade = computed(() =>
     : null,
 )
 const title = computed(() => getDecadePageTitle(props.decade))
+const headingTitle = computed(
+  () => `💿 Flashback Charts Australia: ${title.value}`,
+)
 const subtitle = computed(() => getDecadePageSubtitle(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
 const siteUrl = computed(() => {
@@ -48,7 +51,7 @@ const jsonLd = computed(() => ({
     '@type': 'WebPage',
     'name': `Australia Top 10 Songs ${year}`,
     'url': canonical.value ? `${siteUrl.value}/${year}` : undefined,
-    'description': getYearPageDescription(year),
+    'description': getYearSummaryText(year),
   })),
 }))
 
@@ -83,7 +86,7 @@ useHead(() => ({
         class="theme-display text-4xl font-bold text-primary"
         :style="{ fontFamily: theme.fontFamily }"
       >
-        {{ title }}
+        {{ headingTitle }}
       </h1>
       <p class="mt-2 text-lg text-text-muted">
         {{ subtitle }}
@@ -153,7 +156,7 @@ useHead(() => ({
             {{ year }}
           </h2>
           <p class="mt-2 text-base leading-relaxed text-text-muted">
-            {{ getYearPageDescription(year) }}
+            {{ getYearSummaryText(year) }}
           </p>
           <router-link
             :to="`/${year}`"
