@@ -79,6 +79,36 @@ useHead(() => ({
 <template>
   <main class="mx-auto max-w-5xl px-4 py-8">
     <header class="mb-8">
+      <nav class="mb-6 flex items-center justify-between gap-4">
+        <router-link
+          v-if="previousDecade"
+          :to="`/${previousDecade}`"
+          class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
+          :style="{
+            borderColor: `${theme.colors.primary}33`,
+            color: theme.colors.text,
+          }"
+        >
+          <ArrowLeft class="h-4 w-4" />
+          {{ previousDecade }}
+        </router-link>
+        <div v-else />
+
+        <router-link
+          v-if="nextDecade"
+          :to="`/${nextDecade}`"
+          class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
+          :style="{
+            borderColor: `${theme.colors.primary}33`,
+            color: theme.colors.text,
+          }"
+        >
+          {{ nextDecade }}
+          <ArrowRight class="h-4 w-4" />
+        </router-link>
+        <div v-else />
+      </nav>
+
       <p
         class="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-text-muted"
       >
@@ -176,35 +206,5 @@ useHead(() => ({
         </div>
       </article>
     </section>
-
-    <nav class="mt-8 flex items-center justify-between gap-4">
-      <router-link
-        v-if="previousDecade"
-        :to="`/${previousDecade}`"
-        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
-        :style="{
-          borderColor: `${theme.colors.primary}33`,
-          color: theme.colors.text,
-        }"
-      >
-        <ArrowLeft class="h-4 w-4" />
-        {{ previousDecade }}
-      </router-link>
-      <div v-else />
-
-      <router-link
-        v-if="nextDecade"
-        :to="`/${nextDecade}`"
-        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
-        :style="{
-          borderColor: `${theme.colors.primary}33`,
-          color: theme.colors.text,
-        }"
-      >
-        {{ nextDecade }}
-        <ArrowRight class="h-4 w-4" />
-      </router-link>
-      <div v-else />
-    </nav>
   </main>
 </template>
