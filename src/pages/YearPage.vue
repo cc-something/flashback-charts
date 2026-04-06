@@ -60,7 +60,7 @@ const jsonLd = computed(() => {
   return {
     '@context': 'https://schema.org',
     '@type': 'MusicPlaylist',
-    'name': `Australia Top 10 Songs ${yearNumber.value}`,
+    'name': `Top 10 Songs in ${yearNumber.value} Australia`,
     'description': description.value,
     'url': canonical.value,
     'numTracks': store.currentSongs.length,
@@ -124,7 +124,7 @@ watch(
           class="theme-display text-3xl font-bold text-primary"
           :style="{ fontFamily: theme.fontFamily }"
         >
-          Australia Top 10 Songs {{ yearNumber }}
+          Top 10 Songs in {{ yearNumber }} Australia
         </h1>
         <a
           v-if="store.currentSource"

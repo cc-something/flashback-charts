@@ -34,7 +34,7 @@ export const getTopSongThumbnails = (year: number, limit = 4) =>
     .filter(Boolean)
 
 export const getYearPageTitle = (year: number) =>
-  `Australia Top 10 Songs ${year} | Flashback Charts Australia`
+  `Top 10 Songs in ${year} Australia | Flashback Charts Australia`
 
 export const getYearPageDescription = (year: number) => {
   const topSong = getTopSong(year)
