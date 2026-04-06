@@ -91,7 +91,7 @@ useHead({
         <li v-for="tile in group.years" :key="tile.year">
           <router-link
             :to="`/${tile.year}`"
-            class="relative flex items-center justify-center aspect-square rounded-lg overflow-hidden font-bold text-center transition-all duration-200 hover:scale-105 hover:shadow-lg"
+            class="relative block aspect-square rounded-lg overflow-hidden font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
             :style="{
               backgroundColor: group.theme.colors.surface,
               border: `1px solid ${group.theme.colors.primary}44`,
@@ -106,23 +106,24 @@ useHead({
             />
             <div
               class="absolute inset-0"
-              :style="{
-                background: tile.thumbnail
-                  ? `linear-gradient(to top, ${group.theme.colors.background}ee 0%, ${group.theme.colors.background}88 50%, ${group.theme.colors.background}44 100%)`
-                  : undefined,
-              }"
+              style="
+                background: linear-gradient(
+                  to top,
+                  rgb(0 0 0 / 75%) 0%,
+                  transparent 60%
+                );
+              "
             />
-            <span class="relative z-10">
+            <span
+              class="absolute bottom-0 left-0 right-0 z-10 pb-1.5 text-center"
+            >
               <span
-                class="block text-base leading-tight"
+                class="block text-sm leading-tight font-bold"
                 :style="{ color: group.theme.colors.primary }"
               >
                 {{ tile.year }}
               </span>
-              <span
-                class="block text-xs leading-tight"
-                :style="{ color: group.theme.colors.text, opacity: 0.7 }"
-              >
+              <span class="block text-xs leading-tight text-white/70">
                 Top 10
               </span>
             </span>
