@@ -15,13 +15,14 @@ import {
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { applyPendingTheme } from '@/composables/useDecadeTheme'
-import { getThemeForYear } from '@/themes'
+import { getHomeTheme, getThemeForYear } from '@/themes'
 import SongCard from '@/components/SongCard.vue'
 
 const props = defineProps<{ year: string }>()
 
 const store = useChartStore()
 const player = usePlayerStore()
+const homeTheme = getHomeTheme()
 
 const yearNumber = computed(() => Number(props.year))
 const theme = computed(() => getThemeForYear(yearNumber.value))
@@ -120,6 +121,12 @@ watch(
   <main class="max-w-2xl mx-auto px-4 py-6">
     <header class="mb-6 flex items-start justify-between">
       <div>
+        <p
+          class="mb-2 text-xl font-bold text-primary"
+          :style="{ fontFamily: homeTheme.fontFamily }"
+        >
+          💿 Flashback Charts
+        </p>
         <h1
           class="theme-display text-3xl font-bold text-primary"
           :style="{ fontFamily: theme.fontFamily }"
