@@ -24,7 +24,7 @@ watch(
       '--color-accent': t.colors.accent,
       '--color-tab-active': t.colors.tabActive,
       '--color-tab-inactive': t.colors.tabInactive,
-      'font-family': t.fontFamily,
+      'font-family': t.bodyFontFamily ?? t.fontFamily,
     }
   },
   { immediate: true },
@@ -127,7 +127,7 @@ watch(
         <!-- Time -->
         <p
           v-if="player.showSeekBar"
-          class="font-mono text-[0.5rem] tabular-nums text-text-muted"
+          class="font-mono text-[0.7rem] tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
@@ -185,10 +185,10 @@ watch(
         </button>
 
         <div class="min-w-0 flex-1">
-          <p class="truncate text-sm font-bold leading-tight text-text">
+          <p class="truncate text-base font-bold leading-snug text-text">
             {{ player.playingSong.title }}
           </p>
-          <p class="truncate text-xs text-text-muted">
+          <p class="truncate text-sm leading-snug text-text-muted">
             {{ player.playingSong.artist }}
             <span class="text-primary/60">· {{ player.playingYear }}</span>
           </p>

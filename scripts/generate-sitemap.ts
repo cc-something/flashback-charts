@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { getAvailableYears } from '../src/data'
+import { getDecadeForYear } from '../src/themes'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const distDir = resolve(here, '../dist')
@@ -11,9 +12,15 @@ const siteUrl = rawSiteUrl.replace(/\/$/, '')
 const today = new Date().toISOString().slice(0, 10)
 
 const years = getAvailableYears().sort((a, b) => a - b)
+const decades = [...new Set(years.map((year) => getDecadeForYear(year)))].sort()
 
 const urls = [
   { loc: `${siteUrl}/`, priority: '1.0', changefreq: 'weekly' },
+  ...decades.map((decade) => ({
+    loc: `${siteUrl}/${decade}`,
+    priority: '0.9',
+    changefreq: 'monthly',
+  })),
   ...years.map((year) => ({
     loc: `${siteUrl}/${year}`,
     priority: '0.8',
