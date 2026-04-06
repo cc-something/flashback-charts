@@ -18,6 +18,10 @@ const props = defineProps<{ decade: string }>()
 const decadeStartYear = computed(() => Number.parseInt(props.decade, 10))
 const theme = computed(() => getThemeForYear(decadeStartYear.value))
 const years = computed(() => getDecadeYears(props.decade))
+const yearColumns = computed(() => [
+  years.value.filter((_, index) => index % 2 === 0),
+  years.value.filter((_, index) => index % 2 === 1),
+])
 const decades = getAvailableDecades()
 const decadeIndex = computed(() => decades.indexOf(props.decade))
 const previousDecade = computed(() =>
@@ -131,78 +135,85 @@ useHead(() => ({
     </nav>
 
     <section class="grid grid-cols-1 gap-6 min-[1260px]:grid-cols-2">
-      <article
-        v-for="year in years"
-        :key="year"
-        class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr] min-[1260px]:even:mt-12"
-        :style="{
-          backgroundColor: `${theme.colors.background}99`,
-          borderColor: `${theme.colors.primary}33`,
-        }"
+      <div
+        v-for="(column, columnIndex) in yearColumns"
+        :key="columnIndex"
+        class="flex flex-col gap-6"
+        :class="{ 'min-[1260px]:pt-28': columnIndex === 1 }"
       >
-        <router-link
-          :to="`/${year}`"
-          class="group relative block aspect-square overflow-hidden rounded-xl"
+        <article
+          v-for="year in column"
+          :key="year"
+          class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr]"
           :style="{
-            backgroundColor: theme.colors.surface,
-            border: `1px solid ${theme.colors.primary}44`,
+            backgroundColor: `${theme.colors.background}99`,
+            borderColor: `${theme.colors.primary}33`,
           }"
         >
-          <div class="grid h-full grid-cols-2 grid-rows-2">
-            <img
-              v-for="(thumbnail, index) in getTopSongThumbnails(year)"
-              :key="`${year}-${index}`"
-              :src="thumbnail"
-              :alt="`Top song ${index + 1} of ${year}`"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <div
-            class="absolute inset-0"
-            style="
-              background: linear-gradient(
-                to top,
-                rgb(0 0 0 / 95%) 0%,
-                rgb(0 0 0 / 55%) 36%,
-                transparent 78%
-              );
-            "
-          />
-          <div
-            class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-          >
-            <ArrowRight class="h-7 w-7 text-white drop-shadow-lg" />
-          </div>
-        </router-link>
-
-        <div class="flex flex-col">
-          <h2
-            class="text-2xl font-bold"
-            :style="{
-              color: theme.colors.primary,
-              fontFamily: theme.fontFamily,
-            }"
-          >
-            <router-link :to="`/${year}`" class="text-inherit no-underline">
-              {{ year }}
-            </router-link>
-          </h2>
-          <p class="mt-2 text-base leading-relaxed text-text-muted">
-            {{ getYearSummaryText(year) }}
-          </p>
           <router-link
             :to="`/${year}`"
-            class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
+            class="group relative block aspect-square overflow-hidden rounded-xl"
             :style="{
-              backgroundColor: theme.colors.primary,
-              color: theme.colors.background,
+              backgroundColor: theme.colors.surface,
+              border: `1px solid ${theme.colors.primary}44`,
             }"
           >
-            View Top 10
-            <ArrowRight class="h-5 w-5" />
+            <div class="grid h-full grid-cols-2 grid-rows-2">
+              <img
+                v-for="(thumbnail, index) in getTopSongThumbnails(year)"
+                :key="`${year}-${index}`"
+                :src="thumbnail"
+                :alt="`Top song ${index + 1} of ${year}`"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <div
+              class="absolute inset-0"
+              style="
+                background: linear-gradient(
+                  to top,
+                  rgb(0 0 0 / 95%) 0%,
+                  rgb(0 0 0 / 55%) 36%,
+                  transparent 78%
+                );
+              "
+            />
+            <div
+              class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+            >
+              <ArrowRight class="h-7 w-7 text-white drop-shadow-lg" />
+            </div>
           </router-link>
-        </div>
-      </article>
+
+          <div class="flex flex-col">
+            <h2
+              class="text-2xl font-bold"
+              :style="{
+                color: theme.colors.primary,
+                fontFamily: theme.fontFamily,
+              }"
+            >
+              <router-link :to="`/${year}`" class="text-inherit no-underline">
+                {{ year }}
+              </router-link>
+            </h2>
+            <p class="mt-2 text-base leading-relaxed text-text-muted">
+              {{ getYearSummaryText(year) }}
+            </p>
+            <router-link
+              :to="`/${year}`"
+              class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
+              :style="{
+                backgroundColor: theme.colors.primary,
+                color: theme.colors.background,
+              }"
+            >
+              View Top 10
+              <ArrowRight class="h-5 w-5" />
+            </router-link>
+          </div>
+        </article>
+      </div>
     </section>
   </main>
 </template>

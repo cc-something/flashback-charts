@@ -51,7 +51,7 @@ watch(() => store.selectedYear, scrollToActiveTab)
 </script>
 
 <template>
-  <nav class="sticky top-0 z-10 bg-surface border-b border-primary/20">
+  <nav class="sticky top-0 z-40 border-b border-primary/20 bg-surface">
     <div
       ref="scrollContainer"
       class="flex overflow-x-auto scrollbar-hide gap-0.5 px-4 py-2"
