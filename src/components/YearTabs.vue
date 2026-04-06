@@ -41,6 +41,7 @@ const getTabThemeStyle = (year: number) => {
     '--year-tab-text-muted': decadeTheme.colors.textMuted,
     '--year-tab-active': decadeTheme.colors.tabActive,
     '--year-tab-inactive': decadeTheme.colors.tabInactive,
+    '--year-tab-font-family': decadeTheme.fontFamily,
   }
 }
 
@@ -80,6 +81,7 @@ watch(() => store.selectedYear, scrollToActiveTab)
 .year-tab {
   background-color: transparent;
   color: var(--year-tab-text-muted);
+  font-family: var(--year-tab-font-family);
 }
 
 .year-tab-active {
