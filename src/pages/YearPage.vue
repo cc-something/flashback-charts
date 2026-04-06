@@ -136,7 +136,7 @@ watch(
         <a
           v-if="store.currentSource"
           :href="store.currentSource.url"
-          class="mt-1 inline-block text-base text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
+          class="mt-1 inline-block text-sm text-text-muted underline decoration-primary/40 underline-offset-4 transition-colors duration-150 hover:text-primary"
           rel="noreferrer"
           target="_blank"
         >
