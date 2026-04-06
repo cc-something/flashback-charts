@@ -189,10 +189,13 @@ const handleClick = () => player.play(props.song, props.year)
 
 .seek-track[data-orientation='horizontal'] {
   flex: 1;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .seek-range[data-orientation='horizontal'] {
   left: 0;
+  border-bottom-left-radius: 0.5rem;
 }
 
 .seek-thumb {

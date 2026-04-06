@@ -2,7 +2,7 @@
 import { ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
-import { useFathomAnalytics } from '@/composables/useFathomAnalytics'
+import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import YearTabs from '@/components/YearTabs.vue'
@@ -12,7 +12,7 @@ import ErrorToast from '@/components/ErrorToast.vue'
 import AdBanner from '@/components/AdBanner.vue'
 
 useDecadeTheme()
-const { loadScript, trackPageview } = useFathomAnalytics()
+const { loadScript, trackPageview } = usePlausibleAnalytics()
 
 const route = useRoute()
 const router = useRouter()

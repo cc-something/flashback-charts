@@ -1,8 +1,6 @@
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {
-  readonly VITE_FATHOM_SITE_ID?: string
-}
+interface ImportMetaEnv {}
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
@@ -42,13 +40,13 @@ interface YT {
   Player: YTPlayerConstructor
 }
 
-interface FathomClient {
-  trackPageview(): void
-  trackEvent(name: string, opts?: { _value?: number }): void
+interface PlausibleFn {
+  (...args: unknown[]): void
+  q?: unknown[][]
 }
 
 interface Window {
   YT?: YT
   onYouTubeIframeAPIReady?: () => void
-  fathom?: FathomClient
+  plausible?: PlausibleFn
 }
