@@ -1,18 +1,39 @@
 let scriptAppended = false
+let fathomReady = false
 
-export const useFathomAnalytics = () => {
-  const loadFathom = () => {
-    if (typeof window === 'undefined') return
-    if (scriptAppended) return
-    const siteId = import.meta.env.VITE_FATHOM_SITE_ID
-    if (!siteId) return
+const SITE_ID = import.meta.env.VITE_FATHOM_SITE_ID as string | undefined
+
+const loadScript = (): Promise<void> =>
+  new Promise((resolve) => {
+    if (typeof window === 'undefined' || !SITE_ID) return resolve()
+    if (scriptAppended) return resolve()
     scriptAppended = true
     const script = document.createElement('script')
     script.src = 'https://cdn.usefathom.com/script.js'
-    script.defer = true
-    script.dataset.site = siteId
-    script.dataset.spa = 'auto'
+    script.dataset.site = SITE_ID
+    script.dataset.auto = 'false'
+    script.onload = () => {
+      fathomReady = true
+      resolve()
+    }
     ;(document.head ?? document.body)?.appendChild(script)
-  }
-  return { loadFathom }
+  })
+
+const trackPageview = () => {
+  if (!fathomReady) return
+  window.fathom?.trackPageview()
 }
+
+const trackEvent = (name: string, value?: number) => {
+  if (!fathomReady) return
+  window.fathom?.trackEvent(
+    name,
+    value !== undefined ? { _value: value } : undefined,
+  )
+}
+
+export const useFathomAnalytics = () => ({
+  loadScript,
+  trackPageview,
+  trackEvent,
+})

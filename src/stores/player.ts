@@ -4,6 +4,7 @@ import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
+import { useFathomAnalytics } from '@/composables/useFathomAnalytics'
 import { getYearData } from '@/data'
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
@@ -216,6 +217,7 @@ export const usePlayerStore = defineStore('player', () => {
     retryCount = 0
     currentPlaySong = song
     registerActive(stop)
+    useFathomAnalytics().trackEvent(`${song.artist} – ${song.title} (${year})`)
 
     if (chart.selectedYear === year) scrollSongIntoView(song)
 

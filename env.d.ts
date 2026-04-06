@@ -42,7 +42,13 @@ interface YT {
   Player: YTPlayerConstructor
 }
 
+interface FathomClient {
+  trackPageview(): void
+  trackEvent(name: string, opts?: { _value?: number }): void
+}
+
 interface Window {
   YT?: YT
   onYouTubeIframeAPIReady?: () => void
+  fathom?: FathomClient
 }

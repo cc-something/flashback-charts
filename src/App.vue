@@ -12,7 +12,7 @@ import ErrorToast from '@/components/ErrorToast.vue'
 import AdBanner from '@/components/AdBanner.vue'
 
 useDecadeTheme()
-const { loadFathom } = useFathomAnalytics()
+const { loadScript, trackPageview } = useFathomAnalytics()
 
 const route = useRoute()
 const router = useRouter()
@@ -36,9 +36,15 @@ watch(
   },
 )
 
-onMounted(() => {
+watch(
+  () => route.path,
+  () => trackPageview(),
+)
+
+onMounted(async () => {
   if (playerContainer.value) player.setPlayerContainer(playerContainer.value)
-  loadFathom()
+  await loadScript()
+  trackPageview()
 })
 </script>
 
