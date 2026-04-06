@@ -77,10 +77,10 @@ useHead(() => ({
 </script>
 
 <template>
-  <main class="mx-auto max-w-5xl px-4 py-8">
+  <main class="mx-auto max-w-[1300px] px-4 py-8 sm:py-10">
     <header class="mb-8">
       <p class="theme-display mb-2 text-xl font-bold text-primary">
-        Flashback Charts
+        💿 Flashback Charts
       </p>
       <h1
         class="theme-display text-4xl font-bold text-primary"
@@ -100,17 +100,17 @@ useHead(() => ({
       </p>
     </header>
 
-    <nav class="mb-8 flex items-center justify-between gap-4">
+    <nav class="mb-5 flex items-center justify-between gap-3">
       <router-link
         v-if="previousDecade"
         :to="`/${previousDecade}`"
-        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
+        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
         :style="{
           borderColor: `${theme.colors.primary}33`,
           color: theme.colors.text,
         }"
       >
-        <ArrowLeft class="h-4 w-4" />
+        <ArrowLeft class="h-3.5 w-3.5" />
         {{ previousDecade }}
       </router-link>
       <div v-else />
@@ -118,23 +118,23 @@ useHead(() => ({
       <router-link
         v-if="nextDecade"
         :to="`/${nextDecade}`"
-        class="inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-base font-semibold transition-colors duration-150 hover:bg-surface/60"
+        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
         :style="{
           borderColor: `${theme.colors.primary}33`,
           color: theme.colors.text,
         }"
       >
         {{ nextDecade }}
-        <ArrowRight class="h-4 w-4" />
+        <ArrowRight class="h-3.5 w-3.5" />
       </router-link>
       <div v-else />
     </nav>
 
-    <section class="grid grid-cols-1 gap-4">
+    <section class="grid grid-cols-1 gap-6 min-[1260px]:grid-cols-2">
       <article
         v-for="year in years"
         :key="year"
-        class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr]"
+        class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr] min-[1260px]:even:mt-12"
         :style="{
           backgroundColor: `${theme.colors.background}99`,
           borderColor: `${theme.colors.primary}33`,

@@ -63,11 +63,11 @@ useHead({
       </p>
     </header>
 
-    <div class="grid grid-cols-1 min-[1260px]:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-6 min-[1260px]:grid-cols-2">
       <section
         v-for="group in decades"
         :key="group.decade"
-        class="flex h-full flex-col rounded-xl p-4"
+        class="rounded-xl p-4 min-[1260px]:even:mt-12"
         :style="{
           backgroundColor: group.theme.colors.background + '99',
           border: `1px solid ${group.theme.colors.primary}33`,
@@ -96,7 +96,7 @@ useHead({
         >
           {{ group.theme.description }}
         </p>
-        <div class="mt-auto pt-4">
+        <div class="pt-4">
           <p
             class="mb-3 text-sm"
             :style="{ color: group.theme.colors.textMuted }"
