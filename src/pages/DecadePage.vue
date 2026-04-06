@@ -29,9 +29,6 @@ const nextDecade = computed(() =>
     : null,
 )
 const title = computed(() => getDecadePageTitle(props.decade))
-const headingTitle = computed(
-  () => `💿 Flashback Charts Australia: ${title.value}`,
-)
 const subtitle = computed(() => getDecadePageSubtitle(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
 const siteUrl = computed(() => {
@@ -82,11 +79,16 @@ useHead(() => ({
 <template>
   <main class="mx-auto max-w-5xl px-4 py-8">
     <header class="mb-8">
+      <p
+        class="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-text-muted"
+      >
+        💿 Flashback Charts Australia
+      </p>
       <h1
         class="theme-display text-4xl font-bold text-primary"
         :style="{ fontFamily: theme.fontFamily }"
       >
-        {{ headingTitle }}
+        {{ title }}
       </h1>
       <p class="mt-2 text-lg text-text-muted">
         {{ subtitle }}
@@ -153,7 +155,9 @@ useHead(() => ({
               fontFamily: theme.fontFamily,
             }"
           >
-            {{ year }}
+            <router-link :to="`/${year}`" class="text-inherit no-underline">
+              {{ year }}
+            </router-link>
           </h2>
           <p class="mt-2 text-base leading-relaxed text-text-muted">
             {{ getYearSummaryText(year) }}
