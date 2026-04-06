@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Disc3, Youtube } from 'lucide-vue-next'
+import { Disc3 } from 'lucide-vue-next'
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
@@ -40,7 +40,7 @@ const youtubeVideoUrl = computed(() =>
 <template>
   <article
     :data-song-id="song.youtubeVideoId"
-    class="relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3.5 py-3 transition-colors duration-150 hover:bg-surface/80"
+    class="group relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3.5 py-3 transition-colors duration-150 hover:bg-surface/80"
   >
     <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
       {{ song.rank }}
@@ -135,11 +135,20 @@ const youtubeVideoUrl = computed(() =>
       v-if="song.youtubeVideoId"
       :aria-label="`Open ${song.title} by ${song.artist} on YouTube`"
       :href="youtubeVideoUrl"
-      class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:bg-black/8 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       rel="noreferrer"
       target="_blank"
     >
-      <Youtube class="h-5 w-5" />
+      <svg
+        class="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8ZM9.6 15.7V8.3l6.4 3.7-6.4 3.7Z"
+        />
+      </svg>
     </a>
 
     <Transition name="seek">
