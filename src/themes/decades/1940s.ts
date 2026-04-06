@@ -6,7 +6,7 @@ const theme: DecadeTheme = {
   fontUrl:
     'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap',
   description:
-    "Big band swing and jazz ruled Australian airwaves in the 1940s, with dance hall favourites — fox trots, waltzes, and quicksteps — filling ballrooms coast to coast. Wartime ballads gave way to optimistic post-war pop, while radio broadcasts cemented the era's most popular tunes in the national consciousness.",
+    "Big band swing and jazz ruled Australian airwaves in the 1940s, with fox trots, waltzes, and quicksteps filling ballrooms coast to coast. Wartime ballads gave way to optimistic post-war pop, and radio broadcasts cemented the era's most popular tunes in the national consciousness.",
   colors: {
     background: '#1a0a0a',
     surface: '#2e1216',
