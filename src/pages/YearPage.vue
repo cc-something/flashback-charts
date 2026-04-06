@@ -17,6 +17,7 @@ const store = useChartStore()
 const player = usePlayerStore()
 
 const yearNumber = computed(() => Number(props.year))
+const topSong = computed(() => store.currentSongs[0] ?? null)
 const title = computed(() => getYearPageTitle(yearNumber.value))
 const description = computed(() => getYearPageDescription(yearNumber.value))
 const siteUrl = computed(() => {
