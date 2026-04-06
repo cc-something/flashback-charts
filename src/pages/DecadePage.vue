@@ -5,7 +5,6 @@ import { ArrowLeft, ArrowRight } from 'lucide-vue-next'
 import {
   getAvailableDecades,
   getDecadePageDescription,
-  getDecadePageSubtitle,
   getDecadePageTitle,
   getDecadeYears,
   getTopSongThumbnails,
@@ -44,7 +43,6 @@ const getDecadeNavStyle = (decade: string) => {
   }
 }
 const title = computed(() => getDecadePageTitle(props.decade))
-const subtitle = computed(() => getDecadePageSubtitle(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
 const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
@@ -106,9 +104,6 @@ useHead(() => ({
       >
         {{ title }}
       </h1>
-      <p class="mt-2 text-lg text-text-muted">
-        {{ subtitle }}
-      </p>
       <p
         v-if="theme.description"
         class="mt-4 max-w-3xl text-base leading-relaxed"
