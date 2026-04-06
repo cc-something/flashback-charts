@@ -28,6 +28,16 @@ const theme = computed(() => getThemeForYear(yearNumber.value))
 const adjacentYears = computed(() => getAdjacentYears(yearNumber.value))
 const previousYear = computed(() => adjacentYears.value.previousYear)
 const nextYear = computed(() => adjacentYears.value.nextYear)
+const getYearNavStyle = (year: number) => {
+  const yearTheme = getThemeForYear(year)
+
+  return {
+    '--nav-border': `${yearTheme.colors.primary}33`,
+    '--nav-text': yearTheme.colors.text,
+    '--nav-hover': yearTheme.colors.tabInactive,
+    '--nav-font-family': yearTheme.bodyFontFamily ?? yearTheme.fontFamily,
+  }
+}
 const topSong = computed(() => store.currentSongs[0] ?? null)
 const title = computed(() => getYearPageTitle(yearNumber.value))
 const description = computed(() => getYearPageDescription(yearNumber.value))
@@ -153,11 +163,8 @@ watch(yearNumber, () => {
       <router-link
         v-if="previousYear"
         :to="`/${previousYear}`"
-        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
-        :style="{
-          borderColor: `${theme.colors.primary}33`,
-          color: theme.colors.text,
-        }"
+        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        :style="getYearNavStyle(previousYear)"
       >
         <ArrowLeft class="h-3.5 w-3.5" />
         {{ previousYear }}
@@ -167,11 +174,8 @@ watch(yearNumber, () => {
       <router-link
         v-if="nextYear"
         :to="`/${nextYear}`"
-        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
-        :style="{
-          borderColor: `${theme.colors.primary}33`,
-          color: theme.colors.text,
-        }"
+        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        :style="getYearNavStyle(nextYear)"
       >
         {{ nextYear }}
         <ArrowRight class="h-3.5 w-3.5" />
@@ -221,5 +225,15 @@ watch(yearNumber, () => {
 
 .year-content-leave-to {
   opacity: 0;
+}
+
+.year-nav-button {
+  border-color: var(--nav-border);
+  color: var(--nav-text);
+  font-family: var(--nav-font-family);
+}
+
+.year-nav-button:hover {
+  background-color: var(--nav-hover);
 }
 </style>

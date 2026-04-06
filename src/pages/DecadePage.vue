@@ -33,6 +33,16 @@ const nextDecade = computed(() =>
     ? decades[decadeIndex.value + 1]
     : null,
 )
+const getDecadeNavStyle = (decade: string) => {
+  const decadeTheme = getThemeForYear(Number.parseInt(decade, 10))
+
+  return {
+    '--nav-border': `${decadeTheme.colors.primary}33`,
+    '--nav-text': decadeTheme.colors.text,
+    '--nav-hover': decadeTheme.colors.tabInactive,
+    '--nav-font-family': decadeTheme.bodyFontFamily ?? decadeTheme.fontFamily,
+  }
+}
 const title = computed(() => getDecadePageTitle(props.decade))
 const subtitle = computed(() => getDecadePageSubtitle(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
@@ -112,11 +122,8 @@ useHead(() => ({
       <router-link
         v-if="previousDecade"
         :to="`/${previousDecade}`"
-        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
-        :style="{
-          borderColor: `${theme.colors.primary}33`,
-          color: theme.colors.text,
-        }"
+        class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        :style="getDecadeNavStyle(previousDecade)"
       >
         <ArrowLeft class="h-3.5 w-3.5" />
         {{ previousDecade }}
@@ -126,11 +133,8 @@ useHead(() => ({
       <router-link
         v-if="nextDecade"
         :to="`/${nextDecade}`"
-        class="inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-surface/60"
-        :style="{
-          borderColor: `${theme.colors.primary}33`,
-          color: theme.colors.text,
-        }"
+        class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        :style="getDecadeNavStyle(nextDecade)"
       >
         {{ nextDecade }}
         <ArrowRight class="h-3.5 w-3.5" />
@@ -221,3 +225,15 @@ useHead(() => ({
     </section>
   </main>
 </template>
+
+<style scoped>
+.decade-nav-button {
+  border-color: var(--nav-border);
+  color: var(--nav-text);
+  font-family: var(--nav-font-family);
+}
+
+.decade-nav-button:hover {
+  background-color: var(--nav-hover);
+}
+</style>
