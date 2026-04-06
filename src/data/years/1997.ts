@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1997
 
+export const description =
+  '1997 leaned into glossy pop, stadium-sized hooks, and a few wilder crossover moments that kept the chart from settling into one lane. It was catchy, high-contrast, and just a little chaotic in a way that made the year feel alive.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1997_in_Australia',
@@ -28,7 +31,7 @@ const getSong = ({
 })
 
 // Source: ARIA End of Year singles chart 1997 year-end chart
-// Via: Wikipedia — List of top 25 singles for 1997 in Australia
+// Via: Wikipedia - List of top 25 singles for 1997 in Australia
 const songs: Song[] = [
   getSong({
     rank: 1,

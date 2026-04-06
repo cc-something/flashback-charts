@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1994
 
+export const description =
+  '1994 was full of slow-building ballads and easy-to-sing pop, with a warm, sentimental tone running through the whole year. The chart leaned into soft edges and big hooks, but there was still enough grit to keep it from feeling too neat.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1994_in_Australia',
@@ -28,7 +31,7 @@ const getSong = ({
 })
 
 // Source: ARIA End of Year singles chart 1994 year-end chart
-// Via: Wikipedia — List of top 25 singles for 1994 in Australia
+// Via: Wikipedia - List of top 25 singles for 1994 in Australia
 const songs: Song[] = [
   getSong({
     rank: 1,

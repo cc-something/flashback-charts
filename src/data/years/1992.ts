@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1992
 
+export const description =
+  '1992 had a sturdy, radio-first feel, with power ballads, country crossover, and polished pop all landing well. The year sat between old-school singalong comfort and a newer, rougher energy that was starting to show up more often.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1992_in_Australia',
@@ -28,7 +31,7 @@ const getSong = ({
 })
 
 // Source: ARIA End of Year singles chart 1992 year-end chart
-// Via: Wikipedia — List of top 25 singles for 1992 in Australia
+// Via: Wikipedia - List of top 25 singles for 1992 in Australia
 const songs: Song[] = [
   getSong({
     rank: 1,

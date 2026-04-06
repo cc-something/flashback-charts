@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1995
 
+export const description =
+  '1995 mixed heartbreak, swagger, and pure singalong energy in a way that kept the chart moving quickly. It was a year where ballads sat next to club tracks and crossover pop, and the whole thing still felt balanced enough to work on the radio.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1995_in_Australia',

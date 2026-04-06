@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1999
 
+export const description =
+  '1999 sounded like a year getting ready to flip into something else, with glossy pop, dance-floor momentum, and a few novelty streaks all crowding the top end. It was big, bright, and slightly overstuffed in a way that suited the turn of the century.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1999_in_Australia',

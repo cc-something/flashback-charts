@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1998
 
+export const description =
+  '1998 was built on big singalong choruses, polished dance-pop, and a strong streak of feel-good momentum. The chart was lighter on grit than the years around it, but the hooks were strong enough to carry the whole thing.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1998_in_Australia',

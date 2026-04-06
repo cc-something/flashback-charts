@@ -3,6 +3,9 @@ import type { Song } from '@/types/song'
 
 const year = 1991
 
+export const description =
+  '1991 was a mix of big emotional choruses and sharper, more club-friendly pop. The charts moved between heartbreak and bounce, with a slight grunge shadow starting to creep in around the edges.'
+
 export const source = {
   label: 'ARIA End of Year singles chart',
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1991_in_Australia',
@@ -28,7 +31,7 @@ const getSong = ({
 })
 
 // Source: ARIA End of Year singles chart 1991 year-end chart
-// Via: Wikipedia — List of top 25 singles for 1991 in Australia
+// Via: Wikipedia - List of top 25 singles for 1991 in Australia
 const songs: Song[] = [
   getSong({
     rank: 1,
