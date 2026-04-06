@@ -32,7 +32,10 @@ import songs1969, { source as source1969 } from './years/1969'
 import songs1970, { source as source1970 } from './years/1970'
 import songs1971, { source as source1971 } from './years/1971'
 import songs1972, { source as source1972 } from './years/1972'
-import songs1973, { source as source1973 } from './years/1973'
+import songs1973, {
+  source as source1973,
+  description as description1973,
+} from './years/1973'
 import songs1974, { source as source1974 } from './years/1974'
 import songs1975, { source as source1975 } from './years/1975'
 import songs1976, { source as source1976 } from './years/1976'
@@ -94,6 +97,7 @@ export interface YearSource {
 interface YearChartData {
   songs: Song[]
   source: YearSource | null
+  description?: string
 }
 
 const yearData: Record<number, YearChartData> = {
@@ -232,6 +236,7 @@ const yearData: Record<number, YearChartData> = {
   1973: {
     songs: songs1973,
     source: source1973,
+    description: description1973,
   },
   1974: {
     songs: songs1974,
@@ -448,6 +453,9 @@ export const getYearData = (year: number): Song[] | undefined =>
 
 export const getYearSource = (year: number): YearSource | null =>
   yearData[year]?.source ?? null
+
+export const getYearDescription = (year: number): string | null =>
+  yearData[year]?.description ?? null
 
 export const getAvailableYears = (): number[] =>
   Object.keys(yearData).map(Number)

@@ -131,6 +131,13 @@ watch(yearNumber, () => {
       </button>
     </header>
 
+    <p
+      v-if="store.currentDescription"
+      class="mb-5 text-sm leading-relaxed text-text-muted"
+    >
+      {{ store.currentDescription }}
+    </p>
+
     <Transition
       name="year-content"
       mode="out-in"
