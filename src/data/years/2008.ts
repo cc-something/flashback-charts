@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2008_in_Australia',
 }
 
+export const description =
+  'By 2008, the charts were getting more electronic, with bright synths, club beats, and dramatic pop melodies all pushing together. The year felt glossy and a little restless, like mainstream pop had started to speed up.'
+
 const getSong = ({
   rank,
   title,

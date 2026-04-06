@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2000_in_Australia',
 }
 
+export const description =
+  'The year 2000 still carried a lot of late-90s polish, with glossy pop, dance tracks, and big radio hooks doing most of the heavy lifting. The charts felt upbeat and clean-cut, with only a little room for grit.'
+
 const getSong = ({
   rank,
   title,

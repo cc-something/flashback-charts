@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2007_in_Australia',
 }
 
+export const description =
+  'In 2007, guitar-heavy radio hits and glossy pop ballads split the spotlight, with a few darker club tracks filling out the edges. The overall feel was upbeat but a little sharper, as if the charts were starting to brace for a bigger shift.'
+
 const getSong = ({
   rank,
   title,

@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2006_in_Australia',
 }
 
+export const description =
+  'The 2006 charts had a bit more edge, with glossy pop still present but joined by heavier guitar songs and widescreen ballads. It was a crowded year, but the songs that cut through usually had a sharp chorus and a clear emotional line.'
+
 const getSong = ({
   rank,
   title,

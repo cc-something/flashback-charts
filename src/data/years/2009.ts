@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2009_in_Australia',
 }
 
+export const description =
+  'In 2009, bright synth-pop and club-ready hooks had fully taken over the top end of the charts. The sound was slick, high-energy, and built for repetition, with fewer rough edges than earlier in the decade.'
+
 const getSong = ({
   rank,
   title,

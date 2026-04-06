@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2004_in_Australia',
 }
 
+export const description =
+  'In 2004, the charts settled into a strong run of pop-rock, rap crossover, and slick ballads that all wanted the same thing: a huge hook. The year felt confident, loud, and very comfortable living on the radio.'
+
 const getSong = ({
   rank,
   title,

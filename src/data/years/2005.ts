@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2005_in_Australia',
 }
 
+export const description =
+  '2005 leaned hard into club-pop, polished R&B, and emotional singalongs that could fill a car stereo or a dance floor without much effort. Guitar bands were still around, but the charts were mostly chasing shine and momentum.'
+
 const getSong = ({
   rank,
   title,
