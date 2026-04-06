@@ -78,7 +78,7 @@ useHead({
             class="mb-3 text-xs"
             :style="{ color: group.theme.colors.textMuted }"
           >
-            Click on a year to see the Top 10 songs:
+            Click on a year to see the Top 10:
           </p>
           <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
             <li v-for="tile in group.years" :key="tile.year">
