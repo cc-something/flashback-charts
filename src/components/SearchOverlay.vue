@@ -14,8 +14,8 @@ const inputRef = ref<HTMLInputElement | null>(null)
 const allResults = computed(() => searchSongs(query.value))
 const results = computed(() => allResults.value.slice(0, 50))
 
-const goToYear = (year: number) => {
-  router.push(`/${year}`)
+const goToSong = (year: number, rank: number) => {
+  router.push({ path: `/${year}`, query: { song: String(rank) } })
   emit('close')
 }
 
@@ -44,25 +44,35 @@ defineExpose({ focusInput })
           {{ allResults.length }} results
         </p>
         <div class="flex items-center gap-3 px-4 py-3">
-          <input
-            ref="inputRef"
-            v-model="query"
-            type="text"
-            placeholder="Search songs, artists, albums…"
-            class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
-            @keydown.escape="emit('close')"
-          />
-          <!-- Search icon -->
-          <svg
-            class="h-5 w-5 flex-shrink-0 text-text-muted"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
+          <div class="flex flex-1 items-center gap-3">
+            <input
+              ref="inputRef"
+              v-model="query"
+              type="text"
+              placeholder="Search songs, artists, albums…"
+              class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
+              @keydown.escape="emit('close')"
+            />
+            <!-- Search icon -->
+            <svg
+              class="h-5 w-5 flex-shrink-0 text-text-muted"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" stroke-linecap="round" />
+            </svg>
+          </div>
+          <button
+            type="button"
+            aria-label="Close search"
+            class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-primary/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+            @click="emit('close')"
           >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" stroke-linecap="round" />
-          </svg>
+            <span class="text-base font-semibold leading-none">(X)</span>
+          </button>
         </div>
       </div>
 
@@ -79,13 +89,18 @@ defineExpose({ focusInput })
           <div
             v-for="({ song, year }, i) in results"
             :key="`${year}-${song.rank}-${i}`"
-            class="flex items-center gap-3 rounded-lg bg-surface p-3 transition-colors hover:bg-surface/80"
+            class="flex cursor-pointer items-center gap-3 rounded-lg bg-surface p-3 transition-colors hover:bg-surface/80"
+            role="button"
+            tabindex="0"
+            @click="goToSong(year, song.rank)"
+            @keydown.enter="goToSong(year, song.rank)"
+            @keydown.space.prevent="goToSong(year, song.rank)"
           >
             <!-- Thumbnail / play -->
             <button
               type="button"
               class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation"
-              @click="playSong(song, year)"
+              @click.stop="playSong(song, year)"
             >
               <img
                 :src="song.thumbnailPath"
@@ -138,7 +153,7 @@ defineExpose({ focusInput })
             <!-- Year badge + go-to -->
             <button
               class="flex-shrink-0 cursor-pointer rounded bg-primary/15 px-2.5 py-1 text-xs font-bold text-primary transition-colors hover:bg-primary/30"
-              @click="goToYear(year)"
+              @click.stop="goToSong(year, song.rank)"
             >
               {{ year }}
             </button>

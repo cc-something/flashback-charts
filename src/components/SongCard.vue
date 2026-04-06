@@ -39,6 +39,8 @@ const youtubeVideoUrl = computed(() =>
 
 <template>
   <article
+    :id="`song-${year}-${song.rank}`"
+    :data-song-rank="song.rank"
     :data-song-id="song.youtubeVideoId"
     class="group relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3.5 py-3 transition-colors duration-150 hover:bg-surface/80"
   >

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, onUnmounted, watch } from 'vue'
+import { computed, nextTick, onUnmounted, watch } from 'vue'
 import { useHead } from '@unhead/vue'
+import { useRoute } from 'vue-router'
 import {
   ArrowDownNarrowWide,
   ArrowLeft,
@@ -20,6 +21,7 @@ import SongCard from '@/components/SongCard.vue'
 
 const props = defineProps<{ year: string }>()
 
+const route = useRoute()
 const store = useChartStore()
 const player = usePlayerStore()
 const homeTheme = getHomeTheme()
@@ -50,6 +52,11 @@ const siteUrl = computed(() => {
 const canonical = computed(() =>
   siteUrl.value ? `${siteUrl.value}/${yearNumber.value}` : undefined,
 )
+const selectedSongRank = computed(() => {
+  const { song } = route.query
+  const songRank = Number(Array.isArray(song) ? song[0] : song)
+  return Number.isInteger(songRank) ? songRank : null
+})
 const ogImage = computed(() =>
   topSong.value?.thumbnailPath
     ? `${siteUrl.value}${topSong.value.thumbnailPath}`
@@ -108,12 +115,32 @@ useHead(() => ({
 player.setOnEnded((song, year) => player.playNext(song, year))
 onUnmounted(() => player.setOnEnded(null))
 
+const scrollToSelectedSong = async () => {
+  if (typeof window === 'undefined') return
+  if (selectedSongRank.value === null) return
+  await nextTick()
+  requestAnimationFrame(() => {
+    const selectedSongElement = document.getElementById(
+      `song-${yearNumber.value}-${selectedSongRank.value}`,
+    )
+    selectedSongElement?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
+}
+
 watch(
   yearNumber,
   (next) => {
     if (!Number.isNaN(next)) store.setYear(next)
   },
   { immediate: true },
+)
+
+watch(
+  [yearNumber, () => store.sortOrder, selectedSongRank],
+  scrollToSelectedSong,
+  {
+    immediate: true,
+  },
 )
 </script>
 
