@@ -6,7 +6,7 @@ const theme: DecadeTheme = {
   fontUrl:
     'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap',
   description:
-    "Australian popular music in the 1940s was shaped by the twin forces of wartime sentiment and the golden age of American swing. Big band orchestras and jazz ensembles dominated the airwaves, with dance hall favourites — fox trots, waltzes, and quicksteps — filling ballrooms from Sydney to Melbourne. Wartime ballads and patriotic songs reflected the national mood, while the post-war years brought a wave of optimistic, romantic pop. Radio was the defining medium of the era, with the ABC and commercial stations broadcasting live orchestral performances that set the week's most popular tunes. Country and western influences from America began to take hold toward the end of the decade, planting seeds for a distinctly Australian style that would bloom in the 1950s.",
+    "Big band swing and jazz ruled Australian airwaves in the 1940s, with dance hall favourites — fox trots, waltzes, and quicksteps — filling ballrooms coast to coast. Wartime ballads gave way to optimistic post-war pop, while radio broadcasts cemented the era's most popular tunes in the national consciousness.",
   colors: {
     background: '#1a0a0a',
     surface: '#2e1216',
