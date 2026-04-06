@@ -52,6 +52,7 @@ onMounted(async () => {
     <YearTabs />
 
     <router-link
+      v-if="route.path !== '/'"
       to="/"
       aria-label="Home"
       class="fixed left-4 top-16 z-20 cursor-pointer rounded-full bg-surface/80 p-2 text-text-muted shadow-md backdrop-blur transition-colors hover:text-text"
