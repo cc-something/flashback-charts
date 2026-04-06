@@ -6,6 +6,7 @@ import { getAvailableYears } from '@/data'
 import { getDecadeForYear, getThemeForYear } from '@/themes'
 
 const years = getAvailableYears().sort((a, b) => a - b)
+const latestYear = years[years.length - 1]
 const decades = computed(() => {
   const grouped = groupBy(years, (year) => getDecadeForYear(year))
   return Object.entries(grouped)
@@ -20,10 +21,8 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   /\/$/,
   '',
 )
-const title =
-  'Flashback Charts Australia — Australia Top 10 Songs by Year, 1940 to 2025'
-const description =
-  'Browse the top 10 songs in Australia for every year from 1940 to the present. Listen to the biggest Aussie hits by decade, year, and artist.'
+const title = `Flashback Charts Australia — Australia Top 10 Songs by Year, 1940 to ${latestYear}`
+const description = `Browse the top 10 songs in Australia for every year from 1940 to ${latestYear}. Listen to the biggest Aussie hits by decade, year, and artist.`
 
 useHead({
   title,
@@ -48,7 +47,8 @@ useHead({
         Flashback Charts Australia
       </h1>
       <p class="mt-2 text-text-muted">
-        The top 10 songs in Australia for every year from 1940 to the present.
+        The top 10 songs in Australia for every year from 1940 to
+        {{ latestYear }}.
       </p>
     </header>
 
