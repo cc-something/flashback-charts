@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2017_in_Australia',
 }
 
+export const description =
+  '2017 pushed polished pop and EDM forward, while trap and softer ballads added contrast. Big hooks did most of the work.'
+
 const year = 2017
 
 const getSong = ({

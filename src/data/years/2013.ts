@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2013_in_Australia',
 }
 
+export const description =
+  '2013 leaned into sleek pop, EDM flashes, and a few heavier ballads. The mix swung between glossy and emotional.'
+
 const year = 2013
 
 const getSong = ({

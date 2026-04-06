@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2010_in_Australia',
 }
 
+export const description =
+  'Pop hooks, club beats, and rap features set the pace in 2010. It was glossy, high-energy, and made for radio.'
+
 const year = 2010
 
 const getSong = ({

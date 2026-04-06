@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2011_in_Australia',
 }
 
+export const description =
+  '2011 stayed in polished pop territory, with big choruses and dancefloor lift carrying most of the weight. It was bright, direct, and easy to replay.'
+
 const year = 2011
 
 const getSong = ({

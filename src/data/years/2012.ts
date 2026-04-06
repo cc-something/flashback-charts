@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2012_in_Australia',
 }
 
+export const description =
+  '2012 mixed bright pop, electronic polish, and a few viral outliers. The charts moved fast and stayed playful.'
+
 const year = 2012
 
 const getSong = ({

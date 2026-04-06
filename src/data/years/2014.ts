@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2014_in_Australia',
 }
 
+export const description =
+  '2014 was upbeat and accessible, with pop, crossover hits, and feel-good energy carrying the year. Songs landed quickly and stuck around.'
+
 const year = 2014
 
 const getSong = ({

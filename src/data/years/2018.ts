@@ -8,6 +8,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2018_in_Australia',
 }
 
+export const description =
+  '2018 mixed pop, hip-hop, and low-key heartbreak, with slick production giving everything a polished edge. The result was modern and slightly bruised.'
+
 const getSong = ({
   rank,
   title,

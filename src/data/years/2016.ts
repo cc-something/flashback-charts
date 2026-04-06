@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2016_in_Australia',
 }
 
+export const description =
+  '2016 was cooler and more restrained, with minimal production and club tracks sharing space at the top. The sound stayed clean and moody.'
+
 const year = 2016
 
 const getSong = ({

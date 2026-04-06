@@ -6,6 +6,9 @@ export const source = {
   url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2015_in_Australia',
 }
 
+export const description =
+  '2015 had a laid-back feel, with pop, R&B, and tropical touches keeping things warm rather than frantic. It sounded like summer playlists.'
+
 const year = 2015
 
 const getSong = ({
