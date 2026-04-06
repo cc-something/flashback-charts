@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 
 export type Toast = {
   id: number
@@ -14,6 +15,7 @@ export const useToastStore = defineStore('toast', () => {
   const show = (message: string, durationMs = 4000) => {
     const id = nextId++
     toasts.value.push({ id, message })
+    usePlausibleAnalytics().trackEvent('Error', { message })
     window.setTimeout(() => dismiss(id), durationMs)
   }
 
