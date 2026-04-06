@@ -2,6 +2,7 @@
 import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
+import { getThemeForYear } from '@/themes'
 
 const store = useChartStore()
 const router = useRouter()
@@ -31,6 +32,18 @@ const goToYear = (year: number, target: EventTarget | null) => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+const getTabThemeStyle = (year: number) => {
+  const decadeTheme = getThemeForYear(year)
+
+  return {
+    '--year-tab-surface': decadeTheme.colors.surface,
+    '--year-tab-text': decadeTheme.colors.text,
+    '--year-tab-text-muted': decadeTheme.colors.textMuted,
+    '--year-tab-active': decadeTheme.colors.tabActive,
+    '--year-tab-inactive': decadeTheme.colors.tabInactive,
+  }
+}
+
 onMounted(scrollToActiveTab)
 watch(() => store.selectedYear, scrollToActiveTab)
 </script>
@@ -46,13 +59,14 @@ watch(() => store.selectedYear, scrollToActiveTab)
         v-for="year in store.yearRange"
         :key="year"
         :data-active="route.name === 'year' && year === store.selectedYear"
+        :style="getTabThemeStyle(year)"
         :class="[
-          'flex-shrink-0 px-3 py-1.5 rounded text-sm font-medium transition-all duration-200',
+          'year-tab flex-shrink-0 px-3 py-1.5 rounded text-sm font-medium transition-all duration-200',
           route.name === 'year' && year === store.selectedYear
-            ? 'bg-tab-active text-background font-bold scale-105'
+            ? 'year-tab-active font-bold scale-105'
             : store.availableYears.includes(year)
-              ? 'text-text hover:bg-tab-inactive hover:text-text'
-              : 'text-text-muted opacity-40 cursor-default',
+              ? 'year-tab-available'
+              : 'year-tab-unavailable',
         ]"
         @click="goToYear(year, $event.target)"
       >
@@ -63,6 +77,27 @@ watch(() => store.selectedYear, scrollToActiveTab)
 </template>
 
 <style scoped>
+.year-tab {
+  background-color: transparent;
+  color: var(--year-tab-text-muted);
+}
+
+.year-tab-active {
+  background-color: var(--year-tab-active);
+  color: var(--year-tab-surface);
+}
+
+.year-tab-available:hover {
+  background-color: var(--year-tab-inactive);
+  color: var(--year-tab-text);
+}
+
+.year-tab-unavailable {
+  color: var(--year-tab-text-muted);
+  opacity: 0.4;
+  cursor: default;
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
