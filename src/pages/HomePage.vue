@@ -60,7 +60,7 @@ useHead({
       </p>
     </header>
 
-    <div class="grid grid-cols-1 min-[1260px]:grid-cols-2 gap-6 items-start">
+    <div class="grid grid-cols-1 min-[1260px]:grid-cols-2 gap-6">
       <section
         v-for="group in decades"
         :key="group.decade"
