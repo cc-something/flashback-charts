@@ -126,7 +126,9 @@ const youtubeVideoUrl = computed(() =>
       </Transition>
     </button>
 
-    <div class="theme-body relative z-10 min-w-0 flex-1 flex flex-col gap-0.5">
+    <div
+      class="theme-body pointer-events-none relative z-10 min-w-0 flex-1 flex flex-col gap-0.5"
+    >
       <h2 class="text-base font-bold leading-snug text-text">
         {{ song.title }}
       </h2>
