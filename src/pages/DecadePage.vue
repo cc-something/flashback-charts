@@ -150,8 +150,8 @@ useHead(() => ({
           :key="year"
           class="grid gap-4 rounded-2xl border p-5 md:grid-cols-[128px_1fr]"
           :style="{
-            backgroundColor: `${theme.colors.background}99`,
-            borderColor: `${theme.colors.primary}33`,
+            backgroundColor: `${theme.colors.surface}d9`,
+            borderColor: `${theme.colors.primary}4d`,
           }"
         >
           <router-link
