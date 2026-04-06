@@ -17,7 +17,7 @@ const latestYear = getLatestYear()
 const openSearch = inject<() => Promise<void>>('openSearch', () =>
   Promise.resolve(),
 )
-const title = `Flashback Charts Australia — Australia Top 10 Songs by Year, 1940 to ${latestYear}`
+const title = 'Flashback Charts Australia'
 const description = `Browse the top 10 songs in Australia for every year from 1940 to ${latestYear}. Listen to the biggest Aussie hits by decade, year, and artist.`
 
 useHead({
