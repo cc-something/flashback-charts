@@ -65,7 +65,7 @@ useHead({
       <section
         v-for="group in decades"
         :key="group.decade"
-        class="rounded-xl p-4"
+        class="flex h-full flex-col rounded-xl p-4"
         :style="{
           backgroundColor: group.theme.colors.background + '99',
           border: `1px solid ${group.theme.colors.primary}33`,
@@ -89,61 +89,63 @@ useHead({
         >
           {{ group.theme.description }}
         </p>
-        <p
-          class="text-xs mb-3"
-          :style="{ color: group.theme.colors.textMuted }"
-        >
-          Click on a year to see the Top 10 songs:
-        </p>
-        <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
-          <li v-for="tile in group.years" :key="tile.year">
-            <router-link
-              :to="`/${tile.year}`"
-              class="group relative block aspect-square rounded-lg overflow-hidden font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
-              :style="{
-                backgroundColor: group.theme.colors.surface,
-                border: `1px solid ${group.theme.colors.primary}44`,
-                fontFamily: group.theme.fontFamily,
-              }"
-            >
-              <img
-                v-if="tile.thumbnail"
-                :src="tile.thumbnail"
-                :alt="`#1 song of ${tile.year}`"
-                class="absolute inset-0 w-full h-full object-cover"
-              />
-              <div
-                class="absolute inset-0"
-                style="
-                  background: linear-gradient(
-                    to top,
-                    rgb(0 0 0 / 95%) 0%,
-                    rgb(0 0 0 / 60%) 40%,
-                    transparent 75%
-                  );
-                "
-              />
-              <div
-                class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        <div class="mt-auto pt-4">
+          <p
+            class="mb-3 text-xs"
+            :style="{ color: group.theme.colors.textMuted }"
+          >
+            Click on a year to see the Top 10 songs:
+          </p>
+          <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
+            <li v-for="tile in group.years" :key="tile.year">
+              <router-link
+                :to="`/${tile.year}`"
+                class="group relative block aspect-square overflow-hidden rounded-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                :style="{
+                  backgroundColor: group.theme.colors.surface,
+                  border: `1px solid ${group.theme.colors.primary}44`,
+                  fontFamily: group.theme.fontFamily,
+                }"
               >
-                <ArrowRight class="w-6 h-6 text-white drop-shadow-lg" />
-              </div>
-              <span
-                class="absolute bottom-0 left-0 right-0 z-20 pb-1.5 text-center"
-              >
-                <span
-                  class="block text-sm leading-tight font-bold"
-                  :style="{ color: group.theme.colors.primary }"
+                <img
+                  v-if="tile.thumbnail"
+                  :src="tile.thumbnail"
+                  :alt="`#1 song of ${tile.year}`"
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+                <div
+                  class="absolute inset-0"
+                  style="
+                    background: linear-gradient(
+                      to top,
+                      rgb(0 0 0 / 95%) 0%,
+                      rgb(0 0 0 / 60%) 40%,
+                      transparent 75%
+                    );
+                  "
+                />
+                <div
+                  class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                 >
-                  {{ tile.year }}
+                  <ArrowRight class="h-6 w-6 text-white drop-shadow-lg" />
+                </div>
+                <span
+                  class="absolute bottom-0 left-0 right-0 z-20 pb-1.5 text-center"
+                >
+                  <span
+                    class="block text-sm leading-tight font-bold"
+                    :style="{ color: group.theme.colors.primary }"
+                  >
+                    {{ tile.year }}
+                  </span>
+                  <span class="block text-xs leading-tight text-white/70">
+                    Top 10
+                  </span>
                 </span>
-                <span class="block text-xs leading-tight text-white/70">
-                  Top 10
-                </span>
-              </span>
-            </router-link>
-          </li>
-        </ul>
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </section>
     </div>
   </main>
