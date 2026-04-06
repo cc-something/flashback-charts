@@ -8,7 +8,8 @@ import { getDecadeForYear } from '@/themes'
 export type SortOrder = 'asc' | 'desc'
 
 export const useChartStore = defineStore('chart', () => {
-  const selectedYear = ref(1973)
+  const initialYear = Number(window.location.pathname.slice(1)) || 1973
+  const selectedYear = ref(initialYear)
   const sortOrder = useStorage<SortOrder>('chart-sort-order', 'asc')
 
   const yearRange = range(1940, 2026)
