@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { inject } from 'vue'
 import { useHead } from '@unhead/vue'
 import { ArrowRight } from 'lucide-vue-next'
 import { getDecadeSummaries, getLatestYear } from '@/content/chartContent'
@@ -9,6 +10,9 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
 )
 const decades = getDecadeSummaries()
 const latestYear = getLatestYear()
+const openSearch = inject<() => Promise<void>>('openSearch', () =>
+  Promise.resolve(),
+)
 const title = `Flashback Charts Australia — Australia Top 10 Songs by Year, 1940 to ${latestYear}`
 const description = `Browse the top 10 songs in Australia for every year from 1940 to ${latestYear}. Listen to the biggest Aussie hits by decade, year, and artist.`
 
@@ -31,9 +35,28 @@ useHead({
 <template>
   <main class="max-w-[1300px] mx-auto px-4 py-10">
     <header class="mb-8">
-      <h1 class="theme-display text-4xl font-bold text-primary">
-        💿 Flashback Charts Australia
-      </h1>
+      <div class="flex items-start justify-between gap-4">
+        <h1 class="theme-display text-4xl font-bold text-primary">
+          💿 Flashback Charts Australia
+        </h1>
+        <button
+          type="button"
+          aria-label="Search songs"
+          class="flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          @click="openSearch"
+        >
+          <svg
+            class="h-5 w-5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
       <p class="mt-2 text-lg text-text-muted">
         The top 10 songs in Australia for every year from 1940 to
         {{ latestYear }}.
