@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
@@ -6,6 +6,44 @@ import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 import { getYearData } from '@/data'
+
+const STORAGE_KEY = 'flashback-miniplayer'
+const SAVE_INTERVAL_MS = 3_000
+
+interface SavedPlayerState {
+  year: number
+  videoId: string
+  timeSeconds: number
+}
+
+const loadSavedState = (): SavedPlayerState | null => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (
+      parsed?.year &&
+      parsed?.videoId &&
+      typeof parsed.timeSeconds === 'number'
+    )
+      return parsed as SavedPlayerState
+    return null
+  } catch {
+    return null
+  }
+}
+
+const saveToDisk = (state: SavedPlayerState) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  } catch {
+    /* quota exceeded — ignore */
+  }
+}
+
+const clearSavedState = () => {
+  localStorage.removeItem(STORAGE_KEY)
+}
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
@@ -24,6 +62,7 @@ export const usePlayerStore = defineStore('player', () => {
 
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
+  let saveTimerId: number | null = null
   let playerContainerEl: HTMLDivElement | null = null
   let onEndedCallback: ((song: Song, year: number) => void) | null = null
   let retryCount = 0
@@ -96,8 +135,38 @@ export const usePlayerStore = defineStore('player', () => {
     progressTimerId = window.setInterval(syncPlaybackProgress, 250)
   }
 
+  const clearSaveTimer = () => {
+    if (saveTimerId === null) return
+    window.clearInterval(saveTimerId)
+    saveTimerId = null
+  }
+
+  const persistState = () => {
+    const song = playingSong.value
+    const year = playingYear.value
+    if (!song?.youtubeVideoId || year === null) return
+    saveToDisk({
+      year,
+      videoId: song.youtubeVideoId,
+      timeSeconds: currentTimeSeconds.value,
+    })
+  }
+
+  const startSaveTimer = () => {
+    clearSaveTimer()
+    persistState()
+    saveTimerId = window.setInterval(persistState, SAVE_INTERVAL_MS)
+  }
+
+  // Start/stop save timer when player becomes active/inactive
+  watch(isActive, (active) => {
+    if (active) startSaveTimer()
+    else clearSaveTimer()
+  })
+
   const stop = () => {
     clearProgressTimer()
+    clearSaveTimer()
     ytPlayer?.destroy()
     ytPlayer = null
     playerState.value = 'idle'
@@ -109,13 +178,14 @@ export const usePlayerStore = defineStore('player', () => {
     currentPlaySong = null
     clearSeekPreview()
     clearActive()
+    clearSavedState()
     if (offlineHandler) {
       window.removeEventListener('offline', offlineHandler)
       offlineHandler = null
     }
   }
 
-  const attemptPlay = (song: Song) => {
+  const attemptPlay = (song: Song, startAt?: number) => {
     if (!playerContainerEl) {
       stop()
       return
@@ -135,6 +205,7 @@ export const usePlayerStore = defineStore('player', () => {
         playsinline: 1,
         rel: 0,
         origin: window.location.origin,
+        ...(startAt ? { start: Math.floor(startAt) } : {}),
       },
       events: {
         onReady: (event) => {
@@ -192,20 +263,27 @@ export const usePlayerStore = defineStore('player', () => {
         ytPlayer?.pauseVideo()
         return
       }
-      if (playerState.value === 'paused') {
-        ytPlayer?.playVideo()
+      if (playerState.value === 'paused' && ytPlayer) {
+        ytPlayer.playVideo()
         return
       }
       if (playerState.value === 'loading') {
         stop()
         return
       }
+      // Restored from storage — fall through to full play
     }
 
     if (!navigator.onLine) {
       useToastStore().show('No internet connection — cannot play')
       return
     }
+
+    // Capture resume time before stop() clears it
+    const resumeAt =
+      currentTimeSeconds.value > 0 && !ytPlayer
+        ? currentTimeSeconds.value
+        : undefined
 
     // Stop any current playback
     if (isActive.value) stop()
@@ -241,12 +319,19 @@ export const usePlayerStore = defineStore('player', () => {
 
     if (playerState.value !== 'loading') return
 
-    attemptPlay(song)
+    attemptPlay(song, resumeAt)
   }
 
   const togglePlayback = () => {
     if (playerState.value === 'playing') ytPlayer?.pauseVideo()
-    else if (playerState.value === 'paused') ytPlayer?.playVideo()
+    else if (playerState.value === 'paused' && ytPlayer) ytPlayer.playVideo()
+    else if (
+      playerState.value === 'paused' &&
+      !ytPlayer &&
+      playingSong.value &&
+      playingYear.value !== null
+    )
+      play(playingSong.value, playingYear.value)
   }
 
   const getSeekValue = (nextValue: number[]) => {
@@ -362,6 +447,21 @@ export const usePlayerStore = defineStore('player', () => {
       el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     })
   }
+
+  const restoreFromStorage = () => {
+    const saved = loadSavedState()
+    if (!saved) return
+    const songs = getYearData(saved.year)
+    if (!songs) return
+    const song = songs.find((s) => s.youtubeVideoId === saved.videoId)
+    if (!song) return
+    playingSong.value = song
+    playingYear.value = saved.year
+    currentTimeSeconds.value = saved.timeSeconds
+    playerState.value = 'paused'
+  }
+
+  restoreFromStorage()
 
   const goToSong = () => {
     const chart = useChartStore()
