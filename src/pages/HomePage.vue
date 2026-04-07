@@ -34,7 +34,7 @@ useHead({
 
 <template>
   <main class="max-w-[1300px] mx-auto px-4 py-10">
-    <p class="mb-8 text-lg text-text-muted">
+    <p class="mb-8 text-2xl text-text-muted">
       The top 10 songs in Australia for every year from 1940 to
       {{ latestYear }}.
     </p>
