@@ -58,7 +58,7 @@ const openSearch = async () => {
 }
 
 provide('openSearch', openSearch)
-useHotkeys(openSearch)
+useHotkeys(openSearch, () => isSearchOpen.value || isHotkeysOpen.value)
 
 const homeTheme = getHomeTheme()
 

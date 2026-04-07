@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { Volume2, VolumeX } from 'lucide-vue-next'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
 
 const player = usePlayerStore()
+
+const isMac = navigator.platform.toUpperCase().includes('MAC')
+const mod = isMac ? '⌘' : 'Ctrl'
 
 // Keep last valid theme — never cleared on null so leave-animation retains its decade theme
 const themeVars = ref<Record<string, string>>({})
@@ -45,6 +49,7 @@ watch(
         <!-- Prev -->
         <button
           type="button"
+          :title="`Previous song (${mod}+←)`"
           aria-label="Previous song"
           class="cursor-pointer p-2 text-text-muted transition-colors hover:text-text"
           @click="player.playPrev()"
@@ -57,6 +62,7 @@ watch(
         <!-- Play/Pause -->
         <button
           type="button"
+          title="Play / pause (Space or K)"
           aria-label="Toggle playback"
           class="cursor-pointer p-2 text-text transition-colors hover:text-primary"
           @click="player.togglePlayback"
@@ -97,6 +103,7 @@ watch(
         <!-- Next -->
         <button
           type="button"
+          :title="`Next song (${mod}+→)`"
           aria-label="Next song"
           class="cursor-pointer p-2 text-text-muted transition-colors hover:text-text"
           @click="player.playNext()"
@@ -111,6 +118,7 @@ watch(
         <!-- Go to song -->
         <button
           type="button"
+          title="Go to song (G)"
           aria-label="Go to song"
           class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
           @click="player.goToSong"
@@ -120,6 +128,21 @@ watch(
               d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
             />
           </svg>
+        </button>
+
+        <!-- Mute -->
+        <button
+          type="button"
+          :title="player.isMuted ? 'Unmute (M)' : 'Mute (M)'"
+          :aria-label="player.isMuted ? 'Unmute' : 'Mute'"
+          :class="[
+            'cursor-pointer p-1 transition-colors',
+            player.isMuted ? 'text-primary' : 'text-text-muted hover:text-text',
+          ]"
+          @click="player.toggleMute"
+        >
+          <VolumeX v-if="player.isMuted" class="h-4 w-4" />
+          <Volume2 v-else class="h-4 w-4" />
         </button>
 
         <div class="flex-1" />
@@ -137,6 +160,7 @@ watch(
         <!-- Close -->
         <button
           type="button"
+          title="Stop playback (Esc)"
           aria-label="Stop playback"
           class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
           @click="player.stop"
