@@ -9,6 +9,9 @@ const availableYears = readdirSync(yearsDir)
   .filter((name) => /^\d{4}\.ts$/.test(name))
   .map((name) => Number(name.replace('.ts', '')))
   .sort((a, b) => a - b)
+const availableDecades = [
+  ...new Set(availableYears.map((year) => `${Math.floor(year / 10) * 10}s`)),
+]
 
 export default defineConfig({
   plugins: [vue(), tailwindcss()],
@@ -28,6 +31,10 @@ export default defineConfig({
   ssgOptions: {
     dirStyle: 'nested',
     formatting: 'minify',
-    includedRoutes: () => ['/', ...availableYears.map((year) => `/${year}`)],
+    includedRoutes: () => [
+      '/',
+      ...availableDecades.map((decade) => `/${decade}`),
+      ...availableYears.map((year) => `/${year}`),
+    ],
   },
 })
