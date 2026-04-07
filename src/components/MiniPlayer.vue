@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Volume2, VolumeX } from 'lucide-vue-next'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
@@ -130,30 +129,7 @@ watch(
           </svg>
         </button>
 
-        <!-- Mute -->
-        <button
-          type="button"
-          :title="player.isMuted ? 'Unmute (M)' : 'Mute (M)'"
-          :aria-label="player.isMuted ? 'Unmute' : 'Mute'"
-          :class="[
-            'cursor-pointer p-1 transition-colors',
-            player.isMuted ? 'text-primary' : 'text-text-muted hover:text-text',
-          ]"
-          @click="player.toggleMute"
-        >
-          <VolumeX v-if="player.isMuted" class="h-4 w-4" />
-          <Volume2 v-else class="h-4 w-4" />
-        </button>
-
         <div class="flex-1" />
-
-        <!-- Time -->
-        <p
-          v-if="player.showSeekBar"
-          class="font-mono text-[0.7rem] tabular-nums text-text-muted"
-        >
-          {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-        </p>
 
         <div class="mx-1 h-3 w-px bg-white/10" />
 
@@ -212,12 +188,20 @@ watch(
           <p class="truncate text-base font-bold leading-snug text-text">
             {{ player.playingSong.title }}
           </p>
-          <p class="truncate text-sm leading-snug text-text-muted">
-            {{ player.playingSong.artist }}
-            <span class="text-primary/60">
-              · {{ player.playingYear }} #{{ player.playingSong.rank }}
-            </span>
-          </p>
+          <div class="flex items-baseline justify-between gap-2">
+            <p class="truncate text-sm leading-snug text-text-muted">
+              {{ player.playingSong.artist }}
+              <span class="text-primary/60">
+                · {{ player.playingYear }} #{{ player.playingSong.rank }}
+              </span>
+            </p>
+            <p
+              v-if="player.showSeekBar"
+              class="flex-shrink-0 font-mono text-[0.65rem] tabular-nums text-text-muted/60"
+            >
+              {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+            </p>
+          </div>
         </div>
       </div>
 

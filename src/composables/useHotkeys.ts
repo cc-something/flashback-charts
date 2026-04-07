@@ -89,12 +89,6 @@ export const useHotkeys = (
       return
     }
 
-    if (e.code === 'KeyM' && !isMod) {
-      e.preventDefault()
-      player.toggleMute()
-      return
-    }
-
     if (e.code === 'KeyS' && !isMod) {
       e.preventDefault()
       chart.toggleSortOrder()
