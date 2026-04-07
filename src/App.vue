@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { computed, provide, ref, onMounted, nextTick, watch } from 'vue'
+import {
+  computed,
+  provide,
+  ref,
+  onMounted,
+  onUnmounted,
+  nextTick,
+  watch,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
@@ -57,6 +65,55 @@ provide('openSearch', openSearch)
 
 const homeTheme = getHomeTheme()
 
+const discRotation = ref(0)
+const isDiscSpinning = ref(false)
+let discRafId: number | null = null
+let discLastTime: number | null = null
+const DISC_SPEED = 120 // degrees per second
+
+const spinDisc = (timestamp: number) => {
+  if (discLastTime !== null) {
+    discRotation.value += ((timestamp - discLastTime) / 1000) * DISC_SPEED
+  }
+  discLastTime = timestamp
+  discRafId = requestAnimationFrame(spinDisc)
+}
+
+const startDiscSpin = () => {
+  if (isDiscSpinning.value) return
+  isDiscSpinning.value = true
+  discLastTime = null
+  discRafId = requestAnimationFrame(spinDisc)
+}
+
+const stopDiscSpin = () => {
+  if (!isDiscSpinning.value) return
+  isDiscSpinning.value = false
+  if (discRafId !== null) cancelAnimationFrame(discRafId)
+  discRafId = null
+  discLastTime = null
+  discRotation.value = 0
+}
+
+const discStyle = computed(() => ({
+  ...headerIconStyle.value,
+  transform: `rotate(${discRotation.value % 360}deg)`,
+  transition: isDiscSpinning.value ? 'none' : 'transform 0.6s ease-out',
+}))
+
+watch(
+  () => player.playerState,
+  (state) => {
+    if (state === 'playing') startDiscSpin()
+    else stopDiscSpin()
+  },
+  { immediate: true },
+)
+
+onUnmounted(() => {
+  if (discRafId !== null) cancelAnimationFrame(discRafId)
+})
+
 watch(
   () => chart.selectedYear,
   (year) => {
@@ -86,12 +143,7 @@ onMounted(async () => {
             class="flex items-center gap-[0.25em] font-bold text-primary no-underline"
             :style="headerWordmarkStyle"
           >
-            <img
-              src="/cd.png"
-              alt=""
-              :class="{ 'animate-spin-slow': player.playerState === 'playing' }"
-              :style="headerIconStyle"
-            />
+            <img src="/cd.png" alt="" :style="discStyle" />
             Flashback Charts Australia
           </router-link>
           <button
