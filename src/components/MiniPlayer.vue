@@ -131,6 +131,14 @@ watch(
 
         <div class="flex-1" />
 
+        <!-- Time -->
+        <p
+          v-if="player.showSeekBar"
+          class="font-mono text-[0.7rem] tabular-nums text-text-muted"
+        >
+          {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+        </p>
+
         <div class="mx-1 h-3 w-px bg-white/10" />
 
         <!-- Close -->
@@ -188,20 +196,12 @@ watch(
           <p class="truncate text-base font-bold leading-snug text-text">
             {{ player.playingSong.title }}
           </p>
-          <div class="flex items-baseline justify-between gap-2">
-            <p class="truncate text-sm leading-snug text-text-muted">
-              {{ player.playingSong.artist }}
-              <span class="text-primary/60">
-                · {{ player.playingYear }} #{{ player.playingSong.rank }}
-              </span>
-            </p>
-            <p
-              v-if="player.showSeekBar"
-              class="flex-shrink-0 font-mono text-[0.65rem] tabular-nums text-text-muted/60"
-            >
-              {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-            </p>
-          </div>
+          <p class="truncate text-sm leading-snug text-text-muted">
+            {{ player.playingSong.artist }}
+            <span class="text-primary/60">
+              · {{ player.playingYear }} #{{ player.playingSong.rank }}
+            </span>
+          </p>
         </div>
       </div>
 
