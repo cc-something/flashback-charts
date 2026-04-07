@@ -8,10 +8,9 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   '',
 )
 const decades = getDecadeSummaries().reverse()
-const decadeColumnSplitIndex = Math.ceil(decades.length / 2)
 const decadeColumns = [
-  decades.slice(0, decadeColumnSplitIndex),
-  decades.slice(decadeColumnSplitIndex),
+  decades.filter((_, index) => index % 2 === 0),
+  decades.filter((_, index) => index % 2 === 1),
 ]
 const latestYear = getLatestYear()
 const title = 'Flashback Charts Australia'
