@@ -83,7 +83,7 @@ onMounted(async () => {
         <div :class="headerContainerClass">
           <router-link
             to="/"
-            class="flex items-center gap-1.5 font-bold text-primary no-underline"
+            class="flex items-center gap-[0.4em] font-bold text-primary no-underline"
             :style="headerWordmarkStyle"
           >
             <img src="/cd.png" alt="" :style="headerIconStyle" />
