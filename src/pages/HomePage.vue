@@ -67,7 +67,7 @@ useHead({
         >
           <h2
             :id="`decade-${group.decade}`"
-            class="mb-3 text-4xl font-bold sm:text-5xl md:text-6xl"
+            class="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl"
             :style="{
               color: group.theme.colors.primary,
               fontFamily: group.theme.fontFamily,
