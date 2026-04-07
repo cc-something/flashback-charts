@@ -44,17 +44,17 @@ watch(
     >
       <!-- Controls row -->
       <div
-        class="flex items-center gap-1 rounded-t-lg border-b border-white/5 bg-surface px-2 py-1.5"
+        class="flex items-center gap-1 rounded-t-lg border-b border-white/5 bg-surface px-2 py-0.5"
       >
         <!-- Prev -->
         <button
           type="button"
           :title="`Previous song (${mod}+←)`"
           aria-label="Previous song"
-          class="cursor-pointer p-2 text-text-muted transition-colors hover:text-text"
+          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
           @click="player.playPrev()"
         >
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
           </svg>
         </button>
@@ -64,12 +64,12 @@ watch(
           type="button"
           title="Play / pause (Space or K)"
           aria-label="Toggle playback"
-          class="cursor-pointer p-2 text-text transition-colors hover:text-primary"
+          class="cursor-pointer p-1 text-text transition-colors hover:text-primary"
           @click="player.togglePlayback"
         >
           <svg
             v-if="player.playerState === 'loading'"
-            class="h-5 w-5 animate-spin"
+            class="h-4 w-4 animate-spin"
             viewBox="0 0 24 24"
             fill="none"
           >
@@ -89,13 +89,13 @@ watch(
           </svg>
           <svg
             v-else-if="player.playerState === 'playing'"
-            class="h-5 w-5"
+            class="h-4 w-4"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
             <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
           </svg>
-          <svg v-else class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+          <svg v-else class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
         </button>
@@ -105,15 +105,15 @@ watch(
           type="button"
           :title="`Next song (${mod}+→)`"
           aria-label="Next song"
-          class="cursor-pointer p-2 text-text-muted transition-colors hover:text-text"
+          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
           @click="player.playNext()"
         >
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
           </svg>
         </button>
 
-        <div class="mx-1 h-4 w-px bg-white/10" />
+        <div class="mx-1 h-3 w-px bg-white/10" />
 
         <!-- Go to song -->
         <button
@@ -155,7 +155,7 @@ watch(
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
 
-        <div class="mx-1 h-4 w-px bg-white/10" />
+        <div class="mx-1 h-3 w-px bg-white/10" />
 
         <!-- Close -->
         <button
