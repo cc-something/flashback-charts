@@ -31,6 +31,7 @@ const getIsInputFocused = () => {
 export const useHotkeys = (
   openSearch: () => void,
   getIsBlocked: () => boolean,
+  deactivateRickRoll: () => void,
 ) => {
   const route = useRoute()
   const player = usePlayerStore()
@@ -112,6 +113,7 @@ export const useHotkeys = (
     if (e.code === 'Escape' && !isMod) {
       e.preventDefault()
       if (player.isActive) player.stop()
+      deactivateRickRoll()
       return
     }
 
