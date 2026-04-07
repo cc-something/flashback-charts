@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Disc3 } from 'lucide-vue-next'
-import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
+import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 
@@ -166,32 +166,7 @@ const youtubeVideoUrl = computed(() =>
         v-if="showSeekBar"
         class="pointer-events-none absolute inset-x-0 -bottom-1 z-20 overflow-visible"
       >
-        <SliderRoot
-          :max="player.durationSeconds"
-          :min="0"
-          :model-value="player.seekSliderValue"
-          :step="0.1"
-          aria-label="Seek playback"
-          class="seek-slider pointer-events-auto relative z-10 flex w-full touch-manipulation items-center"
-          @update:model-value="player.handleSeekInput"
-          @value-commit="player.handleSeekCommit"
-        >
-          <SliderTrack
-            as="div"
-            class="seek-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
-          >
-            <SliderRange
-              as="div"
-              class="seek-range absolute h-full bg-primary"
-            />
-            <div
-              class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
-            />
-          </SliderTrack>
-          <SliderThumb
-            class="seek-thumb block h-3 w-3 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
-          />
-        </SliderRoot>
+        <PlaybackSeekBar root-class="pointer-events-auto relative z-10" />
         <p
           class="pointer-events-none absolute bottom-3.5 left-1 min-w-fit bg-surface/85 px-1 py-0.5 font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
         >
@@ -221,33 +196,5 @@ const youtubeVideoUrl = computed(() =>
 .seek-enter-from,
 .seek-leave-to {
   opacity: 0;
-}
-
-.seek-slider[data-orientation='horizontal'] {
-  display: flex;
-}
-
-.seek-track[data-orientation='horizontal'] {
-  flex: 1;
-}
-
-.seek-range[data-orientation='horizontal'] {
-  left: 0;
-}
-
-.seek-thumb {
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-.seek-thumb:hover {
-  transform: scale(1.08);
-}
-
-.seek-thumb:focus-visible {
-  box-shadow:
-    0 0 0 2px rgb(255 255 255 / 90%),
-    0 0 0 4px rgb(0 0 0 / 18%);
 }
 </style>
