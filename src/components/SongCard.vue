@@ -4,15 +4,30 @@ import { Disc3 } from 'lucide-vue-next'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
+import {
+  useRickRollMode,
+  RICK_ASTLEY_SONG,
+  RICK_ASTLEY_YEAR,
+} from '@/composables/useRickRollMode'
 
 const props = defineProps<{ song: Song; year: number }>()
 
 const player = usePlayerStore()
+const { isRickRollActive } = useRickRollMode()
 const isHovered = ref(false)
 const hasThumbnailError = ref(false)
 
+const displaySong = computed(
+  (): Song =>
+    isRickRollActive.value
+      ? { ...RICK_ASTLEY_SONG, rank: props.song.rank }
+      : props.song,
+)
+
 const isThisSongActive = computed(() =>
-  player.isSongActive(props.song, props.year),
+  isRickRollActive.value
+    ? player.isSongActive(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR)
+    : player.isSongActive(props.song, props.year),
 )
 const thisPlayerState = computed(() =>
   isThisSongActive.value ? player.playerState : 'idle',
@@ -29,10 +44,13 @@ const handleImageError = (e: Event) => {
   hasThumbnailError.value = true
 }
 
-const handleClick = () => player.play(props.song, props.year)
+const handleClick = () =>
+  isRickRollActive.value
+    ? player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR)
+    : player.play(props.song, props.year)
 const youtubeVideoUrl = computed(() =>
-  props.song.youtubeVideoId
-    ? `https://www.youtube.com/watch?v=${props.song.youtubeVideoId}`
+  displaySong.value.youtubeVideoId
+    ? `https://www.youtube.com/watch?v=${displaySong.value.youtubeVideoId}`
     : '',
 )
 </script>
@@ -48,24 +66,24 @@ const youtubeVideoUrl = computed(() =>
   >
     <button
       type="button"
-      :aria-label="`Play ${song.title} by ${song.artist}`"
+      :aria-label="`Play ${displaySong.title} by ${displaySong.artist}`"
       class="absolute inset-0 z-0 cursor-pointer rounded-lg"
       @click="handleClick"
     />
     <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
-      {{ song.rank }}
+      {{ displaySong.rank }}
     </span>
 
     <button
       type="button"
-      :aria-label="`Toggle playback for ${song.title} by ${song.artist}`"
+      :aria-label="`Toggle playback for ${displaySong.title} by ${displaySong.artist}`"
       class="relative z-10 h-14 w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @click.stop="handleClick"
     >
       <img
         v-if="!hasThumbnailError"
-        :src="song.thumbnailPath"
-        :alt="`${song.title} by ${song.artist}`"
+        :src="displaySong.thumbnailPath"
+        :alt="`${displaySong.title} by ${displaySong.artist}`"
         class="block h-full w-full object-cover"
         @error="handleImageError"
       />
@@ -130,20 +148,22 @@ const youtubeVideoUrl = computed(() =>
       class="theme-body pointer-events-none relative z-10 min-w-0 flex-1 flex flex-col gap-0.5"
     >
       <h2 class="text-base font-bold leading-snug text-text">
-        {{ song.title }}
+        {{ displaySong.title }}
       </h2>
-      <p class="text-sm leading-snug text-text-muted">{{ song.artist }}</p>
+      <p class="text-sm leading-snug text-text-muted">
+        {{ displaySong.artist }}
+      </p>
       <p
-        v-if="song.album"
+        v-if="displaySong.album"
         class="text-sm leading-snug italic text-text-muted/75"
       >
-        {{ song.album }}
+        {{ displaySong.album }}
       </p>
     </div>
 
     <a
-      v-if="song.youtubeVideoId"
-      :aria-label="`Open ${song.title} by ${song.artist} on YouTube`"
+      v-if="displaySong.youtubeVideoId"
+      :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
       :href="youtubeVideoUrl"
       class="relative z-20 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       rel="noreferrer"

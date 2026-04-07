@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import { computed, provide, ref, onMounted, nextTick, watch } from 'vue'
+import {
+  computed,
+  provide,
+  ref,
+  onMounted,
+  onUnmounted,
+  nextTick,
+  watch,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
+import {
+  useRickRollMode,
+  RICK_ASTLEY_SONG,
+  RICK_ASTLEY_YEAR,
+} from '@/composables/useRickRollMode'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { getHomeTheme } from '@/themes'
@@ -12,10 +25,17 @@ import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
 import EmailSignupModal from '@/components/EmailSignupModal.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
+import RickRollBanner from '@/components/RickRollBanner.vue'
 
 useDecadeTheme()
 const emailSignup = useEmailSignup()
-const { loadScript, trackPageview } = usePlausibleAnalytics()
+const { loadScript, trackPageview, trackEvent } = usePlausibleAnalytics()
+const {
+  isRickRollActive,
+  setupKonamiListener,
+  teardownKonamiListener,
+  deactivate,
+} = useRickRollMode()
 
 const route = useRoute()
 const router = useRouter()
@@ -65,8 +85,16 @@ watch(
   },
 )
 
+watch(isRickRollActive, (isActive) => {
+  if (isActive) {
+    trackEvent('rickroll_activated')
+    player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR)
+  }
+})
+
 onMounted(async () => {
   if (playerContainer.value) player.setPlayerContainer(playerContainer.value)
+  setupKonamiListener()
   await loadScript()
   trackPageview()
   watch(
@@ -74,6 +102,8 @@ onMounted(async () => {
     () => trackPageview(),
   )
 })
+
+onUnmounted(() => teardownKonamiListener())
 </script>
 
 <template>
@@ -110,6 +140,7 @@ onMounted(async () => {
       </header>
 
       <YearTabs />
+      <RickRollBanner v-if="isRickRollActive" @deactivate="deactivate" />
     </div>
 
     <router-view v-slot="{ Component }">
