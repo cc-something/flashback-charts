@@ -8,9 +8,10 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   '',
 )
 const decades = getDecadeSummaries().reverse()
+const decadeColumnSplitIndex = Math.ceil(decades.length / 2)
 const decadeColumns = [
-  decades.filter((_, index) => index % 2 === 0),
-  decades.filter((_, index) => index % 2 === 1),
+  decades.slice(0, decadeColumnSplitIndex),
+  decades.slice(decadeColumnSplitIndex),
 ]
 const latestYear = getLatestYear()
 const title = 'Flashback Charts Australia'
@@ -93,11 +94,11 @@ useHead({
             >
               Click on a year to see the Top 10:
             </p>
-            <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
+            <ul class="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
               <li v-for="tile in group.years" :key="tile.year">
                 <router-link
                   :to="`/${tile.year}`"
-                  class="group relative isolate block aspect-square overflow-hidden rounded-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                  class="group relative isolate block aspect-square overflow-hidden rounded-xl font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
                   :style="{
                     backgroundColor: group.theme.colors.surface,
                     border: `1px solid ${group.theme.colors.primary}44`,
@@ -127,15 +128,15 @@ useHead({
                     <ArrowRight class="h-6 w-6 text-white drop-shadow-lg" />
                   </div>
                   <span
-                    class="absolute bottom-0 left-0 right-0 z-10 pb-1.5 text-center"
+                    class="absolute bottom-0 left-0 right-0 z-10 pb-2 text-center"
                   >
                     <span
-                      class="block text-base font-bold leading-tight"
+                      class="block text-lg font-bold leading-tight sm:text-xl"
                       :style="{ color: group.theme.colors.primary }"
                     >
                       {{ tile.year }}
                     </span>
-                    <span class="block text-xs leading-tight text-white/70">
+                    <span class="block text-sm leading-tight text-white/70">
                       Top 10
                     </span>
                   </span>
