@@ -17,10 +17,9 @@ const props = defineProps<{ decade: string }>()
 const decadeStartYear = computed(() => Number.parseInt(props.decade, 10))
 const theme = computed(() => getThemeForYear(decadeStartYear.value))
 const years = computed(() => getDecadeYears(props.decade))
-const yearColumnSplitIndex = computed(() => Math.ceil(years.value.length / 2))
 const yearColumns = computed(() => [
-  years.value.slice(0, yearColumnSplitIndex.value),
-  years.value.slice(yearColumnSplitIndex.value),
+  years.value.filter((_, index) => index % 2 === 0),
+  years.value.filter((_, index) => index % 2 === 1),
 ])
 const decades = getAvailableDecades()
 const decadeIndex = computed(() => decades.indexOf(props.decade))
