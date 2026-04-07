@@ -93,7 +93,7 @@ useHead({
             >
               Click on a year to see the Top 10:
             </p>
-            <ul class="grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
+            <ul class="grid grid-cols-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
               <li v-for="tile in group.years" :key="tile.year">
                 <router-link
                   :to="`/${tile.year}`"
