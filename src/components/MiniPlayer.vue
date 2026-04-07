@@ -197,8 +197,13 @@ watch(
         </div>
       </div>
 
-      <!-- Seek bar -->
-      <div v-if="player.showSeekBar" class="overflow-visible">
+      <!-- Seek bar — always in layout so height is stable -->
+      <div
+        class="overflow-visible"
+        :class="
+          player.showSeekBar ? 'visible opacity-100' : 'invisible opacity-0'
+        "
+      >
         <SliderRoot
           :max="player.durationSeconds"
           :min="0"
