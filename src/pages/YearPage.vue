@@ -173,7 +173,7 @@ watch(
       {{ store.currentDescription }}
     </p>
 
-    <nav class="mb-5 flex items-center justify-between gap-3">
+    <nav class="mb-2 flex items-center justify-between gap-3">
       <router-link
         v-if="previousYear"
         :to="`/${previousYear}`"
