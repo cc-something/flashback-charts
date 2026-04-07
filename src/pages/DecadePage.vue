@@ -141,7 +141,7 @@ useHead(() => ({
         <article
           v-for="year in column"
           :key="year"
-          class="grid gap-5 rounded-2xl border p-5 md:grid-cols-[168px_1fr]"
+          class="grid items-center gap-5 rounded-2xl border p-5 md:grid-cols-[168px_1fr]"
           :style="{
             backgroundColor: `${theme.colors.surface}d9`,
             borderColor: `${theme.colors.primary}4d`,
