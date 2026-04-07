@@ -11,8 +11,19 @@ import {
   getYearSummaryText,
 } from '@/content/chartContent'
 import { getThemeForYear } from '@/themes'
+import {
+  useRickRollMode,
+  RICK_ASTLEY_SONG,
+} from '@/composables/useRickRollMode'
 
 const props = defineProps<{ decade: string }>()
+
+const { isRickRollActive } = useRickRollMode()
+const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
+const getThumbnails = (year: number) =>
+  isRickRollActive.value
+    ? Array.from({ length: 4 }, () => rickThumbnail)
+    : getTopSongThumbnails(year)
 
 const decadeStartYear = computed(() => Number.parseInt(props.decade, 10))
 const theme = computed(() => getThemeForYear(decadeStartYear.value))
@@ -157,7 +168,7 @@ useHead(() => ({
           >
             <div class="grid h-full grid-cols-2 grid-rows-2">
               <img
-                v-for="(thumbnail, index) in getTopSongThumbnails(year)"
+                v-for="(thumbnail, index) in getThumbnails(year)"
                 :key="`${year}-${index}`"
                 :src="thumbnail"
                 :alt="`Top song ${index + 1} of ${year}`"

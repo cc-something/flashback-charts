@@ -1,17 +1,36 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
 import { ArrowRight } from 'lucide-vue-next'
 import { getDecadeSummaries, getLatestYear } from '@/content/chartContent'
+import {
+  useRickRollMode,
+  RICK_ASTLEY_SONG,
+} from '@/composables/useRickRollMode'
+
+const { isRickRollActive } = useRickRollMode()
+const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
 
 const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   /\/$/,
   '',
 )
-const decades = getDecadeSummaries().reverse()
-const decadeColumns = [
-  decades.filter((_, index) => index % 2 === 0),
-  decades.filter((_, index) => index % 2 === 1),
-]
+const rawDecades = getDecadeSummaries().reverse()
+const decades = computed(() =>
+  isRickRollActive.value
+    ? rawDecades.map((group) => ({
+        ...group,
+        years: group.years.map((tile) => ({
+          ...tile,
+          thumbnail: rickThumbnail,
+        })),
+      }))
+    : rawDecades,
+)
+const decadeColumns = computed(() => [
+  decades.value.filter((_, index) => index % 2 === 0),
+  decades.value.filter((_, index) => index % 2 === 1),
+])
 const latestYear = getLatestYear()
 const title = 'Flashback Charts Australia'
 const description = `Browse the top 10 songs in Australia for every year from 1940 to ${latestYear}. Listen to the biggest Aussie hits by decade, year, and artist.`

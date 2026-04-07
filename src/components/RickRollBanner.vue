@@ -1,10 +1,28 @@
 <script setup lang="ts">
 const emit = defineEmits<{ deactivate: [] }>()
 
-const REPEATED_TEXT = Array.from(
-  { length: 20 },
-  () => '🕺 Rick Astley mode activated',
-).join('   \u00a0\u00a0\u00a0   ')
+const DANCE_EMOJIS = [
+  '🕺',
+  '💃',
+  '🎉',
+  '🎊',
+  '🪩',
+  '🎶',
+  '🎵',
+  '🤩',
+  '😎',
+  '🙌',
+  '✨',
+  '🎤',
+  '🎸',
+  '🥳',
+  '🫶',
+]
+const SEGMENT_COUNT = 20
+const REPEATED_TEXT = Array.from({ length: SEGMENT_COUNT }, (_, i) => {
+  const emoji = DANCE_EMOJIS[i % DANCE_EMOJIS.length]
+  return `Rick Astley mode activated ${emoji}`
+}).join('     ')
 </script>
 
 <template>
@@ -20,7 +38,7 @@ const REPEATED_TEXT = Array.from(
     </div>
     <button
       type="button"
-      class="absolute right-0 h-full shrink-0 bg-red-700 px-3 text-xs font-bold uppercase tracking-wide transition-colors duration-150 hover:bg-red-800"
+      class="absolute inset-y-1 right-1.5 rounded-md shrink-0 bg-white px-3 text-xs font-bold uppercase tracking-wide text-red-600 transition-colors duration-150 hover:bg-red-50"
       @click="emit('deactivate')"
     >
       Deactivate
@@ -38,6 +56,7 @@ const REPEATED_TEXT = Array.from(
   from {
     transform: translateX(-50%);
   }
+
   to {
     transform: translateX(0%);
   }
