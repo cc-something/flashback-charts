@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, ref, onMounted, nextTick, watch } from 'vue'
+import { computed, provide, ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
@@ -24,6 +24,11 @@ const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const isSearchOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
+const headerContainerClass = computed(() =>
+  route.name === 'year'
+    ? 'mx-auto flex max-w-2xl items-center justify-between px-4 py-1'
+    : 'mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1',
+)
 const handlePageAfterLeave = () => {
   if (typeof window === 'undefined') return
   applyPendingTheme()
@@ -62,14 +67,47 @@ onMounted(async () => {
 <template>
   <div class="min-h-screen bg-background text-text">
     <div class="sticky top-0 z-40">
-      <header
-        class="flex items-center justify-between border-b border-primary/15 bg-surface px-4 py-1"
-      >
-        <div class="flex items-center gap-2">
-          <router-link
-            to="/"
-            aria-label="Home"
+      <header class="border-b border-primary/15 bg-surface">
+        <div :class="headerContainerClass">
+          <div class="flex items-center gap-2">
+            <router-link
+              to="/"
+              aria-label="Home"
+              class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
+            >
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M3 11 12 3l9 8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5 10v10h14V10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </router-link>
+            <router-link
+              to="/"
+              class="flex items-center gap-1.5 text-sm font-bold text-primary no-underline"
+              :style="{ fontFamily: homeTheme.fontFamily }"
+            >
+              <img src="/cd.png" alt="" class="h-4 w-4" />
+              Flashback Charts
+            </router-link>
+          </div>
+          <button
+            type="button"
+            aria-label="Search songs"
             class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
+            @click="openSearch"
           >
             <svg
               class="h-4 w-4"
@@ -78,44 +116,11 @@ onMounted(async () => {
               stroke="currentColor"
               stroke-width="2"
             >
-              <path
-                d="M3 11 12 3l9 8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5 10v10h14V10"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" stroke-linecap="round" />
             </svg>
-          </router-link>
-          <router-link
-            to="/"
-            class="flex items-center gap-1.5 text-sm font-bold text-primary no-underline"
-            :style="{ fontFamily: homeTheme.fontFamily }"
-          >
-            <img src="/cd.png" alt="" class="h-4 w-4" />
-            Flashback Charts
-          </router-link>
+          </button>
         </div>
-        <button
-          type="button"
-          aria-label="Search songs"
-          class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
-          @click="openSearch"
-        >
-          <svg
-            class="h-4 w-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" stroke-linecap="round" />
-          </svg>
-        </button>
       </header>
 
       <YearTabs />
