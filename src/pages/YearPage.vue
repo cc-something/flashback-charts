@@ -11,6 +11,8 @@ import {
 import {
   getAdjacentYears,
   getYearPageDescription,
+  getYearPageHeading,
+  getYearPageIntro,
   getYearPageTitle,
 } from '@/content/chartContent'
 import { useChartStore } from '@/stores/chart'
@@ -41,8 +43,10 @@ const getYearNavStyle = (year: number) => {
   }
 }
 const topSong = computed(() => store.currentSongs[0] ?? null)
+const heading = computed(() => getYearPageHeading(yearNumber.value))
 const title = computed(() => getYearPageTitle(yearNumber.value))
 const description = computed(() => getYearPageDescription(yearNumber.value))
+const intro = computed(() => getYearPageIntro(yearNumber.value))
 const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''
@@ -66,14 +70,22 @@ const jsonLd = computed(() => {
   return {
     '@context': 'https://schema.org',
     '@type': 'MusicPlaylist',
-    'name': `Top 10 Songs in ${yearNumber.value} Australia`,
+    'name': heading.value,
     'description': description.value,
     'url': canonical.value,
+    'image': ogImage.value,
+    'inLanguage': 'en-AU',
     'numTracks': store.currentSongs.length,
     'track': store.currentSongs.map((song) => ({
       '@type': 'MusicRecording',
       'name': song.title,
       'byArtist': { '@type': 'MusicGroup', 'name': song.artist },
+      'url': canonical.value
+        ? `${canonical.value}?song=${song.rank}`
+        : undefined,
+      'image': siteUrl.value
+        ? `${siteUrl.value}${song.thumbnailPath}`
+        : undefined,
       ...(song.album && {
         inAlbum: { '@type': 'MusicAlbum', 'name': song.album },
       }),
@@ -87,6 +99,7 @@ useHead(() => ({
   meta: [
     { name: 'description', content: description.value },
     { property: 'og:type', content: 'music.playlist' },
+    { property: 'og:site_name', content: 'Flashback Charts Australia' },
     { property: 'og:title', content: title.value },
     { property: 'og:description', content: description.value },
     ...(canonical.value
@@ -98,6 +111,9 @@ useHead(() => ({
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title.value },
     { name: 'twitter:description', content: description.value },
+    ...(ogImage.value
+      ? [{ name: 'twitter:image', content: ogImage.value }]
+      : []),
   ],
   link: canonical.value ? [{ rel: 'canonical', href: canonical.value }] : [],
   script: jsonLd.value
@@ -152,7 +168,7 @@ watch(
         class="theme-display text-3xl font-bold text-primary"
         :style="{ fontFamily: theme.fontFamily }"
       >
-        Top 10 Songs {{ yearNumber }}
+        {{ heading }}
       </h1>
       <button
         type="button"
@@ -166,12 +182,17 @@ watch(
       </button>
     </header>
 
-    <p
-      v-if="store.currentDescription"
-      class="mb-5 text-base leading-relaxed text-text-muted"
-    >
-      {{ store.currentDescription }}
-    </p>
+    <div class="mb-5 flex flex-col gap-3">
+      <p class="text-base leading-relaxed text-text-muted">
+        {{ intro }}
+      </p>
+      <p
+        v-if="store.currentDescription"
+        class="text-base leading-relaxed text-text-muted/80"
+      >
+        {{ store.currentDescription }}
+      </p>
+    </div>
 
     <nav class="mb-2 flex items-center justify-between gap-3">
       <router-link

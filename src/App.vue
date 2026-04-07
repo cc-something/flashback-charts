@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   computed,
+  defineAsyncComponent,
   provide,
   ref,
   onMounted,
@@ -8,6 +9,7 @@ import {
   nextTick,
   watch,
 } from 'vue'
+import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { Keyboard } from 'lucide-vue-next'
@@ -25,13 +27,23 @@ import { usePlayerStore } from '@/stores/player'
 import { getHomeTheme } from '@/themes'
 import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
-import SearchOverlay from '@/components/SearchOverlay.vue'
-import HotkeysModal from '@/components/HotkeysModal.vue'
-import EmailSignupModal from '@/components/EmailSignupModal.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 import RickRollBanner from '@/components/RickRollBanner.vue'
 
+const SearchOverlay = defineAsyncComponent(
+  () => import('@/components/SearchOverlay.vue'),
+)
+const HotkeysModal = defineAsyncComponent(
+  () => import('@/components/HotkeysModal.vue'),
+)
+const EmailSignupModal = defineAsyncComponent(
+  () => import('@/components/EmailSignupModal.vue'),
+)
+
 useDecadeTheme()
+useHead({
+  htmlAttrs: { lang: 'en-AU' },
+})
 const emailSignup = useEmailSignup()
 const { loadScript, trackPageview, trackEvent } = usePlausibleAnalytics()
 const {

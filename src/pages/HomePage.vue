@@ -2,7 +2,15 @@
 import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
 import { ArrowRight } from 'lucide-vue-next'
-import { getDecadeSummaries, getLatestYear } from '@/content/chartContent'
+import {
+  getDecadePageDescription,
+  getDecadePageTitle,
+  getDecadeSummaries,
+  getHomePageDescription,
+  getHomePageMethodologyText,
+  getHomePageTitle,
+  getLatestYear,
+} from '@/content/chartContent'
 import {
   useRickRollMode,
   RICK_ASTLEY_SONG,
@@ -32,22 +40,64 @@ const decadeColumns = computed(() => [
   decades.value.filter((_, index) => index % 2 === 1),
 ])
 const latestYear = getLatestYear()
-const title = 'Flashback Charts Australia'
-const description = `Browse the top 10 songs in Australia for every year from 1940 to ${latestYear}. Listen to the biggest Aussie hits by decade, year, and artist.`
+const title = getHomePageTitle()
+const description = getHomePageDescription()
+const methodologyText = getHomePageMethodologyText()
+const homeImage = siteUrl ? `${siteUrl}/og/home.png` : undefined
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      'name': 'Flashback Charts Australia',
+      'url': siteUrl,
+      'description': description,
+      'inLanguage': 'en-AU',
+    },
+    {
+      '@type': 'CollectionPage',
+      'name': title,
+      'url': siteUrl,
+      'description': description,
+      'image': homeImage,
+      'inLanguage': 'en-AU',
+      'hasPart': rawDecades.map((group) => ({
+        '@type': 'CollectionPage',
+        'name': getDecadePageTitle(group.decade),
+        'url': siteUrl ? `${siteUrl}/${group.decade}` : undefined,
+        'description': getDecadePageDescription(group.decade),
+      })),
+    },
+  ],
+}
 
 useHead({
   title,
   meta: [
     { name: 'description', content: description },
     { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Flashback Charts Australia' },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
     ...(siteUrl ? [{ property: 'og:url', content: siteUrl }] : []),
-    { name: 'twitter:card', content: 'summary' },
+    ...(homeImage ? [{ property: 'og:image', content: homeImage }] : []),
+    {
+      name: 'twitter:card',
+      content: homeImage ? 'summary_large_image' : 'summary',
+    },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
+    ...(homeImage ? [{ name: 'twitter:image', content: homeImage }] : []),
   ],
   link: siteUrl ? [{ rel: 'canonical', href: siteUrl }] : [],
+  script: siteUrl
+    ? [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify(jsonLd),
+        },
+      ]
+    : [],
 })
 </script>
 
@@ -63,6 +113,9 @@ useHead({
         2000s pop anthems back through grunge, synth-pop, disco, and the
         rock'n'roll pioneers. Listen to the #1s and Top 10s and discover the
         songs that shaped each era.
+      </p>
+      <p class="mt-3 max-w-4xl text-sm leading-relaxed text-text-muted/60">
+        {{ methodologyText }}
       </p>
     </div>
 

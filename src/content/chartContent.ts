@@ -13,6 +13,15 @@ const getDecadeStartYear = (decade: string) => Number.parseInt(decade, 10)
 
 export const getLatestYear = () => latestYear
 
+export const getHomePageTitle = () =>
+  `Australia Top 10 Songs by Year (1940-${latestYear}) | Flashback Charts`
+
+export const getHomePageDescription = () =>
+  `Browse Australia's top 10 songs for every year from 1940 to ${latestYear}. Explore year-end charts, decade overviews, chart-toppers, and the biggest hits in one archive.`
+
+export const getHomePageMethodologyText = () =>
+  'Each page collects the Australian year-end Top 10 with chart positions, artist credits, cover art, and source links, so you can move from current hits back through pop, rock, disco, and pre-rock standards.'
+
 export const getAdjacentYears = (year: number) => {
   const yearIndex = years.indexOf(year)
   return {
@@ -33,13 +42,24 @@ export const getTopSongThumbnails = (year: number, limit = 4) =>
     .map((song) => song.thumbnailPath)
     .filter(Boolean)
 
-export const getYearPageTitle = (year: number) => `${year} Top 10`
+export const getYearPageTitle = (year: number) =>
+  `Top 10 Songs in Australia in ${year} | Flashback Charts`
+
+export const getYearPageHeading = (year: number) =>
+  `Top 10 Songs in Australia in ${year}`
 
 export const getYearPageDescription = (year: number) => {
   const topSong = getTopSong(year)
-  const baseDescription = `The 10 biggest hit songs in Australia in ${year}.`
-  if (!topSong) return baseDescription
-  return `${baseDescription} ${topSong.title} by ${topSong.artist} topped the chart.`
+  if (!topSong)
+    return `Browse Australia's top 10 songs of ${year}, with the full year-end chart and biggest hits in one place.`
+  return `Browse Australia's top 10 songs of ${year}, including #1 ${topSong.title} by ${topSong.artist}. Explore the full year-end chart, artists, and videos.`
+}
+
+export const getYearPageIntro = (year: number) => {
+  const topSong = getTopSong(year)
+  if (!topSong)
+    return `See Australia's year-end Top 10 songs for ${year}, with chart positions, artist credits, cover art, and direct links to each hit.`
+  return `See Australia's year-end Top 10 songs for ${year}, led by #1 ${topSong.title} by ${topSong.artist}, with chart positions, artist credits, cover art, and direct links to each hit.`
 }
 
 export const getYearSummaryText = (year: number) =>
@@ -52,7 +72,7 @@ export const getAvailableDecades = () =>
   [...new Set(years.map((year) => getDecadeForYear(year)))].sort()
 
 export const getDecadePageTitle = (decade: string) =>
-  `${decade} Flashback Charts`
+  `Top 10 Songs in Australia in the ${decade} | Flashback Charts`
 
 export const getDecadePageSubtitle = (decade: string) => {
   const decadeStartYear = getDecadeStartYear(decade)
@@ -63,7 +83,7 @@ export const getDecadePageSubtitle = (decade: string) => {
 export const getDecadePageDescription = (decade: string) => {
   const decadeStartYear = getDecadeStartYear(decade)
   const decadeEndYear = decadeStartYear + 9
-  return `Explore the top 10 songs in Australia for every year of the ${decade}, from ${decadeStartYear} to ${decadeEndYear}. Find the biggest hits, artists, and chart-toppers from the decade in one place.`
+  return `Browse every annual Australian top 10 songs chart from ${decadeStartYear} to ${decadeEndYear}. Explore chart-toppers, biggest hits, and year-by-year music trends from the ${decade}.`
 }
 
 export const getDecadeSummaries = () => {

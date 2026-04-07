@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-vue-next'
 import {
   getAvailableDecades,
   getDecadePageDescription,
+  getDecadePageSubtitle,
   getDecadePageTitle,
   getDecadeYears,
   getTopSongThumbnails,
@@ -55,6 +56,7 @@ const getDecadeNavStyle = (decade: string) => {
 }
 const title = computed(() => getDecadePageTitle(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
+const subtitle = computed(() => getDecadePageSubtitle(props.decade))
 const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''
@@ -62,15 +64,26 @@ const siteUrl = computed(() => {
 const canonical = computed(() =>
   siteUrl.value ? `${siteUrl.value}/${props.decade}` : undefined,
 )
+const ogImage = computed(() => {
+  const leadThumbnail = getTopSongThumbnails(
+    years.value[0] ?? decadeStartYear.value,
+    1,
+  )[0]
+  return leadThumbnail && siteUrl.value
+    ? `${siteUrl.value}${leadThumbnail}`
+    : undefined
+})
 const jsonLd = computed(() => ({
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   'name': title.value,
   'description': description.value,
   'url': canonical.value,
+  'image': ogImage.value,
+  'inLanguage': 'en-AU',
   'hasPart': years.value.map((year) => ({
     '@type': 'WebPage',
-    'name': `Australia Top 10 Songs ${year}`,
+    'name': `Top 10 Songs in Australia in ${year}`,
     'url': canonical.value ? `${siteUrl.value}/${year}` : undefined,
     'description': getYearSummaryText(year),
   })),
@@ -81,14 +94,24 @@ useHead(() => ({
   meta: [
     { name: 'description', content: description.value },
     { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'Flashback Charts Australia' },
     { property: 'og:title', content: title.value },
     { property: 'og:description', content: description.value },
     ...(canonical.value
       ? [{ property: 'og:url', content: canonical.value }]
       : []),
-    { name: 'twitter:card', content: 'summary' },
+    ...(ogImage.value
+      ? [{ property: 'og:image', content: ogImage.value }]
+      : []),
+    {
+      name: 'twitter:card',
+      content: ogImage.value ? 'summary_large_image' : 'summary',
+    },
     { name: 'twitter:title', content: title.value },
     { name: 'twitter:description', content: description.value },
+    ...(ogImage.value
+      ? [{ name: 'twitter:image', content: ogImage.value }]
+      : []),
   ],
   link: canonical.value ? [{ rel: 'canonical', href: canonical.value }] : [],
   script: [
@@ -115,6 +138,9 @@ useHead(() => ({
         :style="{ color: theme.colors.textMuted }"
       >
         {{ theme.description }}
+      </p>
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-muted/70">
+        {{ subtitle }}
       </p>
     </header>
 

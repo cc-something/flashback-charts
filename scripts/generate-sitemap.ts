@@ -1,21 +1,27 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { loadEnv } from 'vite'
 import { getAvailableYears } from '../src/data'
 import { getDecadeForYear } from '../src/themes'
 
 const here = dirname(fileURLToPath(import.meta.url))
-const distDir = resolve(here, '../dist')
-
-const rawSiteUrl = process.env.VITE_SITE_URL ?? 'https://example.com'
+const projectRoot = resolve(here, '..')
+const distDir = resolve(projectRoot, 'dist')
+const env = loadEnv(process.env.NODE_ENV ?? 'production', projectRoot, 'VITE_')
+const rawSiteUrl = process.env.VITE_SITE_URL ?? env.VITE_SITE_URL
+if (!rawSiteUrl)
+  throw new Error('VITE_SITE_URL is required to generate sitemap.xml')
 const siteUrl = rawSiteUrl.replace(/\/$/, '')
+if (siteUrl === 'https://example.com')
+  throw new Error('VITE_SITE_URL must be a real production URL')
 const today = new Date().toISOString().slice(0, 10)
 
 const years = getAvailableYears().sort((a, b) => a - b)
 const decades = [...new Set(years.map((year) => getDecadeForYear(year)))].sort()
 
 const urls = [
-  { loc: `${siteUrl}/`, priority: '1.0', changefreq: 'weekly' },
+  { loc: siteUrl, priority: '1.0', changefreq: 'weekly' },
   ...decades.map((decade) => ({
     loc: `${siteUrl}/${decade}`,
     priority: '0.9',
