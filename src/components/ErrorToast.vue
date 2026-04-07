@@ -1,17 +1,25 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useToastStore } from '@/stores/toast'
 
 const toast = useToastStore()
+const errorToasts = computed(() =>
+  toast.toasts.filter((t) => t.variant === 'error'),
+)
+const infoToasts = computed(() =>
+  toast.toasts.filter((t) => t.variant === 'info'),
+)
 </script>
 
 <template>
   <Teleport to="body">
+    <!-- Error toasts — top right -->
     <div
       class="pointer-events-none fixed right-4 top-4 z-[9999] flex flex-col gap-2"
     >
-      <TransitionGroup name="toast">
+      <TransitionGroup name="toast-right">
         <div
-          v-for="t in toast.toasts"
+          v-for="t in errorToasts"
           :key="t.id"
           class="pointer-events-auto flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg"
         >
@@ -40,18 +48,41 @@ const toast = useToastStore()
         </div>
       </TransitionGroup>
     </div>
+
+    <!-- Info toasts — top left -->
+    <div
+      class="pointer-events-none fixed left-4 top-4 z-[9999] flex flex-col gap-2"
+    >
+      <TransitionGroup name="toast-left">
+        <div
+          v-for="t in infoToasts"
+          :key="t.id"
+          class="pointer-events-auto flex items-center gap-2 rounded-lg bg-surface px-4 py-2.5 text-sm font-medium text-text shadow-lg ring-1 ring-primary/25"
+        >
+          {{ t.message }}
+        </div>
+      </TransitionGroup>
+    </div>
   </Teleport>
 </template>
 
 <style scoped>
-.toast-enter-active,
-.toast-leave-active {
+.toast-right-enter-active,
+.toast-right-leave-active,
+.toast-left-enter-active,
+.toast-left-leave-active {
   transition: all 0.25s ease;
 }
 
-.toast-enter-from,
-.toast-leave-to {
+.toast-right-enter-from,
+.toast-right-leave-to {
   opacity: 0;
   transform: translateX(1rem);
+}
+
+.toast-left-enter-from,
+.toast-left-leave-to {
+  opacity: 0;
+  transform: translateX(-1rem);
 }
 </style>
