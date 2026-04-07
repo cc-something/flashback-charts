@@ -1,23 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits<{ deactivate: [] }>()
 
-const DANCE_EMOJIS = [
-  '🕺',
-  '💃',
-  '🎉',
-  '🎊',
-  '🪩',
-  '🎶',
-  '🎵',
-  '🤩',
-  '😎',
-  '🙌',
-  '✨',
-  '🎤',
-  '🎸',
-  '🥳',
-  '🫶',
-]
+const DANCE_EMOJIS = ['🕺', '💃', '👯', '🪩', '🎶', '🎤', '🎸']
 const SEGMENT_COUNT = 20
 const GAP = '\u00a0\u00a0\u00a0\u00a0\u00a0'
 const REPEATED_TEXT = Array.from({ length: SEGMENT_COUNT }, (_, i) => {
@@ -28,18 +12,18 @@ const REPEATED_TEXT = Array.from({ length: SEGMENT_COUNT }, (_, i) => {
 
 <template>
   <div
-    class="relative flex h-10 items-center overflow-hidden bg-red-600 text-white"
+    class="relative flex h-12 items-center overflow-hidden bg-red-600 text-white"
   >
     <div class="marquee-wrapper flex flex-1 items-center overflow-hidden pr-36">
       <div
-        class="marquee-track pointer-events-none select-none whitespace-nowrap text-sm font-normal leading-none"
+        class="marquee-track pointer-events-none select-none whitespace-nowrap text-m font-normal leading-none"
       >
         {{ REPEATED_TEXT }}
       </div>
     </div>
     <button
       type="button"
-      class="absolute inset-y-1.5 right-2 rounded-md shrink-0 bg-red-900 px-4 text-sm font-semibold text-white transition-colors duration-150 hover:bg-red-950"
+      class="absolute inset-y-1.5 right-2 rounded-md shrink-0 bg-red-900 px-4 text-base font-semibold text-white transition-colors duration-150 hover:bg-red-950"
       @click="emit('deactivate')"
     >
       Deactivate
