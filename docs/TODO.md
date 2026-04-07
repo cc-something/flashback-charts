@@ -1,3 +1,7 @@
+- test hotkeys
+- Random song btn CTA on home page
+- I dont like this text "Listen to the #1s and Top 10s and discover the songs that shaped each era."
+
 ## TODO
 
 - deploy CI on `main`
@@ -21,10 +25,6 @@
 
 - donate
 - mobile app? flat fee
-- hotkeys
-  - space to play pause
-  - cmd/ctrl left/right for next prev
-  - cmd/ctrl f for search
 
 - sticky header/title on year page?
 
