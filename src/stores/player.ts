@@ -378,10 +378,8 @@ export const usePlayerStore = defineStore('player', () => {
 
   const seekRelative = (deltaSeconds: number) => {
     if (!ytPlayer || playerState.value === 'idle') return
-    const next = Math.max(
-      0,
-      Math.min(durationSeconds.value, currentTimeSeconds.value + deltaSeconds),
-    )
+    const base = seekPreviewSeconds.value ?? currentTimeSeconds.value
+    const next = Math.max(0, Math.min(durationSeconds.value, base + deltaSeconds))
     seekPreviewSeconds.value = next
     playerState.value = 'loading'
     ytPlayer.seekTo(next, true)
