@@ -19,10 +19,11 @@ const DANCE_EMOJIS = [
   '🫶',
 ]
 const SEGMENT_COUNT = 20
+const GAP = '\u00a0\u00a0\u00a0\u00a0\u00a0'
 const REPEATED_TEXT = Array.from({ length: SEGMENT_COUNT }, (_, i) => {
   const emoji = DANCE_EMOJIS[i % DANCE_EMOJIS.length]
-  return `Rick Astley mode activated  ${emoji}`
-}).join('          ')
+  return `Rick Astley mode activated${GAP}${emoji}${GAP}`
+}).join('')
 </script>
 
 <template>
