@@ -45,7 +45,6 @@ export const useHotkeys = (
       konamiProgress++
       if (konamiProgress === KONAMI.length) {
         konamiProgress = 0
-        toast.showInfo('🕺💃🎉', 3000)
       }
     } else {
       konamiProgress = e.code === KONAMI[0] ? 1 : 0
