@@ -40,10 +40,9 @@ useHead({
         {{ latestYear }}.
       </h1>
       <p class="mt-2 text-base leading-relaxed text-text-muted/70">
-        Explore nine decades of Australian music charts — from wartime crooners
-        and rock'n'roll pioneers to disco, synth-pop, grunge, and today's
-        streaming hits. Listen to every #1 hit and discover the songs that
-        defined each era.
+        Nine decades of Australian music charts. From wartime crooners and
+        rock'n'roll pioneers to disco, synth-pop, grunge, and today's streaming
+        hits. Listen to every #1 and discover the songs that shaped each era.
       </p>
     </div>
 
