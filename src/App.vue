@@ -24,11 +24,18 @@ const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const isSearchOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
+const isHomeRoute = computed(() => route.name === 'home')
 const headerContainerClass = computed(() =>
   route.name === 'year'
     ? 'mx-auto flex max-w-2xl items-center justify-between px-4 py-1'
     : 'mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1',
 )
+const headerWordmarkStyle = computed(() => ({
+  fontFamily: homeTheme.fontFamily,
+  fontSize: isHomeRoute.value ? '1.75rem' : '0.875rem',
+  lineHeight: isHomeRoute.value ? '2rem' : '1.25rem',
+  transition: 'font-size 220ms ease, line-height 220ms ease',
+}))
 const handlePageAfterLeave = () => {
   if (typeof window === 'undefined') return
   applyPendingTheme()
@@ -96,8 +103,8 @@ onMounted(async () => {
             </router-link>
             <router-link
               to="/"
-              class="flex items-center gap-1.5 text-sm font-bold text-primary no-underline"
-              :style="{ fontFamily: homeTheme.fontFamily }"
+              class="flex items-center gap-1.5 font-bold text-primary no-underline"
+              :style="headerWordmarkStyle"
             >
               <img src="/cd.png" alt="" class="h-4 w-4" />
               Flashback Charts
