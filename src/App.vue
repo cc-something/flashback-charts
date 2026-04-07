@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { computed, provide, ref, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { Keyboard } from 'lucide-vue-next'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
+import { useHotkeys } from '@/composables/useHotkeys'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { getHomeTheme } from '@/themes'
 import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
+import HotkeysModal from '@/components/HotkeysModal.vue'
 import EmailSignupModal from '@/components/EmailSignupModal.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 
@@ -23,6 +26,7 @@ const chart = useChartStore()
 const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const isSearchOpen = ref(false)
+const isHotkeysOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
 const headerContainerClass = computed(() =>
@@ -54,6 +58,7 @@ const openSearch = async () => {
 }
 
 provide('openSearch', openSearch)
+useHotkeys(openSearch)
 
 const homeTheme = getHomeTheme()
 
@@ -118,12 +123,24 @@ onMounted(async () => {
       </Transition>
     </router-view>
 
+    <footer class="py-6 text-center">
+      <button
+        type="button"
+        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline-offset-4 transition-colors hover:text-text hover:underline"
+        @click="isHotkeysOpen = true"
+      >
+        <Keyboard class="h-3.5 w-3.5" />
+        Keyboard shortcuts
+      </button>
+    </footer>
+
     <MiniPlayer />
     <SearchOverlay
       v-if="isSearchOpen"
       ref="searchOverlay"
       @close="isSearchOpen = false"
     />
+    <HotkeysModal v-if="isHotkeysOpen" @close="isHotkeysOpen = false" />
     <EmailSignupModal
       v-if="emailSignup.show.value"
       @dismiss="emailSignup.dismiss"
