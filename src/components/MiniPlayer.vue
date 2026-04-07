@@ -163,7 +163,7 @@ watch(
             class="block h-full w-full object-cover"
           />
           <div
-            class="absolute inset-0 flex items-center justify-center bg-black/40"
+            class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity hover:opacity-100"
           >
             <svg
               v-if="player.playerState === 'playing'"
@@ -190,7 +190,9 @@ watch(
           </p>
           <p class="truncate text-sm leading-snug text-text-muted">
             {{ player.playingSong.artist }}
-            <span class="text-primary/60">· {{ player.playingYear }}</span>
+            <span class="text-primary/60">
+              · {{ player.playingYear }} #{{ player.playingSong.rank }}
+            </span>
           </p>
         </div>
       </div>
