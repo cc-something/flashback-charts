@@ -32,9 +32,14 @@ const headerContainerClass = computed(() =>
 )
 const headerWordmarkStyle = computed(() => ({
   fontFamily: homeTheme.fontFamily,
-  fontSize: isHomeRoute.value ? '1.75rem' : '0.875rem',
-  lineHeight: isHomeRoute.value ? '2rem' : '1.25rem',
+  fontSize: isHomeRoute.value ? '3.5rem' : '0.875rem',
+  lineHeight: isHomeRoute.value ? '3.75rem' : '1.25rem',
   transition: 'font-size 220ms ease, line-height 220ms ease',
+}))
+const headerIconStyle = computed(() => ({
+  width: isHomeRoute.value ? '3rem' : '1rem',
+  height: isHomeRoute.value ? '3rem' : '1rem',
+  transition: 'width 220ms ease, height 220ms ease',
 }))
 const handlePageAfterLeave = () => {
   if (typeof window === 'undefined') return
@@ -106,7 +111,7 @@ onMounted(async () => {
               class="flex items-center gap-1.5 font-bold text-primary no-underline"
               :style="headerWordmarkStyle"
             >
-              <img src="/cd.png" alt="" class="h-4 w-4" />
+              <img src="/cd.png" alt="" :style="headerIconStyle" />
               Flashback Charts
             </router-link>
           </div>
