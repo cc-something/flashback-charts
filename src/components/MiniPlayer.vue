@@ -197,20 +197,17 @@ watch(
         </div>
       </div>
 
-      <!-- Seek bar — always in layout so height is stable -->
-      <div
-        class="overflow-visible"
-        :class="
-          player.showSeekBar ? 'visible opacity-100' : 'invisible opacity-0'
-        "
-      >
+      <!-- Seek bar — wrapper always in layout so height is stable -->
+      <div class="relative h-1.5 overflow-visible">
         <SliderRoot
+          v-if="player.showSeekBar"
+          :key="player.playingSong?.youtubeVideoId"
           :max="player.durationSeconds"
           :min="0"
           :model-value="player.seekSliderValue"
           :step="0.1"
           aria-label="Seek playback"
-          class="mini-seek relative flex w-full touch-manipulation items-center"
+          class="mini-seek absolute inset-0 flex w-full touch-manipulation items-center"
           @update:model-value="player.handleSeekInput"
           @value-commit="player.handleSeekCommit"
         >
