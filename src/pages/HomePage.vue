@@ -34,10 +34,18 @@ useHead({
 
 <template>
   <main class="max-w-[1300px] mx-auto px-4 py-10">
-    <p class="mb-8 text-2xl text-text-muted">
-      The top 10 songs in Australia for every year from 1940 to
-      {{ latestYear }}.
-    </p>
+    <div class="mb-8">
+      <h1 class="text-2xl text-text-muted">
+        The top 10 songs in Australia for every year from 1940 to
+        {{ latestYear }}.
+      </h1>
+      <p class="mt-2 text-base leading-relaxed text-text-muted/70">
+        Explore nine decades of Australian music charts — from wartime crooners
+        and rock'n'roll pioneers to disco, synth-pop, grunge, and today's
+        streaming hits. Listen to every #1 hit and discover the songs that
+        defined each era.
+      </p>
+    </div>
 
     <div class="grid grid-cols-1 gap-6 min-[1260px]:grid-cols-2">
       <div
