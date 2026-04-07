@@ -67,7 +67,6 @@ onMounted(async () => {
       >
         <div class="flex items-center gap-2">
           <router-link
-            v-if="route.path !== '/'"
             to="/"
             aria-label="Home"
             class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
