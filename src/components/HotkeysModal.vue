@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
 import { Keyboard } from 'lucide-vue-next'
 
 const emit = defineEmits<{ close: [] }>()
@@ -10,26 +11,26 @@ const sections = [
   {
     label: 'Playback',
     rows: [
-      { keys: ['Space', 'K'], description: 'Play / pause' },
-      { keys: ['J'], description: 'Rewind 10s' },
-      { keys: ['L'], description: 'Fast-forward 10s' },
-      { keys: ['M'], description: 'Toggle mute' },
-      { keys: ['Esc'], description: 'Stop playback' },
+      { keyGroups: [['Space'], ['K']], description: 'Play / pause' },
+      { keyGroups: [['J']], description: 'Rewind 10s' },
+      { keyGroups: [['L']], description: 'Fast-forward 10s' },
+      { keyGroups: [['M']], description: 'Toggle mute' },
+      { keyGroups: [['Esc']], description: 'Stop playback' },
     ],
   },
   {
     label: 'Navigation',
     rows: [
-      { keys: [mod, '←'], description: 'Previous song' },
-      { keys: [mod, '→'], description: 'Next song' },
-      { keys: ['G'], description: 'Go to playing song' },
+      { keyGroups: [[mod, '←']], description: 'Previous song' },
+      { keyGroups: [[mod, '→']], description: 'Next song' },
+      { keyGroups: [['G']], description: 'Go to playing song' },
     ],
   },
   {
     label: 'App',
     rows: [
-      { keys: [mod, 'F'], description: 'Open search' },
-      { keys: ['S'], description: 'Toggle sort order' },
+      { keyGroups: [[mod, 'F']], description: 'Open search' },
+      { keyGroups: [['S']], description: 'Toggle sort order' },
     ],
   },
 ]
@@ -39,13 +40,15 @@ const konamiKeys = ['↑', '↑', '↓', '↓', '←', '→', '←', '→', 'B',
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')
 }
+
+onMounted(() => window.addEventListener('keydown', handleKeydown))
+onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 </script>
 
 <template>
   <div
     class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
     @click.self="emit('close')"
-    @keydown="handleKeydown"
   >
     <div class="w-full max-w-lg rounded-xl bg-surface p-6 shadow-xl">
       <div class="mb-5 flex items-center gap-2.5">
@@ -62,19 +65,26 @@ const handleKeydown = (e: KeyboardEvent) => {
           </p>
           <ul class="flex flex-col gap-2.5">
             <li
-              v-for="{ keys, description } in section.rows"
+              v-for="{ keyGroups, description } in section.rows"
               :key="description"
               class="flex items-center justify-between gap-4"
             >
               <span class="text-sm text-text-muted">{{ description }}</span>
-              <span class="flex flex-shrink-0 items-center gap-1">
-                <kbd
-                  v-for="key in keys"
-                  :key="key"
-                  class="rounded bg-background px-2 py-0.5 font-mono text-xs font-semibold text-text shadow-sm ring-1 ring-primary/20"
-                >
-                  {{ key }}
-                </kbd>
+              <span class="flex flex-shrink-0 items-center gap-1.5">
+                <template v-for="(group, gi) in keyGroups" :key="gi">
+                  <span v-if="gi > 0" class="text-xs text-text-muted/50">
+                    or
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <kbd
+                      v-for="key in group"
+                      :key="key"
+                      class="rounded bg-background px-2 py-0.5 font-mono text-xs font-semibold text-text shadow-sm ring-1 ring-primary/20"
+                    >
+                      {{ key }}
+                    </kbd>
+                  </span>
+                </template>
               </span>
             </li>
           </ul>
@@ -83,7 +93,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         <!-- Konami easter egg -->
         <div class="mt-1 border-t border-primary/10 pt-4">
           <li class="flex items-center justify-between gap-4">
-            <span class="text-sm text-text-muted">🕺</span>
+            <span class="text-3xl">🪩🕺?</span>
             <span
               class="flex flex-shrink-0 flex-wrap items-center justify-end gap-1"
             >
