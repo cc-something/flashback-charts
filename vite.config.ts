@@ -20,6 +20,9 @@ export default defineConfig({
   server: {
     port: 4719,
     allowedHosts: ['.ngrok-free.app'],
+    watch: {
+      ignored: ['**/docs/**'],
+    },
   },
   // @ts-expect-error vite-ssg extends vite config at runtime
   ssgOptions: {
