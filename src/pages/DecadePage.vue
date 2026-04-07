@@ -10,12 +10,11 @@ import {
   getTopSongThumbnails,
   getYearSummaryText,
 } from '@/content/chartContent'
-import { getHomeTheme, getThemeForYear } from '@/themes'
+import { getThemeForYear } from '@/themes'
 
 const props = defineProps<{ decade: string }>()
 
 const decadeStartYear = computed(() => Number.parseInt(props.decade, 10))
-const homeTheme = getHomeTheme()
 const theme = computed(() => getThemeForYear(decadeStartYear.value))
 const years = computed(() => getDecadeYears(props.decade))
 const yearColumns = computed(() => [
@@ -93,12 +92,6 @@ useHead(() => ({
 <template>
   <main class="mx-auto max-w-[1300px] px-4 py-8 sm:py-10">
     <header class="mb-8">
-      <p
-        class="mb-2 text-xl font-bold text-primary"
-        :style="{ fontFamily: homeTheme.fontFamily }"
-      >
-        💿 Flashback Charts Australia
-      </p>
       <h1
         class="theme-display text-4xl font-bold text-primary"
         :style="{ fontFamily: theme.fontFamily }"

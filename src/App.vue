@@ -58,55 +58,63 @@ onMounted(async () => {
 
 <template>
   <div class="min-h-screen bg-background text-text">
+    <header
+      v-if="route.path !== '/'"
+      class="sticky top-0 z-50 flex items-center justify-between border-b border-primary/15 bg-surface px-4 py-1"
+    >
+      <div class="flex items-center gap-2">
+        <router-link
+          to="/"
+          aria-label="Home"
+          class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
+        >
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M3 11 12 3l9 8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M5 10v10h14V10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </router-link>
+        <router-link
+          to="/"
+          class="flex items-center gap-1.5 text-sm font-bold text-primary no-underline"
+        >
+          <img src="/cd.png" alt="" class="h-4 w-4" />
+          Flashback Charts
+        </router-link>
+      </div>
+      <button
+        type="button"
+        aria-label="Search songs"
+        class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
+        @click="openSearch"
+      >
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" stroke-linecap="round" />
+        </svg>
+      </button>
+    </header>
+
     <YearTabs />
-
-    <router-link
-      v-if="route.path !== '/'"
-      to="/"
-      aria-label="Home"
-      class="fixed left-4 top-24 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-    >
-      <svg
-        class="h-5 w-5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          d="M3 11 12 3l9 8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <path
-          d="M5 10v10h14V10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-    </router-link>
-
-    <button
-      v-if="route.path !== '/'"
-      type="button"
-      aria-label="Search songs"
-      :class="[
-        'fixed right-4 z-20 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-surface/88 text-text shadow-lg shadow-black/15 ring-1 ring-primary/25 backdrop-blur-md transition duration-200 hover:scale-[1.04] hover:bg-surface hover:text-primary hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60',
-        route.name === 'decade' ? 'top-24' : 'top-20',
-      ]"
-      @click="openSearch"
-    >
-      <svg
-        class="h-5 w-5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="m21 21-4.35-4.35" stroke-linecap="round" />
-      </svg>
-    </button>
 
     <router-view v-slot="{ Component }">
       <Transition name="page" mode="out-in" @after-leave="handlePageAfterLeave">

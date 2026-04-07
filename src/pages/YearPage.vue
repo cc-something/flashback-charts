@@ -16,7 +16,7 @@ import {
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { applyPendingTheme } from '@/composables/useDecadeTheme'
-import { getHomeTheme, getThemeForYear } from '@/themes'
+import { getThemeForYear } from '@/themes'
 import SongCard from '@/components/SongCard.vue'
 
 const props = defineProps<{ year: string }>()
@@ -24,8 +24,6 @@ const props = defineProps<{ year: string }>()
 const route = useRoute()
 const store = useChartStore()
 const player = usePlayerStore()
-const homeTheme = getHomeTheme()
-
 const yearNumber = computed(() => Number(props.year))
 const theme = computed(() => getThemeForYear(yearNumber.value))
 const adjacentYears = computed(() => getAdjacentYears(yearNumber.value))
@@ -147,20 +145,12 @@ watch(
 <template>
   <main class="max-w-2xl mx-auto px-4 py-6">
     <header class="mb-6 flex items-start justify-between">
-      <div>
-        <p
-          class="mb-2 text-xl font-bold text-primary"
-          :style="{ fontFamily: homeTheme.fontFamily }"
-        >
-          💿 Flashback Charts Australia
-        </p>
-        <h1
-          class="theme-display text-3xl font-bold text-primary"
-          :style="{ fontFamily: theme.fontFamily }"
-        >
-          Top 10 Songs {{ yearNumber }}
-        </h1>
-      </div>
+      <h1
+        class="theme-display text-3xl font-bold text-primary"
+        :style="{ fontFamily: theme.fontFamily }"
+      >
+        Top 10 Songs {{ yearNumber }}
+      </h1>
       <button
         type="button"
         class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
