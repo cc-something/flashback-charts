@@ -249,6 +249,9 @@ watch(
 
 .mini-track[data-orientation='horizontal'] {
   flex: 1;
+  overflow: hidden;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .mini-range[data-orientation='horizontal'] {
