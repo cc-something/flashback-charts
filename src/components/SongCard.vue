@@ -150,9 +150,17 @@ const youtubeVideoUrl = computed(() =>
       <h2 class="text-lg font-bold leading-snug text-text">
         {{ displaySong.title }}
       </h2>
-      <p class="text-base leading-snug text-text-muted">
-        {{ displaySong.artist }}
-      </p>
+      <div class="flex items-baseline justify-between gap-2">
+        <p class="truncate text-base leading-snug text-text-muted">
+          {{ displaySong.artist }}
+        </p>
+        <p
+          v-if="isThisSongActive && player.showSeekBar"
+          class="flex-shrink-0 font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
+        >
+          {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+        </p>
+      </div>
       <p
         v-if="displaySong.album"
         class="text-base leading-snug italic text-text-muted/75"
@@ -187,11 +195,6 @@ const youtubeVideoUrl = computed(() =>
         class="pointer-events-none absolute inset-x-0 -bottom-1 z-20 overflow-visible"
       >
         <PlaybackSeekBar root-class="pointer-events-auto relative z-10" />
-        <p
-          class="pointer-events-none absolute bottom-3.5 left-1 min-w-fit bg-surface/85 px-1 py-0.5 font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
-        >
-          {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-        </p>
       </div>
     </Transition>
   </article>
