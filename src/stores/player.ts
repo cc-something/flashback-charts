@@ -16,6 +16,13 @@ interface SavedPlayerState {
   timeSeconds: number
 }
 
+type MediaSessionAction =
+  | 'play'
+  | 'pause'
+  | 'previoustrack'
+  | 'nexttrack'
+  | 'stop'
+
 const loadSavedState = (): SavedPlayerState | null => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -94,6 +101,69 @@ export const usePlayerStore = defineStore('player', () => {
   )
   const seekSliderValue = computed(() => [displayedTimeSeconds.value])
 
+  const setMediaSessionHandler = (
+    action: MediaSessionAction,
+    handler: MediaSessionActionHandler | null,
+  ) => {
+    if (!('mediaSession' in navigator)) return
+    try {
+      navigator.mediaSession.setActionHandler(action, handler)
+    } catch {
+      /* unsupported action — ignore */
+    }
+  }
+
+  const syncMediaSessionMetadata = () => {
+    if (!('mediaSession' in navigator)) return
+    const song = playingSong.value
+    if (!song) {
+      navigator.mediaSession.metadata = null
+      return
+    }
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: song.title,
+      artist: song.artist,
+      album:
+        playingYear.value === null
+          ? 'Flashback Charts Australia'
+          : `Flashback Charts Australia ${playingYear.value}`,
+      artwork: [
+        { src: song.thumbnailPath, sizes: '480x360', type: 'image/jpeg' },
+      ],
+    })
+  }
+
+  const syncMediaSessionState = () => {
+    if (!('mediaSession' in navigator)) return
+    navigator.mediaSession.playbackState =
+      playerState.value === 'playing'
+        ? 'playing'
+        : playerState.value === 'idle'
+          ? 'none'
+          : 'paused'
+  }
+
+  const clearMediaSessionHandlers = () => {
+    setMediaSessionHandler('play', null)
+    setMediaSessionHandler('pause', null)
+    setMediaSessionHandler('previoustrack', null)
+    setMediaSessionHandler('nexttrack', null)
+    setMediaSessionHandler('stop', null)
+  }
+
+  const syncMediaSessionHandlers = () => {
+    if (!('mediaSession' in navigator)) return
+    if (!playingSong.value) {
+      clearMediaSessionHandlers()
+      return
+    }
+    setMediaSessionHandler('play', () => togglePlayback())
+    setMediaSessionHandler('pause', () => togglePlayback())
+    setMediaSessionHandler('previoustrack', () => playPrev())
+    setMediaSessionHandler('nexttrack', () => playNext())
+    setMediaSessionHandler('stop', () => stop())
+  }
+
   const setPlayerContainer = (el: HTMLDivElement) => {
     playerContainerEl = el
   }
@@ -165,6 +235,12 @@ export const usePlayerStore = defineStore('player', () => {
     else clearSaveTimer()
   })
 
+  watch([playingSong, playingYear], syncMediaSessionMetadata, {
+    immediate: true,
+  })
+  watch(playerState, syncMediaSessionState, { immediate: true })
+  watch(playingSong, syncMediaSessionHandlers, { immediate: true })
+
   const stop = () => {
     clearProgressTimer()
     clearSaveTimer()
@@ -180,6 +256,9 @@ export const usePlayerStore = defineStore('player', () => {
     clearSeekPreview()
     clearActive()
     clearSavedState()
+    syncMediaSessionMetadata()
+    syncMediaSessionState()
+    syncMediaSessionHandlers()
     if (offlineHandler) {
       window.removeEventListener('offline', offlineHandler)
       offlineHandler = null
