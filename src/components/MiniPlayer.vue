@@ -46,8 +46,8 @@ watch(
         <button
           type="button"
           aria-label="Previous song"
-          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
-          @click="player.playPrev"
+          class="cursor-pointer p-2 text-text-muted transition-colors hover:text-text"
+          @click="player.playPrev()"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
@@ -58,7 +58,7 @@ watch(
         <button
           type="button"
           aria-label="Toggle playback"
-          class="cursor-pointer p-1 text-text transition-colors hover:text-primary"
+          class="cursor-pointer p-2 text-text transition-colors hover:text-primary"
           @click="player.togglePlayback"
         >
           <svg
@@ -98,8 +98,8 @@ watch(
         <button
           type="button"
           aria-label="Next song"
-          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
-          @click="player.playNext"
+          class="cursor-pointer p-2 text-text-muted transition-colors hover:text-text"
+          @click="player.playNext()"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
