@@ -23,6 +23,17 @@ type MediaSessionAction =
   | 'nexttrack'
   | 'stop'
 
+const getHasReliableMediaKeySupport = () => {
+  if (typeof window === 'undefined') return false
+  if (!('mediaSession' in navigator) || !('MediaMetadata' in window))
+    return false
+  const userAgent = navigator.userAgent
+  const isSafari =
+    /Safari\//.test(userAgent) &&
+    !/Chrome\/|Chromium\/|CriOS\/|Edg\/|OPR\/|Android/i.test(userAgent)
+  return !isSafari
+}
+
 const loadSavedState = (): SavedPlayerState | null => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -57,6 +68,7 @@ type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 const MAX_RETRIES = 2
 
 export const usePlayerStore = defineStore('player', () => {
+  const hasReliableMediaKeySupport = getHasReliableMediaKeySupport()
   const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
 
   const playingSong = ref<Song | null>(null)
@@ -105,7 +117,7 @@ export const usePlayerStore = defineStore('player', () => {
     action: MediaSessionAction,
     handler: MediaSessionActionHandler | null,
   ) => {
-    if (!('mediaSession' in navigator)) return
+    if (!hasReliableMediaKeySupport) return
     try {
       navigator.mediaSession.setActionHandler(action, handler)
     } catch {
@@ -114,7 +126,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const syncMediaSessionMetadata = () => {
-    if (!('mediaSession' in navigator)) return
+    if (!hasReliableMediaKeySupport) return
     const song = playingSong.value
     if (!song) {
       navigator.mediaSession.metadata = null
@@ -134,7 +146,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const syncMediaSessionState = () => {
-    if (!('mediaSession' in navigator)) return
+    if (!hasReliableMediaKeySupport) return
     navigator.mediaSession.playbackState =
       playerState.value === 'playing'
         ? 'playing'
@@ -152,7 +164,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const syncMediaSessionHandlers = () => {
-    if (!('mediaSession' in navigator)) return
+    if (!hasReliableMediaKeySupport) return
     if (!playingSong.value) {
       clearMediaSessionHandlers()
       return
