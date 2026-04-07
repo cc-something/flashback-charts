@@ -83,10 +83,15 @@ onMounted(async () => {
         <div :class="headerContainerClass">
           <router-link
             to="/"
-            class="flex items-center gap-[0.4em] font-bold text-primary no-underline"
+            class="flex items-center gap-[0.25em] font-bold text-primary no-underline"
             :style="headerWordmarkStyle"
           >
-            <img src="/cd.png" alt="" :style="headerIconStyle" />
+            <img
+              src="/cd.png"
+              alt=""
+              :class="{ 'animate-spin-slow': player.playerState === 'playing' }"
+              :style="headerIconStyle"
+            />
             Flashback Charts Australia
           </router-link>
           <button
