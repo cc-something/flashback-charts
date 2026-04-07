@@ -177,7 +177,12 @@ const youtubeVideoUrl = computed(() =>
           @value-commit="player.handleSeekCommit"
         >
           <SliderTrack
-            class="seek-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
+            class="seek-track relative h-1.5 w-full bg-black/10"
+            style="
+              overflow: hidden;
+              border-bottom-left-radius: 0.5rem;
+              border-bottom-right-radius: 0.5rem;
+            "
           >
             <SliderRange class="seek-range absolute h-full bg-primary" />
             <div
@@ -225,8 +230,6 @@ const youtubeVideoUrl = computed(() =>
 
 .seek-track[data-orientation='horizontal'] {
   flex: 1;
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
 }
 
 .seek-range[data-orientation='horizontal'] {
