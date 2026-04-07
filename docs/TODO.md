@@ -1,6 +1,10 @@
+- astley flashing bg? disco ball?
+  - idk if I like the simul seek bar on every song
 - test hotkeys
 - Random song btn CTA on home page
 - I dont like this text "Listen to the #1s and Top 10s and discover the songs that shaped each era."
+- should maybe link to decade page on the year page somewhere?
+- year page should be scaled up?
 
 ## TODO
 
@@ -25,8 +29,6 @@
 
 - donate
 - mobile app? flat fee
-
-- sticky header/title on year page?
 
 ## Future SEO
 

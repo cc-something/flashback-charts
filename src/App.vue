@@ -8,6 +8,7 @@ import {
   nextTick,
   watch,
 } from 'vue'
+import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { Keyboard } from 'lucide-vue-next'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
@@ -45,6 +46,8 @@ const router = useRouter()
 const chart = useChartStore()
 const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
+const stickyBar = ref<HTMLDivElement | null>(null)
+const { height: stickyBarHeight } = useElementSize(stickyBar)
 const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
@@ -161,8 +164,8 @@ onUnmounted(() => teardownKonamiListener())
 </script>
 
 <template>
-  <div class="min-h-screen bg-background text-text">
-    <div class="sticky top-0 z-40">
+  <div class="min-h-screen bg-background text-text" :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }">
+    <div ref="stickyBar" class="sticky top-0 z-40">
       <header class="border-b border-primary/15 bg-surface">
         <div :class="headerContainerClass">
           <router-link

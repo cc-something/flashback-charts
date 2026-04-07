@@ -144,7 +144,10 @@ watch(
 
 <template>
   <main class="max-w-2xl mx-auto px-4 py-6">
-    <header class="mb-6 flex items-start justify-between">
+    <header
+      class="sticky z-30 mb-6 flex items-start justify-between bg-background py-3 -my-3"
+      style="top: var(--sticky-bar-height)"
+    >
       <h1
         class="theme-display text-3xl font-bold text-primary"
         :style="{ fontFamily: theme.fontFamily }"
