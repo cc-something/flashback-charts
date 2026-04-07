@@ -213,15 +213,19 @@ watch(
         >
           <SliderTrack
             as="div"
-            class="mini-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
+            class="mini-track relative h-1.5 w-full bg-black/10"
           >
-            <SliderRange
-              as="div"
-              class="mini-range absolute h-full bg-primary"
-            />
             <div
-              class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
-            />
+              class="absolute inset-0 overflow-hidden rounded-bl-lg rounded-br-lg"
+            >
+              <SliderRange
+                as="div"
+                class="mini-range absolute inset-y-0 left-0 bg-primary"
+              />
+              <div
+                class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
+              />
+            </div>
           </SliderTrack>
           <SliderThumb
             class="mini-thumb block h-3 w-3 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
