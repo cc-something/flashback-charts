@@ -27,8 +27,8 @@ const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
 const headerContainerClass = computed(() =>
   route.name === 'year'
-    ? 'mx-auto flex max-w-2xl items-center justify-between px-4 py-1'
-    : 'mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1',
+    ? 'header-container mx-auto flex max-w-2xl items-center justify-between px-4 py-1'
+    : 'header-container mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1',
 )
 const headerWordmarkStyle = computed(() => ({
   fontFamily: homeTheme.fontFamily,
@@ -154,5 +154,9 @@ onMounted(async () => {
 
 .page-leave-to {
   opacity: 0;
+}
+
+.header-container {
+  transition: max-width 220ms ease;
 }
 </style>
