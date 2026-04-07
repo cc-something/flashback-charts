@@ -8,16 +8,20 @@ const store = useChartStore()
 const router = useRouter()
 const route = useRoute()
 const scrollContainer = ref<HTMLElement | null>(null)
+const defaultHomeYear = 2000
 
 const scrollToActiveTab = async () => {
   await nextTick()
 
   const container = scrollContainer.value
   if (!container) return
-  const activeTab = container.querySelector<HTMLElement>('[data-active="true"]')
-  if (!activeTab) return
+  const targetTab =
+    route.name === 'home'
+      ? container.querySelector<HTMLElement>(`[data-year="${defaultHomeYear}"]`)
+      : container.querySelector<HTMLElement>('[data-active="true"]')
+  if (!targetTab) return
   const targetScrollLeft =
-    activeTab.offsetLeft - container.clientWidth / 2 + activeTab.clientWidth / 2
+    targetTab.offsetLeft - container.clientWidth / 2 + targetTab.clientWidth / 2
   const maxScrollLeft = container.scrollWidth - container.clientWidth
   const nextScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft))
 
@@ -46,6 +50,7 @@ const getTabThemeStyle = (year: number) => {
 
 onMounted(scrollToActiveTab)
 watch(() => store.selectedYear, scrollToActiveTab)
+watch(() => route.name, scrollToActiveTab)
 </script>
 
 <template>
@@ -58,6 +63,7 @@ watch(() => store.selectedYear, scrollToActiveTab)
       <button
         v-for="year in store.yearRange"
         :key="year"
+        :data-year="year"
         :data-active="route.name === 'year' && year === store.selectedYear"
         :style="getTabThemeStyle(year)"
         :class="[
