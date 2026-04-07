@@ -7,10 +7,11 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   /\/$/,
   '',
 )
-const decades = getDecadeSummaries()
+const decades = getDecadeSummaries().reverse()
+const decadeColumnSplitIndex = Math.ceil(decades.length / 2)
 const decadeColumns = [
-  decades.filter((_, index) => index % 2 === 0),
-  decades.filter((_, index) => index % 2 === 1),
+  decades.slice(0, decadeColumnSplitIndex),
+  decades.slice(decadeColumnSplitIndex),
 ]
 const latestYear = getLatestYear()
 const title = 'Flashback Charts Australia'
@@ -37,22 +38,22 @@ useHead({
     <div class="mb-8">
       <h1 class="text-2xl text-text-muted">
         The top 10 songs in Australia for every year from 1940 to
-        {{ latestYear }}.
+        {{ latestYear }}
       </h1>
       <p class="mt-2 text-base leading-relaxed text-text-muted/70">
-        Nine decades of Australian music charts. From today's streaming hits and
+        Nine decades of Australian music charts, from today's streaming hits and
         2000s pop anthems back through grunge, synth-pop, disco, and the
-        rock'n'roll pioneers. Listen to every #1 and discover the songs that
-        shaped each era.
+        rock'n'roll pioneers. Listen to the #1s and Top 10s and discover the
+        songs that shaped each era.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 min-[1260px]:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 min-[1000px]:grid-cols-2">
       <div
         v-for="(column, columnIndex) in decadeColumns"
         :key="columnIndex"
         class="flex flex-col gap-6"
-        :class="{ 'min-[1260px]:pt-28': columnIndex === 1 }"
+        :class="{ 'min-[1000px]:pt-28': columnIndex === 1 }"
       >
         <section
           v-for="group in column"
