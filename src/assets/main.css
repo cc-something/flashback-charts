@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+@utility animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
 @theme {
   --color-background: var(--theme-background);
   --color-surface: var(--theme-surface);
