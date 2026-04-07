@@ -63,11 +63,11 @@ onMounted(async () => {
   <div class="min-h-screen bg-background text-text">
     <div class="sticky top-0 z-40">
       <header
-        v-if="route.path !== '/'"
         class="flex items-center justify-between border-b border-primary/15 bg-surface px-4 py-1"
       >
         <div class="flex items-center gap-2">
           <router-link
+            v-if="route.path !== '/'"
             to="/"
             aria-label="Home"
             class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
