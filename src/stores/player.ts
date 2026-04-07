@@ -35,6 +35,7 @@ const getHasReliableMediaKeySupport = () => {
 }
 
 const loadSavedState = (): SavedPlayerState | null => {
+  if (typeof localStorage === 'undefined') return null
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
@@ -52,6 +53,7 @@ const loadSavedState = (): SavedPlayerState | null => {
 }
 
 const saveToDisk = (state: SavedPlayerState) => {
+  if (typeof localStorage === 'undefined') return
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
@@ -60,6 +62,7 @@ const saveToDisk = (state: SavedPlayerState) => {
 }
 
 const clearSavedState = () => {
+  if (typeof localStorage === 'undefined') return
   localStorage.removeItem(STORAGE_KEY)
 }
 
@@ -186,7 +189,7 @@ export const usePlayerStore = defineStore('player', () => {
 
   const clearProgressTimer = () => {
     if (progressTimerId === null) return
-    window.clearInterval(progressTimerId)
+    clearInterval(progressTimerId)
     progressTimerId = null
   }
 
@@ -213,14 +216,15 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const startProgressTimer = () => {
+    if (typeof window === 'undefined') return
     clearProgressTimer()
     syncPlaybackProgress()
-    progressTimerId = window.setInterval(syncPlaybackProgress, 250)
+    progressTimerId = setInterval(syncPlaybackProgress, 250)
   }
 
   const clearSaveTimer = () => {
     if (saveTimerId === null) return
-    window.clearInterval(saveTimerId)
+    clearInterval(saveTimerId)
     saveTimerId = null
   }
 
@@ -236,9 +240,10 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const startSaveTimer = () => {
+    if (typeof window === 'undefined') return
     clearSaveTimer()
     persistState()
-    saveTimerId = window.setInterval(persistState, SAVE_INTERVAL_MS)
+    saveTimerId = setInterval(persistState, SAVE_INTERVAL_MS)
   }
 
   // Start/stop save timer when player becomes active/inactive
@@ -272,12 +277,17 @@ export const usePlayerStore = defineStore('player', () => {
     syncMediaSessionState()
     syncMediaSessionHandlers()
     if (offlineHandler) {
-      window.removeEventListener('offline', offlineHandler)
+      if (typeof window !== 'undefined')
+        window.removeEventListener('offline', offlineHandler)
       offlineHandler = null
     }
   }
 
   const attemptPlay = (song: Song, startAt?: number) => {
+    if (typeof window === 'undefined') {
+      stop()
+      return
+    }
     if (!playerContainerEl) {
       stop()
       return
@@ -327,7 +337,7 @@ export const usePlayerStore = defineStore('player', () => {
           if (retryCount < MAX_RETRIES) {
             retryCount++
             playerState.value = 'loading'
-            window.setTimeout(() => {
+            setTimeout(() => {
               if (playerState.value === 'loading' && currentPlaySong)
                 attemptPlay(currentPlaySong)
             }, 1000 * retryCount)
@@ -345,6 +355,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const play = async (song: Song, year: number) => {
+    if (typeof window === 'undefined') return
     if (!song.youtubeVideoId) return
 
     // Toggle if same song
@@ -556,6 +567,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const scrollSongIntoView = (song: Song) => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return
     requestAnimationFrame(() => {
       const el = document.querySelector(
         `[data-song-id="${song.youtubeVideoId}"]`,
@@ -565,6 +577,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const restoreFromStorage = () => {
+    if (typeof window === 'undefined') return
     const saved = loadSavedState()
     if (!saved) return
     const songs = getYearData(saved.year)

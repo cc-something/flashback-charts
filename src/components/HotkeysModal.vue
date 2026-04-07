@@ -4,7 +4,9 @@ import { Keyboard } from 'lucide-vue-next'
 
 const emit = defineEmits<{ close: [] }>()
 
-const isMac = navigator.platform.toUpperCase().includes('MAC')
+const isMac =
+  typeof navigator !== 'undefined' &&
+  navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
 
 const sections = [

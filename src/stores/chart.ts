@@ -13,12 +13,20 @@ import { getDecadeForYear } from '@/themes'
 export type SortOrder = 'asc' | 'desc'
 
 export const useChartStore = defineStore('chart', () => {
-  const initialYear = Number(window.location.pathname.slice(1)) || 1973
+  const availableYears = getAvailableYears()
+  const fallbackYear = availableYears.includes(1973)
+    ? 1973
+    : (availableYears[0] ?? 1973)
+  const pathYear =
+    typeof window === 'undefined'
+      ? Number.NaN
+      : Number(window.location.pathname.slice(1))
+  const initialYear = availableYears.includes(pathYear)
+    ? pathYear
+    : fallbackYear
   const selectedYear = ref(initialYear)
   const sortOrder = useStorage<SortOrder>('chart-sort-order', 'asc')
-
   const yearRange = range(1940, 2026)
-  const availableYears = getAvailableYears()
 
   const currentSongs = computed(() => {
     const songs = getYearData(selectedYear.value) ?? []

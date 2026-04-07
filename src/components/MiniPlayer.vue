@@ -6,7 +6,9 @@ import { getThemeForYear } from '@/themes'
 
 const player = usePlayerStore()
 
-const isMac = navigator.platform.toUpperCase().includes('MAC')
+const isMac =
+  typeof navigator !== 'undefined' &&
+  navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
 
 // Keep last valid theme — never cleared on null so leave-animation retains its decade theme

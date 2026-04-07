@@ -19,13 +19,13 @@ export const useToastStore = defineStore('toast', () => {
     const id = nextId++
     toasts.value.push({ id, message, variant: 'error' })
     usePlausibleAnalytics().trackEvent('Error', { message })
-    window.setTimeout(() => dismiss(id), durationMs)
+    setTimeout(() => dismiss(id), durationMs)
   }
 
   const showInfo = (message: string, durationMs = 2500) => {
     const id = nextId++
     toasts.value.push({ id, message, variant: 'info' })
-    window.setTimeout(() => dismiss(id), durationMs)
+    setTimeout(() => dismiss(id), durationMs)
   }
 
   const dismiss = (id: number) => {
