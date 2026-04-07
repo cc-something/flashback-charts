@@ -179,9 +179,7 @@ const youtubeVideoUrl = computed(() =>
           <SliderTrack
             class="seek-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
           >
-            <SliderRange
-              class="seek-range absolute h-full !rounded-bl-lg bg-primary"
-            />
+            <SliderRange class="seek-range absolute h-full bg-primary" />
             <div
               class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
             />
@@ -233,7 +231,6 @@ const youtubeVideoUrl = computed(() =>
 
 .seek-range[data-orientation='horizontal'] {
   left: 0;
-  border-bottom-left-radius: 0.5rem;
 }
 
 .seek-thumb {
