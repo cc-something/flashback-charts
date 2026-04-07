@@ -5,7 +5,7 @@
 - setup newsletter dash
 
 - confirm analytics behaviour
-- confirm
+- confirm newsletter e2e
 - social thumbs
 
 - confirm playback works on mobile
@@ -13,25 +13,20 @@
 ## Nice to haves?
 
 - about this website
-- contact
+- contact / make a suggestion / report a problem
 - privacy notice? idk if we need a policy, no signup
   - but could mention privacy conscientiousness
 
 ## How to make money
 
-- mobile app, no adds, flat fee
-
-- contact / make a suggestion / report a problem
 - donate
-
+- mobile app? flat fee
 - hotkeys
-- > | doesnt work?
-- in the miniplayer, show the # ranking
-- hover icon only for mini player thumb
+  - space to play pause
+  - cmd/ctrl left/right for next prev
+  - cmd/ctrl f for search
 
-- miniplayer song/timestamp resume localStorage (dont autoplay)
 - sticky header/title on year page?
-- no hmr on md save...?
 
 ## Future SEO
 
