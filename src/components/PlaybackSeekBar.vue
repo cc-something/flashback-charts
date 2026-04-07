@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
+import { computed } from 'vue'
+import { SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import { usePlayerStore } from '@/stores/player'
 
 defineProps<{
@@ -7,6 +8,12 @@ defineProps<{
 }>()
 
 const player = usePlayerStore()
+const progressPercent = computed(() => {
+  if (player.durationSeconds <= 0) return 0
+  const displayedSeconds = player.seekSliderValue[0] ?? 0
+  const clampedPercent = (displayedSeconds / player.durationSeconds) * 100
+  return Math.min(Math.max(clampedPercent, 0), 100)
+})
 </script>
 
 <template>
@@ -26,12 +33,9 @@ const player = usePlayerStore()
   >
     <SliderTrack
       as="div"
+      :style="{ '--playback-seek-progress': `${progressPercent}%` }"
       class="playback-seek-track relative h-1.5 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
     >
-      <SliderRange
-        as="div"
-        class="playback-seek-range absolute inset-y-0 left-0 bg-primary"
-      />
       <div
         class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
       />
@@ -52,16 +56,13 @@ const player = usePlayerStore()
 }
 
 .playback-seek-track {
-  isolation: isolate;
-}
-
-.playback-seek-range[data-orientation='horizontal'] {
-  left: 0;
-}
-
-.playback-seek-range {
-  border-bottom-left-radius: inherit;
-  transform: translateZ(0);
+  background: linear-gradient(
+    to right,
+    var(--color-primary) 0%,
+    var(--color-primary) var(--playback-seek-progress),
+    rgb(0 0 0 / 10%) var(--playback-seek-progress),
+    rgb(0 0 0 / 10%) 100%
+  );
 }
 
 .playback-seek-thumb {
