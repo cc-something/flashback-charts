@@ -168,7 +168,7 @@ watch(
 
     <p
       v-if="store.currentDescription"
-      class="mb-5 text-sm leading-relaxed text-text-muted"
+      class="mb-5 text-base leading-relaxed text-text-muted"
     >
       {{ store.currentDescription }}
     </p>
