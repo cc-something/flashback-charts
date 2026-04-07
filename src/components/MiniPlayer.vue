@@ -39,11 +39,11 @@ watch(
     <aside
       v-if="player.isActive && player.playingSong"
       :style="themeVars"
-      class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-visible rounded-lg bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
+      class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-visible bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
     >
       <!-- Controls row -->
       <div
-        class="flex items-center gap-1 rounded-t-lg border-b border-white/5 bg-surface px-2 py-0.5"
+        class="flex items-center gap-1 border-b border-white/5 bg-surface px-2 py-0.5"
       >
         <!-- Prev -->
         <button

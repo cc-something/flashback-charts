@@ -81,7 +81,11 @@ const openSearch = async () => {
 }
 
 provide('openSearch', openSearch)
-useHotkeys(openSearch, () => isSearchOpen.value || isHotkeysOpen.value, deactivate)
+useHotkeys(
+  openSearch,
+  () => isSearchOpen.value || isHotkeysOpen.value,
+  deactivate,
+)
 
 const homeTheme = getHomeTheme()
 
@@ -164,7 +168,10 @@ onUnmounted(() => teardownKonamiListener())
 </script>
 
 <template>
-  <div class="min-h-screen bg-background text-text" :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }">
+  <div
+    class="min-h-screen bg-background text-text"
+    :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }"
+  >
     <div ref="stickyBar" class="sticky top-0 z-40">
       <header class="border-b border-primary/15 bg-surface">
         <div :class="headerContainerClass">

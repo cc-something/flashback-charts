@@ -1,3 +1,7 @@
+- X:XX/Y:YY on the right
+- year pages 30ish% bigger
+- square progress bar corner still exists
+
 - astley flashing bg? disco ball?
   - idk if I like the simul seek bar on every song
 - test hotkeys

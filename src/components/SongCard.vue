@@ -60,14 +60,14 @@ const youtubeVideoUrl = computed(() =>
     :id="`song-${year}-${song.rank}`"
     :data-song-rank="song.rank"
     :data-song-id="song.youtubeVideoId"
-    class="group relative flex items-center gap-3 overflow-visible rounded-lg bg-surface px-3.5 py-3 transition-colors duration-150 hover:bg-surface/80"
+    class="group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 py-3 transition-colors duration-150 hover:bg-surface/80"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
     <button
       type="button"
       :aria-label="`Play ${displaySong.title} by ${displaySong.artist}`"
-      class="absolute inset-0 z-0 cursor-pointer rounded-lg"
+      class="absolute inset-0 z-0 cursor-pointer"
       @click="handleClick"
     />
     <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">

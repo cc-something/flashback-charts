@@ -34,7 +34,7 @@ const progressPercent = computed(() => {
     <SliderTrack
       as="div"
       :style="{ '--playback-seek-progress': `${progressPercent}%` }"
-      class="playback-seek-track relative h-1 w-full overflow-hidden rounded-bl-lg rounded-br-lg bg-black/10"
+      class="playback-seek-track relative h-1 w-full overflow-hidden bg-black/10"
     >
       <div
         class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
