@@ -9,6 +9,7 @@ import {
   watch,
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { Keyboard } from 'lucide-vue-next'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -17,12 +18,14 @@ import {
   RICK_ASTLEY_SONG,
   RICK_ASTLEY_YEAR,
 } from '@/composables/useRickRollMode'
+import { useHotkeys } from '@/composables/useHotkeys'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { getHomeTheme } from '@/themes'
 import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import SearchOverlay from '@/components/SearchOverlay.vue'
+import HotkeysModal from '@/components/HotkeysModal.vue'
 import EmailSignupModal from '@/components/EmailSignupModal.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 import RickRollBanner from '@/components/RickRollBanner.vue'
@@ -43,6 +46,7 @@ const chart = useChartStore()
 const player = usePlayerStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const isSearchOpen = ref(false)
+const isHotkeysOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
 const headerContainerClass = computed(() =>
@@ -74,8 +78,58 @@ const openSearch = async () => {
 }
 
 provide('openSearch', openSearch)
+useHotkeys(openSearch, () => isSearchOpen.value || isHotkeysOpen.value)
 
 const homeTheme = getHomeTheme()
+
+const discRotation = ref(0)
+const isDiscSpinning = ref(false)
+let discRafId: number | null = null
+let discLastTime: number | null = null
+const DISC_SPEED = 120 // degrees per second
+
+const spinDisc = (timestamp: number) => {
+  if (discLastTime !== null) {
+    discRotation.value += ((timestamp - discLastTime) / 1000) * DISC_SPEED
+  }
+  discLastTime = timestamp
+  discRafId = requestAnimationFrame(spinDisc)
+}
+
+const startDiscSpin = () => {
+  if (isDiscSpinning.value) return
+  isDiscSpinning.value = true
+  discLastTime = null
+  discRafId = requestAnimationFrame(spinDisc)
+}
+
+const stopDiscSpin = () => {
+  if (!isDiscSpinning.value) return
+  isDiscSpinning.value = false
+  if (discRafId !== null) cancelAnimationFrame(discRafId)
+  discRafId = null
+  discLastTime = null
+  discRotation.value = 0
+}
+
+const discStyle = computed(() => ({
+  ...headerIconStyle.value,
+  transform: `rotate(${discRotation.value % 360}deg)`,
+  transition: isDiscSpinning.value ? 'none' : 'transform 0.6s ease-out',
+}))
+
+watch(
+  () => player.playerState,
+  (state) => {
+    if (state === 'playing') startDiscSpin()
+    else stopDiscSpin()
+  },
+  { immediate: true },
+)
+
+onUnmounted(() => {
+  if (discRafId !== null) cancelAnimationFrame(discRafId)
+})
 
 watch(
   () => chart.selectedYear,
@@ -113,10 +167,10 @@ onUnmounted(() => teardownKonamiListener())
         <div :class="headerContainerClass">
           <router-link
             to="/"
-            class="flex items-center gap-[0.4em] font-bold text-primary no-underline"
+            class="flex items-center gap-[0.25em] font-bold text-primary no-underline"
             :style="headerWordmarkStyle"
           >
-            <img src="/cd.png" alt="" :style="headerIconStyle" />
+            <img src="/cd.png" alt="" :style="discStyle" />
             Flashback Charts Australia
           </router-link>
           <button
@@ -149,12 +203,24 @@ onUnmounted(() => teardownKonamiListener())
       </Transition>
     </router-view>
 
+    <footer class="py-6 text-center">
+      <button
+        type="button"
+        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline-offset-4 transition-colors hover:text-text hover:underline"
+        @click="isHotkeysOpen = true"
+      >
+        <Keyboard class="h-3.5 w-3.5" />
+        Keyboard shortcuts
+      </button>
+    </footer>
+
     <MiniPlayer />
     <SearchOverlay
       v-if="isSearchOpen"
       ref="searchOverlay"
       @close="isSearchOpen = false"
     />
+    <HotkeysModal v-if="isHotkeysOpen" @close="isHotkeysOpen = false" />
     <EmailSignupModal
       v-if="emailSignup.show.value"
       @dismiss="emailSignup.dismiss"

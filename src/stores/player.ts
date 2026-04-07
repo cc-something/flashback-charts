@@ -59,6 +59,7 @@ export const usePlayerStore = defineStore('player', () => {
   const durationSeconds = ref(0)
   const isSeekDragging = ref(false)
   const seekPreviewSeconds = ref<number | null>(null)
+  const isMuted = ref(false)
 
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
@@ -210,6 +211,7 @@ export const usePlayerStore = defineStore('player', () => {
       events: {
         onReady: (event) => {
           startProgressTimer()
+          if (isMuted.value) event.target.mute()
           event.target.playVideo()
         },
         onStateChange: (event: YTPlayerEvent) => {
@@ -363,6 +365,28 @@ export const usePlayerStore = defineStore('player', () => {
     ytPlayer.seekTo(v, true)
   }
 
+  const toggleMute = () => {
+    if (!ytPlayer) return
+    if (isMuted.value) {
+      ytPlayer.unMute()
+      isMuted.value = false
+    } else {
+      ytPlayer.mute()
+      isMuted.value = true
+    }
+  }
+
+  const seekRelative = (deltaSeconds: number) => {
+    if (!ytPlayer || playerState.value === 'idle') return
+    const next = Math.max(
+      0,
+      Math.min(durationSeconds.value, currentTimeSeconds.value + deltaSeconds),
+    )
+    seekPreviewSeconds.value = next
+    playerState.value = 'loading'
+    ytPlayer.seekTo(next, true)
+  }
+
   const isSongActive = (song: Song, year: number) =>
     playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
     playingYear.value === year &&
@@ -482,11 +506,14 @@ export const usePlayerStore = defineStore('player', () => {
     showSeekBar,
     seekSliderValue,
     isActive,
+    isMuted,
     setPlayerContainer,
     setOnEnded,
     play,
     stop,
     togglePlayback,
+    toggleMute,
+    seekRelative,
     handleSeekInput,
     handleSeekCommit,
     isSongActive,

@@ -15,10 +15,13 @@ const scrollToActiveTab = async () => {
 
   const container = scrollContainer.value
   if (!container) return
-  const targetTab =
+  const targetYear =
     route.name === 'home'
-      ? container.querySelector<HTMLElement>(`[data-year="${defaultHomeYear}"]`)
-      : container.querySelector<HTMLElement>('[data-active="true"]')
+      ? defaultHomeYear
+      : Number(route.params.year) || store.selectedYear
+  const targetTab = container.querySelector<HTMLElement>(
+    `[data-year="${targetYear}"]`,
+  )
   if (!targetTab) return
   const targetScrollLeft =
     targetTab.offsetLeft - container.clientWidth / 2 + targetTab.clientWidth / 2

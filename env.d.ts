@@ -16,6 +16,8 @@ interface YTPlayer {
   seekTo(seconds: number, allowSeekAhead?: boolean): void
   getCurrentTime(): number
   getDuration(): number
+  mute(): void
+  unMute(): void
   destroy(): void
 }
 
