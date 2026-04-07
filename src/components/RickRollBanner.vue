@@ -16,7 +16,7 @@ const REPEATED_TEXT = Array.from({ length: SEGMENT_COUNT }, (_, i) => {
   >
     <div class="marquee-wrapper flex flex-1 items-center overflow-hidden pr-36">
       <div
-        class="marquee-track pointer-events-none select-none whitespace-nowrap text-m font-normal leading-none"
+        class="marquee-track pointer-events-none select-none whitespace-nowrap text-m font-normal"
       >
         {{ REPEATED_TEXT }}
       </div>
