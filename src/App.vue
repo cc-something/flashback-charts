@@ -32,13 +32,13 @@ const headerContainerClass = computed(() =>
 )
 const headerWordmarkStyle = computed(() => ({
   fontFamily: homeTheme.fontFamily,
-  fontSize: isHomeRoute.value ? '3.5rem' : '0.875rem',
-  lineHeight: isHomeRoute.value ? '3.75rem' : '1.25rem',
+  fontSize: isHomeRoute.value ? '3rem' : '0.875rem',
+  lineHeight: isHomeRoute.value ? '3.25rem' : '1.25rem',
   transition: 'font-size 220ms ease, line-height 220ms ease',
 }))
 const headerIconStyle = computed(() => ({
-  width: isHomeRoute.value ? '3rem' : '1rem',
-  height: isHomeRoute.value ? '3rem' : '1rem',
+  width: isHomeRoute.value ? '2.5rem' : '1rem',
+  height: isHomeRoute.value ? '2.5rem' : '1rem',
   transition: 'width 220ms ease, height 220ms ease',
 }))
 const handlePageAfterLeave = () => {
@@ -81,40 +81,14 @@ onMounted(async () => {
     <div class="sticky top-0 z-40">
       <header class="border-b border-primary/15 bg-surface">
         <div :class="headerContainerClass">
-          <div class="flex items-center gap-2">
-            <router-link
-              to="/"
-              aria-label="Home"
-              class="flex h-7 w-7 items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
-            >
-              <svg
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  d="M3 11 12 3l9 8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M5 10v10h14V10"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </router-link>
-            <router-link
-              to="/"
-              class="flex items-center gap-1.5 font-bold text-primary no-underline"
-              :style="headerWordmarkStyle"
-            >
-              <img src="/cd.png" alt="" :style="headerIconStyle" />
-              Flashback Charts
-            </router-link>
-          </div>
+          <router-link
+            to="/"
+            class="flex items-center gap-1.5 font-bold text-primary no-underline"
+            :style="headerWordmarkStyle"
+          >
+            <img src="/cd.png" alt="" :style="headerIconStyle" />
+            Flashback Charts Australia
+          </router-link>
           <button
             type="button"
             aria-label="Search songs"
