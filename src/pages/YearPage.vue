@@ -203,7 +203,7 @@ watch(
       @after-leave="applyPendingTheme"
     >
       <div :key="yearNumber" class="year-content">
-        <div v-if="store.hasData" class="flex flex-col gap-1.5">
+        <div v-if="store.hasData" class="flex flex-col gap-px">
           <SongCard
             v-for="song in store.currentSongs"
             :key="`${yearNumber}-${song.rank}`"
