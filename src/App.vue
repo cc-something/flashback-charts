@@ -83,6 +83,7 @@ const headerWordmarkStyle = computed(() => ({
 const headerIconStyle = computed(() => ({
   width: isHomeRoute.value ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
   height: isHomeRoute.value ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
+  marginTop: isHomeRoute.value ? 'clamp(0.12rem, 0.8vw, 0.32rem)' : '0',
   transition: 'width 220ms ease, height 220ms ease',
 }))
 const handlePageAfterLeave = () => {
