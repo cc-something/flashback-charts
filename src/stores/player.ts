@@ -2,6 +2,7 @@ import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
+import { useRickRollMode } from '@/composables/useRickRollMode'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -57,6 +58,7 @@ const getYearSongs = async (year: number) => {
 
 export const usePlayerStore = defineStore('player', () => {
   const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
+  const { deactivate } = useRickRollMode()
 
   const playingSong = ref<Song | null>(null)
   const playingYear = ref<number | null>(null)
@@ -187,6 +189,7 @@ export const usePlayerStore = defineStore('player', () => {
     currentPlaySong = null
     clearSeekPreview()
     clearActive()
+    deactivate()
     clearSavedState()
     if (offlineHandler) {
       if (typeof window !== 'undefined')
