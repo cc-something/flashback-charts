@@ -21,8 +21,14 @@ export default defineConfig({
     },
   },
   server: {
+    host: '127.0.0.1',
     port: 4719,
+    strictPort: true,
     allowedHosts: ['.ngrok-free.app'],
+    hmr: {
+      host: '127.0.0.1',
+      clientPort: 4719,
+    },
     watch: {
       ignored: ['**/docs/**'],
     },
