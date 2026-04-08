@@ -168,8 +168,8 @@ useHead(() => ({
 </script>
 
 <template>
-  <main class="relative isolate overflow-hidden">
-    <div class="decade-page-background pointer-events-none absolute inset-0">
+  <main class="relative isolate">
+    <div class="decade-page-background pointer-events-none fixed inset-0">
       <div class="decade-page-mosaic">
         <img
           v-for="(thumbnail, index) in backgroundTiles"
