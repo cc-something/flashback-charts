@@ -182,12 +182,12 @@ watch(
     </header>
 
     <div class="mb-5 flex flex-col gap-3">
-      <p class="text-base leading-relaxed text-text-muted">
+      <p class="text-[1.3rem] leading-relaxed text-text-muted">
         {{ intro }}
       </p>
       <p
         v-if="store.currentDescription"
-        class="text-base leading-relaxed text-text-muted/80"
+        class="text-[1.3rem] leading-relaxed text-text-muted/80"
       >
         {{ store.currentDescription }}
       </p>
@@ -197,10 +197,10 @@ watch(
       <router-link
         v-if="previousYear"
         :to="`/au/${previousYear}`"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-[1.14rem] font-semibold transition-colors duration-150"
         :style="getYearNavStyle(previousYear)"
       >
-        <ArrowLeft class="h-3.5 w-3.5" />
+        <ArrowLeft class="h-[1.14rem] w-[1.14rem]" />
         {{ previousYear }}
       </router-link>
       <div v-else />
@@ -208,11 +208,11 @@ watch(
       <router-link
         v-if="nextYear"
         :to="`/au/${nextYear}`"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-[1.14rem] font-semibold transition-colors duration-150"
         :style="getYearNavStyle(nextYear)"
       >
         {{ nextYear }}
-        <ArrowRight class="h-3.5 w-3.5" />
+        <ArrowRight class="h-[1.14rem] w-[1.14rem]" />
       </router-link>
       <div v-else />
     </nav>
@@ -234,7 +234,7 @@ watch(
           <a
             v-if="store.currentSource"
             :href="store.currentSource.url"
-            class="mt-3 block text-xs text-text-muted/80 underline decoration-primary/30 underline-offset-4 transition-colors duration-150 hover:text-primary"
+            class="mt-3 block text-[0.975rem] text-text-muted/80 underline decoration-primary/30 underline-offset-4 transition-colors duration-150 hover:text-primary"
             rel="noreferrer"
             target="_blank"
           >
@@ -246,11 +246,11 @@ watch(
           v-else
           class="flex flex-col items-center justify-center gap-3 py-24 text-center"
         >
-          <span class="text-5xl opacity-30">🎵</span>
-          <p class="text-lg text-text-muted">
+          <span class="text-[3.9rem] opacity-30">🎵</span>
+          <p class="text-[1.46rem] text-text-muted">
             No data yet for {{ yearNumber }}
           </p>
-          <p class="text-base text-text-muted/70">Chart data coming soon</p>
+          <p class="text-[1.3rem] text-text-muted/70">Chart data coming soon</p>
         </div>
       </div>
     </Transition>
