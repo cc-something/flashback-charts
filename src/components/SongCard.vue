@@ -79,7 +79,7 @@ const youtubeVideoUrl = computed(() =>
     <button
       type="button"
       :aria-label="`Toggle playback for ${displaySong.title} by ${displaySong.artist}`"
-      class="relative z-10 h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="relative z-10 h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @click.stop="handleClick"
     >
       <img
