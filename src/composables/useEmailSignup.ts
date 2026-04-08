@@ -16,7 +16,15 @@ export const useEmailSignup = () => {
     show.value = false
   }
 
-  const submit = (email: string) => {
+  const submit = async (email: string) => {
+    await fetch('https://api.buttondown.email/v1/subscribers', {
+      method: 'POST',
+      headers: {
+        Authorization: `Token ${import.meta.env.VITE_BUTTONDOWN_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email_address: email }),
+    })
     subscribedEmail.value = email
     show.value = false
   }
