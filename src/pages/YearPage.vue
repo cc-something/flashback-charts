@@ -14,7 +14,6 @@ import {
   getAdjacentYears,
   getYearPageDescription,
   getYearPageHeading,
-  getYearPageIntro,
   getYearPageTitle,
 } from '@/content/chartContent'
 import { getYearData, getYearDescription, getYearSource } from '@/data'
@@ -60,7 +59,6 @@ const getYearNavStyle = (year: number) => {
 const heading = computed(() => getYearPageHeading(yearNumber.value))
 const title = computed(() => getYearPageTitle(yearNumber.value))
 const description = computed(() => getYearPageDescription(yearNumber.value))
-const intro = computed(() => getYearPageIntro(yearNumber.value))
 const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''
@@ -187,9 +185,6 @@ watch(
     </header>
 
     <div class="mb-4 flex flex-col gap-3">
-      <p class="text-base leading-relaxed text-text-muted">
-        {{ intro }}
-      </p>
       <p
         v-if="currentDescription"
         class="text-base leading-relaxed text-text-muted"

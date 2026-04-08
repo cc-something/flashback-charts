@@ -63,13 +63,6 @@ export const getYearPageDescription = (year: number) => {
   return `Browse Australia's top 10 songs of ${year}, including #1 ${topSong.title} by ${topSong.artist}. Explore the full year-end chart, artists, and videos.`
 }
 
-export const getYearPageIntro = (year: number) => {
-  const topSong = getTopSong(year)
-  if (!topSong)
-    return `See Australia's year-end Top 10 songs for ${year}, with chart positions, artist credits, cover art, and direct links to each hit.`
-  return `See Australia's year-end Top 10 songs for ${year}, led by #1 ${topSong.title} by ${topSong.artist}, with chart positions, artist credits, cover art, and direct links to each hit.`
-}
-
 export const getYearSummaryText = (year: number) =>
   getYearDescription(year) ?? getYearPageDescription(year)
 
