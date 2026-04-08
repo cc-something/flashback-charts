@@ -21,14 +21,14 @@ const years = getAvailableYears().sort((a, b) => a - b)
 const decades = [...new Set(years.map((year) => getDecadeForYear(year)))].sort()
 
 const urls = [
-  { loc: `${siteUrl}/au`, priority: '1.0', changefreq: 'weekly' },
+  { loc: `${siteUrl}/`, priority: '1.0', changefreq: 'weekly' },
   ...decades.map((decade) => ({
-    loc: `${siteUrl}/au/${decade}`,
+    loc: `${siteUrl}/au/${decade}/`,
     priority: '0.9',
     changefreq: 'monthly',
   })),
   ...years.map((year) => ({
-    loc: `${siteUrl}/au/${year}`,
+    loc: `${siteUrl}/au/${year}/`,
     priority: '0.8',
     changefreq: 'yearly',
   })),

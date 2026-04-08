@@ -1,21 +1,18 @@
 # Flashback Charts Australia — Apache config for cPanel hosting.
-# vite-ssg prerenders /au/index.html, /au/YYYY/index.html, etc.
-# Redirect bare root to /au; serve prerendered files directly; fall back to
-# /au/index.html for any unmatched path so deep links and refreshes work.
+# vite-ssg prerenders /index.html, /au/index.html, /au/YYYY/index.html, etc.
+# Serve prerendered files directly; fall back to /index.html for any unmatched
+# path so deep links and refreshes work.
 
 Options -MultiViews
 RewriteEngine On
-
-# Redirect bare root to /au/.
-RewriteRule ^$ /au/ [R=301,L]
 
 # Skip rewrite for real files and directories (assets, prerendered HTML, sitemap, etc.).
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Fall back to the /au SPA entry for everything else.
-RewriteRule ^ au/index.html [L]
+# Fall back to the root SPA entry for everything else.
+RewriteRule ^ index.html [L]
 
 # Long-cache hashed assets.
 <IfModule mod_headers.c>

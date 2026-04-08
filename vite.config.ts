@@ -38,6 +38,7 @@ export default defineConfig({
     dirStyle: 'nested',
     formatting: 'minify',
     includedRoutes: () => [
+      '/',
       '/au',
       ...availableDecades.map((decade) => `/au/${decade}`),
       ...availableYears.map((year) => `/au/${year}`),

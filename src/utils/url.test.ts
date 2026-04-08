@@ -9,7 +9,7 @@ import {
 
 describe('url helpers', () => {
   it('builds trailing-slash app paths', () => {
-    expect(getHomePath()).toBe('/au/')
+    expect(getHomePath()).toBe('/')
     expect(getDecadePath('1980s')).toBe('/au/1980s/')
     expect(getYearPath(2024)).toBe('/au/2024/')
   })

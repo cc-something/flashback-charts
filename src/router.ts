@@ -1,10 +1,10 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: '/au' },
   {
-    path: '/au',
+    path: '/',
     name: 'home',
+    alias: ['/au', '/au/'],
     component: () => import('@/pages/HomePage.vue'),
   },
   {
