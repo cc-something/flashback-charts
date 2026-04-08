@@ -164,7 +164,7 @@ watch(
 <template>
   <main class="max-w-[50.4rem] mx-auto px-4 py-6">
     <header
-      class="sticky z-30 mb-6 flex items-start justify-between bg-background py-3 -my-3"
+      class="sticky z-30 mb-6 bg-background py-3 -my-3"
       style="top: var(--sticky-bar-height)"
     >
       <h1
@@ -173,19 +173,9 @@ watch(
       >
         {{ heading }}
       </h1>
-      <button
-        type="button"
-        class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
-        :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
-        @click="store.toggleSortOrder()"
-      >
-        <ArrowUpNarrowWide v-if="store.sortOrder === 'asc'" class="h-4 w-4" />
-        <ArrowDownNarrowWide v-else class="h-4 w-4" />
-        {{ store.sortOrder === 'asc' ? '1 → 10' : '10 → 1' }}
-      </button>
     </header>
 
-    <div class="mb-5 flex flex-col gap-3">
+    <div class="mb-4 flex flex-col gap-3">
       <p class="text-base leading-relaxed text-text-muted">
         {{ intro }}
       </p>
@@ -197,36 +187,18 @@ watch(
       </p>
     </div>
 
-    <nav class="mb-2 flex items-center justify-between gap-3">
-      <router-link
-        v-if="previousYear"
-        :to="`/au/${previousYear}`"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-        :style="getYearNavStyle(previousYear)"
+    <div class="mb-2 flex justify-end">
+      <button
+        type="button"
+        class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
+        :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
+        @click="store.toggleSortOrder()"
       >
-        <ArrowLeft class="h-3.5 w-3.5" />
-        {{ previousYear }}
-      </router-link>
-      <div v-else />
-
-      <router-link
-        :to="`/au/${decadeString}`"
-        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
-      >
-        {{ decadeString }}
-      </router-link>
-
-      <router-link
-        v-if="nextYear"
-        :to="`/au/${nextYear}`"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-        :style="getYearNavStyle(nextYear)"
-      >
-        {{ nextYear }}
-        <ArrowRight class="h-3.5 w-3.5" />
-      </router-link>
-      <div v-else />
-    </nav>
+        <ArrowUpNarrowWide v-if="store.sortOrder === 'asc'" class="h-4 w-4" />
+        <ArrowDownNarrowWide v-else class="h-4 w-4" />
+        {{ store.sortOrder === 'asc' ? '1 → 10' : '10 → 1' }}
+      </button>
+    </div>
 
     <Transition
       name="year-content"
@@ -265,6 +237,37 @@ watch(
         </div>
       </div>
     </Transition>
+
+    <nav class="mt-4 flex items-center justify-between gap-3">
+      <router-link
+        v-if="previousYear"
+        :to="`/au/${previousYear}`"
+        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        :style="getYearNavStyle(previousYear)"
+      >
+        <ArrowLeft class="h-3.5 w-3.5" />
+        {{ previousYear }}
+      </router-link>
+      <div v-else />
+
+      <router-link
+        :to="`/au/${decadeString}`"
+        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+      >
+        {{ decadeString }}
+      </router-link>
+
+      <router-link
+        v-if="nextYear"
+        :to="`/au/${nextYear}`"
+        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+        :style="getYearNavStyle(nextYear)"
+      >
+        {{ nextYear }}
+        <ArrowRight class="h-3.5 w-3.5" />
+      </router-link>
+      <div v-else />
+    </nav>
   </main>
 </template>
 
