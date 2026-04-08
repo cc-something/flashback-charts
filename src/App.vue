@@ -12,7 +12,7 @@ import {
 import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
+import { CircleInfo, Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -56,6 +56,9 @@ const EmailSignupModal = defineAsyncComponent(
 const ContactModal = defineAsyncComponent(
   () => import('@/components/ContactModal.vue'),
 )
+const AboutModal = defineAsyncComponent(
+  () => import('@/components/AboutModal.vue'),
+)
 
 useDecadeTheme()
 const emailSignup = useEmailSignup()
@@ -78,6 +81,7 @@ const { height: stickyBarHeight } = useElementSize(stickyBar)
 const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const isContactOpen = ref(false)
+const isAboutOpen = ref(false)
 const isContactEmailRevealed = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const hasToasts = computed(() => toast.toasts.length > 0)
@@ -313,6 +317,14 @@ onUnmounted(() => teardownKonamiListener())
         <Mail class="h-3.5 w-3.5" />
         Contact us
       </button>
+      <button
+        type="button"
+        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+        @click="isAboutOpen = true"
+      >
+        <CircleInfo class="h-3.5 w-3.5" />
+        About
+      </button>
       <div class="flex items-center gap-4">
         <a
           v-for="{ href, label, network } in socialLinks"
@@ -355,6 +367,7 @@ onUnmounted(() => teardownKonamiListener())
       @close="isContactOpen = false"
       @reveal="revealContactEmail"
     />
+    <AboutModal v-if="isAboutOpen" @close="isAboutOpen = false" />
     <div
       ref="playerContainer"
       class="fixed bottom-0 left-0 h-px w-px opacity-[0.01]"
