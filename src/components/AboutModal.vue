@@ -29,23 +29,24 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
         <X class="h-5 w-5" />
       </button>
 
-      <div class="mb-5 flex items-center gap-2.5">
+      <div class="mb-5 flex items-center justify-center gap-2.5">
         <Info class="h-5 w-5 text-primary" />
         <h2 class="text-lg font-bold text-text">About this site</h2>
       </div>
 
-      <div class="flex flex-col gap-4 text-sm leading-relaxed text-text-muted">
-        <p>Thanks Matt &amp; Simon for the inspiration.</p>
-        <p>Copyright CC Something Pty Ltd 2026.</p>
+      <div
+        class="flex flex-col items-center gap-4 text-center text-sm leading-relaxed text-text-muted"
+      >
+        <p>Thank you to Matt &amp; Simon for the inspiration.</p>
         <p>
-          Icons by
+          Credit to Lucide for the icons.
           <a
             href="https://lucide.dev/license"
             target="_blank"
             rel="noreferrer"
             class="inline-flex items-center gap-1 text-primary transition-opacity hover:opacity-80"
           >
-            Lucide
+            View license
             <ExternalLink class="h-3.5 w-3.5" />
           </a>
         </p>

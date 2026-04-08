@@ -86,6 +86,7 @@ const isContactEmailRevealed = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const hasToasts = computed(() => toast.toasts.length > 0)
 const isHomeRoute = computed(() => route.name === 'home')
+const currentYear = new Date().getFullYear()
 const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
 const socialLinks = [
   {
@@ -298,55 +299,58 @@ onUnmounted(() => teardownKonamiListener())
       </router-view>
     </div>
 
-    <footer
-      class="z-20 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-primary/10 px-4 py-4"
-    >
-      <button
-        type="button"
-        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-        @click="emailSignup.show.value = true"
-      >
-        <Mailbox class="h-3.5 w-3.5" />
-        Sign up for our Newsletter
-      </button>
-      <button
-        type="button"
-        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-        @click="isContactOpen = true"
-      >
-        <Mail class="h-3.5 w-3.5" />
-        Contact us
-      </button>
-      <button
-        type="button"
-        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-        @click="isAboutOpen = true"
-      >
-        <Info class="h-3.5 w-3.5" />
-        About
-      </button>
-      <div class="flex items-center gap-4">
-        <a
-          v-for="{ href, label, network } in socialLinks"
-          :key="href"
-          :href="href"
-          target="_blank"
-          rel="noreferrer"
+    <footer class="z-20 border-t border-primary/10 px-4 py-4">
+      <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+        <button
+          type="button"
           class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-          @click="handleSocialLinkClick(network)"
+          @click="emailSignup.show.value = true"
         >
-          <Link class="h-3.5 w-3.5" />
-          {{ label }}
-        </a>
+          <Mailbox class="h-3.5 w-3.5" />
+          Sign up for our Newsletter
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          @click="isContactOpen = true"
+        >
+          <Mail class="h-3.5 w-3.5" />
+          Contact us
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          @click="isAboutOpen = true"
+        >
+          <Info class="h-3.5 w-3.5" />
+          About
+        </button>
+        <div class="flex items-center gap-4">
+          <a
+            v-for="{ href, label, network } in socialLinks"
+            :key="href"
+            :href="href"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+            @click="handleSocialLinkClick(network)"
+          >
+            <Link class="h-3.5 w-3.5" />
+            {{ label }}
+          </a>
+        </div>
+        <button
+          type="button"
+          class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
+          @click="isHotkeysOpen = true"
+        >
+          <Keyboard class="h-3.5 w-3.5" />
+          Shortcuts
+        </button>
       </div>
-      <button
-        type="button"
-        class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
-        @click="isHotkeysOpen = true"
-      >
-        <Keyboard class="h-3.5 w-3.5" />
-        Shortcuts
-      </button>
+      <p class="mt-3 text-center text-xs text-text-muted/70">
+        © CC Something Pty Ltd {{ currentYear }}
+      </p>
     </footer>
 
     <MiniPlayer v-if="player.isActive" />
