@@ -7,20 +7,20 @@ export const brandFontUrl =
   'https://fonts.bunny.net/css2?family=Space+Grotesk:wght@400;500;700&display=swap'
 
 const themeFontOrigin = 'https://fonts.bunny.net'
-const getFontLinks = (fontUrl: string) => [
+const getFontLinks = (fontUrl: string, keyPrefix = 'theme-font') => [
   {
-    key: 'theme-font-preconnect',
+    key: `${keyPrefix}-preconnect`,
     rel: 'preconnect',
     href: themeFontOrigin,
   },
   {
-    key: 'theme-font-preload',
+    key: `${keyPrefix}-preload`,
     rel: 'preload',
     href: fontUrl,
     as: 'style',
   },
   {
-    key: 'theme-font-stylesheet',
+    key: `${keyPrefix}-stylesheet`,
     rel: 'stylesheet',
     href: fontUrl,
   },
@@ -32,4 +32,18 @@ export const getThemeBodyFontFamily = (theme: DecadeTheme) =>
 export const getThemeFontLinks = (theme: Pick<DecadeTheme, 'fontUrl'>) =>
   theme.fontUrl ? getFontLinks(theme.fontUrl) : []
 
-export const getBrandFontLinks = () => getFontLinks(brandFontUrl)
+export const getBrandFontLinks = () =>
+  getFontLinks(brandFontUrl, 'brand-theme-font')
+
+export const mergeFontLinks = (
+  ...fontLinkSets: Array<ReturnType<typeof getFontLinks>>
+) => {
+  const seenPreconnectHrefs = new Set<string>()
+
+  return fontLinkSets.flat().filter((link) => {
+    if (link.rel !== 'preconnect') return true
+    if (seenPreconnectHrefs.has(link.href)) return false
+    seenPreconnectHrefs.add(link.href)
+    return true
+  })
+}

@@ -30,6 +30,7 @@ import {
   brandFontFamily,
   brandFontUrl,
   getBrandFontLinks,
+  mergeFontLinks,
   getThemeFontLinks,
 } from '@/themes/font'
 import YearTabs from '@/components/YearTabs.vue'
@@ -120,13 +121,10 @@ useHead(() => ({
   link:
     activeTheme.value.fontUrl === brandTheme.fontUrl
       ? getThemeFontLinks(activeTheme.value)
-      : [
-          ...getThemeFontLinks(activeTheme.value),
-          ...getBrandFontLinks().map((link) => ({
-            ...link,
-            key: `brand-${link.key}`,
-          })),
-        ],
+      : mergeFontLinks(
+          getThemeFontLinks(activeTheme.value),
+          getBrandFontLinks(),
+        ),
 }))
 const headerContainerClass = computed(() =>
   route.name === 'year'

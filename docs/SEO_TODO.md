@@ -30,7 +30,7 @@
 ## 5. Third-party and misc
 
 - [ ] Fix the broken Plausible script URL that currently returns 404.
-- [ ] Keep only the external preconnects we still need after font cleanup.
+- [x] Keep only the external preconnects we still need after font cleanup.
 - [ ] Re-run Lighthouse after each change batch because the current report had `NO_LCP` errors.
 
 ## 6. Accessibility
