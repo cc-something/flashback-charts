@@ -35,6 +35,9 @@ defineExpose({ focusInput })
 <template>
   <Transition name="modal" appear @after-enter="focusInput">
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="email-signup-title"
       class="fixed inset-0 z-40 flex items-start justify-center bg-background/80 backdrop-blur-sm"
       @click.self="emit('dismiss')"
       @keydown.escape="emit('dismiss')"
@@ -52,7 +55,7 @@ defineExpose({ focusInput })
         </button>
 
         <template v-if="!submitted">
-          <h2 class="text-xl font-bold text-text">
+          <h2 id="email-signup-title" class="text-xl font-bold text-text">
             Sign up for our Newsletter
           </h2>
           <p class="mt-2 text-sm text-text-muted">
@@ -71,6 +74,7 @@ defineExpose({ focusInput })
               ref="inputEl"
               v-model="email"
               type="email"
+              aria-label="Email address"
               placeholder="your@email.com"
               class="min-w-0 flex-1 rounded-lg border border-text-muted/20 bg-background px-3.5 py-2.5 text-sm text-text placeholder-text-muted/50 outline-none transition-colors focus:border-primary"
             />

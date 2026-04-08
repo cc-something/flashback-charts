@@ -36,6 +36,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
   <Transition name="modal" appear>
     <div
       data-esc-closes
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="report-issue-title"
       class="fixed inset-0 z-50 flex items-start justify-center bg-background/80 backdrop-blur-sm"
       @click.self="emit('dismiss')"
       @keydown.escape="emit('dismiss')"
@@ -52,7 +55,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           <X class="h-5 w-5" />
         </button>
 
-        <h2 class="text-xl font-bold text-text">
+        <h2 id="report-issue-title" class="text-xl font-bold text-text">
           report an issue with this song
         </h2>
         <p class="mt-2 text-sm text-text-muted">

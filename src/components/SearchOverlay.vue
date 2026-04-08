@@ -34,6 +34,9 @@ defineExpose({ focusInput })
 
 <template>
   <div
+    role="dialog"
+    aria-modal="true"
+    aria-label="Search songs"
     class="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
     @click.self="emit('close')"
     @keydown="handleKeydown"
@@ -42,6 +45,7 @@ defineExpose({ focusInput })
       <!-- Search bar -->
       <div class="z-10 flex flex-shrink-0 flex-col gap-2">
         <p
+          aria-live="polite"
           :class="[
             'px-1 text-xs text-text-muted transition-opacity',
             query ? 'opacity-100' : 'opacity-0',
@@ -58,6 +62,7 @@ defineExpose({ focusInput })
                   ref="inputRef"
                   v-model="query"
                   type="text"
+                  aria-label="Search songs, artists, albums"
                   placeholder="Search songs, artists, albums…"
                   class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
                   @keydown.escape="emit('close')"
@@ -110,6 +115,7 @@ defineExpose({ focusInput })
             <!-- Thumbnail / play -->
             <button
               type="button"
+              :aria-label="`Play ${song.title} by ${song.artist}`"
               class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md ring-1 ring-black/10 transition duration-150 group-hover:scale-[1.03] group-hover:shadow-lg group-hover:shadow-black/20 hover:ring-primary/35 touch-manipulation"
               @click.stop="playSong(song, year)"
             >
@@ -134,6 +140,7 @@ defineExpose({ focusInput })
                   class="h-5 w-5 text-white"
                   viewBox="0 0 24 24"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                 </svg>
@@ -142,6 +149,7 @@ defineExpose({ focusInput })
                   class="h-5 w-5 text-white"
                   viewBox="0 0 24 24"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path d="M8 5v14l11-7z" />
                 </svg>
@@ -163,6 +171,8 @@ defineExpose({ focusInput })
 
             <!-- Year badge + go-to -->
             <button
+              type="button"
+              :aria-label="`Go to ${year} chart`"
               class="flex-shrink-0 cursor-pointer rounded bg-primary/15 px-2.5 py-1 text-xs font-bold text-primary transition-colors hover:bg-primary/30"
               @click.stop="goToSong(year, song.rank)"
             >

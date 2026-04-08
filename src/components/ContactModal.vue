@@ -39,6 +39,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
 <template>
   <div
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contact-modal-title"
     class="fixed inset-0 z-50 flex items-start justify-center bg-background/80 backdrop-blur-sm"
     @click.self="emit('close')"
   >
@@ -56,7 +59,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
       <div class="mb-5 flex items-center gap-2.5">
         <Mail class="h-5 w-5 text-primary" />
-        <h2 class="text-lg font-bold text-text">Get in contact</h2>
+        <h2 id="contact-modal-title" class="text-lg font-bold text-text">
+          Get in contact
+        </h2>
       </div>
 
       <p class="text-sm leading-relaxed text-text-muted">

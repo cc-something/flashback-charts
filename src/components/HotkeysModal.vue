@@ -50,6 +50,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
 <template>
   <div
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="hotkeys-modal-title"
     class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
     @click.self="emit('close')"
   >
@@ -65,7 +68,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
       <div class="mb-5 flex items-center gap-2.5">
         <Keyboard class="h-5 w-5 text-primary" />
-        <h2 class="text-lg font-bold text-text">Keyboard Shortcuts</h2>
+        <h2 id="hotkeys-modal-title" class="text-lg font-bold text-text">
+          Keyboard Shortcuts
+        </h2>
       </div>
 
       <div class="flex flex-col gap-5">
@@ -103,7 +108,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
         </div>
 
         <!-- Konami easter egg -->
-        <div class="mt-1 border-t border-primary/10 pt-4">
+        <ul class="mt-1 list-none border-t border-primary/10 pt-4">
           <li class="flex items-center justify-between gap-4">
             <span class="text-3xl">🪩🕺?</span>
             <span
@@ -118,7 +123,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
               </kbd>
             </span>
           </li>
-        </div>
+        </ul>
       </div>
     </div>
   </div>
