@@ -158,7 +158,6 @@ useHead({
         </div>
       </div>
       <div class="home-page-background-overlay absolute inset-0" />
-      <div class="home-page-background-vignette absolute inset-0" />
     </div>
 
     <div class="relative z-10 max-w-[1300px] mx-auto px-4 py-10">
@@ -330,28 +329,7 @@ useHead({
 }
 
 .home-page-background-overlay {
-  background:
-    linear-gradient(
-      180deg,
-      rgb(0 0 0 / 44%) 0%,
-      rgb(0 0 0 / 56%) 38%,
-      rgb(0 0 0 / 70%) 100%
-    ),
-    linear-gradient(
-      120deg,
-      rgb(7 10 18 / 84%) 0%,
-      rgb(7 10 18 / 58%) 42%,
-      rgb(7 10 18 / 28%) 100%
-    );
-}
-
-.home-page-background-vignette {
-  background: radial-gradient(
-    circle at top,
-    transparent 0%,
-    rgb(0 0 0 / 10%) 42%,
-    rgb(0 0 0 / 24%) 100%
-  );
+  background: rgb(0 0 0 / 58%);
 }
 
 @keyframes home-page-background-marquee {
