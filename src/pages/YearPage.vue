@@ -173,7 +173,7 @@ watch(
 </script>
 
 <template>
-  <main class="max-w-[50.4rem] mx-auto px-4 py-6">
+  <main class="max-w-[50.4rem] mx-auto px-4 pt-6 pb-32">
     <header
       class="sticky z-30 mb-6 bg-background py-3 -my-3"
       style="top: var(--sticky-bar-height)"
