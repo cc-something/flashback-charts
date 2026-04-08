@@ -66,12 +66,16 @@ const socialLinks = [
   {
     href: 'https://www.facebook.com/people/Flashback-Charts/61572091223850/',
     label: 'Facebook',
+    network: 'facebook',
   },
   {
     href: 'https://www.x.com/FlashbackCharts',
     label: 'X.com',
+    network: 'x',
   },
 ] as const
+const handleSocialLinkClick = (network: string) =>
+  trackEvent('social_link_click', { network })
 const getActiveTheme = () => {
   if (route.name === 'year') {
     const routeYear = Number(route.params.year)
@@ -267,12 +271,13 @@ onUnmounted(() => teardownKonamiListener())
       </button>
       <div class="flex items-center gap-4">
         <a
-          v-for="{ href, label } in socialLinks"
+          v-for="{ href, label, network } in socialLinks"
           :key="href"
           :href="href"
           target="_blank"
           rel="noreferrer"
           class="text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          @click="handleSocialLinkClick(network)"
         >
           {{ label }}
         </a>
