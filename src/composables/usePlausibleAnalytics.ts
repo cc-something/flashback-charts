@@ -3,7 +3,7 @@ let plausibleReady = false
 
 const SCRIPT_SRC = import.meta.env.DEV
   ? 'https://plausible.io/js/script.manual.local.js'
-  : 'https://plausible.io/js/pa-gD0FxLEq89YQCoqWIxRMg.manual.js'
+  : 'https://plausible.io/js/script.manual.js'
 const DATA_DOMAIN = 'flashbackcharts.com'
 
 const loadScript = (): Promise<void> =>
@@ -26,6 +26,7 @@ const loadScript = (): Promise<void> =>
       plausibleReady = true
       resolve()
     }
+    script.onerror = () => resolve()
     ;(document.head ?? document.body)?.appendChild(script)
   })
 
