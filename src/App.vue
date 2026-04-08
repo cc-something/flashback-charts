@@ -263,15 +263,7 @@ onUnmounted(() => teardownKonamiListener())
         class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
         @click="emailSignup.show.value = true"
       >
-        Newsletter
-      </button>
-      <button
-        type="button"
-        class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
-        @click="isHotkeysOpen = true"
-      >
-        <Keyboard class="h-3.5 w-3.5" />
-        Shortcuts
+        Sign up for our Newsletter
       </button>
       <div class="flex items-center gap-4">
         <a
@@ -285,6 +277,14 @@ onUnmounted(() => teardownKonamiListener())
           {{ label }}
         </a>
       </div>
+      <button
+        type="button"
+        class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
+        @click="isHotkeysOpen = true"
+      >
+        <Keyboard class="h-3.5 w-3.5" />
+        Shortcuts
+      </button>
     </footer>
 
     <MiniPlayer />
