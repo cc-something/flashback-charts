@@ -10,6 +10,8 @@ const isMac =
   typeof navigator !== 'undefined' &&
   navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
+const miniPlayerButtonClass =
+  'cursor-pointer p-2.5 text-text/45 transition-colors hover:text-white focus-visible:text-white focus-visible:outline-none'
 
 // Keep last valid theme — never cleared on null so leave-animation retains its decade theme
 const themeVars = ref<Record<string, string>>({})
@@ -52,7 +54,7 @@ watch(
           type="button"
           :title="`Previous song (${mod}+←)`"
           aria-label="Previous song"
-          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
+          :class="miniPlayerButtonClass"
           @click="player.playPrev()"
         >
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -65,7 +67,7 @@ watch(
           type="button"
           title="Play / pause (Space or K)"
           aria-label="Toggle playback"
-          class="cursor-pointer p-2.5 text-text transition-colors hover:text-primary"
+          :class="miniPlayerButtonClass"
           @click="player.togglePlayback"
         >
           <svg
@@ -106,7 +108,7 @@ watch(
           type="button"
           :title="`Next song (${mod}+→)`"
           aria-label="Next song"
-          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
+          :class="miniPlayerButtonClass"
           @click="player.playNext()"
         >
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -121,7 +123,7 @@ watch(
           type="button"
           title="Go to song (G)"
           aria-label="Go to song"
-          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
+          :class="miniPlayerButtonClass"
           @click="player.goToSong"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -148,7 +150,7 @@ watch(
           type="button"
           title="Stop playback (Esc)"
           aria-label="Stop playback"
-          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
+          :class="miniPlayerButtonClass"
           @click="player.stop"
         >
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
