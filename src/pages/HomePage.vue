@@ -213,9 +213,9 @@ onUnmounted(() => {
       <div class="home-page-background-overlay absolute inset-0" />
     </div>
 
-    <div class="relative z-10 max-w-[1300px] mx-auto px-4 py-10">
+    <div class="relative z-10 max-w-[1300px] mx-auto px-4 pt-4 pb-10">
       <div
-        class="mb-8 rounded-2xl border border-white/10 bg-black/72 px-5 py-5"
+        class="mb-4 rounded-2xl border border-white/10 bg-black/72 px-5 py-5"
       >
         <h1 class="text-lg sm:text-2xl text-text-muted">
           Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
