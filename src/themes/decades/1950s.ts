@@ -9,8 +9,8 @@ const theme: DecadeTheme = {
   fontUrl:
     'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap',
   colors: {
-    background: '#14243a',
-    surface: '#213552',
+    background: '#0f2040',
+    surface: '#1c3260',
     primary: '#f2c572',
     secondary: '#57d6ff',
     text: '#fffaf2',
