@@ -16,6 +16,10 @@ import {
   getYearPageHeading,
   getYearPageTitle,
 } from '@/content/chartContent'
+import {
+  useRickRollMode,
+  RICK_ASTLEY_SONG,
+} from '@/composables/useRickRollMode'
 import { getYearData, getYearDescription, getYearSource } from '@/data'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
@@ -30,10 +34,14 @@ import {
 } from '@/utils/url'
 
 const props = defineProps<{ year: string }>()
+const YEAR_BACKGROUND_ROW_COUNT = 5
+const YEAR_BACKGROUND_DUPLICATE_COUNT = 2
 
 const route = useRoute()
 const store = useChartStore()
 const player = usePlayerStore()
+const { isRickRollActive } = useRickRollMode()
+const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
 const yearNumber = computed(() => Number(props.year))
 const theme = computed(() => getThemeForYear(yearNumber.value))
 const decadeString = computed(
@@ -50,6 +58,30 @@ const currentDescription = computed<string | null>(() =>
   getYearDescription(yearNumber.value),
 )
 const hasData = computed(() => songs.value.length > 0)
+const getRepeatingTiles = (thumbnails: string[], tileCount: number) => {
+  if (thumbnails.length === 0) return []
+  const uniqueThumbnails = [...new Set(thumbnails)]
+  return Array.from(
+    { length: tileCount },
+    (_, index) => uniqueThumbnails[index % uniqueThumbnails.length],
+  )
+}
+const getDistributedRows = (thumbnails: string[], rowCount: number) => {
+  if (thumbnails.length === 0) return []
+  const rows = Array.from({ length: rowCount }, () => [] as string[])
+  thumbnails.forEach((thumbnail, index) =>
+    rows[index % rowCount].push(thumbnail),
+  )
+  return rows.filter((row) => row.length > 0)
+}
+const backgroundRows = computed(() =>
+  getDistributedRows(
+    isRickRollActive.value
+      ? getRepeatingTiles([rickThumbnail], YEAR_BACKGROUND_ROW_COUNT * 8)
+      : songs.value.map((song) => song.thumbnailPath).filter(Boolean),
+    YEAR_BACKGROUND_ROW_COUNT,
+  ),
+)
 const getYearNavStyle = (year: number) => {
   const yearTheme = getThemeForYear(year)
 
@@ -169,118 +201,206 @@ watch(
 </script>
 
 <template>
-  <main class="max-w-[50.4rem] mx-auto px-4 pt-6 pb-32">
-    <header
-      class="sticky z-30 mb-6 bg-background py-3 -my-3"
-      style="top: var(--sticky-bar-height)"
+  <main class="year-page relative isolate">
+    <div
+      class="year-page-background pointer-events-none fixed inset-0"
+      aria-hidden="true"
     >
-      <h1
-        class="theme-display text-xl sm:text-2xl md:text-3xl font-bold text-primary"
-        :style="{ fontFamily: theme.fontFamily }"
-      >
-        {{ heading }}
-      </h1>
-    </header>
-
-    <div class="mb-4 flex flex-col gap-3">
-      <p
-        v-if="currentDescription"
-        class="text-base leading-relaxed text-text-muted"
-      >
-        {{ currentDescription }}
-      </p>
-    </div>
-
-    <div class="mb-2 flex items-end justify-between gap-3">
-      <a
-        v-if="currentSource"
-        :href="currentSource.url"
-        class="text-xs text-text-muted/30 underline decoration-primary/15 underline-offset-4 transition-colors duration-150 hover:text-text-muted/60"
-        rel="noreferrer"
-        target="_blank"
-      >
-        Source: {{ currentSource.label }}
-      </a>
-      <div v-else />
-      <button
-        type="button"
-        :aria-label="
-          store.sortOrder === 'asc'
-            ? 'Sort order: 1 to 10. Click to reverse'
-            : 'Sort order: 10 to 1. Click to reverse'
-        "
-        class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-sm sm:text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
-        :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
-        @click="store.toggleSortOrder()"
-      >
-        <ArrowUpNarrowWide v-if="store.sortOrder === 'asc'" class="h-4 w-4" />
-        <ArrowDownNarrowWide v-else class="h-4 w-4" />
-        {{ store.sortOrder === 'asc' ? '1 → 10' : '10 → 1' }}
-      </button>
-    </div>
-
-    <Transition
-      name="year-content"
-      mode="out-in"
-      @after-leave="applyPendingTheme"
-    >
-      <div :key="yearNumber" class="year-content">
-        <div v-if="hasData" class="flex flex-col gap-0.5">
-          <SongCard
-            v-for="song in songs"
-            :key="`${yearNumber}-${song.rank}`"
-            :song="song"
-            :year="yearNumber"
-          />
-        </div>
-
+      <div class="year-page-background-rows">
         <div
-          v-else
-          class="flex flex-col items-center justify-center gap-3 py-24 text-center"
+          v-for="(row, rowIndex) in backgroundRows"
+          :key="`row-${rowIndex}`"
+          class="year-page-background-row"
         >
-          <span class="text-5xl opacity-30">🎵</span>
-          <p class="text-lg text-text-muted">
-            No data yet for {{ yearNumber }}
-          </p>
-          <p class="text-base text-text-muted/70">Chart data coming soon</p>
+          <div
+            class="year-page-background-track"
+            :class="{
+              'year-page-background-track-reversed': rowIndex % 2 === 1,
+            }"
+            :style="{ '--year-row-duration': `${210 + rowIndex * 16}s` }"
+          >
+            <div
+              v-for="repeatIndex in YEAR_BACKGROUND_DUPLICATE_COUNT"
+              :key="`row-${rowIndex}-repeat-${repeatIndex}`"
+              class="year-page-background-repeat"
+            >
+              <img
+                v-for="(thumbnail, thumbnailIndex) in row"
+                :key="`row-${rowIndex}-tile-${repeatIndex}-${thumbnailIndex}`"
+                :src="thumbnail"
+                alt=""
+                class="year-page-tile"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </Transition>
+      <div class="year-page-overlay absolute inset-0" />
+    </div>
 
-    <nav class="mt-4 flex items-center justify-between gap-3">
-      <router-link
-        v-if="previousYear"
-        :to="getYearPath(previousYear)"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-        :style="getYearNavStyle(previousYear)"
+    <div class="relative z-10 mx-auto max-w-[50.4rem] px-4 pt-6 pb-32">
+      <header
+        class="sticky z-30 mb-6 bg-background py-3 -my-3"
+        style="top: var(--sticky-bar-height)"
       >
-        <ArrowLeft class="h-3.5 w-3.5" />
-        {{ previousYear }}
-      </router-link>
-      <div v-else />
+        <h1
+          class="theme-display text-xl sm:text-2xl md:text-3xl font-bold text-primary"
+          :style="{ fontFamily: theme.fontFamily }"
+        >
+          {{ heading }}
+        </h1>
+      </header>
 
-      <router-link
-        :to="decadePath"
-        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
-      >
-        More {{ decadeString }}
-      </router-link>
+      <div class="mb-4 flex flex-col gap-3">
+        <p
+          v-if="currentDescription"
+          class="text-base leading-relaxed text-text-muted"
+        >
+          {{ currentDescription }}
+        </p>
+      </div>
 
-      <router-link
-        v-if="nextYear"
-        :to="getYearPath(nextYear)"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-        :style="getYearNavStyle(nextYear)"
+      <div class="mb-2 flex items-end justify-between gap-3">
+        <a
+          v-if="currentSource"
+          :href="currentSource.url"
+          class="text-xs text-text-muted/30 underline decoration-primary/15 underline-offset-4 transition-colors duration-150 hover:text-text-muted/60"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Source: {{ currentSource.label }}
+        </a>
+        <div v-else />
+        <button
+          type="button"
+          :aria-label="
+            store.sortOrder === 'asc'
+              ? 'Sort order: 1 to 10. Click to reverse'
+              : 'Sort order: 10 to 1. Click to reverse'
+          "
+          class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-sm sm:text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
+          :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
+          @click="store.toggleSortOrder()"
+        >
+          <ArrowUpNarrowWide v-if="store.sortOrder === 'asc'" class="h-4 w-4" />
+          <ArrowDownNarrowWide v-else class="h-4 w-4" />
+          {{ store.sortOrder === 'asc' ? '1 → 10' : '10 → 1' }}
+        </button>
+      </div>
+
+      <Transition
+        name="year-content"
+        mode="out-in"
+        @after-leave="applyPendingTheme"
       >
-        {{ nextYear }}
-        <ArrowRight class="h-3.5 w-3.5" />
-      </router-link>
-      <div v-else />
-    </nav>
+        <div :key="yearNumber" class="year-content">
+          <div v-if="hasData" class="flex flex-col gap-0.5">
+            <SongCard
+              v-for="song in songs"
+              :key="`${yearNumber}-${song.rank}`"
+              :song="song"
+              :year="yearNumber"
+            />
+          </div>
+
+          <div
+            v-else
+            class="flex flex-col items-center justify-center gap-3 py-24 text-center"
+          >
+            <span class="text-5xl opacity-30">🎵</span>
+            <p class="text-lg text-text-muted">
+              No data yet for {{ yearNumber }}
+            </p>
+            <p class="text-base text-text-muted/70">Chart data coming soon</p>
+          </div>
+        </div>
+      </Transition>
+
+      <nav class="mt-4 flex items-center justify-between gap-3">
+        <router-link
+          v-if="previousYear"
+          :to="getYearPath(previousYear)"
+          class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+          :style="getYearNavStyle(previousYear)"
+        >
+          <ArrowLeft class="h-3.5 w-3.5" />
+          {{ previousYear }}
+        </router-link>
+        <div v-else />
+
+        <router-link
+          :to="decadePath"
+          class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+        >
+          More {{ decadeString }}
+        </router-link>
+
+        <router-link
+          v-if="nextYear"
+          :to="getYearPath(nextYear)"
+          class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+          :style="getYearNavStyle(nextYear)"
+        >
+          {{ nextYear }}
+          <ArrowRight class="h-3.5 w-3.5" />
+        </router-link>
+        <div v-else />
+      </nav>
+    </div>
   </main>
 </template>
 
 <style scoped>
+.year-page-background {
+  background: #000;
+}
+
+.year-page-background-rows {
+  position: absolute;
+  inset: -4rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.year-page-background-row {
+  flex: 1 1 0;
+  overflow: hidden;
+}
+
+.year-page-background-track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  height: 100%;
+  animation: year-page-background-marquee var(--year-row-duration) linear
+    infinite;
+}
+
+.year-page-background-track-reversed {
+  animation-direction: reverse;
+}
+
+.year-page-background-repeat {
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.year-page-tile {
+  width: clamp(8rem, 14vw, 13rem);
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+  filter: saturate(1.06) contrast(1.04) brightness(0.88);
+}
+
+.year-page-overlay {
+  background: rgb(0 0 0 / 84%);
+}
+
 .year-content-enter-active,
 .year-content-leave-active {
   transition: opacity 0.28s ease;
@@ -304,5 +424,21 @@ watch(
 .year-nav-button:hover {
   background-color: var(--nav-hover);
   color: var(--nav-text-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .year-page-background-track {
+    animation: none;
+  }
+}
+
+@keyframes year-page-background-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 </style>
