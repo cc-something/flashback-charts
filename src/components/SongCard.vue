@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Disc3 } from 'lucide-vue-next'
+import { Disc3, Flag } from 'lucide-vue-next'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
+import ReportIssueModal from './ReportIssueModal.vue'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 import {
@@ -16,6 +17,7 @@ const player = usePlayerStore()
 const { isRickRollActive } = useRickRollMode()
 const isHovered = ref(false)
 const hasThumbnailError = ref(false)
+const isReportModalOpen = ref(false)
 
 const displaySong = computed(
   (): Song =>
@@ -182,6 +184,25 @@ const youtubeVideoUrl = computed(() =>
         />
       </svg>
     </a>
+
+    <button
+      type="button"
+      title="report an issue"
+      :aria-label="`Report an issue with ${displaySong.title} by ${displaySong.artist}`"
+      class="relative z-20 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      @click.stop="isReportModalOpen = true"
+    >
+      <Flag class="h-4.5 w-4.5" aria-hidden="true" />
+    </button>
+
+    <Teleport to="body">
+      <ReportIssueModal
+        v-if="isReportModalOpen"
+        :song="displaySong"
+        :year="year"
+        @dismiss="isReportModalOpen = false"
+      />
+    </Teleport>
 
     <Transition name="seek">
       <div
