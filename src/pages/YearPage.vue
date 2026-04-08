@@ -17,14 +17,12 @@ import {
   getYearPageIntro,
   getYearPageTitle,
 } from '@/content/chartContent'
+import { getYearData, getYearDescription, getYearSource } from '@/data'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { applyPendingTheme } from '@/composables/useDecadeTheme'
 import { getThemeForYear } from '@/themes'
 import SongCard from '@/components/SongCard.vue'
-
-const { getYearData, getYearDescription, getYearSource } =
-  await import('@/data')
 
 const props = defineProps<{ year: string }>()
 
