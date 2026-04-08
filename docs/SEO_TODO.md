@@ -2,10 +2,10 @@
 
 ## 1. Font loading
 
-- [ ] Limit the home page to one display font plus one body/UI font.
-- [ ] Load decade-specific fonts only on the relevant decade and year pages.
-- [ ] Remove unused global font families from the shared document head.
-- [ ] Preload only the one or two fonts used above the fold on each page.
+- [x] Limit the home page to one display font plus one body/UI font.
+- [x] Load decade-specific fonts only on the relevant decade and year pages.
+- [x] Remove unused global font families from the shared document head.
+- [x] Preload only the one or two fonts used above the fold on each page.
 - [ ] Consider self-hosting or subsetting the remaining fonts if the payload stays high.
 
 ## 2. Home page rendering
