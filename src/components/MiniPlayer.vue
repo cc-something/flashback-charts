@@ -45,14 +45,14 @@ watch(
     >
       <!-- Controls row -->
       <div
-        class="flex items-center gap-1 overflow-hidden rounded-t-xl border-b border-white/5 bg-surface px-2 py-0.5"
+        class="flex items-center gap-0 overflow-hidden rounded-t-xl border-b border-white/5 bg-surface px-1"
       >
         <!-- Prev -->
         <button
           type="button"
           :title="`Previous song (${mod}+←)`"
           aria-label="Previous song"
-          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
+          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
           @click="player.playPrev()"
         >
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -65,7 +65,7 @@ watch(
           type="button"
           title="Play / pause (Space or K)"
           aria-label="Toggle playback"
-          class="cursor-pointer p-1 text-text transition-colors hover:text-primary"
+          class="cursor-pointer p-2.5 text-text transition-colors hover:text-primary"
           @click="player.togglePlayback"
         >
           <svg
@@ -106,7 +106,7 @@ watch(
           type="button"
           :title="`Next song (${mod}+→)`"
           aria-label="Next song"
-          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
+          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
           @click="player.playNext()"
         >
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -121,7 +121,7 @@ watch(
           type="button"
           title="Go to song (G)"
           aria-label="Go to song"
-          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
+          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
           @click="player.goToSong"
         >
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -148,7 +148,7 @@ watch(
           type="button"
           title="Stop playback (Esc)"
           aria-label="Stop playback"
-          class="cursor-pointer p-1 text-text-muted transition-colors hover:text-text"
+          class="cursor-pointer p-2.5 text-text-muted transition-colors hover:text-text"
           @click="player.stop"
         >
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">

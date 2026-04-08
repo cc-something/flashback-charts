@@ -252,7 +252,7 @@ onUnmounted(() => teardownKonamiListener())
 
 <template>
   <div
-    class="min-h-screen bg-background text-text pb-20"
+    class="flex min-h-screen flex-col bg-background text-text"
     :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }"
   >
     <div ref="stickyBar" class="sticky top-0 z-40">
@@ -290,12 +290,14 @@ onUnmounted(() => teardownKonamiListener())
       <RickRollBanner v-if="isRickRollActive" @deactivate="deactivate" />
     </div>
 
-    <router-view v-slot="{ Component }">
-      <component :is="Component" :key="route.fullPath" />
-    </router-view>
+    <div class="flex-1">
+      <router-view v-slot="{ Component }">
+        <component :is="Component" :key="route.fullPath" />
+      </router-view>
+    </div>
 
     <footer
-      class="fixed bottom-0 left-0 right-0 z-20 flex flex-wrap items-center justify-center gap-6 border-t border-primary/10 bg-background px-4 py-4"
+      class="z-20 flex flex-wrap items-center justify-center gap-6 border-t border-primary/10 px-4 py-4"
     >
       <button
         type="button"
