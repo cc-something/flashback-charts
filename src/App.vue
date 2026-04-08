@@ -295,7 +295,7 @@ onUnmounted(() => teardownKonamiListener())
     </div>
 
     <footer
-      class="z-20 flex flex-wrap items-center justify-center gap-6 border-t border-primary/10 px-4 py-4"
+      class="z-20 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-primary/10 px-4 py-4"
     >
       <button
         type="button"
