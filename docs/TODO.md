@@ -16,6 +16,7 @@
 - confirm newsletter e2e
 - confirm social embeds
 - confirm playback works on mobile
+- confirm contact, report an issue
 
 ## Nice to haves?
 
