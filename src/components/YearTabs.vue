@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 import { getThemeForYear } from '@/themes'
@@ -9,19 +9,22 @@ const store = useChartStore()
 const router = useRouter()
 const route = useRoute()
 const scrollContainer = ref<HTMLElement | null>(null)
-const shouldAutoScroll = ref(false)
 const defaultHomeYear = 2000
+const activeYear = computed(() => {
+  if (route.name === 'home') return defaultHomeYear
+  if (route.name !== 'year') return null
+
+  const routeYear = Number(route.params.year)
+  return Number.isNaN(routeYear) ? store.selectedYear : routeYear
+})
 
 const scrollToActiveTab = async () => {
-  if (!shouldAutoScroll.value) return
   await nextTick()
 
   const container = scrollContainer.value
   if (!container) return
-  const targetYear =
-    route.name === 'home'
-      ? defaultHomeYear
-      : Number(route.params.year) || store.selectedYear
+  const targetYear = activeYear.value
+  if (targetYear === null) return
   const targetTab = container.querySelector<HTMLElement>(
     `[data-year="${targetYear}"]`,
   )
@@ -32,12 +35,10 @@ const scrollToActiveTab = async () => {
   const nextScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft))
 
   container.scrollTo({ left: nextScrollLeft, behavior: 'smooth' })
-  shouldAutoScroll.value = false
 }
 
 const goToYear = (year: number, target: EventTarget | null) => {
   if (!store.availableYears.includes(year)) return
-  shouldAutoScroll.value = true
   router.push(getYearPath(year))
   ;(target as HTMLElement | null)?.blur()
 }
@@ -56,8 +57,8 @@ const getTabThemeStyle = (year: number) => {
   }
 }
 
-watch(() => store.selectedYear, scrollToActiveTab)
-watch(() => route.name, scrollToActiveTab)
+watch(activeYear, scrollToActiveTab, { immediate: true })
+onMounted(scrollToActiveTab)
 </script>
 
 <template>
