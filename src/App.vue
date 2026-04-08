@@ -304,6 +304,14 @@ onUnmounted(() => teardownKonamiListener())
         <button
           type="button"
           class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          @click="isAboutOpen = true"
+        >
+          <Info class="h-3.5 w-3.5" />
+          About
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
           @click="emailSignup.show.value = true"
         >
           <Mailbox class="h-3.5 w-3.5" />
@@ -338,14 +346,6 @@ onUnmounted(() => teardownKonamiListener())
         <p class="text-sm text-text-muted/70">
           © CC Something Pty Ltd {{ currentYear }}
         </p>
-        <button
-          type="button"
-          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-          @click="isAboutOpen = true"
-        >
-          <Info class="h-3.5 w-3.5" />
-          About
-        </button>
         <button
           type="button"
           class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
