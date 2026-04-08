@@ -277,7 +277,7 @@ onUnmounted(() => teardownKonamiListener())
           <button
             type="button"
             aria-label="Search songs"
-            class="flex h-9 w-9 self-start items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary"
+            class="flex h-9 w-9 self-start items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary sm:self-center"
             @click="openSearch"
           >
             <svg
