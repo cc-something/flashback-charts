@@ -228,7 +228,7 @@ onUnmounted(() => teardownKonamiListener())
     <footer class="py-6 text-center">
       <button
         type="button"
-        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline-offset-4 transition-colors hover:text-text hover:underline"
+        class="hidden items-center gap-1.5 text-sm text-text-muted underline-offset-4 transition-colors hover:text-text hover:underline sm:inline-flex"
         @click="isHotkeysOpen = true"
       >
         <Keyboard class="h-3.5 w-3.5" />
