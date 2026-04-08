@@ -4,10 +4,9 @@ const theme: DecadeTheme = {
   name: '1960s',
   description:
     'Beat music, garage rock, and the British Invasion reshaped Australian pop in the 1960s, with surf rock, mod fashion, and psychedelic sounds following close behind. Local bands found their voice alongside the global explosion of rock, folk, and soul, making it the most creatively restless decade in Australian chart history.',
-  fontFamily: "'Exo 2', sans-serif",
-  bodyFontFamily: "'Exo 2', sans-serif",
-  fontUrl:
-    'https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;700&display=swap',
+  fontFamily: "'Righteous', sans-serif",
+  bodyFontFamily: "'Inter', sans-serif",
+  fontUrl: 'https://fonts.googleapis.com/css2?family=Righteous&display=swap',
   colors: {
     background: '#0f0520',
     surface: '#1c0c38',
