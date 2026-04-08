@@ -16,24 +16,6 @@ interface SavedPlayerState {
   timeSeconds: number
 }
 
-type MediaSessionAction =
-  | 'play'
-  | 'pause'
-  | 'previoustrack'
-  | 'nexttrack'
-  | 'stop'
-
-const getHasReliableMediaKeySupport = () => {
-  if (typeof window === 'undefined') return false
-  if (!('mediaSession' in navigator) || !('MediaMetadata' in window))
-    return false
-  const userAgent = navigator.userAgent
-  const isSafari =
-    /Safari\//.test(userAgent) &&
-    !/Chrome\/|Chromium\/|CriOS\/|Edg\/|OPR\/|Android/i.test(userAgent)
-  return !isSafari
-}
-
 const loadSavedState = (): SavedPlayerState | null => {
   if (typeof localStorage === 'undefined') return null
   try {
@@ -71,7 +53,6 @@ type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 const MAX_RETRIES = 2
 
 export const usePlayerStore = defineStore('player', () => {
-  const hasReliableMediaKeySupport = getHasReliableMediaKeySupport()
   const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
 
   const playingSong = ref<Song | null>(null)
@@ -115,69 +96,6 @@ export const usePlayerStore = defineStore('player', () => {
     () => playerState.value !== 'idle' && durationSeconds.value > 0,
   )
   const seekSliderValue = computed(() => [displayedTimeSeconds.value])
-
-  const setMediaSessionHandler = (
-    action: MediaSessionAction,
-    handler: MediaSessionActionHandler | null,
-  ) => {
-    if (!hasReliableMediaKeySupport) return
-    try {
-      navigator.mediaSession.setActionHandler(action, handler)
-    } catch {
-      /* unsupported action — ignore */
-    }
-  }
-
-  const syncMediaSessionMetadata = () => {
-    if (!hasReliableMediaKeySupport) return
-    const song = playingSong.value
-    if (!song) {
-      navigator.mediaSession.metadata = null
-      return
-    }
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: song.title,
-      artist: song.artist,
-      album:
-        playingYear.value === null
-          ? 'Flashback Charts Australia'
-          : `Flashback Charts Australia ${playingYear.value}`,
-      artwork: [
-        { src: song.thumbnailPath, sizes: '480x360', type: 'image/jpeg' },
-      ],
-    })
-  }
-
-  const syncMediaSessionState = () => {
-    if (!hasReliableMediaKeySupport) return
-    navigator.mediaSession.playbackState =
-      playerState.value === 'playing'
-        ? 'playing'
-        : playerState.value === 'idle'
-          ? 'none'
-          : 'paused'
-  }
-
-  const clearMediaSessionHandlers = () => {
-    setMediaSessionHandler('play', null)
-    setMediaSessionHandler('pause', null)
-    setMediaSessionHandler('previoustrack', null)
-    setMediaSessionHandler('nexttrack', null)
-    setMediaSessionHandler('stop', null)
-  }
-
-  const syncMediaSessionHandlers = () => {
-    if (!hasReliableMediaKeySupport) return
-    if (!playingSong.value) {
-      clearMediaSessionHandlers()
-      return
-    }
-    setMediaSessionHandler('play', () => togglePlayback())
-    setMediaSessionHandler('pause', () => togglePlayback())
-    setMediaSessionHandler('previoustrack', () => playPrev())
-    setMediaSessionHandler('nexttrack', () => playNext())
-    setMediaSessionHandler('stop', () => stop())
-  }
 
   const setPlayerContainer = (el: HTMLDivElement) => {
     playerContainerEl = el
@@ -252,12 +170,6 @@ export const usePlayerStore = defineStore('player', () => {
     else clearSaveTimer()
   })
 
-  watch([playingSong, playingYear], syncMediaSessionMetadata, {
-    immediate: true,
-  })
-  watch(playerState, syncMediaSessionState, { immediate: true })
-  watch(playingSong, syncMediaSessionHandlers, { immediate: true })
-
   const stop = () => {
     clearProgressTimer()
     clearSaveTimer()
@@ -273,9 +185,6 @@ export const usePlayerStore = defineStore('player', () => {
     clearSeekPreview()
     clearActive()
     clearSavedState()
-    syncMediaSessionMetadata()
-    syncMediaSessionState()
-    syncMediaSessionHandlers()
     if (offlineHandler) {
       if (typeof window !== 'undefined')
         window.removeEventListener('offline', offlineHandler)
