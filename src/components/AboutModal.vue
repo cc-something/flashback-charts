@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { CircleInfo, ExternalLink, X } from 'lucide-vue-next'
+import { ExternalLink, Info, X } from 'lucide-vue-next'
 
 const emit = defineEmits<{ close: [] }>()
 
@@ -30,7 +30,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       </button>
 
       <div class="mb-5 flex items-center gap-2.5">
-        <CircleInfo class="h-5 w-5 text-primary" />
+        <Info class="h-5 w-5 text-primary" />
         <h2 class="text-lg font-bold text-text">About this site</h2>
       </div>
 

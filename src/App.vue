@@ -12,7 +12,7 @@ import {
 import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { CircleInfo, Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
+import { Info, Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -322,7 +322,7 @@ onUnmounted(() => teardownKonamiListener())
         class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
         @click="isAboutOpen = true"
       >
-        <CircleInfo class="h-3.5 w-3.5" />
+        <Info class="h-3.5 w-3.5" />
         About
       </button>
       <div class="flex items-center gap-4">
