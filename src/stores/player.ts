@@ -5,7 +5,6 @@ import { useYouTubeApi } from '@/composables/useYouTubeApi'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
-import { getYearData } from '@/data'
 
 const STORAGE_KEY = 'flashback-miniplayer'
 const SAVE_INTERVAL_MS = 3_000
@@ -51,6 +50,10 @@ const clearSavedState = () => {
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
 const MAX_RETRIES = 2
+const getYearSongs = async (year: number) => {
+  const { getYearData } = await import('@/data')
+  return getYearData(year) ?? null
+}
 
 export const usePlayerStore = defineStore('player', () => {
   const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
@@ -404,19 +407,19 @@ export const usePlayerStore = defineStore('player', () => {
     playingYear.value === year &&
     playerState.value !== 'idle'
 
-  const getSortedYearData = (year: number) => {
-    const songs = getYearData(year)
+  const getSortedYearData = async (year: number) => {
+    const songs = await getYearSongs(year)
     if (!songs) return null
     const chart = useChartStore()
     if (chart.sortOrder === 'desc') return [...songs].reverse()
     return songs
   }
 
-  const getCurrentIndex = () => {
+  const getCurrentIndex = async () => {
     const song = playingSong.value
     const year = playingYear.value
     if (!song || year === null) return { songs: null, index: -1, year: null }
-    const songs = getSortedYearData(year)
+    const songs = await getSortedYearData(year)
     if (!songs) return { songs: null, index: -1, year: null }
     const index = songs.findIndex(
       (s) => s.youtubeVideoId === song.youtubeVideoId,
@@ -424,13 +427,13 @@ export const usePlayerStore = defineStore('player', () => {
     return { songs, index, year }
   }
 
-  const playNext = (fromSong?: Song, fromYear?: number) => {
+  const playNext = async (fromSong?: Song, fromYear?: number) => {
     const chart = useChartStore()
     const song = fromSong ?? playingSong.value
     const year = fromYear ?? playingYear.value
     if (!song || year === null || year === undefined)
       return { songs: null, index: -1, year: null }
-    const songs = getSortedYearData(year)
+    const songs = await getSortedYearData(year)
     if (!songs) return
 
     const index = songs.findIndex(
@@ -448,15 +451,15 @@ export const usePlayerStore = defineStore('player', () => {
     if (yearIdx === -1 || yearIdx >= chart.availableYears.length - 1) return
     const nextYear = chart.availableYears[yearIdx + 1]
     if (nextYear === undefined) return
-    const nextYearSongs = getSortedYearData(nextYear)
+    const nextYearSongs = await getSortedYearData(nextYear)
     if (!nextYearSongs?.length) return
     chart.selectYear(nextYear)
-    play(nextYearSongs[0], nextYear)
+    await play(nextYearSongs[0], nextYear)
   }
 
-  const playPrev = () => {
+  const playPrev = async () => {
     const chart = useChartStore()
-    const { songs, index, year } = getCurrentIndex()
+    const { songs, index, year } = await getCurrentIndex()
     if (!songs || index === -1 || year === null) return
 
     if (index > 0) {
@@ -469,10 +472,10 @@ export const usePlayerStore = defineStore('player', () => {
     if (yearIdx <= 0) return
     const prevYear = chart.availableYears[yearIdx - 1]
     if (prevYear === undefined) return
-    const prevYearSongs = getSortedYearData(prevYear)
+    const prevYearSongs = await getSortedYearData(prevYear)
     if (!prevYearSongs?.length) return
     chart.selectYear(prevYear)
-    play(prevYearSongs[prevYearSongs.length - 1], prevYear)
+    await play(prevYearSongs[prevYearSongs.length - 1], prevYear)
   }
 
   const scrollSongIntoView = (song: Song) => {
@@ -485,11 +488,11 @@ export const usePlayerStore = defineStore('player', () => {
     })
   }
 
-  const restoreFromStorage = () => {
+  const restoreFromStorage = async () => {
     if (typeof window === 'undefined') return
     const saved = loadSavedState()
     if (!saved) return
-    const songs = getYearData(saved.year)
+    const songs = await getYearSongs(saved.year)
     if (!songs) return
     const song = songs.find((s) => s.youtubeVideoId === saved.videoId)
     if (!song) return
@@ -499,7 +502,7 @@ export const usePlayerStore = defineStore('player', () => {
     playerState.value = 'paused'
   }
 
-  restoreFromStorage()
+  void restoreFromStorage()
 
   const goToSong = () => {
     const chart = useChartStore()

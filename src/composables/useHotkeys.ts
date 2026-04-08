@@ -1,5 +1,6 @@
 import { onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
@@ -38,6 +39,17 @@ export const useHotkeys = (
   const player = usePlayerStore()
   const chart = useChartStore()
   const toast = useToastStore()
+  const getTopSong = async (): Promise<Song | null> => {
+    if (route.name !== 'year') return null
+    const { getYearData } = await import('@/data')
+    const songs = getYearData(chart.selectedYear) ?? []
+    if (chart.sortOrder === 'desc') return songs[songs.length - 1] ?? null
+    return songs[0] ?? null
+  }
+  const playTopSong = async () => {
+    const topSong = await getTopSong()
+    if (topSong) await player.play(topSong, chart.selectedYear)
+  }
 
   let konamiProgress = 0
 
@@ -61,8 +73,7 @@ export const useHotkeys = (
       if (player.isActive) {
         player.togglePlayback()
       } else if (route.name === 'year') {
-        const topSong = chart.currentSongs[0]
-        if (topSong) player.play(topSong, chart.selectedYear)
+        void playTopSong()
       }
       return
     }
@@ -72,8 +83,7 @@ export const useHotkeys = (
       if (player.isActive) {
         player.togglePlayback()
       } else if (route.name === 'year') {
-        const topSong = chart.currentSongs[0]
-        if (topSong) player.play(topSong, chart.selectedYear)
+        void playTopSong()
       }
       return
     }

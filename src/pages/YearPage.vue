@@ -2,6 +2,8 @@
 import { computed, nextTick, onUnmounted, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
+import type { YearSource } from '@/data'
+import type { Song } from '@/types/song'
 import {
   ArrowDownNarrowWide,
   ArrowLeft,
@@ -21,6 +23,9 @@ import { applyPendingTheme } from '@/composables/useDecadeTheme'
 import { getThemeForYear } from '@/themes'
 import SongCard from '@/components/SongCard.vue'
 
+const { getYearData, getYearDescription, getYearSource } =
+  await import('@/data')
+
 const props = defineProps<{ year: string }>()
 
 const route = useRoute()
@@ -34,6 +39,14 @@ const decadeString = computed(
 const adjacentYears = computed(() => getAdjacentYears(yearNumber.value))
 const previousYear = computed(() => adjacentYears.value.previousYear)
 const nextYear = computed(() => adjacentYears.value.nextYear)
+const songs = computed<Song[]>(() => getYearData(yearNumber.value) ?? [])
+const currentSource = computed<YearSource | null>(() =>
+  getYearSource(yearNumber.value),
+)
+const currentDescription = computed<string | null>(() =>
+  getYearDescription(yearNumber.value),
+)
+const hasData = computed(() => songs.value.length > 0)
 const getYearNavStyle = (year: number) => {
   const yearTheme = getThemeForYear(year)
 
@@ -69,7 +82,7 @@ const ogImage = computed(() =>
 )
 
 const jsonLd = computed(() => {
-  if (!store.currentSongs.length) return null
+  if (!songs.value.length) return null
   return {
     '@context': 'https://schema.org',
     '@type': 'MusicPlaylist',
@@ -78,8 +91,8 @@ const jsonLd = computed(() => {
     'url': canonical.value,
     'image': ogImage.value,
     'inLanguage': 'en-AU',
-    'numTracks': store.currentSongs.length,
-    'track': store.currentSongs.map((song) => ({
+    'numTracks': songs.value.length,
+    'track': songs.value.map((song) => ({
       '@type': 'MusicRecording',
       'name': song.title,
       'byArtist': { '@type': 'MusicGroup', 'name': song.artist },
@@ -180,22 +193,22 @@ watch(
         {{ intro }}
       </p>
       <p
-        v-if="store.currentDescription"
+        v-if="currentDescription"
         class="text-base leading-relaxed text-text-muted"
       >
-        {{ store.currentDescription }}
+        {{ currentDescription }}
       </p>
     </div>
 
     <div class="mb-1 flex items-end justify-between gap-3">
       <a
-        v-if="store.currentSource"
-        :href="store.currentSource.url"
+        v-if="currentSource"
+        :href="currentSource.url"
         class="text-xs text-text-muted/30 underline decoration-primary/15 underline-offset-4 transition-colors duration-150 hover:text-text-muted/60"
         rel="noreferrer"
         target="_blank"
       >
-        Source: {{ store.currentSource.label }}
+        Source: {{ currentSource.label }}
       </a>
       <div v-else />
       <button
@@ -216,9 +229,9 @@ watch(
       @after-leave="applyPendingTheme"
     >
       <div :key="yearNumber" class="year-content">
-        <div v-if="store.hasData" class="flex flex-col gap-0.5">
+        <div v-if="hasData" class="flex flex-col gap-0.5">
           <SongCard
-            v-for="song in store.currentSongs"
+            v-for="song in songs"
             :key="`${yearNumber}-${song.rank}`"
             :song="song"
             :year="yearNumber"

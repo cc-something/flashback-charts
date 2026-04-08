@@ -1,19 +1,11 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { range } from 'lodash-es'
 import { useStorage } from '@vueuse/core'
-import {
-  getYearData,
-  getAvailableYears,
-  getYearSource,
-  getYearDescription,
-} from '@/data'
-import { getDecadeForYear } from '@/themes'
+import { availableYears } from '@/data/availableYears'
 
 export type SortOrder = 'asc' | 'desc'
 
 export const useChartStore = defineStore('chart', () => {
-  const availableYears = getAvailableYears()
   const fallbackYear = availableYears.includes(1973)
     ? 1973
     : (availableYears[0] ?? 1973)
@@ -26,19 +18,7 @@ export const useChartStore = defineStore('chart', () => {
     : fallbackYear
   const selectedYear = ref(initialYear)
   const sortOrder = useStorage<SortOrder>('chart-sort-order', 'asc')
-  const yearRange = range(1940, 2026)
-
-  const currentSongs = computed(() => {
-    const songs = getYearData(selectedYear.value) ?? []
-    if (sortOrder.value === 'desc') return [...songs].reverse()
-    return songs
-  })
-  const currentSource = computed(() => getYearSource(selectedYear.value))
-  const currentDescription = computed(() =>
-    getYearDescription(selectedYear.value),
-  )
-  const currentDecade = computed(() => getDecadeForYear(selectedYear.value))
-  const hasData = computed(() => currentSongs.value.length > 0)
+  const yearRange = computed(() => availableYears)
 
   const setYear = (year: number) => {
     selectedYear.value = year
@@ -57,11 +37,6 @@ export const useChartStore = defineStore('chart', () => {
     sortOrder,
     yearRange,
     availableYears,
-    currentSongs,
-    currentSource,
-    currentDescription,
-    currentDecade,
-    hasData,
     setYear,
     selectYear,
     toggleSortOrder,
