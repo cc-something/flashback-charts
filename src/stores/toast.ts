@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 
-export type ToastVariant = 'error' | 'info'
+export type ToastVariant = 'error' | 'info' | 'success'
 
 export type Toast = {
   id: number
@@ -28,9 +28,15 @@ export const useToastStore = defineStore('toast', () => {
     setTimeout(() => dismiss(id), durationMs)
   }
 
+  const showSuccess = (message: string, durationMs = 2500) => {
+    const id = nextId++
+    toasts.value.push({ id, message, variant: 'success' })
+    setTimeout(() => dismiss(id), durationMs)
+  }
+
   const dismiss = (id: number) => {
     toasts.value = toasts.value.filter((t) => t.id !== id)
   }
 
-  return { toasts, show, showInfo, dismiss }
+  return { toasts, show, showInfo, showSuccess, dismiss }
 })

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
-import { Mail, X } from 'lucide-vue-next'
+import { Copy, Mail, X } from 'lucide-vue-next'
+import { useToastStore } from '@/stores/toast'
 
 const props = defineProps<{
   revealed: boolean
@@ -10,6 +11,7 @@ const emit = defineEmits<{
   close: []
   reveal: []
 }>()
+const toast = useToastStore()
 
 const emailParts = ['contact', 'flashbackcharts', 'com'] as const
 const revealedEmail = computed(() =>
@@ -18,6 +20,17 @@ const revealedEmail = computed(() =>
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')
+}
+
+const copyEmail = async () => {
+  if (!revealedEmail.value) return
+
+  try {
+    await navigator.clipboard.writeText(revealedEmail.value)
+    toast.showSuccess('Email copied to clipboard')
+  } catch {
+    toast.show('Unable to copy email right now')
+  }
 }
 
 onMounted(() => window.addEventListener('keydown', handleKeydown))
@@ -60,8 +73,19 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
         Reveal email
       </button>
 
-      <div v-else class="mt-5 rounded-lg bg-background px-4 py-3">
-        <p class="font-mono text-sm text-text">{{ revealedEmail }}</p>
+      <div
+        v-else
+        class="mt-5 flex items-center justify-between gap-3 rounded-lg bg-background px-4 py-3"
+      >
+        <p class="min-w-0 font-mono text-sm text-text">{{ revealedEmail }}</p>
+        <button
+          type="button"
+          aria-label="Copy email address"
+          class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface hover:text-text"
+          @click="copyEmail"
+        >
+          <Copy class="h-4 w-4" />
+        </button>
       </div>
     </div>
   </div>
