@@ -75,6 +75,32 @@ const getDecadeNavStyle = (decade: string) => {
 const title = computed(() => getDecadePageTitle(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
 const subtitle = computed(() => getDecadePageSubtitle(props.decade))
+const backgroundOverlayStyle = computed(() => ({
+  background: `
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 42%) 0%,
+      rgb(0 0 0 / 58%) 36%,
+      rgb(0 0 0 / 72%) 100%
+    ),
+    linear-gradient(
+      120deg,
+      ${theme.value.colors.background}e0 0%,
+      ${theme.value.colors.background}bf 42%,
+      ${theme.value.colors.background}88 100%
+    )
+  `,
+}))
+const backgroundVignetteStyle = computed(() => ({
+  background: `
+    radial-gradient(
+      circle at top,
+      transparent 0%,
+      rgb(0 0 0 / 10%) 40%,
+      rgb(0 0 0 / 24%) 100%
+    )
+  `,
+}))
 const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''
@@ -155,7 +181,14 @@ useHead(() => ({
           decoding="async"
         />
       </div>
-      <div class="decade-page-overlay absolute inset-0" />
+      <div
+        class="decade-page-overlay absolute inset-0"
+        :style="backgroundOverlayStyle"
+      />
+      <div
+        class="decade-page-vignette absolute inset-0"
+        :style="backgroundVignetteStyle"
+      />
     </div>
 
     <div class="relative z-10 mx-auto max-w-[1300px] px-4 py-8 sm:py-10">
@@ -313,8 +346,8 @@ useHead(() => ({
   display: block;
 }
 
-.decade-page-overlay {
-  background: rgb(0 0 0 / 58%);
+.decade-page-overlay,
+.decade-page-vignette {
   z-index: 1;
 }
 
