@@ -24,7 +24,8 @@ import {
 import { useHotkeys } from '@/composables/useHotkeys'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
-import { getHomeTheme } from '@/themes'
+import { getHomeTheme, getThemeForYear } from '@/themes'
+import { getThemeFontLinks } from '@/themes/font'
 import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
@@ -41,9 +42,6 @@ const EmailSignupModal = defineAsyncComponent(
 )
 
 useDecadeTheme()
-useHead({
-  htmlAttrs: { lang: 'en-AU' },
-})
 const emailSignup = useEmailSignup()
 const { loadScript, trackPageview, trackEvent } = usePlausibleAnalytics()
 const {
@@ -64,6 +62,24 @@ const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
+const getActiveTheme = () => {
+  if (route.name === 'year') {
+    const routeYear = Number(route.params.year)
+    if (!Number.isNaN(routeYear)) return getThemeForYear(routeYear)
+  }
+
+  if (route.name === 'decade') {
+    const routeDecade = Number.parseInt(String(route.params.decade), 10)
+    if (!Number.isNaN(routeDecade)) return getThemeForYear(routeDecade)
+  }
+
+  return getHomeTheme()
+}
+const activeTheme = computed(() => getActiveTheme())
+useHead(() => ({
+  htmlAttrs: { lang: 'en-AU' },
+  link: getThemeFontLinks(activeTheme.value),
+}))
 const headerContainerClass = computed(() =>
   route.name === 'year'
     ? 'header-container mx-auto flex max-w-[50.4rem] items-center justify-between px-4 py-1'
@@ -75,7 +91,7 @@ const headerWordmarkClass = computed(() =>
     : 'flex items-center gap-[0.25em] font-bold text-primary no-underline',
 )
 const headerWordmarkStyle = computed(() => ({
-  fontFamily: homeTheme.fontFamily,
+  fontFamily: activeTheme.value.fontFamily,
   fontSize: isHomeRoute.value ? 'clamp(1.6rem, 7vw, 3rem)' : '1.25rem',
   lineHeight: isHomeRoute.value ? 'clamp(1.9rem, 7.5vw, 3.25rem)' : '1.75rem',
   transition: 'font-size 220ms ease, line-height 220ms ease',
@@ -104,8 +120,6 @@ useHotkeys(
   () => isSearchOpen.value || isHotkeysOpen.value,
   deactivate,
 )
-
-const homeTheme = getHomeTheme()
 
 const discRotation = ref(0)
 const isDiscSpinning = ref(false)

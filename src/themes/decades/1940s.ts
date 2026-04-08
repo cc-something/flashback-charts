@@ -1,9 +1,10 @@
 import type { DecadeTheme } from '@/types/theme'
+import { defaultBodyFontFamily } from '@/themes/font'
 
 const theme: DecadeTheme = {
   name: '1940s',
   fontFamily: "'DM Serif Display', serif",
-  bodyFontFamily: "'Inter', sans-serif",
+  bodyFontFamily: defaultBodyFontFamily,
   fontUrl:
     'https://fonts.bunny.net/css2?family=DM+Serif+Display:ital,wght@0,400;1,400&display=swap',
   description:

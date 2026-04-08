@@ -1,16 +1,17 @@
+import type { DecadeTheme } from '@/types/theme'
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 import { getHomeTheme, getThemeForYear } from '@/themes'
+import { getThemeBodyFontFamily } from '@/themes/font'
 
 const getDecade = (year: number) => Math.floor(year / 10)
 const getDecadeStartYear = (decade: string) => Number.parseInt(decade, 10)
 
-const applyTheme = (year: number) => {
+const applyThemeProperties = (theme: DecadeTheme) => {
   if (typeof document === 'undefined') return
-  const theme = getThemeForYear(year)
   const root = document.documentElement
-  const bodyFontFamily = theme.bodyFontFamily ?? theme.fontFamily
+  const bodyFontFamily = getThemeBodyFontFamily(theme)
 
   root.style.setProperty('--theme-background', theme.colors.background)
   root.style.setProperty('--theme-surface', theme.colors.surface)
@@ -27,25 +28,10 @@ const applyTheme = (year: number) => {
   document.body.style.fontFamily = bodyFontFamily
 }
 
+const applyTheme = (year: number) => applyThemeProperties(getThemeForYear(year))
+
 const applyHomeTheme = () => {
-  if (typeof document === 'undefined') return
-  const theme = getHomeTheme()
-  const root = document.documentElement
-  const bodyFontFamily = theme.bodyFontFamily ?? theme.fontFamily
-
-  root.style.setProperty('--theme-background', theme.colors.background)
-  root.style.setProperty('--theme-surface', theme.colors.surface)
-  root.style.setProperty('--theme-primary', theme.colors.primary)
-  root.style.setProperty('--theme-secondary', theme.colors.secondary)
-  root.style.setProperty('--theme-text', theme.colors.text)
-  root.style.setProperty('--theme-text-muted', theme.colors.textMuted)
-  root.style.setProperty('--theme-accent', theme.colors.accent)
-  root.style.setProperty('--theme-tab-active', theme.colors.tabActive)
-  root.style.setProperty('--theme-tab-inactive', theme.colors.tabInactive)
-  root.style.setProperty('--theme-display-font-family', theme.fontFamily)
-  root.style.setProperty('--theme-body-font-family', bodyFontFamily)
-
-  document.body.style.fontFamily = bodyFontFamily
+  applyThemeProperties(getHomeTheme())
 }
 
 let pendingThemeApplication: (() => void) | null = null

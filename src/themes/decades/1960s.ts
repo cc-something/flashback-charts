@@ -1,11 +1,12 @@
 import type { DecadeTheme } from '@/types/theme'
+import { defaultBodyFontFamily } from '@/themes/font'
 
 const theme: DecadeTheme = {
   name: '1960s',
   description:
     'Beat music, garage rock, and the British Invasion reshaped Australian pop in the 1960s, with surf rock, mod fashion, and psychedelic sounds following close behind. Local bands found their voice alongside the global explosion of rock, folk, and soul, making it the most creatively restless decade in Australian chart history.',
   fontFamily: "'Righteous', sans-serif",
-  bodyFontFamily: "'Inter', sans-serif",
+  bodyFontFamily: defaultBodyFontFamily,
   fontUrl: 'https://fonts.bunny.net/css2?family=Righteous&display=swap',
   colors: {
     background: '#0f0520',

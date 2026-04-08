@@ -1,10 +1,11 @@
 import type { DecadeTheme } from '@/types/theme'
+import { defaultBodyFontFamily } from '@/themes/font'
 
 const theme: DecadeTheme = {
   name: '1990s',
   description:
     'Alternative rock, glossy dance-pop, and R&B all took turns running the Australian charts in the 1990s. Triple J and local guitar scenes mattered more than ever, while hip-hop and club music pushed the mainstream into a broader, messier shape.',
-  bodyFontFamily: "'Inter', sans-serif",
+  bodyFontFamily: defaultBodyFontFamily,
   fontFamily: "'Chakra Petch', sans-serif",
   fontUrl:
     'https://fonts.bunny.net/css2?family=Chakra+Petch:wght@400;500;700&display=swap',

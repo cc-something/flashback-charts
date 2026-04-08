@@ -1,11 +1,12 @@
 import type { DecadeTheme } from '@/types/theme'
+import { defaultBodyFontFamily } from '@/themes/font'
 
 const theme: DecadeTheme = {
   name: '2020s',
   description:
     'The 2020s have been shaped by streaming speed, TikTok lift, and a blur between pop, hip-hop, R&B, dance, and indie. Bedroom-pop intimacy sits next to glossy crossover singles, and Australian hits now move between local radio and global playlists almost instantly.',
   fontFamily: "'Syne', sans-serif",
-  bodyFontFamily: "'Inter', sans-serif",
+  bodyFontFamily: defaultBodyFontFamily,
   fontUrl:
     'https://fonts.bunny.net/css2?family=Syne:wght@400;600;700;800&display=swap',
   colors: {

@@ -1,8 +1,10 @@
 import type { DecadeTheme } from '@/types/theme'
+import { defaultBodyFontFamily } from './font'
 
 const homeTheme: DecadeTheme = {
   name: 'home',
   fontFamily: "'Space Grotesk', sans-serif",
+  bodyFontFamily: defaultBodyFontFamily,
   fontUrl:
     'https://fonts.bunny.net/css2?family=Space+Grotesk:wght@400;500;700&display=swap',
   colors: {

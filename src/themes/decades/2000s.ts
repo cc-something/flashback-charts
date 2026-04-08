@@ -1,10 +1,11 @@
 import type { DecadeTheme } from '@/types/theme'
+import { defaultBodyFontFamily } from '@/themes/font'
 
 const theme: DecadeTheme = {
   name: '2000s',
   description:
     'The 2000s mixed reality-TV pop, pop R&B, rap crossover, and the last big wave of chart rock. Downloads changed how hits spread, and the decade drifted from guitar radio toward shinier, more electronic pop.',
-  bodyFontFamily: "'Inter', sans-serif",
+  bodyFontFamily: defaultBodyFontFamily,
   fontFamily: "'Michroma', sans-serif",
   fontUrl: 'https://fonts.bunny.net/css2?family=Michroma&display=swap',
   colors: {
