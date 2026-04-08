@@ -8,7 +8,7 @@ import {
   getDecadeSummaries,
   getHomeBackgroundThumbnails,
   getHomePageDescription,
-  getHomePageMethodologyText,
+  getHomePageSubtitle,
   getHomePageTitle,
   getLatestYear,
 } from '@/content/chartContent'
@@ -64,7 +64,7 @@ const decadeColumns = computed(() => [
 const latestYear = getLatestYear()
 const title = getHomePageTitle()
 const description = getHomePageDescription()
-const methodologyText = getHomePageMethodologyText()
+const subtitle = getHomePageSubtitle()
 const homeImage = siteUrl ? `${siteUrl}/og/au/home.jpg` : undefined
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -165,17 +165,10 @@ useHead({
         class="mb-8 rounded-2xl border border-white/10 bg-black/46 px-5 py-5 backdrop-blur-[8px]"
       >
         <h1 class="text-2xl text-text-muted">
-          The top 10 songs in Australia for every year from 1940 to
-          {{ latestYear }}
+          Australia's Top 10 Songs by Year — 1940 to {{ latestYear }}
         </h1>
         <p class="mt-2 text-base leading-relaxed text-text-muted/70">
-          Nine decades of Australian music charts, from today's streaming hits
-          and 2000s pop anthems back through grunge, synth-pop, disco, and the
-          rock'n'roll pioneers. Listen to the #1s and Top 10s and discover the
-          songs that shaped each era.
-        </p>
-        <p class="mt-3 max-w-4xl text-sm leading-relaxed text-text-muted/60">
-          {{ methodologyText }}
+          {{ subtitle }}
         </p>
       </div>
 
