@@ -4,20 +4,19 @@ const theme: DecadeTheme = {
   name: '2010s',
   description:
     'Streaming rewired the charts in the 2010s, favouring fast-moving pop, EDM drops, rap features, and moodier R&B. Australian acts broke through globally with regularity, and hit songs started sounding more at home on playlists than in record stores.',
-  fontFamily: "'Oswald', sans-serif",
+  fontFamily: "'Bebas Neue', sans-serif",
   bodyFontFamily: "'Inter', sans-serif",
-  fontUrl:
-    'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap',
+  fontUrl: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap',
   colors: {
-    background: '#0d0f1a',
-    surface: '#1a1c2e',
-    primary: '#ffd60a',
-    secondary: '#00b4d8',
-    text: '#f0f2ff',
-    textMuted: '#8890b0',
-    accent: '#e63946',
-    tabActive: '#ffd60a',
-    tabInactive: '#1a1c2e',
+    background: '#0c0818',
+    surface: '#170f2c',
+    primary: '#b44fff',
+    secondary: '#00d4c8',
+    text: '#f0ecff',
+    textMuted: '#8878aa',
+    accent: '#ff6b6b',
+    tabActive: '#b44fff',
+    tabInactive: '#170f2c',
   },
 }
 
