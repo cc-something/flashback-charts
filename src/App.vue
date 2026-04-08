@@ -12,7 +12,7 @@ import {
 import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { Keyboard } from 'lucide-vue-next'
+import { Facebook, Keyboard, X } from 'lucide-vue-next'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -62,6 +62,18 @@ const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
+const socialLinks = [
+  {
+    href: 'https://www.facebook.com/people/Flashback-Charts/61572091223850/',
+    label: 'Facebook',
+    icon: Facebook,
+  },
+  {
+    href: 'https://www.x.com/FlashbackCharts',
+    label: 'X',
+    icon: X,
+  },
+] as const
 const getActiveTheme = () => {
   if (route.name === 'year') {
     const routeYear = Number(route.params.year)
@@ -245,7 +257,7 @@ onUnmounted(() => teardownKonamiListener())
       </Transition>
     </router-view>
 
-    <footer class="flex justify-center gap-6 py-6">
+    <footer class="flex flex-wrap items-center justify-center gap-6 py-6">
       <button
         type="button"
         class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
@@ -261,6 +273,19 @@ onUnmounted(() => teardownKonamiListener())
         <Keyboard class="h-3.5 w-3.5" />
         Shortcuts
       </button>
+      <div class="flex items-center gap-2">
+        <a
+          v-for="{ href, label, icon } in socialLinks"
+          :key="href"
+          :href="href"
+          :aria-label="label"
+          target="_blank"
+          rel="noreferrer"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-primary/20 text-text-muted transition-colors duration-150 hover:border-primary/40 hover:text-primary"
+        >
+          <component :is="icon" class="h-4 w-4" />
+        </a>
+      </div>
     </footer>
 
     <MiniPlayer />
