@@ -192,22 +192,24 @@ useHead(() => ({
 
     <div class="relative z-10 mx-auto max-w-[1300px] px-4 py-8 sm:py-10">
       <header class="mb-8">
-        <h1
-          class="theme-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary"
-          :style="{ fontFamily: theme.fontFamily }"
-        >
-          {{ heading }}
-        </h1>
-        <p
-          v-if="theme.description"
-          class="mt-4 max-w-3xl text-base leading-relaxed"
-          :style="{ color: theme.colors.textMuted }"
-        >
-          {{ theme.description }}
-        </p>
-        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-muted/70">
-          {{ subtitle }}
-        </p>
+        <div class="rounded-2xl border border-white/10 bg-black/72 px-5 py-5">
+          <h1
+            class="theme-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary"
+            :style="{ fontFamily: theme.fontFamily }"
+          >
+            {{ heading }}
+          </h1>
+          <p
+            v-if="theme.description"
+            class="mt-4 max-w-3xl text-base leading-relaxed"
+            :style="{ color: theme.colors.textMuted }"
+          >
+            {{ theme.description }}
+          </p>
+          <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-muted/70">
+            {{ subtitle }}
+          </p>
+        </div>
       </header>
 
       <nav class="mb-5 flex items-center justify-between gap-3">
