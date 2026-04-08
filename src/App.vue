@@ -13,7 +13,7 @@ import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
-import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
+import { useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 import {
@@ -141,11 +141,6 @@ const headerIconStyle = computed(() => ({
   marginTop: isHomeRoute.value ? 'clamp(0.12rem, 0.8vw, 0.32rem)' : '0',
   transition: 'width 220ms ease, height 220ms ease',
 }))
-const handlePageAfterLeave = () => {
-  if (typeof window === 'undefined') return
-  applyPendingTheme()
-  window.scrollTo({ top: 0, behavior: 'instant' })
-}
 
 const openSearch = async () => {
   isSearchOpen.value = true
@@ -217,6 +212,14 @@ watch(
   },
 )
 
+watch(
+  () => route.fullPath,
+  () => {
+    if (typeof window === 'undefined') return
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  },
+)
+
 watch(isRickRollActive, (isActive) => {
   if (isActive) {
     trackEvent('rickroll_activated')
@@ -279,9 +282,7 @@ onUnmounted(() => teardownKonamiListener())
     </div>
 
     <router-view v-slot="{ Component }">
-      <Transition name="page" mode="out-in" @after-leave="handlePageAfterLeave">
-        <component :is="Component" :key="route.fullPath" />
-      </Transition>
+      <component :is="Component" :key="route.fullPath" />
     </router-view>
 
     <footer
@@ -354,24 +355,6 @@ onUnmounted(() => teardownKonamiListener())
 </template>
 
 <style scoped>
-.page-enter-active,
-.page-leave-active {
-  transition: opacity 0.22s ease;
-  will-change: opacity;
-}
-
-.page-enter-from {
-  opacity: 0;
-}
-
-.page-enter-to {
-  opacity: 1;
-}
-
-.page-leave-to {
-  opacity: 0;
-}
-
 .header-container {
   transition: max-width 220ms ease;
 }

@@ -12,8 +12,8 @@
 
 - [x] Keep the home hero in the shared base font stack and avoid decade font switching there.
 - [x] Render decade cards and previews in the shared home font on the home page.
-- [ ] Make sure above-the-fold content is immediately visible and not gated behind client-only transitions.
-- [ ] Avoid intro effects on the main heading and hero content that could delay LCP detection.
+- [x] Make sure above-the-fold content is immediately visible and not gated behind client-only transitions.
+- [x] Avoid intro effects on the main heading and hero content that could delay LCP detection.
 
 ## 3. JavaScript payload
 

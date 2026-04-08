@@ -68,10 +68,6 @@ export const useDecadeTheme = () => {
 
     applyTheme(store.selectedYear)
   }
-  const queueRouteTheme = () => {
-    pendingThemeApplication = applyRouteTheme
-  }
-
   applyRouteTheme()
 
   watch(
@@ -85,6 +81,6 @@ export const useDecadeTheme = () => {
 
   watch(
     () => route.fullPath,
-    () => queueRouteTheme(),
+    () => applyRouteTheme(),
   )
 }

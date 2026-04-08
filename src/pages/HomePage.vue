@@ -125,20 +125,17 @@ useHead({
 
 <template>
   <main class="relative isolate">
-    <div class="home-page-background pointer-events-none fixed inset-0">
+    <div
+      class="home-page-background pointer-events-none fixed inset-0"
+      aria-hidden="true"
+    >
       <div class="home-page-background-rows">
         <div
           v-for="(row, rowIndex) in homeBackgroundRows"
           :key="`row-${rowIndex}`"
           class="home-page-background-row"
         >
-          <div
-            class="home-page-background-track"
-            :class="{
-              'home-page-background-track-reversed': rowIndex % 2 === 1,
-            }"
-            :style="{ '--home-row-duration': `${260 + rowIndex * 18}s` }"
-          >
+          <div class="home-page-background-track">
             <div
               v-for="repeatIndex in HOME_BACKGROUND_DUPLICATE_COUNT"
               :key="`row-${rowIndex}-repeat-${repeatIndex}`"
@@ -152,6 +149,7 @@ useHead({
                 class="home-page-background-tile"
                 loading="lazy"
                 decoding="async"
+                fetchpriority="low"
               />
             </div>
           </div>
@@ -162,7 +160,7 @@ useHead({
 
     <div class="relative z-10 max-w-[1300px] mx-auto px-4 py-10">
       <div
-        class="mb-8 rounded-2xl border border-white/10 bg-black/46 px-5 py-5 backdrop-blur-[8px]"
+        class="mb-8 rounded-2xl border border-white/10 bg-black/72 px-5 py-5"
       >
         <h1 class="text-lg sm:text-2xl text-text-muted">
           Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
@@ -182,7 +180,7 @@ useHead({
           <section
             v-for="group in column"
             :key="group.decade"
-            class="rounded-xl p-4 backdrop-blur-[6px]"
+            class="rounded-xl p-4"
             :style="{
               backgroundColor: group.theme.colors.background + 'c7',
               border: `1px solid ${group.theme.colors.primary}33`,
@@ -294,12 +292,6 @@ useHead({
   width: max-content;
   min-width: 100%;
   height: 100%;
-  animation: home-page-background-marquee var(--home-row-duration) linear
-    infinite;
-}
-
-.home-page-background-track-reversed {
-  animation-direction: reverse;
 }
 
 .home-page-background-repeat {
@@ -319,15 +311,5 @@ useHead({
 
 .home-page-background-overlay {
   background: rgb(0 0 0 / 82%);
-}
-
-@keyframes home-page-background-marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
 }
 </style>
