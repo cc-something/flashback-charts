@@ -187,7 +187,17 @@ watch(
       </p>
     </div>
 
-    <div class="mb-2 flex justify-end">
+    <div class="mb-2 flex items-center justify-between gap-3">
+      <a
+        v-if="store.currentSource"
+        :href="store.currentSource.url"
+        class="text-xs text-text-muted/30 underline decoration-primary/15 underline-offset-4 transition-colors duration-150 hover:text-text-muted/60"
+        rel="noreferrer"
+        target="_blank"
+      >
+        Source: {{ store.currentSource.label }}
+      </a>
+      <div v-else />
       <button
         type="button"
         class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
@@ -258,16 +268,6 @@ watch(
       </router-link>
       <div v-else />
     </nav>
-
-    <a
-      v-if="store.currentSource"
-      :href="store.currentSource.url"
-      class="mt-3 block text-center text-xs text-text-muted/50 underline decoration-primary/20 underline-offset-4 transition-colors duration-150 hover:text-text-muted"
-      rel="noreferrer"
-      target="_blank"
-    >
-      Source: {{ store.currentSource.label }}
-    </a>
   </main>
 </template>
 
