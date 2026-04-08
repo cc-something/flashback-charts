@@ -295,7 +295,7 @@ onUnmounted(() => teardownKonamiListener())
     </router-view>
 
     <footer
-      class="relative z-20 mx-auto flex w-full max-w-[1300px] flex-wrap items-center justify-center gap-6 px-4 py-6"
+      class="fixed bottom-0 left-0 right-0 z-20 flex flex-wrap items-center justify-center gap-6 border-t border-primary/10 bg-background px-4 py-4"
     >
       <button
         type="button"
