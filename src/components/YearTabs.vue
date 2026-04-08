@@ -76,11 +76,11 @@ onMounted(scrollToActiveTab)
 <template>
   <nav
     aria-label="Year navigation"
-    class="year-tabs-shell border-b border-white/8"
+    class="border-b border-primary/20 bg-surface"
   >
     <div
       ref="scrollContainer"
-      class="year-tabs-track flex overflow-x-auto scrollbar-hide gap-0.5 px-4 py-2"
+      class="flex overflow-x-auto scrollbar-hide gap-0.5 px-4 py-2"
     >
       <button
         v-for="year in store.yearRange"
@@ -113,34 +113,6 @@ onMounted(scrollToActiveTab)
 </template>
 
 <style scoped>
-.year-tabs-shell {
-  background: rgb(10 14 20 / 58%);
-  backdrop-filter: blur(18px) saturate(140%);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 5%),
-    0 16px 36px rgb(0 0 0 / 14%);
-}
-
-.year-tabs-track {
-  position: relative;
-}
-
-.year-tabs-track::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 4%), transparent 55%),
-    linear-gradient(
-      90deg,
-      rgb(255 255 255 / 4%),
-      transparent 18%,
-      transparent 82%,
-      rgb(255 255 255 / 4%)
-    );
-}
-
 .year-tab {
   background-color: transparent;
   color: var(--year-tab-text-muted);
