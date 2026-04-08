@@ -19,7 +19,7 @@
 
 - [x] Split the large main app bundle so home only ships what home needs.
 - [x] Defer chart, decade, and detail logic until navigation.
-- [ ] Audit global code that is only needed on deeper pages.
+- [x] Audit global code that is only needed on deeper pages.
 
 ## 4. Images and media
 

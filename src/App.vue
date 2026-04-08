@@ -24,6 +24,7 @@ import {
 import { useHotkeys } from '@/composables/useHotkeys'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
+import { useToastStore } from '@/stores/toast'
 import { getHomeTheme, getThemeForYear } from '@/themes'
 import {
   brandFontFamily,
@@ -32,9 +33,15 @@ import {
   getThemeFontLinks,
 } from '@/themes/font'
 import YearTabs from '@/components/YearTabs.vue'
-import MiniPlayer from '@/components/MiniPlayer.vue'
-import ErrorToast from '@/components/ErrorToast.vue'
-import RickRollBanner from '@/components/RickRollBanner.vue'
+const MiniPlayer = defineAsyncComponent(
+  () => import('@/components/MiniPlayer.vue'),
+)
+const ErrorToast = defineAsyncComponent(
+  () => import('@/components/ErrorToast.vue'),
+)
+const RickRollBanner = defineAsyncComponent(
+  () => import('@/components/RickRollBanner.vue'),
+)
 
 const SearchOverlay = defineAsyncComponent(
   () => import('@/components/SearchOverlay.vue'),
@@ -63,6 +70,7 @@ const route = useRoute()
 const router = useRouter()
 const chart = useChartStore()
 const player = usePlayerStore()
+const toast = useToastStore()
 const playerContainer = ref<HTMLDivElement | null>(null)
 const stickyBar = ref<HTMLDivElement | null>(null)
 const { height: stickyBarHeight } = useElementSize(stickyBar)
@@ -71,6 +79,7 @@ const isHotkeysOpen = ref(false)
 const isContactOpen = ref(false)
 const isContactEmailRevealed = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
+const hasToasts = computed(() => toast.toasts.length > 0)
 const isHomeRoute = computed(() => route.name === 'home')
 const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
 const socialLinks = [
@@ -243,7 +252,7 @@ onUnmounted(() => teardownKonamiListener())
 
 <template>
   <div
-    class="min-h-screen bg-background text-text"
+    class="min-h-screen bg-background text-text pb-20"
     :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }"
   >
     <div ref="stickyBar" class="sticky top-0 z-40">
@@ -328,7 +337,7 @@ onUnmounted(() => teardownKonamiListener())
       </button>
     </footer>
 
-    <MiniPlayer />
+    <MiniPlayer v-if="player.isActive" />
     <SearchOverlay
       v-if="isSearchOpen"
       ref="searchOverlay"
@@ -350,7 +359,7 @@ onUnmounted(() => teardownKonamiListener())
       ref="playerContainer"
       class="fixed bottom-0 left-0 h-px w-px opacity-[0.01]"
     />
-    <ErrorToast />
+    <ErrorToast v-if="hasToasts" />
   </div>
 </template>
 
