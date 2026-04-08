@@ -181,7 +181,7 @@ watch(
       </p>
       <p
         v-if="store.currentDescription"
-        class="text-base leading-relaxed text-text-muted/80"
+        class="text-base leading-relaxed text-text-muted"
       >
         {{ store.currentDescription }}
       </p>
