@@ -165,7 +165,7 @@ const youtubeVideoUrl = computed(() =>
       </p>
     </div>
 
-    <div class="relative z-20 flex self-center flex-shrink-0 flex-col gap-0.5">
+    <div class="relative z-20 flex self-center flex-shrink-0 flex-col gap-0">
       <div v-if="displaySong.youtubeVideoId" class="group/action relative">
         <span
           class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
