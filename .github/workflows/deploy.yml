@@ -23,12 +23,13 @@ jobs:
       - run: pnpm build
         env:
           VITE_BUTTONDOWN_API_KEY: ${{ secrets.VITE_BUTTONDOWN_API_KEY }}
+          VITE_SITE_URL: ${{ secrets.VITE_SITE_URL }}
 
       - name: Deploy to cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          username: ${{ secrets.FTP_ADMIN }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: ./public_html/
