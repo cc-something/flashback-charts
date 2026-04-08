@@ -74,6 +74,7 @@ const getDecadeNavStyle = (decade: string) => {
   const decadeTheme = getThemeForYear(Number.parseInt(decade, 10))
 
   return {
+    '--nav-bg': decadeTheme.colors.surface,
     '--nav-border': `${decadeTheme.colors.primary}33`,
     '--nav-text': decadeTheme.colors.textMuted,
     '--nav-text-hover': decadeTheme.colors.text,
@@ -367,6 +368,7 @@ useHead(() => ({
 }
 
 .decade-nav-button {
+  background-color: var(--nav-bg);
   border-color: var(--nav-border);
   color: var(--nav-text);
   font-family: var(--nav-font-family);
