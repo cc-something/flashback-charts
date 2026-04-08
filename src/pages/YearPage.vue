@@ -213,16 +213,6 @@ watch(
             :song="song"
             :year="yearNumber"
           />
-
-          <a
-            v-if="store.currentSource"
-            :href="store.currentSource.url"
-            class="mt-3 block text-xs text-text-muted/80 underline decoration-primary/30 underline-offset-4 transition-colors duration-150 hover:text-primary"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Source: {{ store.currentSource.label }}
-          </a>
         </div>
 
         <div
@@ -252,9 +242,10 @@ watch(
 
       <router-link
         :to="`/au/${decadeString}`"
-        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+        class="inline-flex flex-col items-center text-center text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
       >
-        {{ decadeString }}
+        <span>More from</span>
+        <span>the {{ decadeString }}</span>
       </router-link>
 
       <router-link
@@ -268,6 +259,16 @@ watch(
       </router-link>
       <div v-else />
     </nav>
+
+    <a
+      v-if="store.currentSource"
+      :href="store.currentSource.url"
+      class="mt-3 block text-center text-xs text-text-muted/50 underline decoration-primary/20 underline-offset-4 transition-colors duration-150 hover:text-text-muted"
+      rel="noreferrer"
+      target="_blank"
+    >
+      Source: {{ store.currentSource.label }}
+    </a>
   </main>
 </template>
 
