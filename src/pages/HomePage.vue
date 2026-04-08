@@ -135,7 +135,16 @@ useHead({
           :key="`row-${rowIndex}`"
           class="home-page-background-row"
         >
-          <div class="home-page-background-track">
+          <div
+            class="home-page-background-track"
+            :class="{
+              'home-page-background-track-reversed': rowIndex % 2 === 1,
+            }"
+            :style="{
+              '--home-row-duration': `${320 + rowIndex * 24}s`,
+              '--home-row-delay': `${0.9 + rowIndex * 0.08}s`,
+            }"
+          >
             <div
               v-for="repeatIndex in HOME_BACKGROUND_DUPLICATE_COUNT"
               :key="`row-${rowIndex}-repeat-${repeatIndex}`"
@@ -292,6 +301,13 @@ useHead({
   width: max-content;
   min-width: 100%;
   height: 100%;
+  animation: home-page-background-marquee var(--home-row-duration) linear
+    var(--home-row-delay) infinite both;
+  will-change: transform;
+}
+
+.home-page-background-track-reversed {
+  animation-direction: reverse;
 }
 
 .home-page-background-repeat {
@@ -311,5 +327,21 @@ useHead({
 
 .home-page-background-overlay {
   background: rgb(0 0 0 / 82%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page-background-track {
+    animation: none;
+  }
+}
+
+@keyframes home-page-background-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 </style>
