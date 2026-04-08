@@ -89,7 +89,7 @@ const siteUrl = computed(() => {
   return env?.replace(/\/$/, '') ?? ''
 })
 const canonical = computed(() =>
-  siteUrl.value ? `${siteUrl.value}/${props.decade}` : undefined,
+  siteUrl.value ? `${siteUrl.value}/au/${props.decade}` : undefined,
 )
 const ogImage = computed(() => {
   const leadThumbnail = getTopSongThumbnails(
@@ -111,7 +111,7 @@ const jsonLd = computed(() => ({
   'hasPart': years.value.map((year) => ({
     '@type': 'WebPage',
     'name': `Top 10 Songs in Australia in ${year}`,
-    'url': canonical.value ? `${siteUrl.value}/${year}` : undefined,
+    'url': canonical.value ? `${siteUrl.value}/au/${year}` : undefined,
     'description': getYearSummaryText(year),
   })),
 }))
@@ -210,7 +210,7 @@ useHead(() => ({
       <nav class="mb-5 flex items-center justify-between gap-3">
         <router-link
           v-if="previousDecade"
-          :to="`/${previousDecade}`"
+          :to="`/au/${previousDecade}`"
           class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
           :style="getDecadeNavStyle(previousDecade)"
         >
@@ -221,7 +221,7 @@ useHead(() => ({
 
         <router-link
           v-if="nextDecade"
-          :to="`/${nextDecade}`"
+          :to="`/au/${nextDecade}`"
           class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
           :style="getDecadeNavStyle(nextDecade)"
         >
@@ -249,7 +249,7 @@ useHead(() => ({
             }"
           >
             <router-link
-              :to="`/${year}`"
+              :to="`/au/${year}`"
               class="group relative block aspect-square overflow-hidden rounded-xl"
               :style="{
                 backgroundColor: theme.colors.surface,
@@ -291,7 +291,10 @@ useHead(() => ({
                   fontFamily: theme.fontFamily,
                 }"
               >
-                <router-link :to="`/${year}`" class="text-inherit no-underline">
+                <router-link
+                  :to="`/au/${year}`"
+                  class="text-inherit no-underline"
+                >
                   {{ year }}
                 </router-link>
               </h2>
@@ -299,7 +302,7 @@ useHead(() => ({
                 {{ getYearSummaryText(year) }}
               </p>
               <router-link
-                :to="`/${year}`"
+                :to="`/au/${year}`"
                 class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
                 :style="{
                   backgroundColor: theme.colors.primary,

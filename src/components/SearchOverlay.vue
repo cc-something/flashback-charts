@@ -16,7 +16,7 @@ const allResults = computed(() => searchSongs(query.value))
 const results = computed(() => allResults.value.slice(0, 50))
 
 const goToSong = (year: number, rank: number) => {
-  router.push({ path: `/${year}`, query: { song: String(rank) } })
+  router.push({ path: `/au/${year}`, query: { song: String(rank) } })
   emit('close')
 }
 
