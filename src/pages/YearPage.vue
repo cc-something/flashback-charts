@@ -242,10 +242,9 @@ watch(
 
       <router-link
         :to="`/au/${decadeString}`"
-        class="inline-flex flex-col items-center text-center text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
       >
-        <span>More from</span>
-        <span>the {{ decadeString }}</span>
+        More from the {{ decadeString }}
       </router-link>
 
       <router-link
