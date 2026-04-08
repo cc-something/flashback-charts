@@ -65,7 +65,7 @@ const mailtoHref = computed(() => {
           <a
             v-else
             :href="mailtoHref"
-            class="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary underline underline-offset-4 transition-opacity hover:opacity-80"
+            class="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary transition-opacity hover:opacity-80"
           >
             <Mail class="h-4 w-4 flex-shrink-0" />
             contact@flashbackcharts.com
