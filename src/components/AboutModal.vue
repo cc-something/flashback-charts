@@ -46,7 +46,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             rel="noreferrer"
             class="inline-flex items-center gap-1 text-primary transition-opacity hover:opacity-80"
           >
-            View license
+            Lucide
             <ExternalLink class="h-3.5 w-3.5" />
           </a>
         </p>
