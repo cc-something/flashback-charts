@@ -28,6 +28,9 @@ const store = useChartStore()
 const player = usePlayerStore()
 const yearNumber = computed(() => Number(props.year))
 const theme = computed(() => getThemeForYear(yearNumber.value))
+const decadeString = computed(
+  () => `${Math.floor(yearNumber.value / 10) * 10}s`,
+)
 const adjacentYears = computed(() => getAdjacentYears(yearNumber.value))
 const previousYear = computed(() => adjacentYears.value.previousYear)
 const nextYear = computed(() => adjacentYears.value.nextYear)
@@ -217,6 +220,15 @@ watch(
       </router-link>
       <div v-else />
     </nav>
+
+    <div class="mb-3 text-center">
+      <router-link
+        :to="`/au/${decadeString}`"
+        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+      >
+        {{ decadeString }}
+      </router-link>
+    </div>
 
     <Transition
       name="year-content"
