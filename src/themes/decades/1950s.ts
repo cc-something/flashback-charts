@@ -4,10 +4,9 @@ const theme: DecadeTheme = {
   name: '1950s',
   description:
     'Rock and roll swept into Australia in the 1950s, colliding with homegrown country, skiffle, and pop to create a new youth culture built around jukeboxes, dance halls, and the first television broadcasts. The decade marked a turning point as local artists began adapting American and British sounds into something distinctly Australian.',
-  fontFamily: "'Josefin Slab', serif",
+  fontFamily: "'Patua One', serif",
   bodyFontFamily: "'Inter', sans-serif",
-  fontUrl:
-    'https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@400;600;700&display=swap',
+  fontUrl: 'https://fonts.googleapis.com/css2?family=Patua+One&display=swap',
   colors: {
     background: '#0f2040',
     surface: '#1c3260',
