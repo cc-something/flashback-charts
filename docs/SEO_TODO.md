@@ -35,4 +35,4 @@
 
 ## 6. Accessibility
 
-- [ ] Increase the search button hit area to at least 24x24.
+- [x] Increase the search button hit area to at least 24x24.
