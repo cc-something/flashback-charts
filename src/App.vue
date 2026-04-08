@@ -317,14 +317,6 @@ onUnmounted(() => teardownKonamiListener())
           <Mail class="h-3.5 w-3.5" />
           Contact us
         </button>
-        <button
-          type="button"
-          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-          @click="isAboutOpen = true"
-        >
-          <Info class="h-3.5 w-3.5" />
-          About
-        </button>
         <div class="flex items-center gap-4">
           <a
             v-for="{ href, label, network } in socialLinks"
@@ -339,6 +331,21 @@ onUnmounted(() => teardownKonamiListener())
             {{ label }}
           </a>
         </div>
+      </div>
+      <div
+        class="mt-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
+      >
+        <p class="text-xs text-text-muted/70">
+          © CC Something Pty Ltd {{ currentYear }}
+        </p>
+        <button
+          type="button"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          @click="isAboutOpen = true"
+        >
+          <Info class="h-3.5 w-3.5" />
+          About
+        </button>
         <button
           type="button"
           class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
@@ -348,9 +355,6 @@ onUnmounted(() => teardownKonamiListener())
           Shortcuts
         </button>
       </div>
-      <p class="mt-3 text-center text-xs text-text-muted/70">
-        © CC Something Pty Ltd {{ currentYear }}
-      </p>
     </footer>
 
     <MiniPlayer v-if="player.isActive" />
