@@ -75,6 +75,9 @@ export const getAvailableDecades = () =>
 export const getDecadePageTitle = (decade: string) =>
   `Top 10 Songs in Australia in the ${decade} | Flashback Charts`
 
+export const getDecadePageHeading = (decade: string) =>
+  `Top 10 Songs in Australia in the ${decade}`
+
 export const getDecadePageSubtitle = (decade: string) => {
   const decadeStartYear = getDecadeStartYear(decade)
   const decadeEndYear = decadeStartYear + 9
