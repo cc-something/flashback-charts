@@ -42,6 +42,11 @@ export const getTopSongThumbnails = (year: number, limit = 4) =>
     .map((song) => song.thumbnailPath)
     .filter(Boolean)
 
+export const getDecadeSongThumbnails = (decade: string) =>
+  getDecadeYears(decade).flatMap((year) =>
+    (getYearData(year) ?? []).map((song) => song.thumbnailPath).filter(Boolean),
+  )
+
 export const getYearPageTitle = (year: number) =>
   `Top 10 Songs in Australia in ${year} | Flashback Charts`
 
