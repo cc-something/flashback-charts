@@ -9,7 +9,7 @@ import type { Song } from '../src/types/song'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(here, '..')
-const outDir = resolve(projectRoot, 'public/og')
+const outDir = resolve(projectRoot, 'public/og/au')
 
 const WIDTH = 1200
 const HEIGHT = 630

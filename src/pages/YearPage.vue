@@ -42,7 +42,6 @@ const getYearNavStyle = (year: number) => {
     '--nav-font-family': yearTheme.bodyFontFamily ?? yearTheme.fontFamily,
   }
 }
-const topSong = computed(() => store.currentSongs[0] ?? null)
 const heading = computed(() => getYearPageHeading(yearNumber.value))
 const title = computed(() => getYearPageTitle(yearNumber.value))
 const description = computed(() => getYearPageDescription(yearNumber.value))
@@ -60,8 +59,8 @@ const selectedSongRank = computed(() => {
   return Number.isInteger(songRank) ? songRank : null
 })
 const ogImage = computed(() =>
-  topSong.value?.thumbnailPath
-    ? `${siteUrl.value}${topSong.value.thumbnailPath}`
+  siteUrl.value
+    ? `${siteUrl.value}/og/au/year-${yearNumber.value}.jpg`
     : undefined,
 )
 

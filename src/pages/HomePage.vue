@@ -65,7 +65,7 @@ const latestYear = getLatestYear()
 const title = getHomePageTitle()
 const description = getHomePageDescription()
 const methodologyText = getHomePageMethodologyText()
-const homeImage = siteUrl ? `${siteUrl}/og/home.png` : undefined
+const homeImage = siteUrl ? `${siteUrl}/og/au/home.jpg` : undefined
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [

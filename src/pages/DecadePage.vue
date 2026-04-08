@@ -91,15 +91,11 @@ const siteUrl = computed(() => {
 const canonical = computed(() =>
   siteUrl.value ? `${siteUrl.value}/au/${props.decade}` : undefined,
 )
-const ogImage = computed(() => {
-  const leadThumbnail = getTopSongThumbnails(
-    years.value[0] ?? decadeStartYear.value,
-    1,
-  )[0]
-  return leadThumbnail && siteUrl.value
-    ? `${siteUrl.value}${leadThumbnail}`
-    : undefined
-})
+const ogImage = computed(() =>
+  siteUrl.value
+    ? `${siteUrl.value}/og/au/decade-${props.decade}.jpg`
+    : undefined,
+)
 const jsonLd = computed(() => ({
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
