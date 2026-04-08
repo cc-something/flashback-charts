@@ -165,7 +165,7 @@ useHead({
         class="mb-8 rounded-2xl border border-white/10 bg-black/46 px-5 py-5 backdrop-blur-[8px]"
       >
         <h1 class="text-2xl text-text-muted">
-          Australia's Top 10 Songs by Year — 1940 to {{ latestYear }}
+          Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
         </h1>
         <p class="mt-2 text-base leading-relaxed text-text-muted/70">
           {{ subtitle }}
