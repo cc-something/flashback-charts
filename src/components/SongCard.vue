@@ -170,7 +170,7 @@ const youtubeVideoUrl = computed(() =>
     >
       <div v-if="displaySong.youtubeVideoId" class="group/action relative">
         <span
-          class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
+          class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
         >
           YouTube
         </span>
@@ -187,9 +187,9 @@ const youtubeVideoUrl = computed(() =>
 
       <div class="group/action relative">
         <span
-          class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
+          class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
         >
-          Report an issue
+          Report an issue with this song
         </span>
         <button
           type="button"
