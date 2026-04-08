@@ -11,12 +11,12 @@ const theme: DecadeTheme = {
   colors: {
     background: '#0c0818',
     surface: '#170f2c',
-    primary: '#b44fff',
-    secondary: '#00d4c8',
+    primary: '#7c6fe0',
+    secondary: '#00c4b8',
     text: '#f0ecff',
     textMuted: '#8878aa',
     accent: '#ff6b6b',
-    tabActive: '#b44fff',
+    tabActive: '#7c6fe0',
     tabInactive: '#170f2c',
   },
 }
