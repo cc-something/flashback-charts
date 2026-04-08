@@ -307,7 +307,7 @@ onUnmounted(() => teardownKonamiListener())
           @click="emailSignup.show.value = true"
         >
           <Mailbox class="h-3.5 w-3.5" />
-          Sign up for our Newsletter
+          Newsletter
         </button>
         <button
           type="button"
@@ -315,7 +315,7 @@ onUnmounted(() => teardownKonamiListener())
           @click="isContactOpen = true"
         >
           <Mail class="h-3.5 w-3.5" />
-          Contact us
+          Contact
         </button>
         <div class="flex items-center gap-4">
           <a
@@ -335,7 +335,7 @@ onUnmounted(() => teardownKonamiListener())
       <div
         class="mt-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
       >
-        <p class="text-xs text-text-muted/70">
+        <p class="text-sm text-text-muted/70">
           © CC Something Pty Ltd {{ currentYear }}
         </p>
         <button
