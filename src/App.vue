@@ -227,7 +227,6 @@ onUnmounted(() => teardownKonamiListener())
 
     <footer class="flex justify-center gap-6 py-6">
       <button
-        v-if="route.name === 'year'"
         type="button"
         class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
         @click="isHotkeysOpen = true"
