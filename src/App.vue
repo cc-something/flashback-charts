@@ -154,7 +154,7 @@ watch(
   () => chart.selectedYear,
   (year) => {
     if (route.name === 'year' && Number(route.params.year) === year) return
-    router.push(`/${year}`)
+    router.push(`/au/${year}`)
   },
 )
 
@@ -188,7 +188,7 @@ onUnmounted(() => teardownKonamiListener())
       <header class="border-b border-primary/15 bg-surface">
         <div :class="headerContainerClass">
           <router-link
-            to="/"
+            to="/au"
             class="flex items-center gap-[0.25em] font-bold text-primary no-underline"
             :style="headerWordmarkStyle"
           >

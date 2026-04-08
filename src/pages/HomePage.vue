@@ -79,14 +79,14 @@ const jsonLd = {
     {
       '@type': 'CollectionPage',
       'name': title,
-      'url': siteUrl,
+      'url': siteUrl ? `${siteUrl}/au` : undefined,
       'description': description,
       'image': homeImage,
       'inLanguage': 'en-AU',
       'hasPart': rawDecades.map((group) => ({
         '@type': 'CollectionPage',
         'name': getDecadePageTitle(group.decade),
-        'url': siteUrl ? `${siteUrl}/${group.decade}` : undefined,
+        'url': siteUrl ? `${siteUrl}/au/${group.decade}` : undefined,
         'description': getDecadePageDescription(group.decade),
       })),
     },
@@ -101,7 +101,7 @@ useHead({
     { property: 'og:site_name', content: 'Flashback Charts Australia' },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
-    ...(siteUrl ? [{ property: 'og:url', content: siteUrl }] : []),
+    ...(siteUrl ? [{ property: 'og:url', content: `${siteUrl}/au` }] : []),
     ...(homeImage ? [{ property: 'og:image', content: homeImage }] : []),
     {
       name: 'twitter:card',
@@ -111,7 +111,7 @@ useHead({
     { name: 'twitter:description', content: description },
     ...(homeImage ? [{ name: 'twitter:image', content: homeImage }] : []),
   ],
-  link: siteUrl ? [{ rel: 'canonical', href: siteUrl }] : [],
+  link: siteUrl ? [{ rel: 'canonical', href: `${siteUrl}/au` }] : [],
   script: siteUrl
     ? [
         {
@@ -206,7 +206,7 @@ useHead({
               }"
             >
               <router-link
-                :to="`/${group.decade}`"
+                :to="`/au/${group.decade}`"
                 class="transition-opacity duration-150 hover:opacity-80"
               >
                 {{ group.decade }}
@@ -229,7 +229,7 @@ useHead({
               <ul class="grid grid-cols-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
                 <li v-for="tile in group.years" :key="tile.year">
                   <router-link
-                    :to="`/${tile.year}`"
+                    :to="`/au/${tile.year}`"
                     class="group relative isolate block aspect-square overflow-hidden rounded-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
                     :style="{
                       backgroundColor: group.theme.colors.surface,

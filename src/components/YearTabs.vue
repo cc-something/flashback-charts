@@ -33,7 +33,7 @@ const scrollToActiveTab = async () => {
 
 const goToYear = (year: number, target: EventTarget | null) => {
   if (!store.availableYears.includes(year)) return
-  router.push(`/${year}`)
+  router.push(`/au/${year}`)
   ;(target as HTMLElement | null)?.blur()
 }
 

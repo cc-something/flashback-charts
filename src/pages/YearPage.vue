@@ -52,7 +52,7 @@ const siteUrl = computed(() => {
   return env?.replace(/\/$/, '') ?? ''
 })
 const canonical = computed(() =>
-  siteUrl.value ? `${siteUrl.value}/${yearNumber.value}` : undefined,
+  siteUrl.value ? `${siteUrl.value}/au/${yearNumber.value}` : undefined,
 )
 const selectedSongRank = computed(() => {
   const { song } = route.query
@@ -197,7 +197,7 @@ watch(
     <nav class="mb-2 flex items-center justify-between gap-3">
       <router-link
         v-if="previousYear"
-        :to="`/${previousYear}`"
+        :to="`/au/${previousYear}`"
         class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
         :style="getYearNavStyle(previousYear)"
       >
@@ -208,7 +208,7 @@ watch(
 
       <router-link
         v-if="nextYear"
-        :to="`/${nextYear}`"
+        :to="`/au/${nextYear}`"
         class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
         :style="getYearNavStyle(nextYear)"
       >

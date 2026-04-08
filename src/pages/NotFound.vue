@@ -14,7 +14,7 @@ useHead({
       We couldn't find that page. Try the home page to browse by year.
     </p>
     <router-link
-      to="/"
+      to="/au"
       class="mt-6 inline-block rounded-md bg-surface px-4 py-2 text-sm font-medium text-text hover:bg-tab-inactive"
     >
       Back to home
