@@ -228,18 +228,18 @@ onUnmounted(() => teardownKonamiListener())
     <footer class="flex justify-center gap-6 py-6">
       <button
         type="button"
-        class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
-        @click="isHotkeysOpen = true"
-      >
-        <Keyboard class="h-3.5 w-3.5" />
-        Keyboard shortcuts
-      </button>
-      <button
-        type="button"
         class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
         @click="emailSignup.show.value = true"
       >
         Newsletter
+      </button>
+      <button
+        type="button"
+        class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
+        @click="isHotkeysOpen = true"
+      >
+        <Keyboard class="h-3.5 w-3.5" />
+        Shortcuts
       </button>
     </footer>
 
