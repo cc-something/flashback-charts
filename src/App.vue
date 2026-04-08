@@ -133,8 +133,8 @@ useHead(() => ({
 }))
 const headerContainerClass = computed(() =>
   route.name === 'year'
-    ? 'header-container mx-auto flex max-w-[50.4rem] items-center justify-between px-4 py-1'
-    : 'header-container mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1',
+    ? 'header-container mx-auto flex max-w-[50.4rem] items-center justify-between px-4 py-3'
+    : 'header-container mx-auto flex max-w-[1300px] items-center justify-between px-4 py-3',
 )
 const headerWordmarkClass = computed(() =>
   isHomeRoute.value
