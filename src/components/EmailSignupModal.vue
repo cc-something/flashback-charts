@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
+import { X } from 'lucide-vue-next'
 
 const emit = defineEmits<{
   dismiss: []
@@ -47,19 +48,7 @@ defineExpose({ focusInput })
           class="absolute right-3 top-3 cursor-pointer rounded-full p-1.5 text-text-muted transition-colors hover:text-text"
           @click="emit('dismiss')"
         >
-          <svg
-            class="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M18 6 6 18M6 6l12 12"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <X class="h-5 w-5" />
         </button>
 
         <template v-if="!submitted">

@@ -12,7 +12,7 @@ import {
 import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { Keyboard, Link, Mail } from 'lucide-vue-next'
+import { Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -45,6 +45,9 @@ const HotkeysModal = defineAsyncComponent(
 const EmailSignupModal = defineAsyncComponent(
   () => import('@/components/EmailSignupModal.vue'),
 )
+const ContactModal = defineAsyncComponent(
+  () => import('@/components/ContactModal.vue'),
+)
 
 useDecadeTheme()
 const emailSignup = useEmailSignup()
@@ -65,6 +68,8 @@ const stickyBar = ref<HTMLDivElement | null>(null)
 const { height: stickyBarHeight } = useElementSize(stickyBar)
 const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
+const isContactOpen = ref(false)
+const isContactEmailRevealed = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
 const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
@@ -82,6 +87,11 @@ const socialLinks = [
 ] as const
 const handleSocialLinkClick = (network: string) =>
   trackEvent('social_link_click', { network })
+const revealContactEmail = () => {
+  if (isContactEmailRevealed.value) return
+  isContactEmailRevealed.value = true
+  trackEvent('reveal email')
+}
 const getActiveTheme = () => {
   if (route.name === 'year') {
     const routeYear = Number(route.params.year)
@@ -282,8 +292,16 @@ onUnmounted(() => teardownKonamiListener())
         class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
         @click="emailSignup.show.value = true"
       >
-        <Mail class="h-3.5 w-3.5" />
+        <Mailbox class="h-3.5 w-3.5" />
         Sign up for our Newsletter
+      </button>
+      <button
+        type="button"
+        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+        @click="isContactOpen = true"
+      >
+        <Mail class="h-3.5 w-3.5" />
+        Contact us
       </button>
       <div class="flex items-center gap-4">
         <a
@@ -320,6 +338,12 @@ onUnmounted(() => teardownKonamiListener())
       v-if="emailSignup.show.value"
       @dismiss="emailSignup.dismiss"
       @submit="emailSignup.submit"
+    />
+    <ContactModal
+      v-if="isContactOpen"
+      :revealed="isContactEmailRevealed"
+      @close="isContactOpen = false"
+      @reveal="revealContactEmail"
     />
     <div
       ref="playerContainer"
