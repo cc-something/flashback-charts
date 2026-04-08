@@ -198,7 +198,7 @@ watch(
       </p>
     </div>
 
-    <div class="mb-1 flex items-end justify-between gap-3">
+    <div class="mb-2 flex items-end justify-between gap-3">
       <a
         v-if="currentSource"
         :href="currentSource.url"
