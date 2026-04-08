@@ -1,4 +1,5 @@
 - privacy info
+- less aggressive newsletter; only after being on a year page, playing something?
 - donate
 
 - astley
