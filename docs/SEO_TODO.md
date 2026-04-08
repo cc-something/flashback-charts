@@ -1,0 +1,38 @@
+# SEO / Lighthouse Todo
+
+## 1. Font loading
+
+- [ ] Limit the home page to one display font plus one body/UI font.
+- [ ] Load decade-specific fonts only on the relevant decade and year pages.
+- [ ] Remove unused global font families from the shared document head.
+- [ ] Preload only the one or two fonts used above the fold on each page.
+- [ ] Consider self-hosting or subsetting the remaining fonts if the payload stays high.
+
+## 2. Home page rendering
+
+- [ ] Keep the home hero in the shared base font stack and avoid decade font switching there.
+- [ ] Render decade cards and previews in the shared home font on the home page.
+- [ ] Make sure above-the-fold content is immediately visible and not gated behind client-only transitions.
+- [ ] Avoid intro effects on the main heading and hero content that could delay LCP detection.
+
+## 3. JavaScript payload
+
+- [ ] Split the large main app bundle so home only ships what home needs.
+- [ ] Defer chart, decade, and detail logic until navigation.
+- [ ] Audit global code that is only needed on deeper pages.
+
+## 4. Images and media
+
+- [ ] Reduce initial home-page image work where possible.
+- [ ] Lazy-load below-the-fold images more aggressively.
+- [ ] Make sure the primary above-the-fold image is prioritized and never lazy-loaded.
+
+## 5. Third-party and misc
+
+- [ ] Fix the broken Plausible script URL that currently returns 404.
+- [ ] Keep only the external preconnects we still need after font cleanup.
+- [ ] Re-run Lighthouse after each change batch because the current report had `NO_LCP` errors.
+
+## 6. Accessibility
+
+- [ ] Increase the search button hit area to at least 24x24.
