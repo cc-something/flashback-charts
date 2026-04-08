@@ -168,7 +168,7 @@ watch(
       style="top: var(--sticky-bar-height)"
     >
       <h1
-        class="theme-display text-3xl font-bold text-primary"
+        class="theme-display text-xl sm:text-2xl md:text-3xl font-bold text-primary"
         :style="{ fontFamily: theme.fontFamily }"
       >
         {{ heading }}
@@ -200,7 +200,7 @@ watch(
       <div v-else />
       <button
         type="button"
-        class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
+        class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-sm sm:text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
         :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
         @click="store.toggleSortOrder()"
       >
@@ -254,7 +254,7 @@ watch(
         :to="`/au/${decadeString}`"
         class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
       >
-        More from the {{ decadeString }}
+        More {{ decadeString }}
       </router-link>
 
       <router-link
