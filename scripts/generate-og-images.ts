@@ -25,11 +25,64 @@ const toBase64DataUrl = (filePath: string): string => {
 const songThumbnailPath = (year: number, song: Song): string =>
   resolve(projectRoot, `public${song.thumbnailPath}`)
 
+// Shuffle array in-place (Fisher-Yates)
+const shuffle = <T>(arr: T[]): T[] => {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
+// Fill `count` tiles from `sources`, no side-by-side duplicates, balanced artist representation
+const fillTiles = (sources: string[], count: number): string[] => {
+  if (sources.length === 0) return []
+  const unique = [...new Set(sources)]
+  shuffle(unique)
+
+  const result: string[] = []
+  let pool = [...unique]
+
+  for (let i = 0; i < count; i++) {
+    if (pool.length === 0) pool = shuffle([...unique])
+
+    // Find a tile that isn't the same as the previous one
+    let picked = pool[0]
+    for (let j = 0; j < pool.length; j++) {
+      if (result.length === 0 || pool[j] !== result[result.length - 1]) {
+        picked = pool[j]
+        pool.splice(j, 1)
+        break
+      }
+    }
+    // Fallback if all remaining are same as last (shouldn't happen with >1 unique)
+    if (
+      result.length > 0 &&
+      picked === result[result.length - 1] &&
+      unique.length > 1
+    ) {
+      pool.push(picked)
+      pool = shuffle(pool)
+      picked = pool.find((t) => t !== result[result.length - 1]) ?? pool[0]
+      pool.splice(pool.indexOf(picked), 1)
+    }
+    result.push(picked)
+  }
+  return result
+}
+
 const fontImport = (theme: DecadeTheme) => `@import url('${theme.fontUrl}');`
+
+const cdPngDataUrl = toBase64DataUrl(resolve(projectRoot, 'public/cd.png'))
+
+const brandHtml = (fontSize: string) => `
+  <span class="brand" style="font-size: ${fontSize}">FLASHBACK CHARTS &nbsp;.&nbsp; COM</span>
+`
 
 const sharedStyles = (theme: DecadeTheme) => `
   ${fontImport(theme)}
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -75,74 +128,112 @@ const sharedStyles = (theme: DecadeTheme) => `
 
 const homeTemplate = () => {
   const theme = getHomeTheme()
+
+  // Gather thumbnails from across all decades
+  const allThumbs: string[] = []
+  const years = getAvailableYears().sort((a, b) => a - b)
+  years.forEach((y) => {
+    const songs = getYearData(y) ?? []
+    songs.forEach((song) => {
+      try {
+        allThumbs.push(toBase64DataUrl(songThumbnailPath(y, song)))
+      } catch {
+        /* skip missing */
+      }
+    })
+  })
+
+  const cols = 8
+  const rows = 4
+  const tiles = fillTiles(allThumbs, cols * rows)
+
   return `<!DOCTYPE html>
 <html><head><style>
   ${sharedStyles(theme)}
 
   body {
+    position: relative;
+  }
+
+  .mosaic {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(${cols}, 1fr);
+    grid-template-rows: repeat(${rows}, 1fr);
+    gap: 0;
+  }
+
+  .mosaic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, ${theme.colors.background}fa 0%, ${theme.colors.background}ee 30%, ${theme.colors.background}cc 55%, ${theme.colors.background}aa 75%, ${theme.colors.background}99 100%);
+    z-index: 1;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 40px 56px;
+    height: 100%;
+    width: 100%;
+    gap: 4px;
   }
 
-  .logo-icon {
-    font-size: 64px;
-    margin-bottom: 16px;
+  .disc {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 8px;
   }
 
   h1 {
-    font-size: 72px;
+    font-size: 120px;
     font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    line-height: 1;
+    color: ${theme.colors.primary};
+    white-space: nowrap;
+  }
+
+  h2 {
+    font-size: 120px;
+    font-weight: 700;
+    line-height: 1;
+    color: ${theme.colors.primary};
+    white-space: nowrap;
+  }
+
+  .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 48px;
     color: ${theme.colors.text};
-    margin-bottom: 12px;
-  }
-
-  h1 span {
-    color: ${theme.colors.primary};
-  }
-
-  .subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 26px;
-    color: ${theme.colors.textMuted};
-    margin-bottom: 32px;
-    font-weight: 400;
-  }
-
-  .year-range {
-    font-family: 'Inter', sans-serif;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 28px;
-    background: ${theme.colors.surface};
-    border-radius: 999px;
-    font-size: 20px;
-    color: ${theme.colors.primary};
     font-weight: 500;
-    border: 1px solid ${theme.colors.primary}33;
-  }
-
-  .year-range .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: ${theme.colors.accent};
+    margin-top: 12px;
   }
 </style></head><body>
-  <div class="logo-icon">💿</div>
-  <h1>Flashback <span>Charts</span></h1>
-  <p class="subtitle">Australia's Top 10 Songs — Every Year</p>
-  <div class="year-range">
-    <span>1940</span>
-    <span class="dot"></span>
-    <span>2025</span>
+  <div class="mosaic">
+    ${tiles.map((src) => `<img src="${src}" />`).join('')}
   </div>
-  <div class="accent-bar"></div>
-  <div class="grain"></div>
+  <div class="overlay"></div>
+  <div class="content">
+    <img class="disc" src="${cdPngDataUrl}" />
+    <h1>Flashback Charts</h1>
+    <h2>Australia</h2>
+    <p class="label">Top 10 songs across the years</p>
+  </div>
+  <div class="accent-bar" style="z-index:3"></div>
+  <div class="grain" style="z-index:3"></div>
 </body></html>`
 }
 
@@ -155,113 +246,110 @@ const decadeTemplate = (decade: string) => {
     .filter((y) => getDecadeForYear(y) === decade)
     .sort((a, b) => a - b)
 
-  const thumbnails = years.map((y) => {
-    const songs = getYearData(y)
-    const topSong = songs?.[0]
-    const imgSrc = topSong ? toBase64DataUrl(songThumbnailPath(y, topSong)) : ''
-    return {
-      year: y,
-      imgSrc,
-      title: topSong?.title ?? '',
-      artist: topSong?.artist ?? '',
-    }
+  // Gather all song thumbnails for the mosaic
+  const allThumbs: string[] = []
+  years.forEach((y) => {
+    const songs = getYearData(y) ?? []
+    songs.forEach((song) => {
+      try {
+        allThumbs.push(toBase64DataUrl(songThumbnailPath(y, song)))
+      } catch {
+        /* skip missing */
+      }
+    })
   })
+
+  // Fill a grid that covers 1200×630 with ~150px tiles = 8 cols × 5 rows = 40 tiles
+  const cols = 8
+  const rows = 4
+  const tileSize = Math.ceil(WIDTH / cols)
+  const tiles = fillTiles(allThumbs, cols * rows)
 
   return `<!DOCTYPE html>
 <html><head><style>
   ${sharedStyles(theme)}
 
   body {
-    flex-direction: row;
-    padding: 48px 56px;
-    gap: 48px;
+    position: relative;
   }
 
-  .left {
-    flex: 1;
+  .mosaic {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(${cols}, 1fr);
+    grid-template-rows: repeat(${rows}, 1fr);
+    gap: 0;
+  }
+
+  .mosaic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, ${theme.colors.background}fa 0%, ${theme.colors.background}f5 20%, ${theme.colors.background}ee 35%, ${theme.colors.background}dd 50%, ${theme.colors.background}cc 65%, ${theme.colors.background}bb 78%, ${theme.colors.background}aa 90%, ${theme.colors.background}99 100%);
+    z-index: 1;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 0;
+    padding: 56px;
+    height: 100%;
+    width: 100%;
   }
 
   h1 {
-    font-size: 96px;
+    font-size: 140px;
     font-weight: 700;
     line-height: 1;
     color: ${theme.colors.primary};
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+  }
+
+  h1 .disc {
+    width: 0.75em;
+    height: 0.75em;
+    flex-shrink: 0;
   }
 
   .label {
     font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    color: ${theme.colors.textMuted};
+    font-size: 64px;
+    color: ${theme.colors.text};
     margin-bottom: 24px;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
     margin-top: auto;
   }
-
-  .right {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 10px;
-    align-self: center;
-  }
-
-  .thumb {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    background: ${theme.colors.surface};
-    border: 1px solid ${theme.colors.primary}22;
-  }
-
-  .thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .thumb .year-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2px 0;
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    color: ${theme.colors.text};
-    background: ${theme.colors.background}cc;
-  }
 </style></head><body>
-  <div class="left">
-    <h1>${decade}</h1>
-    <p class="label">Flashback Charts Australia</p>
-    <span class="brand">flashbackcharts.com</span>
+  <div class="mosaic">
+    ${tiles.map((src) => `<img src="${src}" />`).join('')}
   </div>
-  <div class="right">
-    ${thumbnails
-      .map(
-        (t) => `
-      <div class="thumb">
-        ${t.imgSrc ? `<img src="${t.imgSrc}" alt="${t.title}" />` : ''}
-        <div class="year-label">${t.year}</div>
-      </div>
-    `,
-      )
-      .join('')}
+  <div class="overlay"></div>
+  <div class="content">
+    <h1><img class="disc" src="${cdPngDataUrl}" />${decade}</h1>
+    <p class="label">Australia's Top 10 for each year</p>
+    ${brandHtml('54px')}
   </div>
-  <div class="accent-bar"></div>
-  <div class="grain"></div>
+  <div class="accent-bar" style="z-index:3"></div>
+  <div class="grain" style="z-index:3"></div>
 </body></html>`
 }
 
@@ -270,162 +358,106 @@ const decadeTemplate = (decade: string) => {
 const yearTemplate = (year: number) => {
   const theme = getThemeForYear(year)
   const songs = getYearData(year) ?? []
-  const topSongs = songs.slice(0, 5)
+
+  // Gather all song thumbnails for mosaic
+  const allThumbs: string[] = []
+  songs.forEach((song) => {
+    try {
+      allThumbs.push(toBase64DataUrl(songThumbnailPath(year, song)))
+    } catch {
+      /* skip missing */
+    }
+  })
+
+  const cols = 8
+  const rows = 4
+  const tiles = fillTiles(allThumbs, cols * rows)
 
   return `<!DOCTYPE html>
 <html><head><style>
   ${sharedStyles(theme)}
 
   body {
-    flex-direction: row;
-    padding: 48px 56px;
-    gap: 40px;
+    position: relative;
   }
 
-  .left {
-    flex: 1;
+  .mosaic {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(${cols}, 1fr);
+    grid-template-rows: repeat(${rows}, 1fr);
+    gap: 0;
+  }
+
+  .mosaic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, ${theme.colors.background}fa 0%, ${theme.colors.background}f5 20%, ${theme.colors.background}ee 35%, ${theme.colors.background}dd 50%, ${theme.colors.background}cc 65%, ${theme.colors.background}bb 78%, ${theme.colors.background}aa 90%, ${theme.colors.background}99 100%);
+    z-index: 1;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 0;
-  }
-
-  .year-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: ${theme.colors.accent};
-    margin-bottom: 8px;
+    padding: 56px;
+    height: 100%;
+    width: 100%;
   }
 
   h1 {
-    font-size: 120px;
+    font-size: 140px;
     font-weight: 700;
     line-height: 1;
     color: ${theme.colors.primary};
     margin-bottom: 16px;
-  }
-
-  .top-song {
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
-    color: ${theme.colors.text};
-    line-height: 1.4;
-    margin-bottom: 4px;
-  }
-
-  .top-song .artist {
-    color: ${theme.colors.textMuted};
-  }
-
-  .chart-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: ${theme.colors.textMuted};
-    margin-top: 20px;
-    margin-bottom: 8px;
-    opacity: 0.7;
-  }
-
-  .brand {
-    margin-top: auto;
-  }
-
-  .right {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    justify-content: center;
-    width: 480px;
-  }
-
-  .song-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 6px 12px;
-    background: ${theme.colors.surface};
-    border-radius: 10px;
-    border: 1px solid ${theme.colors.primary}15;
+    gap: 0.2em;
   }
 
-  .song-row .rank {
-    font-family: ${theme.fontFamily};
-    font-size: 20px;
-    font-weight: 700;
-    color: ${theme.colors.primary};
-    min-width: 28px;
-    text-align: center;
-  }
-
-  .song-row img {
-    width: 52px;
-    height: 52px;
-    border-radius: 6px;
-    object-fit: cover;
+  h1 .disc {
+    width: 0.75em;
+    height: 0.75em;
     flex-shrink: 0;
   }
 
-  .song-info {
-    min-width: 0;
-    flex: 1;
-  }
-
-  .song-info .title {
+  .label {
     font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 64px;
     color: ${theme.colors.text};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: 500;
+    margin-bottom: 24px;
   }
 
-  .song-info .artist {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    color: ${theme.colors.textMuted};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: auto;
   }
 </style></head><body>
-  <div class="left">
-    <div class="year-label">Top 10 Australia</div>
-    <h1>${year}</h1>
-    ${
-      songs[0]
-        ? `
-      <p class="top-song">
-        #1 ${songs[0].title}<br/>
-        <span class="artist">${songs[0].artist}</span>
-      </p>
-    `
-        : ''
-    }
-    <span class="brand">flashbackcharts.com</span>
+  <div class="mosaic">
+    ${tiles.map((src) => `<img src="${src}" />`).join('')}
   </div>
-  <div class="right">
-    ${topSongs
-      .map((song) => {
-        const imgSrc = toBase64DataUrl(songThumbnailPath(year, song))
-        return `
-        <div class="song-row">
-          <span class="rank">${song.rank}</span>
-          <img src="${imgSrc}" alt="${song.title}" />
-          <div class="song-info">
-            <div class="title">${song.title}</div>
-            <div class="artist">${song.artist}</div>
-          </div>
-        </div>
-      `
-      })
-      .join('')}
+  <div class="overlay"></div>
+  <div class="content">
+    <h1><img class="disc" src="${cdPngDataUrl}" />${year}</h1>
+    <p class="label">Australia's Top 10 songs</p>
+    ${brandHtml('54px')}
   </div>
-  <div class="accent-bar"></div>
-  <div class="grain"></div>
+  <div class="accent-bar" style="z-index:3"></div>
+  <div class="grain" style="z-index:3"></div>
 </body></html>`
 }
 
@@ -437,24 +469,43 @@ const main = async () => {
   const browser = await chromium.launch()
   const context = await browser.newContext({
     viewport: { width: WIDTH, height: HEIGHT },
-    deviceScaleFactor: 2,
+    deviceScaleFactor: 1,
   })
 
   const screenshot = async (html: string, filename: string) => {
     const page = await context.newPage()
     await page.setContent(html, { waitUntil: 'networkidle' })
     const outPath = resolve(outDir, filename)
-    await page.screenshot({ path: outPath, type: 'png' })
+    await page.screenshot({ path: outPath, type: 'jpeg', quality: 85 })
     await page.close()
     console.log(`  ✓ ${filename}`)
   }
 
-  // Generate one of each for review
+  // Generate home
   console.log('Generating OG images...')
+  await screenshot(homeTemplate(), 'home.jpg')
 
-  await screenshot(homeTemplate(), 'home.png')
-  await screenshot(decadeTemplate('1990s'), 'decade-1990s.png')
-  await screenshot(yearTemplate(1994), 'year-1994.png')
+  // Generate all decades + one sample year per decade
+  const decades = [
+    '1940s',
+    '1950s',
+    '1960s',
+    '1970s',
+    '1980s',
+    '1990s',
+    '2000s',
+    '2010s',
+    '2020s',
+  ]
+  const allYears = getAvailableYears().sort((a, b) => a - b)
+
+  for (const d of decades) {
+    await screenshot(decadeTemplate(d), `decade-${d}.jpg`)
+  }
+
+  for (const y of allYears) {
+    await screenshot(yearTemplate(y), `year-${y}.jpg`)
+  }
 
   await browser.close()
   console.log(`\nDone! Images saved to ${outDir}`)
