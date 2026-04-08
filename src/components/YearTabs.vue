@@ -3,6 +3,7 @@ import { ref, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 import { getThemeForYear } from '@/themes'
+import { getYearPath } from '@/utils/url'
 
 const store = useChartStore()
 const router = useRouter()
@@ -37,7 +38,7 @@ const scrollToActiveTab = async () => {
 const goToYear = (year: number, target: EventTarget | null) => {
   if (!store.availableYears.includes(year)) return
   shouldAutoScroll.value = true
-  router.push(`/au/${year}`)
+  router.push(getYearPath(year))
   ;(target as HTMLElement | null)?.blur()
 }
 

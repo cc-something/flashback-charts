@@ -17,6 +17,12 @@ import {
   useRickRollMode,
   RICK_ASTLEY_SONG,
 } from '@/composables/useRickRollMode'
+import {
+  getAbsoluteUrl,
+  getDecadePath,
+  getOpenGraphImageMeta,
+  getYearPath,
+} from '@/utils/url'
 
 const props = defineProps<{ decade: string }>()
 const BACKGROUND_ROW_COUNT = 6
@@ -89,14 +95,14 @@ const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''
 })
+const decadePath = computed(() => getDecadePath(props.decade))
 const canonical = computed(() =>
-  siteUrl.value ? `${siteUrl.value}/au/${props.decade}` : undefined,
+  getAbsoluteUrl(siteUrl.value, decadePath.value),
 )
 const ogImage = computed(() =>
-  siteUrl.value
-    ? `${siteUrl.value}/og/au/decade-${props.decade}.jpg`
-    : undefined,
+  getAbsoluteUrl(siteUrl.value, `/og/au/decade-${props.decade}.jpg`),
 )
+const imageAlt = computed(() => `${title.value} social preview`)
 const jsonLd = computed(() => ({
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -108,7 +114,7 @@ const jsonLd = computed(() => ({
   'hasPart': years.value.map((year) => ({
     '@type': 'WebPage',
     'name': `Top 10 Songs in Australia in ${year}`,
-    'url': canonical.value ? `${siteUrl.value}/au/${year}` : undefined,
+    'url': getAbsoluteUrl(siteUrl.value, getYearPath(year)),
     'description': getYearSummaryText(year),
   })),
 }))
@@ -124,18 +130,13 @@ useHead(() => ({
     ...(canonical.value
       ? [{ property: 'og:url', content: canonical.value }]
       : []),
-    ...(ogImage.value
-      ? [{ property: 'og:image', content: ogImage.value }]
-      : []),
+    ...getOpenGraphImageMeta(ogImage.value, imageAlt.value),
     {
       name: 'twitter:card',
       content: ogImage.value ? 'summary_large_image' : 'summary',
     },
     { name: 'twitter:title', content: title.value },
     { name: 'twitter:description', content: description.value },
-    ...(ogImage.value
-      ? [{ name: 'twitter:image', content: ogImage.value }]
-      : []),
   ],
   link: canonical.value ? [{ rel: 'canonical', href: canonical.value }] : [],
   script: [
@@ -210,7 +211,7 @@ useHead(() => ({
       <nav class="mb-5 flex items-center justify-between gap-3">
         <router-link
           v-if="previousDecade"
-          :to="`/au/${previousDecade}`"
+          :to="getDecadePath(previousDecade)"
           class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
           :style="getDecadeNavStyle(previousDecade)"
         >
@@ -221,7 +222,7 @@ useHead(() => ({
 
         <router-link
           v-if="nextDecade"
-          :to="`/au/${nextDecade}`"
+          :to="getDecadePath(nextDecade)"
           class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
           :style="getDecadeNavStyle(nextDecade)"
         >
@@ -249,7 +250,7 @@ useHead(() => ({
             }"
           >
             <router-link
-              :to="`/au/${year}`"
+              :to="getYearPath(year)"
               :aria-label="`View top 10 songs of ${year}`"
               class="group relative block aspect-square overflow-hidden rounded-xl"
               :style="{
@@ -293,7 +294,7 @@ useHead(() => ({
                 }"
               >
                 <router-link
-                  :to="`/au/${year}`"
+                  :to="getYearPath(year)"
                   class="text-inherit no-underline"
                 >
                   {{ year }}
@@ -303,7 +304,7 @@ useHead(() => ({
                 {{ getYearSummaryText(year) }}
               </p>
               <router-link
-                :to="`/au/${year}`"
+                :to="getYearPath(year)"
                 class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
                 :style="{
                   backgroundColor: theme.colors.primary,

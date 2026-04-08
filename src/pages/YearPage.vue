@@ -22,6 +22,12 @@ import { usePlayerStore } from '@/stores/player'
 import { applyPendingTheme } from '@/composables/useDecadeTheme'
 import { getThemeForYear } from '@/themes'
 import SongCard from '@/components/SongCard.vue'
+import {
+  getAbsoluteUrl,
+  getDecadePath,
+  getOpenGraphImageMeta,
+  getYearPath,
+} from '@/utils/url'
 
 const props = defineProps<{ year: string }>()
 
@@ -63,19 +69,18 @@ const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''
 })
-const canonical = computed(() =>
-  siteUrl.value ? `${siteUrl.value}/au/${yearNumber.value}` : undefined,
-)
+const yearPath = computed(() => getYearPath(yearNumber.value))
+const decadePath = computed(() => getDecadePath(decadeString.value))
+const canonical = computed(() => getAbsoluteUrl(siteUrl.value, yearPath.value))
 const selectedSongRank = computed(() => {
   const { song } = route.query
   const songRank = Number(Array.isArray(song) ? song[0] : song)
   return Number.isInteger(songRank) ? songRank : null
 })
 const ogImage = computed(() =>
-  siteUrl.value
-    ? `${siteUrl.value}/og/au/year-${yearNumber.value}.jpg`
-    : undefined,
+  getAbsoluteUrl(siteUrl.value, `/og/au/year-${yearNumber.value}.jpg`),
 )
+const imageAlt = computed(() => `${title.value} social preview`)
 
 const jsonLd = computed(() => {
   if (!songs.value.length) return null
@@ -95,9 +100,7 @@ const jsonLd = computed(() => {
       'url': canonical.value
         ? `${canonical.value}?song=${song.rank}`
         : undefined,
-      'image': siteUrl.value
-        ? `${siteUrl.value}${song.thumbnailPath}`
-        : undefined,
+      'image': getAbsoluteUrl(siteUrl.value, song.thumbnailPath),
       ...(song.album && {
         inAlbum: { '@type': 'MusicAlbum', 'name': song.album },
       }),
@@ -117,15 +120,10 @@ useHead(() => ({
     ...(canonical.value
       ? [{ property: 'og:url', content: canonical.value }]
       : []),
-    ...(ogImage.value
-      ? [{ property: 'og:image', content: ogImage.value }]
-      : []),
+    ...getOpenGraphImageMeta(ogImage.value, imageAlt.value),
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title.value },
     { name: 'twitter:description', content: description.value },
-    ...(ogImage.value
-      ? [{ name: 'twitter:image', content: ogImage.value }]
-      : []),
   ],
   link: canonical.value ? [{ rel: 'canonical', href: canonical.value }] : [],
   script: jsonLd.value
@@ -252,7 +250,7 @@ watch(
     <nav class="mt-4 flex items-center justify-between gap-3">
       <router-link
         v-if="previousYear"
-        :to="`/au/${previousYear}`"
+        :to="getYearPath(previousYear)"
         class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
         :style="getYearNavStyle(previousYear)"
       >
@@ -262,7 +260,7 @@ watch(
       <div v-else />
 
       <router-link
-        :to="`/au/${decadeString}`"
+        :to="decadePath"
         class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
       >
         More {{ decadeString }}
@@ -270,7 +268,7 @@ watch(
 
       <router-link
         v-if="nextYear"
-        :to="`/au/${nextYear}`"
+        :to="getYearPath(nextYear)"
         class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
         :style="getYearNavStyle(nextYear)"
       >

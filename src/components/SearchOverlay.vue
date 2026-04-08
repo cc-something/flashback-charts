@@ -4,6 +4,7 @@ import { X } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { usePlayerStore } from '@/stores/player'
 import { searchSongs } from '@/data'
+import { getYearPath } from '@/utils/url'
 
 const emit = defineEmits<{ close: [] }>()
 
@@ -16,7 +17,7 @@ const allResults = computed(() => searchSongs(query.value))
 const results = computed(() => allResults.value.slice(0, 50))
 
 const goToSong = (year: number, rank: number) => {
-  router.push({ path: `/au/${year}`, query: { song: String(rank) } })
+  router.push({ path: getYearPath(year), query: { song: String(rank) } })
   emit('close')
 }
 

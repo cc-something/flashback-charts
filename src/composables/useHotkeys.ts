@@ -4,6 +4,7 @@ import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
+import { getYearPath } from '@/utils/url'
 
 const KONAMI = [
   'ArrowUp',
@@ -144,10 +145,7 @@ export const useHotkeys = (
       if (route.name === 'year') {
         const yearIdx = chart.availableYears.indexOf(chart.selectedYear)
         if (yearIdx > 0)
-          router.push({
-            name: 'year',
-            params: { year: chart.availableYears[yearIdx - 1] },
-          })
+          router.push(getYearPath(chart.availableYears[yearIdx - 1]))
       }
       return
     }
@@ -157,10 +155,7 @@ export const useHotkeys = (
       if (route.name === 'year') {
         const yearIdx = chart.availableYears.indexOf(chart.selectedYear)
         if (yearIdx < chart.availableYears.length - 1)
-          router.push({
-            name: 'year',
-            params: { year: chart.availableYears[yearIdx + 1] },
-          })
+          router.push(getYearPath(chart.availableYears[yearIdx + 1]))
       }
       return
     }

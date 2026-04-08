@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useHead } from '@unhead/vue'
+import { getHomePath } from '@/utils/url'
 
 useHead({
   title: 'Page not found | Flashback Charts Australia',
@@ -14,7 +15,7 @@ useHead({
       We couldn't find that page. Try the home page to browse by year.
     </p>
     <router-link
-      to="/au"
+      :to="getHomePath()"
       class="mt-6 inline-block rounded-md bg-surface px-4 py-2 text-sm font-medium text-text hover:bg-tab-inactive"
     >
       Back to home

@@ -33,6 +33,7 @@ import {
   mergeFontLinks,
   getThemeFontLinks,
 } from '@/themes/font'
+import { getHomePath, getYearPath } from '@/utils/url'
 import YearTabs from '@/components/YearTabs.vue'
 const MiniPlayer = defineAsyncComponent(
   () => import('@/components/MiniPlayer.vue'),
@@ -225,7 +226,7 @@ watch(
   () => chart.selectedYear,
   (year) => {
     if (route.name === 'year' && Number(route.params.year) === year) return
-    router.push(`/au/${year}`)
+    router.push(getYearPath(year))
   },
 )
 
@@ -267,7 +268,7 @@ onUnmounted(() => teardownKonamiListener())
       <header class="border-b border-primary/15 bg-surface">
         <div :class="headerContainerClass">
           <router-link
-            to="/au"
+            :to="getHomePath()"
             :class="headerWordmarkClass"
             :style="headerWordmarkStyle"
           >

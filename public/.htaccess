@@ -6,8 +6,8 @@
 Options -MultiViews
 RewriteEngine On
 
-# Redirect bare root to /au.
-RewriteRule ^$ /au [R=301,L]
+# Redirect bare root to /au/.
+RewriteRule ^$ /au/ [R=301,L]
 
 # Skip rewrite for real files and directories (assets, prerendered HTML, sitemap, etc.).
 RewriteCond %{REQUEST_FILENAME} -f [OR]

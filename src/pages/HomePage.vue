@@ -16,6 +16,13 @@ import {
   useRickRollMode,
   RICK_ASTLEY_SONG,
 } from '@/composables/useRickRollMode'
+import {
+  getAbsoluteUrl,
+  getDecadePath,
+  getHomePath,
+  getOpenGraphImageMeta,
+  getYearPath,
+} from '@/utils/url'
 
 const { isRickRollActive } = useRickRollMode()
 const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
@@ -100,7 +107,10 @@ const latestYear = getLatestYear()
 const title = getHomePageTitle()
 const description = getHomePageDescription()
 const subtitle = getHomePageSubtitle()
-const homeImage = siteUrl ? `${siteUrl}/og/au/home.jpg` : undefined
+const homePath = getHomePath()
+const homeUrl = getAbsoluteUrl(siteUrl, homePath)
+const homeImage = getAbsoluteUrl(siteUrl, '/og/au/home.jpg')
+const imageAlt = `${title} social preview`
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -114,14 +124,14 @@ const jsonLd = {
     {
       '@type': 'CollectionPage',
       'name': title,
-      'url': siteUrl ? `${siteUrl}/au` : undefined,
+      'url': homeUrl,
       'description': description,
       'image': homeImage,
       'inLanguage': 'en-AU',
       'hasPart': rawDecades.map((group) => ({
         '@type': 'CollectionPage',
         'name': getDecadePageTitle(group.decade),
-        'url': siteUrl ? `${siteUrl}/au/${group.decade}` : undefined,
+        'url': getAbsoluteUrl(siteUrl, getDecadePath(group.decade)),
         'description': getDecadePageDescription(group.decade),
       })),
     },
@@ -136,17 +146,16 @@ useHead({
     { property: 'og:site_name', content: 'Flashback Charts Australia' },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
-    ...(siteUrl ? [{ property: 'og:url', content: `${siteUrl}/au` }] : []),
-    ...(homeImage ? [{ property: 'og:image', content: homeImage }] : []),
+    ...(homeUrl ? [{ property: 'og:url', content: homeUrl }] : []),
+    ...getOpenGraphImageMeta(homeImage, imageAlt),
     {
       name: 'twitter:card',
       content: homeImage ? 'summary_large_image' : 'summary',
     },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
-    ...(homeImage ? [{ name: 'twitter:image', content: homeImage }] : []),
   ],
-  link: siteUrl ? [{ rel: 'canonical', href: `${siteUrl}/au` }] : [],
+  link: homeUrl ? [{ rel: 'canonical', href: homeUrl }] : [],
   script: siteUrl
     ? [
         {
@@ -249,7 +258,7 @@ onUnmounted(() => {
               :style="{ color: group.theme.colors.primary }"
             >
               <router-link
-                :to="`/au/${group.decade}`"
+                :to="getDecadePath(group.decade)"
                 class="transition-opacity duration-150 hover:opacity-80"
               >
                 {{ group.decade }}
@@ -272,7 +281,7 @@ onUnmounted(() => {
               <ul class="grid grid-cols-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
                 <li v-for="(tile, tileIndex) in group.years" :key="tile.year">
                   <router-link
-                    :to="`/au/${tile.year}`"
+                    :to="getYearPath(tile.year)"
                     class="group relative isolate block aspect-square overflow-hidden rounded-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
                     :style="{
                       backgroundColor: group.theme.colors.surface,
