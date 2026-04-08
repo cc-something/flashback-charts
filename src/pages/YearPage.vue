@@ -58,13 +58,62 @@ const currentDescription = computed<string | null>(() =>
   getYearDescription(yearNumber.value),
 )
 const hasData = computed(() => songs.value.length > 0)
-const getRepeatingTiles = (thumbnails: string[], tileCount: number) => {
+const getSeededRandom = (seed: number) => {
+  let nextSeed = seed % 2_147_483_647
+  if (nextSeed <= 0) nextSeed += 2_147_483_646
+
+  return () => {
+    nextSeed = (nextSeed * 16_807) % 2_147_483_647
+    return (nextSeed - 1) / 2_147_483_646
+  }
+}
+const getShuffledTiles = (thumbnails: string[], seed: number) => {
+  const random = getSeededRandom(seed)
+  const shuffledTiles = [...thumbnails]
+
+  for (let index = shuffledTiles.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1))
+    const currentTile = shuffledTiles[index]
+    const nextTile = shuffledTiles[swapIndex]
+    if (!currentTile || !nextTile) continue
+    shuffledTiles[index] = nextTile
+    shuffledTiles[swapIndex] = currentTile
+  }
+
+  return shuffledTiles
+}
+const getRepeatedTiles = (
+  thumbnails: string[],
+  tileCount: number,
+  seed: number,
+) => {
   if (thumbnails.length === 0) return []
+
   const uniqueThumbnails = [...new Set(thumbnails)]
-  return Array.from(
-    { length: tileCount },
-    (_, index) => uniqueThumbnails[index % uniqueThumbnails.length],
-  )
+  if (uniqueThumbnails.length === 1)
+    return Array.from({ length: tileCount }, () => uniqueThumbnails[0] ?? '')
+
+  const result: string[] = []
+  let remainingTiles = getShuffledTiles(uniqueThumbnails, seed)
+  let poolSeed = seed + uniqueThumbnails.length
+
+  for (let index = 0; index < tileCount; index += 1) {
+    if (remainingTiles.length === 0) {
+      poolSeed += 1
+      remainingTiles = getShuffledTiles(uniqueThumbnails, poolSeed)
+    }
+
+    const previousTile = result[result.length - 1] ?? null
+    const nextTileIndex = remainingTiles.findIndex(
+      (thumbnail) => thumbnail !== previousTile,
+    )
+    const pickIndex = nextTileIndex === -1 ? 0 : nextTileIndex
+    const pickedTile = remainingTiles[pickIndex] ?? uniqueThumbnails[0]
+    remainingTiles.splice(pickIndex, 1)
+    result.push(pickedTile)
+  }
+
+  return result
 }
 const getDistributedRows = (thumbnails: string[], rowCount: number) => {
   if (thumbnails.length === 0) return []
@@ -77,8 +126,16 @@ const getDistributedRows = (thumbnails: string[], rowCount: number) => {
 const backgroundRows = computed(() =>
   getDistributedRows(
     isRickRollActive.value
-      ? getRepeatingTiles([rickThumbnail], YEAR_BACKGROUND_ROW_COUNT * 8)
-      : songs.value.map((song) => song.thumbnailPath).filter(Boolean),
+      ? getRepeatedTiles(
+          [rickThumbnail],
+          YEAR_BACKGROUND_ROW_COUNT * 8,
+          yearNumber.value,
+        )
+      : getRepeatedTiles(
+          songs.value.map((song) => song.thumbnailPath).filter(Boolean),
+          YEAR_BACKGROUND_ROW_COUNT * 8,
+          yearNumber.value,
+        ),
     YEAR_BACKGROUND_ROW_COUNT,
   ),
 )
