@@ -37,8 +37,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div
         class="flex flex-col items-center gap-4 text-center text-sm leading-relaxed text-text-muted"
       >
-        <p>Thank you to Matt &amp; Simon for the inspiration.</p>
         <p>
+          Thank you to Matt &amp; Simon for the inspiration.
+          <br />
           Credit to
           <a
             href="https://lucide.dev/license"
