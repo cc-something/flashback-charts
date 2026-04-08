@@ -31,7 +31,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
       <div class="mb-5 flex items-center justify-center gap-2.5">
         <Info class="h-5 w-5 text-primary" />
-        <h2 class="text-lg font-bold text-text">About this site</h2>
+        <h2 class="text-lg font-bold text-text">Site Credits</h2>
       </div>
 
       <div

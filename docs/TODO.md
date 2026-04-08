@@ -1,31 +1,29 @@
-- X:XX/Y:YY on the right
-- year pages 30ish% bigger
-- square progress bar corner still exists
+- donate
+- a11y pass
+- copy pass
+  - SEO text everywhere is a bit ug
+
+- perf check (lighthouse too)
 
 - astley flashing bg? disco ball?
   - idk if I like the simul seek bar on every song
-- test hotkeys
 - Random song btn CTA on home page
-- I dont like this text "Listen to the #1s and Top 10s and discover the songs that shaped each era."
-- should maybe link to decade page on the year page somewhere?
-- year page should be scaled up?
 
 ## TODO
 
-- deploy CI on `main`
-- setup "company email"
-- setup newsletter dash
+- some kinda linting for SEO on a per-page basis
+  - social/meta thumb generation
+  - llm text
+  - other tags etc.
+  - sitemap presence
 
 - confirm analytics behaviour
 - confirm newsletter e2e
-- social thumbs
-
+- confirm social embeds
 - confirm playback works on mobile
 
 ## Nice to haves?
 
-- about this website
-- contact / make a suggestion / report a problem
 - privacy notice? idk if we need a policy, no signup
   - but could mention privacy conscientiousness
 
