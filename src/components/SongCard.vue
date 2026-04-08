@@ -165,35 +165,37 @@ const youtubeVideoUrl = computed(() =>
       </p>
     </div>
 
-    <a
-      v-if="displaySong.youtubeVideoId"
-      :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
-      :href="youtubeVideoUrl"
-      class="relative z-20 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-      rel="noreferrer"
-      target="_blank"
-    >
-      <svg
-        class="h-5 w-5"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
+    <div class="relative z-20 flex flex-shrink-0 flex-col gap-1">
+      <a
+        v-if="displaySong.youtubeVideoId"
+        :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
+        :href="youtubeVideoUrl"
+        class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        rel="noreferrer"
+        target="_blank"
       >
-        <path
-          d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8ZM9.6 15.7V8.3l6.4 3.7-6.4 3.7Z"
-        />
-      </svg>
-    </a>
+        <svg
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8ZM9.6 15.7V8.3l6.4 3.7-6.4 3.7Z"
+          />
+        </svg>
+      </a>
 
-    <button
-      type="button"
-      title="report an issue"
-      :aria-label="`Report an issue with ${displaySong.title} by ${displaySong.artist}`"
-      class="relative z-20 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-      @click.stop="isReportModalOpen = true"
-    >
-      <Flag class="h-4.5 w-4.5" aria-hidden="true" />
-    </button>
+      <button
+        type="button"
+        title="report an issue"
+        :aria-label="`Report an issue with ${displaySong.title} by ${displaySong.artist}`"
+        class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        @click.stop="isReportModalOpen = true"
+      >
+        <Flag class="h-4.5 w-4.5" aria-hidden="true" />
+      </button>
+    </div>
 
     <Teleport to="body">
       <ReportIssueModal
