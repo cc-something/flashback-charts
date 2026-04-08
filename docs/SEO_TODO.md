@@ -23,9 +23,9 @@
 
 ## 4. Images and media
 
-- [ ] Reduce initial home-page image work where possible.
-- [ ] Lazy-load below-the-fold images more aggressively.
-- [ ] Make sure the primary above-the-fold image is prioritized and never lazy-loaded.
+- [x] Reduce initial home-page image work where possible.
+- [x] Lazy-load below-the-fold images more aggressively.
+- [x] Make sure the primary above-the-fold image is prioritized and never lazy-loaded.
 
 ## 5. Third-party and misc
 

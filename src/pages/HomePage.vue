@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useHead } from '@unhead/vue'
 import { ArrowRight } from 'lucide-vue-next'
 import {
@@ -21,6 +21,8 @@ const { isRickRollActive } = useRickRollMode()
 const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
 const HOME_BACKGROUND_ROW_COUNT = 6
 const HOME_BACKGROUND_DUPLICATE_COUNT = 2
+const HOME_BACKGROUND_RENDER_DELAY_MS = 900
+const HOME_EAGER_TILE_COUNT = 4
 const getDistributedRows = (thumbnails: string[], rowCount: number) => {
   if (thumbnails.length === 0) return []
   const rows = Array.from({ length: rowCount }, () => [] as string[])
@@ -57,10 +59,43 @@ const homeBackgroundRows = computed(() =>
     HOME_BACKGROUND_ROW_COUNT,
   ),
 )
+const shouldRenderHomeBackground = ref(false)
+const homeBackgroundTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+const visibleHomeBackgroundRows = computed(() =>
+  shouldRenderHomeBackground.value ? homeBackgroundRows.value : [],
+)
 const decadeColumns = computed(() => [
   decades.value.filter((_, index) => index % 2 === 0),
   decades.value.filter((_, index) => index % 2 === 1),
 ])
+const getHomeTileImageAttrs = (
+  columnIndex: number,
+  groupIndex: number,
+  tileIndex: number,
+) => {
+  const isPrimaryTile = columnIndex === 0 && groupIndex === 0 && tileIndex === 0
+  const isLikelyAboveFoldTile =
+    groupIndex === 0 && tileIndex < HOME_EAGER_TILE_COUNT
+
+  if (isPrimaryTile)
+    return {
+      loading: 'eager',
+      decoding: 'async',
+      fetchpriority: 'high',
+    } as const
+
+  if (isLikelyAboveFoldTile)
+    return {
+      loading: 'eager',
+      decoding: 'async',
+    } as const
+
+  return {
+    loading: 'lazy',
+    decoding: 'async',
+    fetchpriority: 'low',
+  } as const
+}
 const latestYear = getLatestYear()
 const title = getHomePageTitle()
 const description = getHomePageDescription()
@@ -121,6 +156,17 @@ useHead({
       ]
     : [],
 })
+
+onMounted(() => {
+  homeBackgroundTimer.value = setTimeout(() => {
+    shouldRenderHomeBackground.value = true
+  }, HOME_BACKGROUND_RENDER_DELAY_MS)
+})
+
+onUnmounted(() => {
+  if (!homeBackgroundTimer.value) return
+  clearTimeout(homeBackgroundTimer.value)
+})
 </script>
 
 <template>
@@ -131,7 +177,7 @@ useHead({
     >
       <div class="home-page-background-rows">
         <div
-          v-for="(row, rowIndex) in homeBackgroundRows"
+          v-for="(row, rowIndex) in visibleHomeBackgroundRows"
           :key="`row-${rowIndex}`"
           class="home-page-background-row"
         >
@@ -187,7 +233,7 @@ useHead({
           :class="{ 'min-[1000px]:pt-28': columnIndex === 1 }"
         >
           <section
-            v-for="group in column"
+            v-for="(group, groupIndex) in column"
             :key="group.decade"
             class="rounded-xl p-4"
             :style="{
@@ -224,7 +270,7 @@ useHead({
                 Click on a year to see the Top 10:
               </p>
               <ul class="grid grid-cols-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                <li v-for="tile in group.years" :key="tile.year">
+                <li v-for="(tile, tileIndex) in group.years" :key="tile.year">
                   <router-link
                     :to="`/au/${tile.year}`"
                     class="group relative isolate block aspect-square overflow-hidden rounded-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
@@ -238,6 +284,13 @@ useHead({
                       :src="tile.thumbnail"
                       :alt="`#1 song of ${tile.year}`"
                       class="absolute inset-0 h-full w-full object-cover"
+                      v-bind="
+                        getHomeTileImageAttrs(
+                          columnIndex,
+                          groupIndex,
+                          tileIndex,
+                        )
+                      "
                     />
                     <div
                       class="absolute inset-0"
