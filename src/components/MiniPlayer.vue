@@ -42,6 +42,7 @@ watch(
   <Transition name="mini-player">
     <aside
       v-if="player.isActive && player.playingSong"
+      aria-label="Music player"
       :style="themeVars"
       class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-visible rounded-t-xl bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
     >
@@ -166,6 +167,7 @@ watch(
         <!-- Thumbnail with play/pause overlay -->
         <button
           type="button"
+          :aria-label="`Toggle playback for ${player.playingSong.title}`"
           class="relative h-10 w-10 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation"
           @click="player.togglePlayback"
         >

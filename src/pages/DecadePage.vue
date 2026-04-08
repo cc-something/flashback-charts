@@ -149,7 +149,10 @@ useHead(() => ({
 
 <template>
   <main class="relative isolate">
-    <div class="decade-page-background pointer-events-none fixed inset-0">
+    <div
+      class="decade-page-background pointer-events-none fixed inset-0"
+      aria-hidden="true"
+    >
       <div class="decade-page-background-rows">
         <div
           v-for="(row, rowIndex) in backgroundRows"
@@ -247,6 +250,7 @@ useHead(() => ({
           >
             <router-link
               :to="`/au/${year}`"
+              :aria-label="`View top 10 songs of ${year}`"
               class="group relative block aspect-square overflow-hidden rounded-xl"
               :style="{
                 backgroundColor: theme.colors.surface,

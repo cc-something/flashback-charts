@@ -60,7 +60,10 @@ watch(() => route.name, scrollToActiveTab)
 </script>
 
 <template>
-  <nav class="border-b border-primary/20 bg-surface">
+  <nav
+    aria-label="Year navigation"
+    class="border-b border-primary/20 bg-surface"
+  >
     <div
       ref="scrollContainer"
       class="flex overflow-x-auto scrollbar-hide gap-0.5 px-4 py-2"
@@ -72,6 +75,14 @@ watch(() => route.name, scrollToActiveTab)
         :data-year="year"
         :data-active="route.name === 'year' && year === store.selectedYear"
         :style="getTabThemeStyle(year)"
+        :aria-current="
+          route.name === 'year' && year === store.selectedYear
+            ? 'true'
+            : undefined
+        "
+        :aria-disabled="
+          !store.availableYears.includes(year) ? 'true' : undefined
+        "
         :class="[
           'year-tab inline-flex h-10 flex-shrink-0 items-center justify-center px-3 rounded text-sm font-medium transition-all duration-200',
           route.name === 'year' && year === store.selectedYear

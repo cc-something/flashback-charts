@@ -109,6 +109,7 @@ const youtubeVideoUrl = computed(() =>
             class="h-7 w-7 animate-spin text-white"
             viewBox="0 0 24 24"
             fill="none"
+            aria-hidden="true"
           >
             <circle
               class="opacity-25"
@@ -131,6 +132,7 @@ const youtubeVideoUrl = computed(() =>
             class="h-7 w-7 text-white drop-shadow"
             viewBox="0 0 24 24"
             fill="currentColor"
+            aria-hidden="true"
           >
             <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
           </svg>
@@ -141,6 +143,7 @@ const youtubeVideoUrl = computed(() =>
             class="h-7 w-7 text-white drop-shadow"
             viewBox="0 0 24 24"
             fill="currentColor"
+            aria-hidden="true"
           >
             <path d="M8 5v14l11-7z" />
           </svg>

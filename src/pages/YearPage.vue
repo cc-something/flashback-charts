@@ -211,6 +211,11 @@ watch(
       <div v-else />
       <button
         type="button"
+        :aria-label="
+          store.sortOrder === 'asc'
+            ? 'Sort order: 1 to 10. Click to reverse'
+            : 'Sort order: 10 to 1. Click to reverse'
+        "
         class="shrink-0 flex items-center gap-1.5 rounded-md bg-surface px-3 py-1.5 text-sm sm:text-base font-medium text-text-muted transition-colors duration-150 hover:text-text"
         :title="store.sortOrder === 'asc' ? 'Sorted 1 → 10' : 'Sorted 10 → 1'"
         @click="store.toggleSortOrder()"
