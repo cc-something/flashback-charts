@@ -1,3 +1,4 @@
+- privacy info
 - donate
 
 - astley
