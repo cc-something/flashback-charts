@@ -60,7 +60,7 @@ const youtubeVideoUrl = computed(() =>
     :id="`song-${year}-${song.rank}`"
     :data-song-rank="song.rank"
     :data-song-id="song.youtubeVideoId"
-    class="group relative flex items-center gap-4 overflow-visible bg-surface px-[1.14rem] py-[0.975rem] transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg hover:bg-surface/80"
+    class="group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 py-3 transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg hover:bg-surface/80"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
@@ -70,16 +70,14 @@ const youtubeVideoUrl = computed(() =>
       class="absolute inset-0 z-0 cursor-pointer"
       @click="handleClick"
     />
-    <span
-      class="w-8 flex-shrink-0 text-center text-[1.46rem] font-bold text-primary"
-    >
+    <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
       {{ displaySong.rank }}
     </span>
 
     <button
       type="button"
       :aria-label="`Toggle playback for ${displaySong.title} by ${displaySong.artist}`"
-      class="relative z-10 h-[4.5rem] w-[4.5rem] flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="relative z-10 h-14 w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @click.stop="handleClick"
     >
       <img
@@ -93,7 +91,7 @@ const youtubeVideoUrl = computed(() =>
         v-else
         class="flex h-full w-full items-center justify-center bg-[#333]"
       >
-        <Disc3 class="h-9 w-9 text-[#aaa]" />
+        <Disc3 class="h-7 w-7 text-[#aaa]" />
       </div>
 
       <Transition name="overlay">
@@ -104,7 +102,7 @@ const youtubeVideoUrl = computed(() =>
           <!-- spinner -->
           <svg
             v-if="thisPlayerState === 'loading'"
-            class="h-9 w-9 animate-spin text-white"
+            class="h-7 w-7 animate-spin text-white"
             viewBox="0 0 24 24"
             fill="none"
           >
@@ -126,7 +124,7 @@ const youtubeVideoUrl = computed(() =>
           <!-- pause icon -->
           <svg
             v-else-if="thisPlayerState === 'playing'"
-            class="h-9 w-9 text-white drop-shadow"
+            class="h-7 w-7 text-white drop-shadow"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -136,7 +134,7 @@ const youtubeVideoUrl = computed(() =>
           <!-- play icon -->
           <svg
             v-else
-            class="h-9 w-9 text-white drop-shadow"
+            class="h-7 w-7 text-white drop-shadow"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -147,17 +145,17 @@ const youtubeVideoUrl = computed(() =>
     </button>
 
     <div
-      class="theme-body pointer-events-none relative z-10 min-w-0 flex-1 flex flex-col gap-1"
+      class="theme-body pointer-events-none relative z-10 min-w-0 flex-1 flex flex-col gap-0.5"
     >
-      <h2 class="text-[1.46rem] font-bold leading-snug text-text">
+      <h2 class="text-lg font-bold leading-snug text-text">
         {{ displaySong.title }}
       </h2>
-      <p class="text-[1.3rem] leading-snug text-text-muted">
+      <p class="text-base leading-snug text-text-muted">
         {{ displaySong.artist }}
       </p>
       <p
         v-if="displaySong.album"
-        class="text-[1.3rem] leading-snug italic text-text-muted/75"
+        class="text-base leading-snug italic text-text-muted/75"
       >
         {{ displaySong.album }}
       </p>
@@ -167,12 +165,12 @@ const youtubeVideoUrl = computed(() =>
       v-if="displaySong.youtubeVideoId"
       :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
       :href="youtubeVideoUrl"
-      class="relative z-20 flex h-[3.6rem] w-[3.6rem] flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="relative z-20 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       rel="noreferrer"
       target="_blank"
     >
       <svg
-        class="h-[1.625rem] w-[1.625rem]"
+        class="h-5 w-5"
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
@@ -190,7 +188,7 @@ const youtubeVideoUrl = computed(() =>
       >
         <PlaybackSeekBar root-class="pointer-events-auto relative z-10" />
         <p
-          class="pointer-events-none absolute bottom-[1.14rem] right-[1.14rem] min-w-fit font-mono text-[0.845rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-3.5 right-3.5 min-w-fit font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
