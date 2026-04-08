@@ -2,7 +2,7 @@
 
 > **Top 10 songs in Australia, every year from 1940 to present.**
 
-Browse Australia's music history — decade by decade, year by year. Each era comes to life with its own visual theme, and every chart entry is playable via YouTube.
+Browse Australia's music charts by decade and year. Each decade has its own theme, and every chart entry links to playback on YouTube.
 
 ---
 
@@ -26,4 +26,4 @@ Browse Australia's music history — decade by decade, year by year. Each era co
 
 ## Data
 
-Chart data lives in `src/data/years/` — one file per year. Each file exports a ranked list of songs with title, artist, and YouTube ID.
+Chart data lives in `src/data/years/`, with one file per year. Each file exports a ranked list of songs with title, artist, and YouTube ID.
