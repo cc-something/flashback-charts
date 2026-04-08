@@ -19,7 +19,8 @@ import {
 } from '@/composables/useRickRollMode'
 
 const props = defineProps<{ decade: string }>()
-const BACKGROUND_TILE_COUNT = 48
+const BACKGROUND_ROW_COUNT = 6
+const BACKGROUND_DUPLICATE_COUNT = 2
 
 const { isRickRollActive } = useRickRollMode()
 const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
@@ -35,16 +36,24 @@ const getRepeatingTiles = (thumbnails: string[], tileCount: number) => {
     (_, index) => uniqueThumbnails[index % uniqueThumbnails.length],
   )
 }
+const getDistributedRows = (thumbnails: string[], rowCount: number) => {
+  if (thumbnails.length === 0) return []
+  const rows = Array.from({ length: rowCount }, () => [] as string[])
+  thumbnails.forEach((thumbnail, index) =>
+    rows[index % rowCount].push(thumbnail),
+  )
+  return rows.filter((row) => row.length > 0)
+}
 
 const decadeStartYear = computed(() => Number.parseInt(props.decade, 10))
 const theme = computed(() => getThemeForYear(decadeStartYear.value))
 const years = computed(() => getDecadeYears(props.decade))
-const backgroundTiles = computed(() =>
-  getRepeatingTiles(
+const backgroundRows = computed(() =>
+  getDistributedRows(
     isRickRollActive.value
-      ? [rickThumbnail]
+      ? getRepeatingTiles([rickThumbnail], BACKGROUND_ROW_COUNT * 8)
       : getDecadeSongThumbnails(props.decade),
-    BACKGROUND_TILE_COUNT,
+    BACKGROUND_ROW_COUNT,
   ),
 )
 const yearColumns = computed(() => [
@@ -144,16 +153,36 @@ useHead(() => ({
 <template>
   <main class="relative isolate">
     <div class="decade-page-background pointer-events-none fixed inset-0">
-      <div class="decade-page-mosaic">
-        <img
-          v-for="(thumbnail, index) in backgroundTiles"
-          :key="`${thumbnail}-${index}`"
-          :src="thumbnail"
-          alt=""
-          class="decade-page-tile"
-          loading="lazy"
-          decoding="async"
-        />
+      <div class="decade-page-background-rows">
+        <div
+          v-for="(row, rowIndex) in backgroundRows"
+          :key="`row-${rowIndex}`"
+          class="decade-page-background-row"
+        >
+          <div
+            class="decade-page-background-track"
+            :class="{
+              'decade-page-background-track-reversed': rowIndex % 2 === 1,
+            }"
+            :style="{ '--decade-row-duration': `${260 + rowIndex * 18}s` }"
+          >
+            <div
+              v-for="repeatIndex in BACKGROUND_DUPLICATE_COUNT"
+              :key="`row-${rowIndex}-repeat-${repeatIndex}`"
+              class="decade-page-background-repeat"
+            >
+              <img
+                v-for="(thumbnail, thumbnailIndex) in row"
+                :key="`row-${rowIndex}-tile-${repeatIndex}-${thumbnailIndex}`"
+                :src="thumbnail"
+                alt=""
+                class="decade-page-tile"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div class="decade-page-overlay absolute inset-0" />
     </div>
@@ -293,24 +322,44 @@ useHead(() => ({
   background: #000;
 }
 
-.decade-page-mosaic {
+.decade-page-background-rows {
   position: absolute;
-  inset: -6rem -2rem;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
-  gap: 0;
-  opacity: 0.96;
-  filter: saturate(1.08) contrast(1.04) brightness(0.88);
-  transform: scale(1.04);
+  inset: -4rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.decade-page-background-row {
+  flex: 1 1 0;
+  overflow: hidden;
+}
+
+.decade-page-background-track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  height: 100%;
+  animation: decade-page-background-marquee var(--decade-row-duration) linear
+    infinite;
+}
+
+.decade-page-background-track-reversed {
+  animation-direction: reverse;
+}
+
+.decade-page-background-repeat {
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
 }
 
 .decade-page-tile {
-  aspect-ratio: 1;
-  width: 100%;
+  width: clamp(8rem, 14vw, 13rem);
   height: 100%;
   object-fit: cover;
   display: block;
+  flex-shrink: 0;
+  filter: saturate(1.08) contrast(1.04) brightness(0.88);
 }
 
 .decade-page-overlay {
@@ -329,15 +378,13 @@ useHead(() => ({
   color: var(--nav-text-hover);
 }
 
-@media (width >= 640px) {
-  .decade-page-mosaic {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+@keyframes decade-page-background-marquee {
+  from {
+    transform: translateX(0);
   }
-}
 
-@media (width >= 1024px) {
-  .decade-page-mosaic {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+  to {
+    transform: translateX(-50%);
   }
 }
 </style>
