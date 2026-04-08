@@ -164,7 +164,7 @@ useHead({
       <div
         class="mb-8 rounded-2xl border border-white/10 bg-black/46 px-5 py-5 backdrop-blur-[8px]"
       >
-        <h1 class="text-2xl text-text-muted">
+        <h1 class="text-lg sm:text-2xl text-text-muted">
           Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
         </h1>
         <p class="mt-2 text-base leading-relaxed text-text-muted/70">
@@ -192,7 +192,7 @@ useHead({
           >
             <h2
               :id="`decade-${group.decade}`"
-              class="mb-3 text-3xl font-bold sm:text-4xl md:text-5xl"
+              class="mb-3 text-2xl font-bold sm:text-3xl md:text-5xl"
               :style="{
                 color: group.theme.colors.primary,
                 fontFamily: group.theme.fontFamily,

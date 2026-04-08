@@ -70,14 +70,16 @@ const youtubeVideoUrl = computed(() =>
       class="absolute inset-0 z-0 cursor-pointer"
       @click="handleClick"
     />
-    <span class="w-6 flex-shrink-0 text-center text-lg font-bold text-primary">
+    <span
+      class="w-6 flex-shrink-0 text-center text-base sm:text-lg font-bold text-primary"
+    >
       {{ displaySong.rank }}
     </span>
 
     <button
       type="button"
       :aria-label="`Toggle playback for ${displaySong.title} by ${displaySong.artist}`"
-      class="relative z-10 h-14 w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      class="relative z-10 h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @click.stop="handleClick"
     >
       <img
@@ -147,15 +149,15 @@ const youtubeVideoUrl = computed(() =>
     <div
       class="theme-body pointer-events-none relative z-10 min-w-0 flex-1 flex flex-col gap-0.5"
     >
-      <h2 class="text-lg font-bold leading-snug text-text">
+      <h2 class="text-base sm:text-lg font-bold leading-snug text-text">
         {{ displaySong.title }}
       </h2>
-      <p class="text-base leading-snug text-text-muted">
+      <p class="text-sm sm:text-base leading-snug text-text-muted">
         {{ displaySong.artist }}
       </p>
       <p
         v-if="displaySong.album"
-        class="text-base leading-snug italic text-text-muted/75"
+        class="text-sm sm:text-base leading-snug italic text-text-muted/75"
       >
         {{ displaySong.album }}
       </p>

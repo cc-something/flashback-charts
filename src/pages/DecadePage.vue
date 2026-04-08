@@ -187,7 +187,7 @@ useHead(() => ({
     <div class="relative z-10 mx-auto max-w-[1300px] px-4 py-8 sm:py-10">
       <header class="mb-8">
         <h1
-          class="theme-display text-4xl font-bold text-primary"
+          class="theme-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary"
           :style="{ fontFamily: theme.fontFamily }"
         >
           {{ title }}
@@ -282,7 +282,7 @@ useHead(() => ({
 
             <div class="flex flex-col">
               <h2
-                class="text-2xl font-bold"
+                class="text-lg sm:text-2xl font-bold"
                 :style="{
                   color: theme.colors.primary,
                   fontFamily: theme.fontFamily,
