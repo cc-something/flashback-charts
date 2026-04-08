@@ -166,26 +166,38 @@ const youtubeVideoUrl = computed(() =>
     </div>
 
     <div class="relative z-20 flex flex-shrink-0 flex-col gap-1">
-      <a
-        v-if="displaySong.youtubeVideoId"
-        :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
-        :href="youtubeVideoUrl"
-        class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-        rel="noreferrer"
-        target="_blank"
-      >
-        <MonitorPlay class="h-4.5 w-4.5" aria-hidden="true" />
-      </a>
+      <div v-if="displaySong.youtubeVideoId" class="group/action relative">
+        <span
+          class="pointer-events-none absolute right-full top-1/2 mr-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
+        >
+          YouTube
+        </span>
+        <a
+          :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
+          :href="youtubeVideoUrl"
+          class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          rel="noreferrer"
+          target="_blank"
+        >
+          <MonitorPlay class="h-4.5 w-4.5" aria-hidden="true" />
+        </a>
+      </div>
 
-      <button
-        type="button"
-        title="report an issue"
-        :aria-label="`Report an issue with ${displaySong.title} by ${displaySong.artist}`"
-        class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-        @click.stop="isReportModalOpen = true"
-      >
-        <Flag class="h-4.5 w-4.5" aria-hidden="true" />
-      </button>
+      <div class="group/action relative">
+        <span
+          class="pointer-events-none absolute right-full top-1/2 mr-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
+        >
+          Report
+        </span>
+        <button
+          type="button"
+          :aria-label="`Report an issue with ${displaySong.title} by ${displaySong.artist}`"
+          class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          @click.stop="isReportModalOpen = true"
+        >
+          <Flag class="h-4.5 w-4.5" aria-hidden="true" />
+        </button>
+      </div>
     </div>
 
     <Teleport to="body">
