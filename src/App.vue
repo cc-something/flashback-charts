@@ -225,7 +225,7 @@ onUnmounted(() => teardownKonamiListener())
       </Transition>
     </router-view>
 
-    <footer class="py-6 text-center">
+    <footer class="flex justify-center gap-6 py-6">
       <button
         type="button"
         class="hidden items-center gap-1.5 text-sm text-text-muted underline-offset-4 transition-colors hover:text-text hover:underline sm:inline-flex"
@@ -233,6 +233,13 @@ onUnmounted(() => teardownKonamiListener())
       >
         <Keyboard class="h-3.5 w-3.5" />
         Keyboard shortcuts
+      </button>
+      <button
+        type="button"
+        class="inline-flex items-center gap-1.5 text-sm text-text-muted underline-offset-4 transition-colors hover:text-text hover:underline"
+        @click="emailSignup.show.value = true"
+      >
+        Newsletter
       </button>
     </footer>
 
