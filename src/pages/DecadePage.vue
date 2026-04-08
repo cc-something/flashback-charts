@@ -314,7 +314,7 @@ useHead(() => ({
 }
 
 .decade-page-overlay {
-  background: rgb(0 0 0 / 72%);
+  background: rgb(0 0 0 / 82%);
   z-index: 1;
 }
 
