@@ -52,10 +52,13 @@ defineExpose({ focusInput })
         </button>
 
         <template v-if="!submitted">
-          <h2 class="text-xl font-bold text-text">Stay in the loop</h2>
+          <h2 class="text-xl font-bold text-text">
+            Sign up for our Newsletter
+          </h2>
           <p class="mt-2 text-sm text-text-muted">
-            Get notified when we add new charts, decades, and features. No spam,
-            just the hits.
+            Get occasional updates from Flashback Charts, including new charts,
+            posts, discoveries, and other site news. No spam, just the good
+            stuff.
           </p>
 
           <form
@@ -82,7 +85,7 @@ defineExpose({ focusInput })
         <template v-else>
           <h2 class="text-xl font-bold text-text">You're on the list!</h2>
           <p class="mt-2 text-sm text-text-muted">
-            We'll keep you posted on new charts and features.
+            We'll keep you posted with occasional updates from Flashback Charts.
           </p>
         </template>
       </div>
