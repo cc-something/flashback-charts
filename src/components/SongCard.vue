@@ -62,7 +62,7 @@ const youtubeVideoUrl = computed(() =>
     :id="`song-${year}-${song.rank}`"
     :data-song-rank="song.rank"
     :data-song-id="song.youtubeVideoId"
-    class="group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 py-3 transition-colors duration-150 first:rounded-t-lg last:rounded-b-lg hover:bg-surface/80"
+    class="group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 py-3 transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl hover:bg-surface/80"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
