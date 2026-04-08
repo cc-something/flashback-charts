@@ -59,6 +59,7 @@ defineExpose({ focusInput })
             Get occasional updates from Flashback Charts, including new charts,
             posts, discoveries, and other music info.
             <br />
+            <br />
             No spam, just the good stuff.
           </p>
 
