@@ -105,6 +105,25 @@ const ogImage = computed(() =>
   getAbsoluteUrl(siteUrl.value, `/og/au/decade-${props.decade}.jpg`),
 )
 const imageAlt = computed(() => `${title.value} social preview`)
+const breadcrumbJsonLd = computed(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    {
+      '@type': 'ListItem',
+      'position': 1,
+      'name': 'Flashback Charts Australia',
+      'item': getAbsoluteUrl(siteUrl.value, '/'),
+    },
+    {
+      '@type': 'ListItem',
+      'position': 2,
+      'name': heading.value,
+      'item': canonical.value,
+    },
+  ],
+}))
+
 const jsonLd = computed(() => ({
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -145,6 +164,10 @@ useHead(() => ({
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(jsonLd.value),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(breadcrumbJsonLd.value),
     },
   ],
 }))

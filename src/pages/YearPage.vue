@@ -12,6 +12,7 @@ import {
 } from 'lucide-vue-next'
 import {
   getAdjacentYears,
+  getDecadePageHeading,
   getYearPageDescription,
   getYearPageHeading,
   getYearPageTitle,
@@ -82,6 +83,31 @@ const ogImage = computed(() =>
 )
 const imageAlt = computed(() => `${title.value} social preview`)
 
+const breadcrumbJsonLd = computed(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    {
+      '@type': 'ListItem',
+      'position': 1,
+      'name': 'Flashback Charts Australia',
+      'item': getAbsoluteUrl(siteUrl.value, '/'),
+    },
+    {
+      '@type': 'ListItem',
+      'position': 2,
+      'name': getDecadePageHeading(decadeString.value),
+      'item': getAbsoluteUrl(siteUrl.value, decadePath.value),
+    },
+    {
+      '@type': 'ListItem',
+      'position': 3,
+      'name': heading.value,
+      'item': canonical.value,
+    },
+  ],
+}))
+
 const jsonLd = computed(() => {
   if (!songs.value.length) return null
   return {
@@ -126,14 +152,20 @@ useHead(() => ({
     { name: 'twitter:description', content: description.value },
   ],
   link: canonical.value ? [{ rel: 'canonical', href: canonical.value }] : [],
-  script: jsonLd.value
-    ? [
-        {
-          type: 'application/ld+json',
-          innerHTML: JSON.stringify(jsonLd.value),
-        },
-      ]
-    : [],
+  script: [
+    ...(jsonLd.value
+      ? [
+          {
+            type: 'application/ld+json',
+            innerHTML: JSON.stringify(jsonLd.value),
+          },
+        ]
+      : []),
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(breadcrumbJsonLd.value),
+    },
+  ],
 }))
 
 player.setOnEnded((song, year) => player.playNext(song, year))
