@@ -46,6 +46,8 @@ interface YT {
 
 interface PlausibleFn {
   (...args: unknown[]): void
+  init?: (options?: Record<string, unknown>) => void
+  o?: Record<string, unknown>
   q?: unknown[][]
 }
 
