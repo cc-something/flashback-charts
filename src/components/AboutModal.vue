@@ -39,7 +39,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       >
         <p>Thank you to Matt &amp; Simon for the inspiration.</p>
         <p>
-          Credit to Lucide for the icons.
+          Credit to
           <a
             href="https://lucide.dev/license"
             target="_blank"
@@ -49,6 +49,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             Lucide
             <ExternalLink class="h-3.5 w-3.5" />
           </a>
+          for the icons.
         </p>
       </div>
     </div>
