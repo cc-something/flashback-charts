@@ -101,7 +101,7 @@ const youtubeVideoUrl = computed(() =>
       <Transition name="overlay">
         <div
           v-if="showOverlay"
-          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50"
+          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/65"
         >
           <!-- spinner -->
           <svg
@@ -165,7 +165,9 @@ const youtubeVideoUrl = computed(() =>
       </p>
     </div>
 
-    <div class="relative z-20 flex self-center flex-shrink-0 flex-col gap-0">
+    <div
+      class="relative z-20 flex self-center flex-shrink-0 flex-col -space-y-0.5"
+    >
       <div v-if="displaySong.youtubeVideoId" class="group/action relative">
         <span
           class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded-md bg-black/80 px-2 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
@@ -175,7 +177,7 @@ const youtubeVideoUrl = computed(() =>
         <a
           :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
           :href="youtubeVideoUrl"
-          class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          class="flex h-9 w-9 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           rel="noreferrer"
           target="_blank"
         >
@@ -192,7 +194,7 @@ const youtubeVideoUrl = computed(() =>
         <button
           type="button"
           :aria-label="`Report an issue with ${displaySong.title} by ${displaySong.artist}`"
-          class="flex h-11 w-11 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          class="flex h-9 w-9 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           @click.stop="isReportModalOpen = true"
         >
           <Flag class="h-4.5 w-4.5" aria-hidden="true" />
