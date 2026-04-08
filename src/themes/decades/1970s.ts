@@ -5,9 +5,9 @@ const theme: DecadeTheme = {
   description:
     "Pub rock, glam rock, and hard rock defined the Australian sound of the 1970s, with a thriving live music scene producing some of the country's most enduring acts. Toward the end of the decade, disco and funk broke through the charts, bridging the gap between the rock era and the electronic sounds to come.",
   fontFamily: "'Unbounded', cursive",
-  bodyFontFamily: "'DM Sans', sans-serif",
+  bodyFontFamily: "'Inter', sans-serif",
   fontUrl:
-    'https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap',
+    'https://fonts.bunny.net/css2?family=Unbounded:wght@400;700&display=swap',
   colors: {
     background: '#1a0e00',
     surface: '#2d1800',

@@ -7,7 +7,7 @@ const theme: DecadeTheme = {
   fontFamily: "'Orbitron', sans-serif",
   bodyFontFamily: "'Inter', sans-serif",
   fontUrl:
-    'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap',
+    'https://fonts.bunny.net/css2?family=Orbitron:wght@400;700&display=swap',
   colors: {
     background: '#05000f',
     surface: '#0f0024',

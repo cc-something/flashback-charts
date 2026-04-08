@@ -7,7 +7,7 @@ const theme: DecadeTheme = {
   bodyFontFamily: "'Inter', sans-serif",
   fontFamily: "'Chakra Petch', sans-serif",
   fontUrl:
-    'https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap',
+    'https://fonts.bunny.net/css2?family=Chakra+Petch:wght@400;500;700&display=swap',
   colors: {
     background: '#17151f',
     surface: '#262230',

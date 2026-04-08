@@ -6,7 +6,7 @@ const theme: DecadeTheme = {
     'The 2000s mixed reality-TV pop, pop R&B, rap crossover, and the last big wave of chart rock. Downloads changed how hits spread, and the decade drifted from guitar radio toward shinier, more electronic pop.',
   bodyFontFamily: "'Inter', sans-serif",
   fontFamily: "'Michroma', sans-serif",
-  fontUrl: 'https://fonts.googleapis.com/css2?family=Michroma&display=swap',
+  fontUrl: 'https://fonts.bunny.net/css2?family=Michroma&display=swap',
   colors: {
     background: '#07111f',
     surface: '#0f1f35',

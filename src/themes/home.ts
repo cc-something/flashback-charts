@@ -4,7 +4,7 @@ const homeTheme: DecadeTheme = {
   name: 'home',
   fontFamily: "'Space Grotesk', sans-serif",
   fontUrl:
-    'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap',
+    'https://fonts.bunny.net/css2?family=Space+Grotesk:wght@400;500;700&display=swap',
   colors: {
     background: '#0a0f1f',
     surface: '#131c33',

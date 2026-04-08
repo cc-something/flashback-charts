@@ -7,7 +7,7 @@ const theme: DecadeTheme = {
   fontFamily: "'Exo 2', sans-serif",
   bodyFontFamily: "'Inter', sans-serif",
   fontUrl:
-    'https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap',
+    'https://fonts.bunny.net/css2?family=Exo+2:wght@400;700&display=swap',
   colors: {
     background: '#0c0818',
     surface: '#170f2c',
