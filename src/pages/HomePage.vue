@@ -16,7 +16,6 @@ import {
   useRickRollMode,
   RICK_ASTLEY_SONG,
 } from '@/composables/useRickRollMode'
-import { getHomeTheme } from '@/themes'
 
 const { isRickRollActive } = useRickRollMode()
 const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
@@ -66,7 +65,6 @@ const latestYear = getLatestYear()
 const title = getHomePageTitle()
 const description = getHomePageDescription()
 const subtitle = getHomePageSubtitle()
-const homeFontFamily = getHomeTheme().fontFamily
 const homeImage = siteUrl ? `${siteUrl}/og/au/home.jpg` : undefined
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -195,10 +193,7 @@ useHead({
             <h2
               :id="`decade-${group.decade}`"
               class="mb-3 text-2xl font-bold sm:text-3xl md:text-5xl"
-              :style="{
-                color: group.theme.colors.primary,
-                fontFamily: homeFontFamily,
-              }"
+              :style="{ color: group.theme.colors.primary }"
             >
               <router-link
                 :to="`/au/${group.decade}`"
@@ -229,7 +224,6 @@ useHead({
                     :style="{
                       backgroundColor: group.theme.colors.surface,
                       border: `1px solid ${group.theme.colors.primary}44`,
-                      fontFamily: homeFontFamily,
                     }"
                   >
                     <img

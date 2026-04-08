@@ -25,7 +25,12 @@ import { useHotkeys } from '@/composables/useHotkeys'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
 import { getHomeTheme, getThemeForYear } from '@/themes'
-import { getThemeFontLinks } from '@/themes/font'
+import {
+  brandFontFamily,
+  brandFontUrl,
+  getBrandFontLinks,
+  getThemeFontLinks,
+} from '@/themes/font'
 import YearTabs from '@/components/YearTabs.vue'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
@@ -62,7 +67,7 @@ const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
-const brandTheme = getHomeTheme()
+const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
 const socialLinks = [
   {
     href: 'https://www.facebook.com/people/Flashback-Charts/61572091223850/',
@@ -88,7 +93,7 @@ const getActiveTheme = () => {
     if (!Number.isNaN(routeDecade)) return getThemeForYear(routeDecade)
   }
 
-  return brandTheme
+  return getHomeTheme()
 }
 const activeTheme = computed(() => getActiveTheme())
 useHead(() => ({
@@ -98,7 +103,7 @@ useHead(() => ({
       ? getThemeFontLinks(activeTheme.value)
       : [
           ...getThemeFontLinks(activeTheme.value),
-          ...getThemeFontLinks(brandTheme).map((link) => ({
+          ...getBrandFontLinks().map((link) => ({
             ...link,
             key: `brand-${link.key}`,
           })),
