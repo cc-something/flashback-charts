@@ -4,6 +4,8 @@ interface SongThumbnailInput {
   title: string
 }
 
+const marketSlug = 'au'
+
 const getSongThumbnailSlug = (title: string) =>
   title
     .toLowerCase()
@@ -25,4 +27,4 @@ export const getSongThumbnailPath = ({
   rank,
   title,
 }: SongThumbnailInput) =>
-  `/images/years/${year}/${getSongThumbnailFilename({ rank, title })}`
+  `/images/${marketSlug}/years/${year}/${getSongThumbnailFilename({ rank, title })}`

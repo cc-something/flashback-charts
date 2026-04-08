@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
 
 const KONAMI_SEQUENCE = [
@@ -22,7 +23,11 @@ export const RICK_ASTLEY_SONG: Song = {
   artist: 'Rick Astley',
   album: 'The Best Of Me: Never Edition',
   youtubeVideoId: 'dQw4w9WgXcQ',
-  thumbnailPath: '/images/years/1988/08-never-gonna-give-you-up.webp',
+  thumbnailPath: getSongThumbnailPath({
+    year: 1988,
+    rank: 8,
+    title: 'Never Gonna Give You Up',
+  }),
   imageSelection: 'album',
   imageSources: {
     album:

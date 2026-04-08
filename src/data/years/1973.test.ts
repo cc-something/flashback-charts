@@ -18,7 +18,7 @@ describe('1973 image metadata', () => {
           title: song.title,
         }),
       )
-      expect(song.thumbnailPath.startsWith('/images/years/1973/')).toBe(true)
+      expect(song.thumbnailPath.startsWith('/images/au/years/1973/')).toBe(true)
       expect(song.thumbnailPath.endsWith('.webp')).toBe(true)
       thumbnailPaths.add(song.thumbnailPath)
     }

@@ -11,7 +11,7 @@ const getSong = (
   title: 'Test Song',
   artist: 'Test Artist',
   album: 'Test Album',
-  thumbnailPath: '/images/years/1973/01-test-song.webp',
+  thumbnailPath: '/images/au/years/1973/01-test-song.webp',
   imageSelection,
   imageSources,
 })

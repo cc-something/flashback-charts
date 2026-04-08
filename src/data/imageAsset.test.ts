@@ -18,6 +18,6 @@ describe('imageAsset', () => {
         rank: 8,
         title: "I'd Love You to Want Me",
       }),
-    ).toBe('/images/years/1973/08-id-love-you-to-want-me.webp')
+    ).toBe('/images/au/years/1973/08-id-love-you-to-want-me.webp')
   })
 })
