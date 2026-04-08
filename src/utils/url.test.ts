@@ -21,17 +21,13 @@ describe('url helpers', () => {
   })
 
   it('returns robust social image tags', () => {
-    expect(
-      getOpenGraphImageMeta(
-        'https://flashbackcharts.com/og/au/home.jpg',
-        'Home social preview',
-      ),
-    ).toEqual(
+    const meta = getOpenGraphImageMeta(
+      'https://flashbackcharts.com/og/au/home.jpg',
+      'Home social preview',
+    )
+
+    expect(meta).toEqual(
       expect.arrayContaining([
-        {
-          property: 'og:image',
-          content: 'https://flashbackcharts.com/og/au/home.jpg',
-        },
         {
           property: 'og:image:width',
           content: '1200',
@@ -40,6 +36,22 @@ describe('url helpers', () => {
           name: 'twitter:image:alt',
           content: 'Home social preview',
         },
+      ]),
+    )
+    expect(meta).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          property: 'og:image',
+          content: expect.stringMatching(
+            /^https:\/\/flashbackcharts\.com\/og\/au\/home\.jpg\?v=/u,
+          ),
+        }),
+        expect.objectContaining({
+          name: 'twitter:image:src',
+          content: expect.stringMatching(
+            /^https:\/\/flashbackcharts\.com\/og\/au\/home\.jpg\?v=/u,
+          ),
+        }),
       ]),
     )
   })

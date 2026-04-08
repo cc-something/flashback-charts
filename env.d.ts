@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare const __SOCIAL_IMAGE_VERSION__: string
+
 interface ImportMetaEnv {}
 
 interface ImportMeta {

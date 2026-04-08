@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 import { readdirSync } from 'node:fs'
+import { execSync } from 'node:child_process'
 
 const yearsDir = fileURLToPath(new URL('./src/data/years', import.meta.url))
 const availableYears = readdirSync(yearsDir)
@@ -12,8 +13,14 @@ const availableYears = readdirSync(yearsDir)
 const availableDecades = [
   ...new Set(availableYears.map((year) => `${Math.floor(year / 10) * 10}s`)),
 ]
+const socialImageVersion = execSync('git rev-parse --short HEAD')
+  .toString()
+  .trim()
 
 export default defineConfig({
+  define: {
+    __SOCIAL_IMAGE_VERSION__: JSON.stringify(socialImageVersion),
+  },
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {
