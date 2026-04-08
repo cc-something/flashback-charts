@@ -79,15 +79,15 @@ const backgroundOverlayStyle = computed(() => ({
   background: `
     linear-gradient(
       180deg,
-      rgb(0 0 0 / 78%) 0%,
-      rgb(0 0 0 / 86%) 36%,
-      rgb(0 0 0 / 94%) 100%
+      rgb(0 0 0 / 42%) 0%,
+      rgb(0 0 0 / 58%) 36%,
+      rgb(0 0 0 / 72%) 100%
     ),
     linear-gradient(
       120deg,
-      ${theme.value.colors.background}f5 0%,
-      ${theme.value.colors.background}e4 42%,
-      ${theme.value.colors.background}cc 100%
+      ${theme.value.colors.background}e0 0%,
+      ${theme.value.colors.background}bf 42%,
+      ${theme.value.colors.background}88 100%
     )
   `,
 }))
@@ -96,8 +96,8 @@ const backgroundVignetteStyle = computed(() => ({
     radial-gradient(
       circle at top,
       transparent 0%,
-      rgb(0 0 0 / 20%) 40%,
-      rgb(0 0 0 / 48%) 100%
+      rgb(0 0 0 / 10%) 40%,
+      rgb(0 0 0 / 24%) 100%
     )
   `,
 }))
@@ -331,8 +331,10 @@ useHead(() => ({
   inset: -6rem -2rem;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 0;
-  opacity: 0.8;
+  opacity: 0.96;
+  filter: saturate(1.08) contrast(1.04) brightness(0.88);
   transform: scale(1.04);
 }
 
