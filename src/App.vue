@@ -255,7 +255,9 @@ onUnmounted(() => teardownKonamiListener())
       </Transition>
     </router-view>
 
-    <footer class="flex flex-wrap items-center justify-center gap-6 py-6">
+    <footer
+      class="relative z-20 mx-auto flex w-full max-w-[1300px] flex-wrap items-center justify-center gap-6 px-4 py-6"
+    >
       <button
         type="button"
         class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
