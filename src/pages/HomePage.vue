@@ -137,7 +137,7 @@ useHead({
             :class="{
               'home-page-background-track-reversed': rowIndex % 2 === 1,
             }"
-            :style="{ '--home-row-duration': `${160 + rowIndex * 12}s` }"
+            :style="{ '--home-row-duration': `${260 + rowIndex * 18}s` }"
           >
             <div
               v-for="repeatIndex in HOME_BACKGROUND_DUPLICATE_COUNT"
