@@ -69,15 +69,20 @@ const headerContainerClass = computed(() =>
     ? 'header-container mx-auto flex max-w-[50.4rem] items-center justify-between px-4 py-1'
     : 'header-container mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1',
 )
+const headerWordmarkClass = computed(() =>
+  isHomeRoute.value
+    ? 'flex items-start gap-[0.25em] font-bold text-primary no-underline'
+    : 'flex items-center gap-[0.25em] font-bold text-primary no-underline',
+)
 const headerWordmarkStyle = computed(() => ({
   fontFamily: homeTheme.fontFamily,
-  fontSize: isHomeRoute.value ? '3rem' : '1.25rem',
-  lineHeight: isHomeRoute.value ? '3.25rem' : '1.75rem',
+  fontSize: isHomeRoute.value ? 'clamp(1.6rem, 7vw, 3rem)' : '1.25rem',
+  lineHeight: isHomeRoute.value ? 'clamp(1.9rem, 7.5vw, 3.25rem)' : '1.75rem',
   transition: 'font-size 220ms ease, line-height 220ms ease',
 }))
 const headerIconStyle = computed(() => ({
-  width: isHomeRoute.value ? '2.5rem' : '1.5rem',
-  height: isHomeRoute.value ? '2.5rem' : '1.5rem',
+  width: isHomeRoute.value ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
+  height: isHomeRoute.value ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
   transition: 'width 220ms ease, height 220ms ease',
 }))
 const handlePageAfterLeave = () => {
@@ -189,7 +194,7 @@ onUnmounted(() => teardownKonamiListener())
         <div :class="headerContainerClass">
           <router-link
             to="/au"
-            class="flex items-center gap-[0.25em] font-bold text-primary no-underline"
+            :class="headerWordmarkClass"
             :style="headerWordmarkStyle"
           >
             <img src="/cd.png" alt="" :style="discStyle" />
