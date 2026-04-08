@@ -1,9 +1,4 @@
 - donate
-- a11y pass
-- copy pass
-  - SEO text everywhere is a bit ug
-
-- perf check (lighthouse too)
 
 - astley flashing bg? disco ball?
   - idk if I like the simul seek bar on every song

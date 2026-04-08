@@ -20,7 +20,7 @@ export const getHomePageDescription = () =>
   `Browse Australia's top 10 songs for every year from 1940 to ${latestYear}. Explore year-end charts, decade overviews, chart-toppers, and the biggest hits in one archive.`
 
 export const getHomePageSubtitle = () =>
-  `Nearly 100 years of Australian music charts: #1s and Top 10s from today's hits back through 2000s pop, grunge, synth-pop, disco, and the rock'n'roll era.`
+  `Nearly 100 years of Top 10s across the many eras of popular Australian music. Walk back through time and revisit each eras of pop, grunge, synth-pop, disco, rock'n'roll and beyond.`
 
 export const getAdjacentYears = (year: number) => {
   const yearIndex = years.indexOf(year)
