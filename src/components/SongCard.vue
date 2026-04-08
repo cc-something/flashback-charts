@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Disc3, Flag } from 'lucide-vue-next'
+import { Disc3, Flag, MonitorPlay } from 'lucide-vue-next'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
 import type { Song } from '@/types/song'
@@ -174,16 +174,7 @@ const youtubeVideoUrl = computed(() =>
         rel="noreferrer"
         target="_blank"
       >
-        <svg
-          class="h-5 w-5"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8ZM9.6 15.7V8.3l6.4 3.7-6.4 3.7Z"
-          />
-        </svg>
+        <MonitorPlay class="h-4.5 w-4.5" aria-hidden="true" />
       </a>
 
       <button
