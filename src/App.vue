@@ -163,7 +163,12 @@ const openSearch = async () => {
 provide('openSearch', openSearch)
 useHotkeys(
   openSearch,
-  () => isSearchOpen.value || isHotkeysOpen.value,
+  () =>
+    isSearchOpen.value ||
+    isHotkeysOpen.value ||
+    emailSignup.show.value ||
+    isContactOpen.value ||
+    isAboutOpen.value,
   deactivate,
 )
 

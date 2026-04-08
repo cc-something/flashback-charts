@@ -29,6 +29,10 @@ const getIsInputFocused = () => {
   )
 }
 
+const getHasEscapeConsumer = () =>
+  typeof document !== 'undefined' &&
+  document.querySelector('[data-esc-closes]') !== null
+
 export const useHotkeys = (
   openSearch: () => void,
   getIsBlocked: () => boolean,
@@ -116,6 +120,7 @@ export const useHotkeys = (
     }
 
     if (e.code === 'Escape' && !isMod) {
+      if (getHasEscapeConsumer()) return
       e.preventDefault()
       if (player.isActive) player.stop()
       deactivateRickRoll()

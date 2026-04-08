@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { X, Mail } from 'lucide-vue-next'
 import type { Song } from '@/types/song'
 
@@ -23,11 +23,19 @@ const mailtoHref = computed(() => {
     .join('\n')
   return `mailto:contact@flashbackcharts.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 })
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') emit('dismiss')
+}
+
+onMounted(() => window.addEventListener('keydown', handleKeydown))
+onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 </script>
 
 <template>
   <Transition name="modal" appear>
     <div
+      data-esc-closes
       class="fixed inset-0 z-50 flex items-start justify-center bg-background/80 backdrop-blur-sm"
       @click.self="emit('dismiss')"
       @keydown.escape="emit('dismiss')"
