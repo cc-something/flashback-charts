@@ -12,7 +12,7 @@ import {
 import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { Keyboard } from 'lucide-vue-next'
+import { Keyboard, Link, Mail } from 'lucide-vue-next'
 import { applyPendingTheme, useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -62,6 +62,7 @@ const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
+const brandTheme = getHomeTheme()
 const socialLinks = [
   {
     href: 'https://www.facebook.com/people/Flashback-Charts/61572091223850/',
@@ -87,12 +88,21 @@ const getActiveTheme = () => {
     if (!Number.isNaN(routeDecade)) return getThemeForYear(routeDecade)
   }
 
-  return getHomeTheme()
+  return brandTheme
 }
 const activeTheme = computed(() => getActiveTheme())
 useHead(() => ({
   htmlAttrs: { lang: 'en-AU' },
-  link: getThemeFontLinks(activeTheme.value),
+  link:
+    activeTheme.value.fontUrl === brandTheme.fontUrl
+      ? getThemeFontLinks(activeTheme.value)
+      : [
+          ...getThemeFontLinks(activeTheme.value),
+          ...getThemeFontLinks(brandTheme).map((link) => ({
+            ...link,
+            key: `brand-${link.key}`,
+          })),
+        ],
 }))
 const headerContainerClass = computed(() =>
   route.name === 'year'
@@ -105,7 +115,7 @@ const headerWordmarkClass = computed(() =>
     : 'flex items-center gap-[0.25em] font-bold text-primary no-underline',
 )
 const headerWordmarkStyle = computed(() => ({
-  fontFamily: activeTheme.value.fontFamily,
+  fontFamily: brandTheme.fontFamily,
   fontSize: isHomeRoute.value ? 'clamp(1.6rem, 7vw, 3rem)' : '1.25rem',
   lineHeight: isHomeRoute.value ? 'clamp(1.9rem, 7.5vw, 3.25rem)' : '1.75rem',
   transition: 'font-size 220ms ease, line-height 220ms ease',
@@ -267,6 +277,7 @@ onUnmounted(() => teardownKonamiListener())
         class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
         @click="emailSignup.show.value = true"
       >
+        <Mail class="h-3.5 w-3.5" />
         Sign up for our Newsletter
       </button>
       <div class="flex items-center gap-4">
@@ -276,9 +287,10 @@ onUnmounted(() => teardownKonamiListener())
           :href="href"
           target="_blank"
           rel="noreferrer"
-          class="text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
           @click="handleSocialLinkClick(network)"
         >
+          <Link class="h-3.5 w-3.5" />
           {{ label }}
         </a>
       </div>
