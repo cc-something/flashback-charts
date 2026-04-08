@@ -10,8 +10,15 @@ const router = useRouter()
 const route = useRoute()
 const scrollContainer = ref<HTMLElement | null>(null)
 const defaultHomeYear = 2000
+const isLandingRoute = computed(
+  () => route.name === 'home' || route.name === 'decade',
+)
 const activeYear = computed(() => {
   if (route.name === 'home') return defaultHomeYear
+  if (route.name === 'decade') {
+    const decadeStartYear = Number.parseInt(String(route.params.decade), 10)
+    return Number.isNaN(decadeStartYear) ? null : decadeStartYear
+  }
   if (route.name !== 'year') return null
 
   const routeYear = Number(route.params.year)
@@ -33,6 +40,11 @@ const scrollToActiveTab = async () => {
     targetTab.offsetLeft - container.clientWidth / 2 + targetTab.clientWidth / 2
   const maxScrollLeft = container.scrollWidth - container.clientWidth
   const nextScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft))
+
+  if (isLandingRoute.value) {
+    container.scrollLeft = nextScrollLeft
+    return
+  }
 
   container.scrollTo({ left: nextScrollLeft, behavior: 'smooth' })
 }
@@ -69,7 +81,6 @@ onMounted(scrollToActiveTab)
     <div
       ref="scrollContainer"
       class="flex overflow-x-auto scrollbar-hide gap-0.5 px-4 py-2"
-      style="scroll-behavior: smooth"
     >
       <button
         v-for="year in store.yearRange"
