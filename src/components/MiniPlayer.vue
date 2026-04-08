@@ -41,7 +41,7 @@ watch(
     <aside
       v-if="player.isActive && player.playingSong"
       :style="themeVars"
-      class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-visible bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
+      class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-visible rounded-t-xl bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
     >
       <!-- Controls row -->
       <div
