@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { usePlayerStore } from '@/stores/player'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
@@ -34,6 +34,7 @@ export const useHotkeys = (
   deactivateRickRoll: () => void,
 ) => {
   const route = useRoute()
+  const router = useRouter()
   const player = usePlayerStore()
   const chart = useChartStore()
   const toast = useToastStore()
@@ -120,6 +121,32 @@ export const useHotkeys = (
     if (isMod && e.key === 'ArrowRight') {
       e.preventDefault()
       player.playNext()
+      return
+    }
+
+    if (isMod && e.key === '[') {
+      e.preventDefault()
+      if (route.name === 'year') {
+        const yearIdx = chart.availableYears.indexOf(chart.selectedYear)
+        if (yearIdx > 0)
+          router.push({
+            name: 'year',
+            params: { year: chart.availableYears[yearIdx - 1] },
+          })
+      }
+      return
+    }
+
+    if (isMod && e.key === ']') {
+      e.preventDefault()
+      if (route.name === 'year') {
+        const yearIdx = chart.availableYears.indexOf(chart.selectedYear)
+        if (yearIdx < chart.availableYears.length - 1)
+          router.push({
+            name: 'year',
+            params: { year: chart.availableYears[yearIdx + 1] },
+          })
+      }
       return
     }
 

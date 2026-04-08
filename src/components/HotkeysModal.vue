@@ -24,6 +24,8 @@ const sections = [
     rows: [
       { keyGroups: [[mod, '←']], description: 'Previous song' },
       { keyGroups: [[mod, '→']], description: 'Next song' },
+      { keyGroups: [[mod, '[']], description: 'Previous year' },
+      { keyGroups: [[mod, ']']], description: 'Next year' },
       { keyGroups: [['G']], description: 'Go to playing song' },
     ],
   },
