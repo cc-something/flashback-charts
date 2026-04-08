@@ -265,8 +265,8 @@ onUnmounted(() => teardownKonamiListener())
     :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }"
   >
     <div ref="stickyBar" class="sticky top-0 z-40">
-      <header class="border-b border-primary/15 bg-surface">
-        <div :class="headerContainerClass">
+      <header class="site-header border-b border-white/10">
+        <div :class="[headerContainerClass, 'site-header-inner']">
           <router-link
             :to="getHomePath()"
             :class="headerWordmarkClass"
@@ -278,7 +278,7 @@ onUnmounted(() => teardownKonamiListener())
           <button
             type="button"
             aria-label="Search songs"
-            class="flex h-10 w-10 self-start items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary sm:self-center"
+            class="site-header-search flex h-10 w-10 self-start items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary sm:self-center"
             @click="openSearch"
           >
             <svg
@@ -391,6 +391,35 @@ onUnmounted(() => teardownKonamiListener())
 </template>
 
 <style scoped>
+.site-header {
+  background: rgb(10 14 20 / 72%);
+  backdrop-filter: blur(20px) saturate(145%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 7%),
+    0 18px 40px rgb(0 0 0 / 18%);
+}
+
+.site-header-inner {
+  position: relative;
+}
+
+.site-header-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 5%), transparent 50%),
+    radial-gradient(circle at top left, rgb(255 255 255 / 8%), transparent 38%);
+}
+
+.site-header-search {
+  background: rgb(255 255 255 / 4%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 10%),
+    0 8px 24px rgb(0 0 0 / 18%);
+}
+
 .header-container {
   transition: max-width 220ms ease;
 }
