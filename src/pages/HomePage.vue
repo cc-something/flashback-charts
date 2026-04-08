@@ -329,7 +329,7 @@ useHead({
 }
 
 .home-page-background-overlay {
-  background: rgb(0 0 0 / 58%);
+  background: rgb(0 0 0 / 72%);
 }
 
 @keyframes home-page-background-marquee {
