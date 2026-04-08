@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 import { getThemeForYear } from '@/themes'
@@ -8,9 +8,11 @@ const store = useChartStore()
 const router = useRouter()
 const route = useRoute()
 const scrollContainer = ref<HTMLElement | null>(null)
+const shouldAutoScroll = ref(false)
 const defaultHomeYear = 2000
 
 const scrollToActiveTab = async () => {
+  if (!shouldAutoScroll.value) return
   await nextTick()
 
   const container = scrollContainer.value
@@ -29,10 +31,12 @@ const scrollToActiveTab = async () => {
   const nextScrollLeft = Math.max(0, Math.min(targetScrollLeft, maxScrollLeft))
 
   container.scrollTo({ left: nextScrollLeft, behavior: 'smooth' })
+  shouldAutoScroll.value = false
 }
 
 const goToYear = (year: number, target: EventTarget | null) => {
   if (!store.availableYears.includes(year)) return
+  shouldAutoScroll.value = true
   router.push(`/au/${year}`)
   ;(target as HTMLElement | null)?.blur()
 }
@@ -51,7 +55,6 @@ const getTabThemeStyle = (year: number) => {
   }
 }
 
-onMounted(scrollToActiveTab)
 watch(() => store.selectedYear, scrollToActiveTab)
 watch(() => route.name, scrollToActiveTab)
 </script>
