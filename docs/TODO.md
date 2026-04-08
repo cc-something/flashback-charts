@@ -1,16 +1,10 @@
 - donate
 
-- astley flashing bg? disco ball?
+- astley
   - idk if I like the simul seek bar on every song
-- Random song btn CTA on home page
+- play btns on decade cards/landings
 
 ## TODO
-
-- some kinda linting for SEO on a per-page basis
-  - social/meta thumb generation
-  - llm text
-  - other tags etc.
-  - sitemap presence
 
 - confirm analytics behaviour
 - confirm newsletter e2e
