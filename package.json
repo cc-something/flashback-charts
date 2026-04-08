@@ -18,6 +18,7 @@
     "start": "run-s dev",
     "dev": "vite",
     "cache:images": "tsx --tsconfig tsconfig.node.json scripts/cache-images.ts",
+    "generate:social-banners": "tsx --tsconfig tsconfig.node.json scripts/generate-social-banners.ts",
     "\n================== Build ==================": "",
     "build": "vue-tsc --noEmit && vite-ssg build && tsx --tsconfig tsconfig.node.json scripts/generate-sitemap.ts",
     "\n================= Linting =================": "",
