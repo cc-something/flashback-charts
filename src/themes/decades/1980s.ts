@@ -15,7 +15,7 @@ const theme: DecadeTheme = {
     secondary: '#00fff0',
     text: '#ffffff',
     textMuted: '#d580ff',
-    accent: '#ffe600',
+    accent: '#ffcc00',
     tabActive: '#ff0090',
     tabInactive: '#14003a',
   },
