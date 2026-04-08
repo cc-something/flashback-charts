@@ -66,18 +66,18 @@ const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const isHomeRoute = computed(() => route.name === 'home')
 const headerContainerClass = computed(() =>
   route.name === 'year'
-    ? 'header-container mx-auto flex max-w-2xl items-center justify-between px-4 py-1'
+    ? 'header-container mx-auto flex max-w-[50.4rem] items-center justify-between px-4 py-1'
     : 'header-container mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1',
 )
 const headerWordmarkStyle = computed(() => ({
   fontFamily: homeTheme.fontFamily,
-  fontSize: isHomeRoute.value ? '3rem' : '0.875rem',
-  lineHeight: isHomeRoute.value ? '3.25rem' : '1.25rem',
+  fontSize: isHomeRoute.value ? '3rem' : '1.25rem',
+  lineHeight: isHomeRoute.value ? '3.25rem' : '1.75rem',
   transition: 'font-size 220ms ease, line-height 220ms ease',
 }))
 const headerIconStyle = computed(() => ({
-  width: isHomeRoute.value ? '2.5rem' : '1rem',
-  height: isHomeRoute.value ? '2.5rem' : '1rem',
+  width: isHomeRoute.value ? '2.5rem' : '1.5rem',
+  height: isHomeRoute.value ? '2.5rem' : '1.5rem',
   transition: 'width 220ms ease, height 220ms ease',
 }))
 const handlePageAfterLeave = () => {
