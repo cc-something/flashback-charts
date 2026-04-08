@@ -2,9 +2,10 @@ import type { DecadeTheme } from '@/types/theme'
 
 const theme: DecadeTheme = {
   name: '1940s',
-  fontFamily: "'Playfair Display', serif",
+  fontFamily: "'DM Serif Display', serif",
+  bodyFontFamily: "'Inter', sans-serif",
   fontUrl:
-    'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap',
+    'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital,wght@0,400;1,400&display=swap',
   description:
     "Big band swing and jazz ruled Australian airwaves in the 1940s, with fox trots, waltzes, and quicksteps filling ballrooms coast to coast. Wartime ballads gave way to optimistic post-war pop, and radio broadcasts cemented the era's most popular tunes in the national consciousness.",
   colors: {
