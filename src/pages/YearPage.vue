@@ -210,6 +210,13 @@ watch(
       <div v-else />
 
       <router-link
+        :to="`/au/${decadeString}`"
+        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+      >
+        {{ decadeString }}
+      </router-link>
+
+      <router-link
         v-if="nextYear"
         :to="`/au/${nextYear}`"
         class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
@@ -220,15 +227,6 @@ watch(
       </router-link>
       <div v-else />
     </nav>
-
-    <div class="mb-3 text-center">
-      <router-link
-        :to="`/au/${decadeString}`"
-        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
-      >
-        {{ decadeString }}
-      </router-link>
-    </div>
 
     <Transition
       name="year-content"
