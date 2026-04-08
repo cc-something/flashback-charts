@@ -57,8 +57,9 @@ defineExpose({ focusInput })
           </h2>
           <p class="mt-2 text-sm text-text-muted">
             Get occasional updates from Flashback Charts, including new charts,
-            posts, discoveries, and other site news. No spam, just the good
-            stuff.
+            posts, discoveries, and other music info.
+            <br />
+            No spam, just the good stuff.
           </p>
 
           <form
