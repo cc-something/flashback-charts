@@ -45,7 +45,7 @@ watch(
     >
       <!-- Controls row -->
       <div
-        class="flex items-center gap-1 border-b border-white/5 bg-surface px-2 py-0.5"
+        class="flex items-center gap-1 overflow-hidden rounded-t-xl border-b border-white/5 bg-surface px-2 py-0.5"
       >
         <!-- Prev -->
         <button
