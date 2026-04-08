@@ -56,7 +56,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
         </button>
 
         <h2 id="report-issue-title" class="text-xl font-bold text-text">
-          report an issue with this song
+          Report an issue with this song
         </h2>
         <p class="mt-2 text-sm text-text-muted">
           Is there a problem or inaccuracy with this song? Let us know and we'll
