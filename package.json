@@ -26,6 +26,7 @@
     "lint:format": "run-s format",
     "lint:css": "stylelint \"./src/**/*.vue\" --fix",
     "lint:js": "eslint \"./src/**/*{.vue,.ts}\" --fix",
+    "lint:seo": "tsx --tsconfig tsconfig.node.json scripts/lint-seo.ts",
     "lint:tsc": "vue-tsc --noEmit",
     "\n================= Testing =================": "",
     "test": "vitest run",

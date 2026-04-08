@@ -2,8 +2,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadEnv } from 'vite'
-import { getAvailableYears } from '../src/data'
-import { getDecadeForYear } from '../src/themes'
+import { getSitemapEntries } from './seo'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(here, '..')
@@ -16,23 +15,7 @@ const siteUrl = rawSiteUrl.replace(/\/$/, '')
 if (siteUrl === 'https://example.com')
   throw new Error('VITE_SITE_URL must be a real production URL')
 const today = new Date().toISOString().slice(0, 10)
-
-const years = getAvailableYears().sort((a, b) => a - b)
-const decades = [...new Set(years.map((year) => getDecadeForYear(year)))].sort()
-
-const urls = [
-  { loc: `${siteUrl}/`, priority: '1.0', changefreq: 'weekly' },
-  ...decades.map((decade) => ({
-    loc: `${siteUrl}/au/${decade}/`,
-    priority: '0.9',
-    changefreq: 'monthly',
-  })),
-  ...years.map((year) => ({
-    loc: `${siteUrl}/au/${year}/`,
-    priority: '0.8',
-    changefreq: 'yearly',
-  })),
-]
+const urls = getSitemapEntries(siteUrl)
 
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
