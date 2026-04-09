@@ -53,7 +53,7 @@ const fullYearsSection = yearPages
     const year = Number(p.path.match(/\d{4}/)?.[0])
     const songs = getYearData(year) ?? []
     const songList = songs
-      .map((s) => `${s.rank}. "${s.title}" — ${s.artist}`)
+      .map((s) => `${s.rank}. "${s.title}" by ${s.artist}`)
       .join('\n')
     return `### ${p.title}\n\n> ${p.llmText}\n\n${songList}`
   })
