@@ -254,7 +254,7 @@ useHead(() => ({
         </div>
       </header>
 
-      <nav class="mb-5 flex items-center justify-between gap-3">
+      <nav class="mb-3 flex items-center justify-between gap-3">
         <router-link
           v-if="previousDecade"
           :to="getDecadePath(previousDecade)"
