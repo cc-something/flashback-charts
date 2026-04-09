@@ -240,15 +240,18 @@ onUnmounted(() => {
     </div>
 
     <div class="relative z-10 max-w-[1300px] mx-auto px-4 pt-4 pb-10">
-      <div
-        class="mb-4 rounded-2xl border border-white/10 bg-black/72 px-5 py-5"
-      >
-        <h1 class="text-lg sm:text-2xl text-text-muted">
-          Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
-        </h1>
-        <p class="mt-2 text-base leading-relaxed text-text-muted/70">
-          {{ subtitle }}
-        </p>
+      <div class="home-page-intro relative mb-4">
+        <div
+          class="home-page-intro-gradient absolute inset-y-0 left-1/2 w-screen -translate-x-1/2"
+        />
+        <div class="relative px-5 py-5">
+          <h1 class="text-lg sm:text-2xl text-text-muted">
+            Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
+          </h1>
+          <p class="mt-2 text-base leading-relaxed text-text-muted/70">
+            {{ subtitle }}
+          </p>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 gap-4 min-[1000px]:grid-cols-2">
@@ -424,6 +427,21 @@ onUnmounted(() => {
 
 .home-page-background-overlay {
   background: rgb(0 0 0 / 82%);
+}
+
+.home-page-intro {
+  overflow: hidden;
+}
+
+.home-page-intro-gradient {
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 78%) 0%,
+    rgb(0 0 0 / 62%) 40%,
+    rgb(0 0 0 / 28%) 76%,
+    transparent 100%
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
