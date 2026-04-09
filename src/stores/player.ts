@@ -274,30 +274,35 @@ export const usePlayerStore = defineStore('player', () => {
     else clearSaveTimer()
   })
 
-  const stop = () => {
+  const clearOfflineHandler = () => {
+    if (!offlineHandler) return
+    if (typeof window !== 'undefined')
+      window.removeEventListener('offline', offlineHandler)
+    offlineHandler = null
+  }
+  const teardownPlaybackSession = () => {
     clearProgressTimer()
-    clearSaveTimer()
     clearStallTimer()
     ytPlayer?.destroy()
     ytPlayer = null
-    playerState.value = 'idle'
-    playingSong.value = null
-    playingYear.value = null
     currentTimeSeconds.value = 0
     durationSeconds.value = 0
     retryCount = 0
     currentPlaySong = null
-    hasStartedPlayback.value = false
     clearLoadingTracking()
     clearSeekPreview()
+    clearOfflineHandler()
+  }
+  const stop = () => {
+    clearSaveTimer()
+    teardownPlaybackSession()
+    playerState.value = 'idle'
+    playingSong.value = null
+    playingYear.value = null
+    hasStartedPlayback.value = false
     clearActive()
     deactivate()
     clearSavedState()
-    if (offlineHandler) {
-      if (typeof window !== 'undefined')
-        window.removeEventListener('offline', offlineHandler)
-      offlineHandler = null
-    }
   }
 
   const attemptPlay = (song: Song, startAt?: number) => {
@@ -373,9 +378,11 @@ export const usePlayerStore = defineStore('player', () => {
           else if (event.data === 0) {
             const endedSong = playingSong.value
             const endedYear = playingYear.value
-            stop()
-            if (endedSong && endedYear !== null)
-              onEndedCallback?.(endedSong, endedYear)
+            if (endedSong && endedYear !== null && onEndedCallback) {
+              teardownPlaybackSession()
+              playerState.value = 'loading'
+              void onEndedCallback(endedSong, endedYear)
+            } else stop()
           }
           syncPlaybackProgress()
         },
@@ -435,8 +442,8 @@ export const usePlayerStore = defineStore('player', () => {
         ? currentTimeSeconds.value
         : undefined
 
-    // Stop any current playback
-    if (isActive.value) stop()
+    const wasActive = isActive.value
+    if (wasActive) teardownPlaybackSession()
 
     const chart = useChartStore()
     playingSong.value = song
@@ -447,7 +454,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (!(await ensurePlaybackConnection()))
       return failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE)
 
-    registerActive(stop)
+    if (!wasActive) registerActive(stop)
     usePlausibleAnalytics().trackEvent('Song Play', {
       artist: song.artist,
       title: song.title,
@@ -580,17 +587,20 @@ export const usePlayerStore = defineStore('player', () => {
     trigger: PlayTrigger = 'direct',
   ) => {
     const chart = useChartStore()
+    const stopAutoplayIfNeeded = () => {
+      if (trigger === 'autoplay') stop()
+    }
     const song = fromSong ?? playingSong.value
     const year = fromYear ?? playingYear.value
     if (!song || year === null || year === undefined)
       return { songs: null, index: -1, year: null }
     const songs = await getSortedYearData(year)
-    if (!songs) return
+    if (!songs) return stopAutoplayIfNeeded()
 
     const index = songs.findIndex(
       (s) => s.youtubeVideoId === song.youtubeVideoId,
     )
-    if (index === -1) return
+    if (index === -1) return stopAutoplayIfNeeded()
 
     if (index < songs.length - 1) {
       const nextSong = songs[index + 1]
@@ -599,11 +609,12 @@ export const usePlayerStore = defineStore('player', () => {
     }
 
     const yearIdx = chart.availableYears.indexOf(year)
-    if (yearIdx === -1 || yearIdx >= chart.availableYears.length - 1) return
+    if (yearIdx === -1 || yearIdx >= chart.availableYears.length - 1)
+      return stopAutoplayIfNeeded()
     const nextYear = chart.availableYears[yearIdx + 1]
-    if (nextYear === undefined) return
+    if (nextYear === undefined) return stopAutoplayIfNeeded()
     const nextYearSongs = await getSortedYearData(nextYear)
-    if (!nextYearSongs?.length) return
+    if (!nextYearSongs?.length) return stopAutoplayIfNeeded()
     chart.selectYear(nextYear)
     await play(nextYearSongs[0], nextYear, trigger)
   }
