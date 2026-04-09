@@ -202,17 +202,12 @@ watch(
 
 <template>
   <main class="max-w-[50.4rem] mx-auto px-4 pt-4 pb-6">
-    <header
-      class="sticky z-30 mb-1 bg-background py-3 -my-3"
-      style="top: var(--sticky-bar-height)"
+    <h1
+      class="theme-display mb-4 text-xl sm:text-2xl md:text-3xl font-bold text-primary"
+      :style="{ fontFamily: theme.fontFamily }"
     >
-      <h1
-        class="theme-display text-xl sm:text-2xl md:text-3xl font-bold text-primary"
-        :style="{ fontFamily: theme.fontFamily }"
-      >
-        {{ heading }}
-      </h1>
-    </header>
+      {{ heading }}
+    </h1>
 
     <div class="mb-4 flex flex-col gap-3">
       <p
