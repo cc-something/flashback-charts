@@ -41,7 +41,7 @@ const progressPercent = computed(() => {
       />
     </SliderTrack>
     <SliderThumb
-      class="playback-seek-thumb block h-3.5 w-3.5 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
+      class="playback-seek-thumb block h-3 w-3 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
     />
   </SliderRoot>
 </template>
