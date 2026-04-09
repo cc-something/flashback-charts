@@ -61,7 +61,7 @@ export type PlayTrigger =
   | 'skip'
 
 const MAX_RETRIES = 2
-const STALL_TIMEOUT_MS = 8_000
+const STALL_TIMEOUT_MS = 4_000
 const getYearSongs = async (year: number) => {
   const { getYearData } = await import('@/data')
   return getYearData(year) ?? null
@@ -140,7 +140,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const syncPlaybackProgress = () => {
-    if (!ytPlayer) return
+    if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return
     const nextDuration = ytPlayer.getDuration()
     const nextCurrent = ytPlayer.getCurrentTime()
     if (nextDuration > 0) durationSeconds.value = nextDuration
@@ -275,7 +275,10 @@ export const usePlayerStore = defineStore('player', () => {
           event.target.playVideo()
           // Restart stall timer — playback should begin shortly after playVideo()
           stallTimerId = setTimeout(() => {
-            if (playerState.value === 'loading') handlePlaybackError()
+            if (playerState.value === 'loading') {
+              useToastStore().show('Playback unavailable — try again later')
+              stop()
+            }
           }, STALL_TIMEOUT_MS)
         },
         onStateChange: (event: YTPlayerEvent) => {
@@ -298,7 +301,10 @@ export const usePlayerStore = defineStore('player', () => {
 
     // Catch silent failures (e.g. mobile Safari postMessage origin mismatch)
     stallTimerId = setTimeout(() => {
-      if (playerState.value === 'loading') handlePlaybackError()
+      if (playerState.value === 'loading') {
+        useToastStore().show('Playback unavailable — try again later')
+        stop()
+      }
     }, STALL_TIMEOUT_MS)
   }
 
