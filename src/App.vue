@@ -328,14 +328,6 @@ onUnmounted(() => teardownKonamiListener())
             {{ label }}
           </a>
         </div>
-        <button
-          type="button"
-          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-          @click="isContactOpen = true"
-        >
-          <Mail class="h-3.5 w-3.5" />
-          Contact
-        </button>
       </div>
       <div
         class="mt-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
@@ -347,6 +339,15 @@ onUnmounted(() => teardownKonamiListener())
         >
           <Keyboard class="h-3.5 w-3.5" />
           Shortcuts
+        </button>
+
+        <button
+          type="button"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          @click="isContactOpen = true"
+        >
+          <Mail class="h-3.5 w-3.5" />
+          Contact
         </button>
         <button
           type="button"
