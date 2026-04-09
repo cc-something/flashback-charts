@@ -288,7 +288,7 @@ watch(
 
       <router-link
         :to="decadePath"
-        class="text-sm text-text-muted opacity-50 underline underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+        class="text-sm text-text-muted underline underline-offset-4 transition-colors duration-150 hover:text-text-muted"
       >
         More {{ decadeString }}
       </router-link>
