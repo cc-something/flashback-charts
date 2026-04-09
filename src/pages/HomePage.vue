@@ -243,7 +243,7 @@ onUnmounted(() => {
       <div class="home-page-intro relative mb-4">
         <div class="home-page-intro-gradient absolute inset-0" />
         <div class="relative mx-auto max-w-[1300px] px-4">
-          <div class="px-5 py-5">
+          <div class="py-5">
             <h1 class="text-lg sm:text-2xl text-text-muted">
               Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
             </h1>
