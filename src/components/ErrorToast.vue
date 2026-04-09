@@ -20,13 +20,13 @@ const infoToasts = computed(() =>
     <div
       role="status"
       aria-live="polite"
-      class="pointer-events-none fixed bottom-4 left-1/2 z-[9999] flex -translate-x-1/2 flex-col items-center gap-2 sm:bottom-auto sm:left-auto sm:right-4 sm:top-4 sm:translate-x-0 sm:items-stretch"
+      class="pointer-events-none fixed bottom-4 left-1/2 z-[9999] flex w-[calc(100vw-2rem)] -translate-x-1/2 flex-col items-center gap-2 sm:bottom-auto sm:left-auto sm:right-4 sm:top-4 sm:w-auto sm:translate-x-0 sm:items-stretch"
     >
       <TransitionGroup name="toast-right">
         <div
           v-for="t in successToasts"
           :key="t.id"
-          class="pointer-events-auto flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg"
+          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg"
         >
           <svg
             class="h-4 w-4 flex-shrink-0"
@@ -54,7 +54,7 @@ const infoToasts = computed(() =>
         <div
           v-for="t in errorToasts"
           :key="t.id"
-          class="pointer-events-auto flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg"
+          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg"
         >
           <svg
             class="h-4 w-4 flex-shrink-0"
