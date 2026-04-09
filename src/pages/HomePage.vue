@@ -291,7 +291,10 @@ onUnmounted(() => {
                 :aria-label="`Play top songs of the ${group.decade}`"
                 @click="playYear(group.years[0].year)"
               >
-                <Play class="h-4 w-4" style="margin-left: 1px" />
+                <Play
+                  class="h-4 w-4"
+                  style="margin-left: 1px; fill: currentColor"
+                />
               </button>
             </div>
             <p

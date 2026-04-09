@@ -354,7 +354,10 @@ useHead(() => ({
                   :aria-label="`Play top songs of ${year}`"
                   @click="playYear(year)"
                 >
-                  <Play class="h-4 w-4" style="margin-left: 1px" />
+                  <Play
+                    class="h-4 w-4"
+                    style="margin-left: 1px; fill: currentColor"
+                  />
                 </button>
               </div>
               <p class="mt-2 text-base leading-relaxed text-text-muted">
