@@ -13,6 +13,7 @@ import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { Info, Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
+import ErrorToast from '@/components/ErrorToast.vue'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
@@ -35,9 +36,6 @@ import {
 } from '@/themes/font'
 import { getHomePath, getYearPath } from '@/utils/url'
 import YearTabs from '@/components/YearTabs.vue'
-const ErrorToast = defineAsyncComponent(
-  () => import('@/components/ErrorToast.vue'),
-)
 const RickRollBanner = defineAsyncComponent(
   () => import('@/components/RickRollBanner.vue'),
 )
