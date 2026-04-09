@@ -14,11 +14,23 @@ export const useEmailSignup = () => {
   const route = useRoute()
 
   const shouldShow = computed(
-    () => !dismissed.value && !subscribedEmail.value && hasVisitedYearPage.value && hasWaited.value,
+    () =>
+      !dismissed.value &&
+      !subscribedEmail.value &&
+      hasVisitedYearPage.value &&
+      hasWaited.value,
   )
 
-  watch(() => route.name, (name) => { if (name === 'year') hasVisitedYearPage.value = true }, { immediate: true })
-  watch(shouldShow, (val) => { if (val) show.value = true })
+  watch(
+    () => route.name,
+    (name) => {
+      if (name === 'year') hasVisitedYearPage.value = true
+    },
+    { immediate: true },
+  )
+  watch(shouldShow, (val) => {
+    if (val) show.value = true
+  })
 
   const dismiss = () => {
     dismissed.value = true
@@ -40,7 +52,9 @@ export const useEmailSignup = () => {
 
   onMounted(() => {
     if (!dismissed.value && !subscribedEmail.value)
-      timer.value = setTimeout(() => { hasWaited.value = true }, DELAY_MS)
+      timer.value = setTimeout(() => {
+        hasWaited.value = true
+      }, DELAY_MS)
   })
 
   onUnmounted(() => {
