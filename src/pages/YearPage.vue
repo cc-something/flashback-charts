@@ -222,7 +222,7 @@ watch(
       <a
         v-if="currentSource"
         :href="currentSource.url"
-        class="text-xs text-text-muted/30 underline decoration-primary/15 underline-offset-4 transition-colors duration-150 hover:text-text-muted/60"
+        class="text-xs text-text-muted/45 underline decoration-primary/20 underline-offset-4 transition-colors duration-150 hover:text-text"
         rel="noreferrer"
         target="_blank"
       >

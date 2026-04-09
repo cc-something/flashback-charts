@@ -186,11 +186,11 @@ const youtubeVideoUrl = computed(() =>
         <a
           :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
           :href="youtubeVideoUrl"
-          class="flex h-9 w-9 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          class="flex h-8 w-8 items-center justify-center rounded text-text-muted transition-colors duration-150 hover:bg-black/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           rel="noreferrer"
           target="_blank"
         >
-          <MonitorPlay class="h-4.5 w-4.5" aria-hidden="true" />
+          <MonitorPlay class="h-5 w-5" aria-hidden="true" />
         </a>
       </div>
 
@@ -203,10 +203,10 @@ const youtubeVideoUrl = computed(() =>
         <button
           type="button"
           :aria-label="`Report an issue with ${displaySong.title} by ${displaySong.artist}`"
-          class="flex h-9 w-9 items-center justify-center rounded-full text-text-muted opacity-0 transition-all duration-150 group-hover:opacity-45 hover:bg-black/8 hover:opacity-70 hover:text-primary focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          class="flex h-8 w-8 items-center justify-center rounded text-text-muted transition-colors duration-150 hover:bg-black/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           @click.stop="isReportModalOpen = true"
         >
-          <Flag class="h-4.5 w-4.5" aria-hidden="true" />
+          <Flag class="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
     </div>
