@@ -6,6 +6,14 @@ import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
 import { getYearPath } from '@/utils/url'
 
+const props = withDefaults(
+  defineProps<{
+    layout?: 'mobile' | 'desktop'
+  }>(),
+  {
+    layout: 'mobile',
+  },
+)
 const player = usePlayerStore()
 const route = useRoute()
 const router = useRouter()
@@ -17,10 +25,23 @@ const isMac =
 const mod = isMac ? '⌘' : 'Ctrl'
 const miniPlayerButtonClass =
   'inline-flex h-9 w-9 items-center justify-center rounded-full text-text/55 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const shouldRenderMiniPlayer = computed(() => {
+  if (!player.isMiniPlayerVisible || !player.playingSong) return false
+  return !(
+    route.name === 'year' && Number(route.params.year) === player.playingYear
+  )
+})
+const miniPlayerRootClass = computed(() =>
+  props.layout === 'desktop'
+    ? 'group fixed right-4 bottom-4 z-30 w-[min(30rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-primary/15 bg-surface/95 shadow-[0_16px_48px_rgb(0_0_0_/_0.26)] backdrop-blur-sm transition-colors duration-150 hover:bg-primary/10'
+    : 'group bg-surface/95 backdrop-blur-sm transition-colors duration-150 hover:bg-primary/10',
+)
 const miniPlayerContainerClass = computed(() =>
-  route.name === 'year'
-    ? 'relative mx-auto max-w-[50.4rem] px-4 pt-1.5 pb-2.5'
-    : 'relative mx-auto max-w-[1300px] px-4 pt-1.5 pb-2.5',
+  props.layout === 'desktop'
+    ? 'relative px-4 pt-2 pb-2.5'
+    : route.name === 'year'
+      ? 'relative mx-auto max-w-[50.4rem] px-4 pt-1.5 pb-2.5'
+      : 'relative mx-auto max-w-[1300px] px-4 pt-1.5 pb-2.5',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -75,10 +96,10 @@ const goToPlayingSong = async () => {
 <template>
   <Transition name="mini-player">
     <aside
-      v-if="player.isMiniPlayerVisible && player.playingSong"
+      v-if="shouldRenderMiniPlayer && player.playingSong"
       aria-label="Music player"
       :style="themeVars"
-      class="group bg-surface/95 transition-colors duration-150 hover:bg-primary/10 backdrop-blur-sm"
+      :class="miniPlayerRootClass"
     >
       <div :class="miniPlayerContainerClass">
         <div class="flex min-w-0 items-center gap-2.5">

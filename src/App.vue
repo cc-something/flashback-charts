@@ -35,6 +35,7 @@ import {
   getThemeFontLinks,
 } from '@/themes/font'
 import { getHomePath, getYearPath } from '@/utils/url'
+import MiniPlayer from '@/components/MiniPlayer.vue'
 import YearTabs from '@/components/YearTabs.vue'
 const RickRollBanner = defineAsyncComponent(
   () => import('@/components/RickRollBanner.vue'),
@@ -292,6 +293,7 @@ onUnmounted(() => teardownKonamiListener())
       </header>
 
       <YearTabs />
+      <MiniPlayer layout="mobile" class="min-[840px]:hidden" />
       <RickRollBanner v-if="isRickRollActive" @deactivate="deactivate" />
     </div>
 
@@ -376,6 +378,7 @@ onUnmounted(() => teardownKonamiListener())
       @reveal="revealContactEmail"
     />
     <AboutModal v-if="isAboutOpen" @close="isAboutOpen = false" />
+    <MiniPlayer layout="desktop" class="max-[839px]:hidden" />
     <div
       ref="playerContainer"
       class="fixed bottom-0 left-0 h-px w-px opacity-[0.01]"

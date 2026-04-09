@@ -4,7 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 import { getThemeForYear } from '@/themes'
 import { getYearPath } from '@/utils/url'
-import MiniPlayer from './MiniPlayer.vue'
 
 const store = useChartStore()
 const router = useRouter()
@@ -107,7 +106,6 @@ onMounted(scrollToActiveTab)
         {{ year }}
       </button>
     </div>
-    <MiniPlayer />
   </nav>
 </template>
 
