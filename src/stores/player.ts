@@ -273,6 +273,10 @@ export const usePlayerStore = defineStore('player', () => {
           startProgressTimer()
           if (isMuted.value) event.target.mute()
           event.target.playVideo()
+          // Restart stall timer — playback should begin shortly after playVideo()
+          stallTimerId = setTimeout(() => {
+            if (playerState.value === 'loading') handlePlaybackError()
+          }, STALL_TIMEOUT_MS)
         },
         onStateChange: (event: YTPlayerEvent) => {
           if (event.data === 1 || event.data === 2) clearStallTimer()
