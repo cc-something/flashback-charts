@@ -20,7 +20,7 @@ const infoToasts = computed(() =>
     <div
       role="status"
       aria-live="polite"
-      class="pointer-events-none fixed right-4 top-4 z-[9999] flex flex-col gap-2"
+      class="pointer-events-none fixed bottom-4 left-1/2 z-[9999] flex -translate-x-1/2 flex-col items-center gap-2 sm:bottom-auto sm:left-auto sm:right-4 sm:top-4 sm:translate-x-0 sm:items-stretch"
     >
       <TransitionGroup name="toast-right">
         <div
@@ -112,7 +112,14 @@ const infoToasts = computed(() =>
 .toast-right-enter-from,
 .toast-right-leave-to {
   opacity: 0;
-  transform: translateX(1rem);
+  transform: translateY(1rem);
+}
+
+@media (width >= 640px) {
+  .toast-right-enter-from,
+  .toast-right-leave-to {
+    transform: translateX(1rem);
+  }
 }
 
 .toast-left-enter-from,
