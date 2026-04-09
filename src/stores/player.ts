@@ -61,7 +61,7 @@ export type PlayTrigger =
   | 'skip'
 
 const MAX_RETRIES = 2
-const STALL_TIMEOUT_MS = 15_000
+const STALL_TIMEOUT_MS = 8_000
 const getYearSongs = async (year: number) => {
   const { getYearData } = await import('@/data')
   return getYearData(year) ?? null
@@ -275,7 +275,7 @@ export const usePlayerStore = defineStore('player', () => {
           event.target.playVideo()
         },
         onStateChange: (event: YTPlayerEvent) => {
-          clearStallTimer()
+          if (event.data === 1 || event.data === 2) clearStallTimer()
           if (event.data === 1) playerState.value = 'playing'
           else if (event.data === 2) playerState.value = 'paused'
           else if (event.data === 3) playerState.value = 'loading'
