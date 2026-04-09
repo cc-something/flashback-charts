@@ -9,7 +9,12 @@ import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 
 const STORAGE_KEY = 'flashback-miniplayer'
 const SAVE_INTERVAL_MS = 3_000
-const OFFLINE_PLAYBACK_MESSAGE = 'No internet connection — cannot play'
+const CONNECTIVITY_CHECK_TIMEOUT_MS = 1_500
+const OFFLINE_PLAYBACK_MESSAGE = 'No internet connection. Cannot play.'
+const OFFLINE_PLAYBACK_STOPPED_MESSAGE =
+  'No internet connection. Playback stopped.'
+const PLAYER_LOAD_FAILED_MESSAGE =
+  'Failed to load player. Check your connection.'
 
 interface SavedPlayerState {
   year: number
@@ -90,6 +95,7 @@ export const usePlayerStore = defineStore('player', () => {
   let currentPlaySong: Song | null = null
   let offlineHandler: (() => void) | null = null
   let stallTimerId: ReturnType<typeof setTimeout> | null = null
+  let connectivityCheckPromise: Promise<boolean> | null = null
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -97,6 +103,55 @@ export const usePlayerStore = defineStore('player', () => {
   )
   const showOfflinePlaybackToast = () =>
     useToastStore().show(OFFLINE_PLAYBACK_MESSAGE)
+  const showOfflinePlaybackStoppedToast = () =>
+    useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+  const showPlayerLoadFailedToast = () =>
+    useToastStore().show(PLAYER_LOAD_FAILED_MESSAGE)
+
+  const getConnectivityCheckUrl = () => {
+    const connectivityCheckUrl = new URL('/favicon.svg', window.location.origin)
+    connectivityCheckUrl.searchParams.set('t', String(Date.now()))
+    return connectivityCheckUrl.toString()
+  }
+
+  const getHasNetworkConnection = async () => {
+    if (typeof window === 'undefined') return false
+    if (!navigator.onLine) return false
+    if (connectivityCheckPromise) return connectivityCheckPromise
+
+    connectivityCheckPromise = new Promise<boolean>((resolve) => {
+      const abortController = new AbortController()
+      const timeoutId = window.setTimeout(
+        () => abortController.abort(),
+        CONNECTIVITY_CHECK_TIMEOUT_MS,
+      )
+
+      void fetch(getConnectivityCheckUrl(), {
+        cache: 'no-store',
+        credentials: 'same-origin',
+        signal: abortController.signal,
+      })
+        .then((response) => resolve(response.ok))
+        .catch(() => resolve(false))
+        .finally(() => {
+          clearTimeout(timeoutId)
+          connectivityCheckPromise = null
+        })
+    })
+
+    return connectivityCheckPromise
+  }
+
+  const ensurePlaybackConnection = async () => {
+    if (await getHasNetworkConnection()) return true
+    showOfflinePlaybackToast()
+    return false
+  }
+
+  const stopForOfflinePlayback = () => {
+    showOfflinePlaybackStoppedToast()
+    stop()
+  }
 
   const formatPlaybackTime = (timeSeconds: number) => {
     if (!Number.isFinite(timeSeconds) || timeSeconds <= 0) return '0:00'
@@ -234,12 +289,8 @@ export const usePlayerStore = defineStore('player', () => {
     ytPlayer = null
     clearStallTimer()
 
-    const handlePlaybackError = () => {
-      if (!navigator.onLine) {
-        useToastStore().show('No internet connection — playback stopped')
-        stop()
-        return
-      }
+    const handlePlaybackError = async () => {
+      if (!(await getHasNetworkConnection())) return stopForOfflinePlayback()
       if (retryCount < MAX_RETRIES) {
         retryCount++
         playerState.value = 'loading'
@@ -250,7 +301,7 @@ export const usePlayerStore = defineStore('player', () => {
       } else {
         const failedSong = playingSong.value
         const failedYear = playingYear.value
-        useToastStore().show(`Failed to play "${song.title}" — skipping`)
+        useToastStore().show(`Failed to play "${song.title}". Skipping.`)
         stop()
         if (failedSong && failedYear !== null)
           playNext(failedSong, failedYear, 'skip')
@@ -276,8 +327,10 @@ export const usePlayerStore = defineStore('player', () => {
           if (isMuted.value) event.target.mute()
           event.target.playVideo()
           // Restart stall timer — playback should begin shortly after playVideo()
-          stallTimerId = setTimeout(() => {
+          stallTimerId = setTimeout(async () => {
             if (playerState.value === 'loading') {
+              if (!(await getHasNetworkConnection()))
+                return stopForOfflinePlayback()
               useToastStore().show('Playback failed, try again later')
               stop()
             }
@@ -297,13 +350,14 @@ export const usePlayerStore = defineStore('player', () => {
           }
           syncPlaybackProgress()
         },
-        onError: handlePlaybackError,
+        onError: () => void handlePlaybackError(),
       },
     })
 
     // Catch silent failures (e.g. mobile Safari postMessage origin mismatch)
-    stallTimerId = setTimeout(() => {
+    stallTimerId = setTimeout(async () => {
       if (playerState.value === 'loading') {
+        if (!(await getHasNetworkConnection())) return stopForOfflinePlayback()
         useToastStore().show('Playback failed, try again later')
         stop()
       }
@@ -328,7 +382,7 @@ export const usePlayerStore = defineStore('player', () => {
         return
       }
       if (playerState.value === 'paused' && ytPlayer) {
-        if (!navigator.onLine) return showOfflinePlaybackToast()
+        if (!(await ensurePlaybackConnection())) return
         ytPlayer.playVideo()
         return
       }
@@ -339,7 +393,7 @@ export const usePlayerStore = defineStore('player', () => {
       // Restored from storage — fall through to full play
     }
 
-    if (!navigator.onLine) return showOfflinePlaybackToast()
+    if (!(await ensurePlaybackConnection())) return
 
     // Capture resume time before stop() clears it
     const resumeAt =
@@ -367,15 +421,15 @@ export const usePlayerStore = defineStore('player', () => {
     if (chart.selectedYear === year) scrollSongIntoView(song)
 
     offlineHandler = () => {
-      useToastStore().show('No internet connection — playback stopped')
-      stop()
+      stopForOfflinePlayback()
     }
     window.addEventListener('offline', offlineHandler, { once: true })
 
     try {
       await ensureLoaded()
     } catch {
-      useToastStore().show('Failed to load player — check your connection')
+      if (!(await getHasNetworkConnection())) return stopForOfflinePlayback()
+      showPlayerLoadFailedToast()
       stop()
       return
     }
@@ -385,10 +439,10 @@ export const usePlayerStore = defineStore('player', () => {
     attemptPlay(song, resumeAt)
   }
 
-  const togglePlayback = () => {
+  const togglePlayback = async () => {
     if (playerState.value === 'playing') ytPlayer?.pauseVideo()
     else if (playerState.value === 'paused' && ytPlayer) {
-      if (!navigator.onLine) return showOfflinePlaybackToast()
+      if (!(await ensurePlaybackConnection())) return
       ytPlayer.playVideo()
     } else if (
       playerState.value === 'paused' &&
