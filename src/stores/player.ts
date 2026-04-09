@@ -432,6 +432,7 @@ export const usePlayerStore = defineStore('player', () => {
       playNext(skippedSong, skippedYear, 'skip')
   }
   const handlePlayerStateChange = (event: YTPlayerEvent) => {
+    if (!playingSong.value || playingYear.value === null) return
     if (event.data === 1 || event.data === 2) clearStallTimer()
     if (event.data === 1) {
       clearLoadingTracking()
