@@ -1,10 +1,30 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useWindowScroll, useWindowSize, useBreakpoints } from '@vueuse/core'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
 
 const player = usePlayerStore()
+
+const breakpoints = useBreakpoints({ sm: 640 })
+const isMobile = breakpoints.smaller('sm')
+const { y: scrollY } = useWindowScroll()
+const { height: windowHeight } = useWindowSize()
+
+const footerVisibleHeight = computed(() => {
+  void scrollY.value // reactive dep — recompute on scroll
+  if (typeof document === 'undefined') return 0
+  const footer = document.querySelector('footer')
+  if (!footer) return 0
+  return Math.max(0, windowHeight.value - footer.getBoundingClientRect().top)
+})
+
+const mobileBottomStyle = computed(() =>
+  isMobile.value
+    ? { bottom: `${Math.max(16, footerVisibleHeight.value + 16)}px` }
+    : {},
+)
 
 const isMac =
   typeof navigator !== 'undefined' &&
@@ -43,8 +63,8 @@ watch(
     <aside
       v-if="player.isActive && player.playingSong"
       aria-label="Music player"
-      :style="themeVars"
-      class="fixed bottom-4 right-4 z-50 flex w-80 flex-col overflow-visible rounded-t-xl bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10"
+      :style="{ ...themeVars, ...mobileBottomStyle }"
+      class="fixed bottom-4 left-1/2 z-50 flex w-[calc(100vw-2rem)] max-w-xs -translate-x-1/2 flex-col overflow-visible rounded-t-xl bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10 sm:left-auto sm:right-4 sm:w-80 sm:translate-x-0"
     >
       <!-- Controls row -->
       <div
