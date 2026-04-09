@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useChartStore } from '@/stores/chart'
 import { getThemeForYear } from '@/themes'
 import { getYearPath } from '@/utils/url'
+import MiniPlayer from './MiniPlayer.vue'
 
 const store = useChartStore()
 const router = useRouter()
@@ -78,6 +79,7 @@ onMounted(scrollToActiveTab)
     aria-label="Year navigation"
     class="border-b border-primary/20 bg-surface"
   >
+    <MiniPlayer />
     <div
       ref="scrollContainer"
       class="flex overflow-x-auto scrollbar-hide gap-0.5 px-4 py-2"

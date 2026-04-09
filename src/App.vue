@@ -35,9 +35,6 @@ import {
 } from '@/themes/font'
 import { getHomePath, getYearPath } from '@/utils/url'
 import YearTabs from '@/components/YearTabs.vue'
-const MiniPlayer = defineAsyncComponent(
-  () => import('@/components/MiniPlayer.vue'),
-)
 const ErrorToast = defineAsyncComponent(
   () => import('@/components/ErrorToast.vue'),
 )
@@ -361,8 +358,6 @@ onUnmounted(() => teardownKonamiListener())
         </div>
       </div>
     </footer>
-
-    <MiniPlayer v-if="player.isActive" />
     <SearchOverlay
       v-if="isSearchOpen"
       ref="searchOverlay"
