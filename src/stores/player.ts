@@ -9,6 +9,7 @@ import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 
 const STORAGE_KEY = 'flashback-miniplayer'
 const SAVE_INTERVAL_MS = 3_000
+const OFFLINE_PLAYBACK_MESSAGE = 'No internet connection — cannot play'
 
 interface SavedPlayerState {
   year: number
@@ -94,6 +95,8 @@ export const usePlayerStore = defineStore('player', () => {
   const displayedTimeSeconds = computed(
     () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
   )
+  const showOfflinePlaybackToast = () =>
+    useToastStore().show(OFFLINE_PLAYBACK_MESSAGE)
 
   const formatPlaybackTime = (timeSeconds: number) => {
     if (!Number.isFinite(timeSeconds) || timeSeconds <= 0) return '0:00'
@@ -325,6 +328,7 @@ export const usePlayerStore = defineStore('player', () => {
         return
       }
       if (playerState.value === 'paused' && ytPlayer) {
+        if (!navigator.onLine) return showOfflinePlaybackToast()
         ytPlayer.playVideo()
         return
       }
@@ -335,10 +339,7 @@ export const usePlayerStore = defineStore('player', () => {
       // Restored from storage — fall through to full play
     }
 
-    if (!navigator.onLine) {
-      useToastStore().show('No internet connection — cannot play')
-      return
-    }
+    if (!navigator.onLine) return showOfflinePlaybackToast()
 
     // Capture resume time before stop() clears it
     const resumeAt =
@@ -386,8 +387,10 @@ export const usePlayerStore = defineStore('player', () => {
 
   const togglePlayback = () => {
     if (playerState.value === 'playing') ytPlayer?.pauseVideo()
-    else if (playerState.value === 'paused' && ytPlayer) ytPlayer.playVideo()
-    else if (
+    else if (playerState.value === 'paused' && ytPlayer) {
+      if (!navigator.onLine) return showOfflinePlaybackToast()
+      ytPlayer.playVideo()
+    } else if (
       playerState.value === 'paused' &&
       !ytPlayer &&
       playingSong.value &&
