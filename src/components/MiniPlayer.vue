@@ -116,7 +116,7 @@ const goToPlayingSong = async () => {
                 <span class="font-semibold text-text">
                   {{ player.playingSong.title }}
                 </span>
-                <span class="font-medium text-text/55">
+                <span class="ml-1 font-medium text-text/55">
                   {{ player.playingSong.artist }}
                 </span>
               </span>
