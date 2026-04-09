@@ -87,7 +87,6 @@ const isContactEmailRevealed = ref(false)
 const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const hasToasts = computed(() => toast.toasts.length > 0)
 const isHomeRoute = computed(() => route.name === 'home')
-const currentYear = new Date().getFullYear()
 const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
 const socialLinks = [
   {
@@ -315,14 +314,6 @@ onUnmounted(() => teardownKonamiListener())
           <Mailbox class="h-3.5 w-3.5" />
           Newsletter
         </button>
-        <button
-          type="button"
-          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-          @click="isContactOpen = true"
-        >
-          <Mail class="h-3.5 w-3.5" />
-          Contact
-        </button>
         <div class="flex items-center gap-4">
           <a
             v-for="{ href, label, network } in socialLinks"
@@ -337,13 +328,18 @@ onUnmounted(() => teardownKonamiListener())
             {{ label }}
           </a>
         </div>
+        <button
+          type="button"
+          class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+          @click="isContactOpen = true"
+        >
+          <Mail class="h-3.5 w-3.5" />
+          Contact
+        </button>
       </div>
       <div
         class="mt-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
       >
-        <p class="text-sm text-text-muted/70">
-          © CC Something {{ currentYear }}
-        </p>
         <button
           type="button"
           class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
