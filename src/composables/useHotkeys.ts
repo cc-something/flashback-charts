@@ -51,6 +51,36 @@ export const useHotkeys = (
     if (chart.sortOrder === 'desc') return songs[songs.length - 1] ?? null
     return songs[0] ?? null
   }
+  const scrollToPlayingSongRow = () => {
+    const year = player.playingYear
+    const song = player.playingSong
+    if (typeof window === 'undefined' || year === null || !song) return
+    requestAnimationFrame(() => {
+      document
+        .getElementById(`song-${year}-${song.rank}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+  }
+  const goToPlayingSong = async () => {
+    const year = player.playingYear
+    const song = player.playingSong
+    if (year === null || !song) return
+    const routeSong = Array.isArray(route.query.song)
+      ? route.query.song[0]
+      : route.query.song
+    if (
+      route.name === 'year' &&
+      Number(route.params.year) === year &&
+      Number(routeSong) === song.rank
+    ) {
+      scrollToPlayingSongRow()
+      return
+    }
+    await router.push({
+      path: getYearPath(year),
+      query: { song: String(song.rank) },
+    })
+  }
   const playTopSong = async () => {
     const topSong = await getTopSong()
     if (topSong) await player.play(topSong, chart.selectedYear, 'hotkey')
@@ -116,7 +146,7 @@ export const useHotkeys = (
 
     if (e.code === 'KeyG' && !isMod) {
       e.preventDefault()
-      player.goToSong()
+      void goToPlayingSong()
       return
     }
 
