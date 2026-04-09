@@ -161,7 +161,7 @@ export const usePlayerStore = defineStore('player', () => {
   const preload = async () => {
     if (typeof window === 'undefined') return
     try {
-      await ensurePlayerMounted()
+      await ensureLoaded()
     } catch {
       /* noop */
     }
@@ -223,7 +223,6 @@ export const usePlayerStore = defineStore('player', () => {
       destroyPlayer()
       return
     }
-    void preload()
   }
 
   const setOnEnded = (cb: ((song: Song, year: number) => void) | null) => {
@@ -355,8 +354,28 @@ export const usePlayerStore = defineStore('player', () => {
     }
     return playerContainerEl
   }
+  const getReadyPlayerContainer = () => {
+    if (typeof window === 'undefined') return null
+    if (
+      playerContainerEl &&
+      playerContainerEl.clientWidth >= 200 &&
+      playerContainerEl.clientHeight >= 200
+    )
+      return playerContainerEl
+    return null
+  }
   const getPlayerMountEl = async () => {
     const playerContainerHost = await waitForPlayerContainer()
+    if (!playerContainerHost) return null
+    if (playerContainerHost.childElementCount > 0)
+      return playerContainerHost.firstElementChild as HTMLDivElement
+    const playerMountEl = document.createElement('div')
+    playerMountEl.className = 'h-full w-full'
+    playerContainerHost.appendChild(playerMountEl)
+    return playerMountEl
+  }
+  const getImmediatePlayerMountEl = () => {
+    const playerContainerHost = getReadyPlayerContainer()
     if (!playerContainerHost) return null
     if (playerContainerHost.childElementCount > 0)
       return playerContainerHost.firstElementChild as HTMLDivElement
@@ -452,22 +471,21 @@ export const usePlayerStore = defineStore('player', () => {
     }
     syncPlaybackProgress()
   }
-  const ensurePlayerMounted = async () => {
-    if (typeof window === 'undefined') return null
-    if (ytPlayer && isPlayerReady) return ytPlayer
-    if (playerInitPromise) return playerInitPromise
-    await ensureLoaded()
-    const playerMountEl = await getPlayerMountEl()
-    if (!playerMountEl) return null
+  const createPlayer = (playerMountEl: HTMLDivElement) => {
     playerInitPromise = new Promise<YTPlayer | null>((resolve) => {
       ytPlayer = new window.YT!.Player(playerMountEl, {
         width: '100%',
         height: '100%',
+        videoId: currentPlaySong?.youtubeVideoId,
         playerVars: {
+          autoplay: currentPlaySong ? 1 : 0,
           controls: 0,
           playsinline: 1,
           rel: 0,
           origin: window.location.origin,
+          ...(currentStartAtSeconds
+            ? { start: Math.floor(currentStartAtSeconds) }
+            : {}),
         },
         events: {
           onReady: (event) => {
@@ -475,8 +493,10 @@ export const usePlayerStore = defineStore('player', () => {
             playerInitPromise = Promise.resolve(event.target)
             if (isMuted.value) event.target.mute()
             resolve(event.target)
-            if (playerState.value === 'loading' && currentPlaySong)
-              loadCurrentSongIntoPlayer()
+            if (currentPlaySong) {
+              startProgressTimer()
+              startPlaybackStallTimer()
+            }
           },
           onStateChange: handlePlayerStateChange,
           onError: (event: YTPlayerEvent) =>
@@ -485,6 +505,23 @@ export const usePlayerStore = defineStore('player', () => {
       })
     })
     return playerInitPromise
+  }
+  const mountPlayerIfPossible = () => {
+    if (typeof window === 'undefined') return null
+    if (!window.YT?.Player || ytPlayer || !currentPlaySong?.youtubeVideoId)
+      return null
+    const playerMountEl = getImmediatePlayerMountEl()
+    if (!playerMountEl) return null
+    return createPlayer(playerMountEl)
+  }
+  const ensurePlayerMounted = async () => {
+    if (typeof window === 'undefined') return null
+    if (ytPlayer && isPlayerReady) return ytPlayer
+    if (playerInitPromise) return playerInitPromise
+    await ensureLoaded()
+    const playerMountEl = await getPlayerMountEl()
+    if (!playerMountEl || !currentPlaySong?.youtubeVideoId) return null
+    return createPlayer(playerMountEl)
   }
 
   const play = async (
@@ -566,6 +603,7 @@ export const usePlayerStore = defineStore('player', () => {
       loadCurrentSongIntoPlayer()
       return
     }
+    if (mountPlayerIfPossible()) return
     void ensurePlayerMounted()
       .then(() => undefined)
       .catch(async () => {

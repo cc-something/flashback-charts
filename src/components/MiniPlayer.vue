@@ -25,6 +25,9 @@ const shouldRenderPlayerDock = computed(
     isMobileViewport.value ||
     (player.playingSong !== null && player.playerState !== 'idle'),
 )
+const shouldShowIdleDock = computed(
+  () => isMobileViewport.value && player.playingSong === null,
+)
 const playerDockContainerClass = computed(() =>
   route.name === 'year'
     ? 'mx-auto max-w-[50.4rem] px-4 py-3 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-3'
@@ -108,7 +111,23 @@ const goToPlayingSong = async () => {
           <div
             ref="playerViewportHost"
             class="player-viewport w-full min-h-[200px] bg-black"
-          />
+          >
+            <div
+              v-if="shouldShowIdleDock"
+              class="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,#3f175f,transparent_58%),linear-gradient(180deg,#160324,#05010a)] px-6 text-center"
+            >
+              <div>
+                <p
+                  class="text-xs font-bold uppercase tracking-[0.16em] text-primary/80"
+                >
+                  Ready To Play
+                </p>
+                <p class="mt-2 text-sm leading-snug text-white/92">
+                  Tap any song to start inline playback.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div v-if="player.playingSong" class="mt-3 flex items-start gap-3">
@@ -147,7 +166,10 @@ const goToPlayingSong = async () => {
           </button>
         </div>
 
-        <div class="mt-3 flex items-center justify-between gap-1.5">
+        <div
+          v-if="player.playingSong"
+          class="mt-3 flex items-center justify-between gap-1.5"
+        >
           <div class="flex items-center gap-1">
             <button
               type="button"
@@ -257,25 +279,10 @@ const goToPlayingSong = async () => {
           </div>
         </div>
 
-        <PlaybackSeekBar v-if="player.showSeekBar" root-class="mt-3 h-1.5" />
-
-        <div
-          v-else
-          class="mt-3 rounded-[1rem] border border-primary/10 bg-black/5 px-3 py-3"
-        >
-          <p
-            class="text-xs font-bold uppercase tracking-[0.16em] text-primary/80"
-          >
-            Ready To Play
-          </p>
-          <p class="mt-1 text-sm leading-snug text-text">
-            Tap any song to start inline playback.
-          </p>
-          <p class="mt-1 text-xs leading-snug text-text-muted">
-            The player stays mounted on mobile so YouTube can start without a
-            second tap.
-          </p>
-        </div>
+        <PlaybackSeekBar
+          v-if="player.playingSong && player.showSeekBar"
+          root-class="mt-3 h-1.5"
+        />
       </div>
     </aside>
   </Transition>
