@@ -168,7 +168,7 @@ useHead(() => ({
   ],
 }))
 
-player.setOnEnded((song, year) => player.playNext(song, year))
+player.setOnEnded((song, year) => player.playNext(song, year, 'autoplay'))
 onUnmounted(() => player.setOnEnded(null))
 
 const scrollToSelectedSong = async () => {

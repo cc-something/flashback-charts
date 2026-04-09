@@ -38,7 +38,7 @@ const playYear = (year: number) => {
   const song = chart.sortOrder === 'desc' ? songs[songs.length - 1] : songs[0]
   chart.selectYear(year)
   router.push(getYearPath(year))
-  player.play(song, year)
+  player.play(song, year, 'home-btn')
 }
 
 const { isRickRollActive } = useRickRollMode()
