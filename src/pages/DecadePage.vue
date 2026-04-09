@@ -231,7 +231,7 @@ useHead(() => ({
     </div>
 
     <div class="relative z-10 pb-8 sm:pb-10">
-      <header class="decade-page-intro relative mb-8">
+      <header class="decade-page-intro relative mb-4">
         <div class="decade-page-intro-gradient absolute inset-0" />
         <div class="relative mx-auto max-w-[1300px] px-4">
           <div class="py-5">
@@ -294,7 +294,7 @@ useHead(() => ({
             <article
               v-for="year in column"
               :key="year"
-              class="grid items-center gap-5 rounded-2xl border p-5 backdrop-blur-[6px] md:grid-cols-[168px_1fr]"
+              class="grid items-start gap-5 rounded-2xl border p-5 backdrop-blur-[6px] md:grid-cols-[168px_1fr]"
               :style="{
                 backgroundColor: `${theme.colors.surface}e3`,
                 borderColor: `${theme.colors.primary}52`,
