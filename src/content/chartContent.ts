@@ -20,7 +20,7 @@ export const getHomePageDescription = () =>
   `Browse Australia's top 10 songs for every year from 1940 to ${latestYear}. Explore year-end charts, decade overviews, chart-toppers, and the biggest hits in one archive.`
 
 export const getHomePageSubtitle = () =>
-  `Nearly 100 years of Top 10s across the many eras of popular Australian music. Walk back through time and revisit the days of disco, rock, grunge, synth-pop and beyond.`
+  `Explore Australia’s Top 10 songs across the years and the changing sound of popular music in every era. From early chart classics to disco, rock, synth-pop, grunge, pop anthems and modern hits, Flashback Charts lets you revisit the songs that defined each year in Australia. Browse by year or decade, click a song to listen, or search for your favourite artist or song to rediscover old favourites.`
 
 export const getAdjacentYears = (year: number) => {
   const yearIndex = years.indexOf(year)
