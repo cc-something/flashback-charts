@@ -31,7 +31,7 @@ export default defineConfig({
     host: '127.0.0.1',
     port: 4719,
     strictPort: true,
-    allowedHosts: ['.ngrok-free.app'],
+    allowedHosts: ['.ngrok-free.app', 'sax.local'],
     hmr: {
       host: '127.0.0.1',
       clientPort: 4719,
