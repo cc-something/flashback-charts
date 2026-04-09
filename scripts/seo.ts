@@ -12,6 +12,9 @@ import {
 import { getAvailableYears } from '@/data'
 import { getDecadePath, getHomePath, getYearPath } from '@/utils/url'
 
+export const REGIONS = ['au'] as const
+export type Region = (typeof REGIONS)[number]
+
 export type SeoPage = {
   path: string
   title: string
@@ -71,3 +74,9 @@ export const getSitemapEntries = (siteUrl: string): SitemapEntry[] =>
           ? 'monthly'
           : 'yearly',
   }))
+
+export const getRegionOgImagePaths = (region: Region): string[] => [
+  `/og/${region}/home.jpg`,
+  ...getSortedDecades().map((decade) => `/og/${region}/decade-${decade}.jpg`),
+  ...getSortedYears().map((year) => `/og/${region}/year-${year}.jpg`),
+]

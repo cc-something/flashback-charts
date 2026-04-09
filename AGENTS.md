@@ -38,3 +38,10 @@ Put a newline after the "first line" characters.
   - including a clarifying comment above each LOC
 
 <!-- ============================================================== -->
+
+## Regions
+
+- Currently only `/au/` exists; future regions include `/uk/`, `/us/`, and a global `/`
+- Region slugs are defined in `scripts/seo.ts` as `REGIONS`
+- OG images live under `public/og/{region}/` — one directory per region
+- Adding a region: append its slug to `REGIONS`, generate images into the matching `public/og/{region}/` dir, and the SEO lint will validate automatically
