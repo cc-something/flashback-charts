@@ -1,7 +1,13 @@
 import { existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { getSitemapEntries, getSeoPages, type SeoPage } from './seo'
+import {
+  getSitemapEntries,
+  getSeoPages,
+  getRegionOgImagePaths,
+  REGIONS,
+  type SeoPage,
+} from './seo'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(here, '..')
@@ -57,11 +63,16 @@ pages.forEach((seoPage) => {
     !seoPage.title.includes(seoPage.path.match(/\d{4}s/u)?.[0] ?? '__missing__')
   )
     addFailure(`${seoPage.path} decade title should match its route`)
-  if (!existsSync(resolve(publicDir, `.${seoPage.imagePath}`)))
-    addFailure(`${seoPage.path} is missing ${seoPage.imagePath}`)
   if (!sitemapPaths.has(seoPage.path))
     addFailure(`${seoPage.path} is missing from sitemap generation`)
 })
+
+REGIONS.forEach((region) =>
+  getRegionOgImagePaths(region).forEach((imagePath) => {
+    if (!existsSync(resolve(publicDir, `.${imagePath}`)))
+      addFailure(`[${region}] missing OG image: ${imagePath}`)
+  }),
+)
 
 const uniquePaths = new Set(pages.map(({ path }) => path))
 if (uniquePaths.size !== pages.length)
