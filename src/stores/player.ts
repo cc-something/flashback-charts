@@ -10,6 +10,7 @@ import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 const STORAGE_KEY = 'flashback-miniplayer'
 const SAVE_INTERVAL_MS = 3_000
 const CONNECTIVITY_CHECK_TIMEOUT_MS = 1_500
+const MIN_ERROR_LOADING_MS = 1_000
 const OFFLINE_PLAYBACK_MESSAGE = 'No internet connection. Cannot play.'
 const OFFLINE_PLAYBACK_STOPPED_MESSAGE =
   'No internet connection. Playback stopped.'
@@ -96,17 +97,15 @@ export const usePlayerStore = defineStore('player', () => {
   let offlineHandler: (() => void) | null = null
   let stallTimerId: ReturnType<typeof setTimeout> | null = null
   let connectivityCheckPromise: Promise<boolean> | null = null
+  let loadingAttemptId = 0
+  let loadingStartedAt = 0
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
     () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
   )
-  const showOfflinePlaybackToast = () =>
-    useToastStore().show(OFFLINE_PLAYBACK_MESSAGE)
   const showOfflinePlaybackStoppedToast = () =>
     useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-  const showPlayerLoadFailedToast = () =>
-    useToastStore().show(PLAYER_LOAD_FAILED_MESSAGE)
 
   const getConnectivityCheckUrl = () => {
     const connectivityCheckUrl = new URL('/favicon.svg', window.location.origin)
@@ -142,15 +141,32 @@ export const usePlayerStore = defineStore('player', () => {
     return connectivityCheckPromise
   }
 
-  const ensurePlaybackConnection = async () => {
-    if (await getHasNetworkConnection()) return true
-    showOfflinePlaybackToast()
-    return false
+  const ensurePlaybackConnection = () => getHasNetworkConnection()
+  const clearLoadingTracking = () => {
+    loadingStartedAt = 0
   }
-
-  const stopForOfflinePlayback = () => {
-    showOfflinePlaybackStoppedToast()
-    stop()
+  const startLoadingAttempt = () => {
+    loadingAttemptId += 1
+    loadingStartedAt = Date.now()
+    playerState.value = 'loading'
+    return loadingAttemptId
+  }
+  const getErrorLoadingDelay = () =>
+    Math.max(0, MIN_ERROR_LOADING_MS - (Date.now() - loadingStartedAt))
+  const waitForMinimumErrorLoading = async (attemptId: number) => {
+    const errorLoadingDelay = getErrorLoadingDelay()
+    if (errorLoadingDelay > 0)
+      await new Promise((resolve) => setTimeout(resolve, errorLoadingDelay))
+    return attemptId === loadingAttemptId && playerState.value === 'loading'
+  }
+  const failLoadingAttempt = async (
+    message: string,
+    onFail: () => void = stop,
+  ) => {
+    const activeLoadingAttemptId = loadingAttemptId
+    if (!(await waitForMinimumErrorLoading(activeLoadingAttemptId))) return
+    useToastStore().show(message)
+    onFail()
   }
 
   const formatPlaybackTime = (timeSeconds: number) => {
@@ -264,6 +280,7 @@ export const usePlayerStore = defineStore('player', () => {
     durationSeconds.value = 0
     retryCount = 0
     currentPlaySong = null
+    clearLoadingTracking()
     clearSeekPreview()
     clearActive()
     deactivate()
@@ -290,7 +307,8 @@ export const usePlayerStore = defineStore('player', () => {
     clearStallTimer()
 
     const handlePlaybackError = async () => {
-      if (!(await getHasNetworkConnection())) return stopForOfflinePlayback()
+      if (!(await getHasNetworkConnection()))
+        return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
       if (retryCount < MAX_RETRIES) {
         retryCount++
         playerState.value = 'loading'
@@ -301,8 +319,7 @@ export const usePlayerStore = defineStore('player', () => {
       } else {
         const failedSong = playingSong.value
         const failedYear = playingYear.value
-        useToastStore().show(`Failed to play "${song.title}". Skipping.`)
-        stop()
+        await failLoadingAttempt(`Failed to play "${song.title}". Skipping.`)
         if (failedSong && failedYear !== null)
           playNext(failedSong, failedYear, 'skip')
       }
@@ -330,17 +347,20 @@ export const usePlayerStore = defineStore('player', () => {
           stallTimerId = setTimeout(async () => {
             if (playerState.value === 'loading') {
               if (!(await getHasNetworkConnection()))
-                return stopForOfflinePlayback()
-              useToastStore().show('Playback failed, try again later')
-              stop()
+                return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+              await failLoadingAttempt('Playback failed, try again later')
             }
           }, STALL_TIMEOUT_MS)
         },
         onStateChange: (event: YTPlayerEvent) => {
           if (event.data === 1 || event.data === 2) clearStallTimer()
-          if (event.data === 1) playerState.value = 'playing'
-          else if (event.data === 2) playerState.value = 'paused'
-          else if (event.data === 3) playerState.value = 'loading'
+          if (event.data === 1) {
+            clearLoadingTracking()
+            playerState.value = 'playing'
+          } else if (event.data === 2) {
+            clearLoadingTracking()
+            playerState.value = 'paused'
+          } else if (event.data === 3) playerState.value = 'loading'
           else if (event.data === 0) {
             const endedSong = playingSong.value
             const endedYear = playingYear.value
@@ -357,9 +377,9 @@ export const usePlayerStore = defineStore('player', () => {
     // Catch silent failures (e.g. mobile Safari postMessage origin mismatch)
     stallTimerId = setTimeout(async () => {
       if (playerState.value === 'loading') {
-        if (!(await getHasNetworkConnection())) return stopForOfflinePlayback()
-        useToastStore().show('Playback failed, try again later')
-        stop()
+        if (!(await getHasNetworkConnection()))
+          return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+        await failLoadingAttempt('Playback failed, try again later')
       }
     }, STALL_TIMEOUT_MS)
   }
@@ -382,8 +402,15 @@ export const usePlayerStore = defineStore('player', () => {
         return
       }
       if (playerState.value === 'paused' && ytPlayer) {
-        if (!(await ensurePlaybackConnection())) return
-        ytPlayer.playVideo()
+        startLoadingAttempt()
+        if (await ensurePlaybackConnection()) {
+          ytPlayer.playVideo()
+          return
+        }
+        await failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE, () => {
+          clearLoadingTracking()
+          playerState.value = 'paused'
+        })
         return
       }
       if (playerState.value === 'loading') {
@@ -392,8 +419,6 @@ export const usePlayerStore = defineStore('player', () => {
       }
       // Restored from storage — fall through to full play
     }
-
-    if (!(await ensurePlaybackConnection())) return
 
     // Capture resume time before stop() clears it
     const resumeAt =
@@ -407,9 +432,12 @@ export const usePlayerStore = defineStore('player', () => {
     const chart = useChartStore()
     playingSong.value = song
     playingYear.value = year
-    playerState.value = 'loading'
+    startLoadingAttempt()
     retryCount = 0
     currentPlaySong = song
+    if (!(await ensurePlaybackConnection()))
+      return failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE)
+
     registerActive(stop)
     usePlausibleAnalytics().trackEvent('Song Play', {
       artist: song.artist,
@@ -417,21 +445,23 @@ export const usePlayerStore = defineStore('player', () => {
       year: String(year),
       source: trigger,
     })
-
     if (chart.selectedYear === year) scrollSongIntoView(song)
-
     offlineHandler = () => {
-      stopForOfflinePlayback()
+      if (playerState.value === 'loading')
+        void failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+      else {
+        showOfflinePlaybackStoppedToast()
+        stop()
+      }
     }
     window.addEventListener('offline', offlineHandler, { once: true })
 
     try {
       await ensureLoaded()
     } catch {
-      if (!(await getHasNetworkConnection())) return stopForOfflinePlayback()
-      showPlayerLoadFailedToast()
-      stop()
-      return
+      if (!(await getHasNetworkConnection()))
+        return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+      return failLoadingAttempt(PLAYER_LOAD_FAILED_MESSAGE)
     }
 
     if (playerState.value !== 'loading') return
@@ -442,8 +472,13 @@ export const usePlayerStore = defineStore('player', () => {
   const togglePlayback = async () => {
     if (playerState.value === 'playing') ytPlayer?.pauseVideo()
     else if (playerState.value === 'paused' && ytPlayer) {
-      if (!(await ensurePlaybackConnection())) return
-      ytPlayer.playVideo()
+      startLoadingAttempt()
+      if (await ensurePlaybackConnection()) ytPlayer.playVideo()
+      else
+        await failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE, () => {
+          clearLoadingTracking()
+          playerState.value = 'paused'
+        })
     } else if (
       playerState.value === 'paused' &&
       !ytPlayer &&
