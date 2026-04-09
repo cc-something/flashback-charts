@@ -258,7 +258,6 @@ export const usePlayerStore = defineStore('player', () => {
       width: '480',
       height: '270',
       videoId: song.youtubeVideoId,
-      host: 'https://www.youtube-nocookie.com',
       playerVars: {
         autoplay: 1,
         controls: 0,
