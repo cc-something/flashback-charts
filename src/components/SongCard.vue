@@ -226,7 +226,7 @@ const youtubeVideoUrl = computed(() =>
     <Transition name="seek">
       <div
         v-if="showSeekBar"
-        class="pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-visible"
+        class="pointer-events-none absolute inset-x-3 bottom-2.5 z-20 overflow-visible"
       >
         <PlaybackSeekBar root-class="pointer-events-auto relative z-10" />
         <p
