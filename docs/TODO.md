@@ -1,9 +1,9 @@
+- mobile mini player placement
+  - sticky so its always above footer?
+
 - privacy info
 - donate
 
-- astley
-  - idk if I like the simul seek bar on every song
-- play btns on decade cards/landings
 - site is a bit ug
 
 ## TODO
