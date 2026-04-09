@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
-import { useMediaQuery } from '@vueuse/core'
+import { ChevronDown, ChevronUp } from 'lucide-vue-next'
+import { useMediaQuery, useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import { usePlayerStore } from '@/stores/player'
@@ -20,6 +21,12 @@ const isMac =
 const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const mobilePlayerButtonClass =
+  'inline-flex h-8 w-8 items-center justify-center rounded-full text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const isMobilePlayerCollapsed = useStorage(
+  'flashback-mobile-player-collapsed',
+  true,
+)
 const shouldRenderPlayerDock = computed(
   () =>
     isMobileViewport.value ||
@@ -28,10 +35,20 @@ const shouldRenderPlayerDock = computed(
 const shouldShowIdleDock = computed(
   () => isMobileViewport.value && player.playingSong === null,
 )
+const shouldShowExpandedPlayerDetails = computed(
+  () => !isMobileViewport.value || !isMobilePlayerCollapsed.value,
+)
 const playerDockContainerClass = computed(() =>
-  route.name === 'year'
-    ? 'mx-auto max-w-[50.4rem] px-4 py-3 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-3'
-    : 'mx-auto max-w-[1300px] px-4 py-3 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-3',
+  isMobileViewport.value
+    ? 'mx-auto w-full max-w-[16.75rem] px-3 py-3'
+    : route.name === 'year'
+      ? 'mx-auto max-w-[50.4rem] px-4 py-3 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-3'
+      : 'mx-auto max-w-[1300px] px-4 py-3 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-3',
+)
+const playerDockClass = computed(() =>
+  isMobileViewport.value
+    ? 'z-30 mx-3 mt-3 rounded-[1.35rem] border border-primary/15 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
+    : 'z-30 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:overflow-hidden min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -72,6 +89,9 @@ watch(() => player.playingYear, updateThemeVars, { immediate: true })
 watch([shouldRenderPlayerDock, playerViewportHost], () => {
   void syncPlayerContainer()
 })
+watch(isMobileViewport, (isMobile) => {
+  if (!isMobile) isMobilePlayerCollapsed.value = false
+})
 onUnmounted(() => player.setPlayerContainer(null))
 
 const goToPlayingSong = async () => {
@@ -94,6 +114,10 @@ const goToPlayingSong = async () => {
     query: { song: String(song.rank) },
   })
 }
+const toggleMobilePlayerCollapsed = () => {
+  if (!isMobileViewport.value) return
+  isMobilePlayerCollapsed.value = !isMobilePlayerCollapsed.value
+}
 </script>
 
 <template>
@@ -102,15 +126,136 @@ const goToPlayingSong = async () => {
       v-if="shouldRenderPlayerDock"
       aria-label="Music player"
       :style="themeVars"
-      class="z-30 bg-surface/95 backdrop-blur-sm shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 max-[839px]:border-b max-[839px]:border-primary/15 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:overflow-hidden min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10"
+      :class="playerDockClass"
     >
       <div :class="playerDockContainerClass">
         <div
-          class="overflow-hidden rounded-[1.1rem] border border-white/10 bg-black shadow-lg"
+          v-if="isMobileViewport"
+          class="mb-3 flex items-center justify-between gap-2"
+        >
+          <div class="min-w-0 flex items-center gap-2">
+            <button
+              v-if="player.playingSong"
+              type="button"
+              aria-label="Go to song"
+              class="h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-black/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              @click="goToPlayingSong"
+            >
+              <img
+                :src="player.playingSong.thumbnailPath"
+                :alt="player.playingSong.title"
+                class="block h-full w-full object-cover"
+              />
+            </button>
+            <div class="min-w-0">
+              <p
+                v-if="player.playingSong"
+                class="truncate text-[0.72rem] font-bold uppercase tracking-[0.16em] text-primary/80"
+              >
+                {{ player.playingYear }} #{{ player.playingSong.rank }}
+              </p>
+              <p class="truncate text-sm font-bold leading-snug text-text">
+                {{
+                  player.playingSong ? player.playingSong.title : 'Mini Player'
+                }}
+              </p>
+              <p class="truncate text-xs leading-snug text-text-muted">
+                {{
+                  player.playingSong
+                    ? player.playingSong.artist
+                    : 'Tap any song to start playback.'
+                }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1">
+            <button
+              v-if="player.playingSong"
+              type="button"
+              title="Play / pause"
+              aria-label="Toggle playback"
+              :class="mobilePlayerButtonClass"
+              @click="player.togglePlayback"
+            >
+              <svg
+                v-if="player.playerState === 'loading'"
+                class="h-4 w-4 animate-spin"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
+              </svg>
+              <svg
+                v-else-if="player.playerState === 'playing'"
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+              </svg>
+              <svg
+                v-else
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              :title="
+                isMobilePlayerCollapsed
+                  ? 'Expand mini player'
+                  : 'Collapse mini player'
+              "
+              :aria-label="
+                isMobilePlayerCollapsed
+                  ? 'Expand mini player'
+                  : 'Collapse mini player'
+              "
+              :class="mobilePlayerButtonClass"
+              @click="toggleMobilePlayerCollapsed"
+            >
+              <ChevronDown v-if="isMobilePlayerCollapsed" class="h-4 w-4" />
+              <ChevronUp v-else class="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div
+          :class="
+            isMobileViewport
+              ? 'mx-auto overflow-hidden rounded-[1rem] border border-white/10 bg-black shadow-lg'
+              : 'overflow-hidden rounded-[1.1rem] border border-white/10 bg-black shadow-lg'
+          "
+          :style="
+            isMobileViewport
+              ? { width: '200px', minHeight: '200px' }
+              : undefined
+          "
         >
           <div
             ref="playerViewportHost"
-            class="player-viewport w-full min-h-[200px] bg-black"
+            :class="
+              isMobileViewport
+                ? 'player-viewport-mobile w-full min-h-[200px] bg-black'
+                : 'player-viewport w-full min-h-[200px] bg-black'
+            "
           >
             <div
               v-if="shouldShowIdleDock"
@@ -130,7 +275,10 @@ const goToPlayingSong = async () => {
           </div>
         </div>
 
-        <div v-if="player.playingSong" class="mt-3 flex items-start gap-3">
+        <div
+          v-if="player.playingSong && shouldShowExpandedPlayerDetails"
+          class="mt-3 flex items-start gap-3"
+        >
           <button
             type="button"
             title="Go to song (G)"
@@ -167,7 +315,7 @@ const goToPlayingSong = async () => {
         </div>
 
         <div
-          v-if="player.playingSong"
+          v-if="player.playingSong && shouldShowExpandedPlayerDetails"
           class="mt-3 flex items-center justify-between gap-1.5"
         >
           <div class="flex items-center gap-1">
@@ -280,7 +428,11 @@ const goToPlayingSong = async () => {
         </div>
 
         <PlaybackSeekBar
-          v-if="player.playingSong && player.showSeekBar"
+          v-if="
+            player.playingSong &&
+            player.showSeekBar &&
+            shouldShowExpandedPlayerDetails
+          "
           root-class="mt-3 h-1.5"
         />
       </div>
@@ -306,7 +458,18 @@ const goToPlayingSong = async () => {
   aspect-ratio: 16 / 9;
 }
 
+.player-viewport-mobile {
+  aspect-ratio: 1 / 1;
+}
+
 .player-viewport :deep(iframe) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.player-viewport-mobile :deep(iframe) {
   display: block;
   width: 100%;
   height: 100%;
