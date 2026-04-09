@@ -239,7 +239,7 @@ onUnmounted(() => {
       <div class="home-page-background-overlay absolute inset-0" />
     </div>
 
-    <div class="relative z-10 pt-4 pb-10">
+    <div class="relative z-10 pb-10">
       <div class="home-page-intro relative mb-4">
         <div class="home-page-intro-gradient absolute inset-0" />
         <div class="relative mx-auto max-w-[1300px] px-4">
