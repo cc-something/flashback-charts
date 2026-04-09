@@ -37,7 +37,12 @@ const thisPlayerState = computed(() =>
 const showOverlay = computed(
   () => isHovered.value || thisPlayerState.value !== 'idle',
 )
-const showSeekBar = computed(() => isThisSongActive.value && player.showSeekBar)
+const showSeekBar = computed(
+  () =>
+    isThisSongActive.value &&
+    player.showSeekBar &&
+    (!isRickRollActive.value || props.song.rank === 1),
+)
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement

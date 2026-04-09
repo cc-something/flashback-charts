@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { getSongThumbnailPath } from '@/data/imageAsset'
 import type { Song } from '@/types/song'
+import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 
 const KONAMI_SEQUENCE = [
   'ArrowUp',
@@ -47,6 +48,8 @@ const handleKeydown = (e: KeyboardEvent) => {
     if (konamiProgress === KONAMI_SEQUENCE.length) {
       konamiProgress = 0
       isRickRollActive.value = !isRickRollActive.value
+      if (isRickRollActive.value)
+        usePlausibleAnalytics().trackEvent('Rick Roll Activated')
     }
   } else {
     konamiProgress = e.key === KONAMI_SEQUENCE[0] ? 1 : 0
