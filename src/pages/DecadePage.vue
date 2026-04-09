@@ -234,7 +234,7 @@ useHead(() => ({
       <header class="decade-page-intro relative mb-8">
         <div class="decade-page-intro-gradient absolute inset-0" />
         <div class="relative mx-auto max-w-[1300px] px-4">
-          <div class="px-5 py-5">
+          <div class="py-5">
             <h1
               class="theme-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary"
               :style="{ fontFamily: theme.fontFamily }"
