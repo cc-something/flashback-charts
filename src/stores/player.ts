@@ -99,6 +99,7 @@ export const usePlayerStore = defineStore('player', () => {
   const isSeekDragging = ref(false)
   const seekPreviewSeconds = ref<number | null>(null)
   const isMuted = ref(false)
+  const hasMountedPlayer = ref(false)
 
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
@@ -325,6 +326,7 @@ export const usePlayerStore = defineStore('player', () => {
     ytPlayer = null
     playerInitPromise = null
     isPlayerReady = false
+    hasMountedPlayer.value = false
     playerContainerEl?.replaceChildren()
   }
   const stop = () => {
@@ -472,6 +474,7 @@ export const usePlayerStore = defineStore('player', () => {
     syncPlaybackProgress()
   }
   const createPlayer = (playerMountEl: HTMLDivElement) => {
+    hasMountedPlayer.value = true
     playerInitPromise = new Promise<YTPlayer | null>((resolve) => {
       ytPlayer = new window.YT!.Player(playerMountEl, {
         width: '100%',
@@ -814,6 +817,7 @@ export const usePlayerStore = defineStore('player', () => {
     seekSliderValue,
     isActive,
     isMuted,
+    hasMountedPlayer,
     preload,
     setPlayerContainer,
     setOnEnded,
