@@ -41,7 +41,8 @@ const showSeekBar = computed(
   () =>
     isThisSongActive.value &&
     player.showSeekBar &&
-    (!isRickRollActive.value || props.song.rank === 1),
+    (!isRickRollActive.value ||
+      props.song.youtubeVideoId === RICK_ASTLEY_SONG.youtubeVideoId),
 )
 
 const handleImageError = (e: Event) => {
