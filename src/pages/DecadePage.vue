@@ -338,7 +338,7 @@ useHead(() => ({
               </router-link>
 
               <div class="flex flex-col">
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-start justify-between gap-4">
                   <h2
                     class="text-2xl sm:text-3xl md:text-4xl font-bold"
                     :style="{
@@ -348,9 +348,9 @@ useHead(() => ({
                   >
                     <router-link
                       :to="getYearPath(year)"
-                      class="text-inherit no-underline"
+                      class="text-inherit underline decoration-2 underline-offset-4 transition-opacity duration-150 hover:opacity-80"
                     >
-                      {{ year }}
+                      {{ year }} Top 10
                     </router-link>
                   </h2>
                   <button
@@ -371,17 +371,6 @@ useHead(() => ({
                 <p class="mt-2 text-base leading-relaxed text-text-muted">
                   {{ getYearSummaryText(year) }}
                 </p>
-                <router-link
-                  :to="getYearPath(year)"
-                  class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
-                  :style="{
-                    backgroundColor: theme.colors.primary,
-                    color: theme.colors.background,
-                  }"
-                >
-                  Top 10 {{ year }}
-                  <ArrowRight class="h-5 w-5" />
-                </router-link>
               </div>
             </article>
           </div>
