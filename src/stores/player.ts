@@ -16,10 +16,6 @@ const OFFLINE_PLAYBACK_STOPPED_MESSAGE =
   'No internet connection. Playback stopped.'
 const PLAYER_LOAD_FAILED_MESSAGE =
   'Failed to load player. Check your connection.'
-const MOBILE_EMBED_FALLBACK_MESSAGE =
-  "This video can't play inline. Opening YouTube."
-const MOBILE_POINTER_QUERY = '(pointer: coarse)'
-const EXTERNAL_PLAYBACK_REDIRECT_DELAY_MS = 150
 
 interface SavedPlayerState {
   year: number
@@ -86,8 +82,6 @@ const isEmbedBlockedError = (errorCode?: number) =>
   errorCode !== undefined && EMBED_BLOCKED_ERROR_CODES.has(errorCode)
 const isUserRequestedTrigger = (trigger: PlayTrigger) =>
   userRequestedTriggers.has(trigger)
-const getYouTubeWatchUrl = (videoId: string) =>
-  `https://www.youtube.com/watch?v=${videoId}`
 const getYearSongs = async (year: number) => {
   const { getYearData } = await import('@/data')
   return getYearData(year) ?? null
@@ -125,13 +119,6 @@ export const usePlayerStore = defineStore('player', () => {
   )
   const showOfflinePlaybackStoppedToast = () =>
     useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-  const getShouldUseExternalPlaybackFallback = () => {
-    if (typeof window === 'undefined') return false
-    return (
-      window.matchMedia(MOBILE_POINTER_QUERY).matches ||
-      /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-    )
-  }
 
   const getConnectivityCheckUrl = () => {
     const connectivityCheckUrl = new URL('/favicon.svg', window.location.origin)
@@ -348,23 +335,11 @@ export const usePlayerStore = defineStore('player', () => {
     playerContainerHost.appendChild(playerMountEl)
     return playerMountEl
   }
-  const openExternalPlayback = (song: Song) => {
-    const youtubeVideoId = song.youtubeVideoId
-    if (typeof window === 'undefined' || !youtubeVideoId) return false
-    stop()
-    useToastStore().showInfo(MOBILE_EMBED_FALLBACK_MESSAGE, 1200)
-    window.setTimeout(() => {
-      window.location.assign(getYouTubeWatchUrl(youtubeVideoId))
-    }, EXTERNAL_PLAYBACK_REDIRECT_DELAY_MS)
-    return true
-  }
   const handleEmbedBlockedPlayback = async (
     song: Song,
     trigger: PlayTrigger,
   ) => {
     if (isUserRequestedTrigger(trigger)) {
-      if (getShouldUseExternalPlaybackFallback() && openExternalPlayback(song))
-        return
       await failLoadingAttempt(
         `"${song.title}" can't play in the embedded player. Use the YouTube link instead.`,
       )
