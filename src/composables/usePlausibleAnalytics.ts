@@ -34,11 +34,14 @@ const loadScript = (): Promise<void> =>
   })
 
 const trackPageview = () => {
+  if (import.meta.env.DEV) return console.log('[plausible] pageview')
   if (!plausibleReady) return
   window.plausible?.('pageview')
 }
 
 const trackEvent = (name: string, props?: Record<string, string | number>) => {
+  if (import.meta.env.DEV)
+    return console.log('[plausible] event:', name, props ?? '')
   window.plausible?.(name, props ? { props } : undefined)
 }
 
