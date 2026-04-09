@@ -61,6 +61,7 @@ export type PlayTrigger =
   | 'skip'
 
 const MAX_RETRIES = 2
+const STALL_TIMEOUT_MS = 15_000
 const getYearSongs = async (year: number) => {
   const { getYearData } = await import('@/data')
   return getYearData(year) ?? null
@@ -87,6 +88,7 @@ export const usePlayerStore = defineStore('player', () => {
   let retryCount = 0
   let currentPlaySong: Song | null = null
   let offlineHandler: (() => void) | null = null
+  let stallTimerId: ReturnType<typeof setTimeout> | null = null
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -124,6 +126,12 @@ export const usePlayerStore = defineStore('player', () => {
     if (progressTimerId === null) return
     clearInterval(progressTimerId)
     progressTimerId = null
+  }
+
+  const clearStallTimer = () => {
+    if (stallTimerId === null) return
+    clearTimeout(stallTimerId)
+    stallTimerId = null
   }
 
   const clearSeekPreview = () => {
@@ -188,6 +196,7 @@ export const usePlayerStore = defineStore('player', () => {
   const stop = () => {
     clearProgressTimer()
     clearSaveTimer()
+    clearStallTimer()
     ytPlayer?.destroy()
     ytPlayer = null
     playerState.value = 'idle'
@@ -220,6 +229,30 @@ export const usePlayerStore = defineStore('player', () => {
 
     ytPlayer?.destroy()
     ytPlayer = null
+    clearStallTimer()
+
+    const handlePlaybackError = () => {
+      if (!navigator.onLine) {
+        useToastStore().show('No internet connection — playback stopped')
+        stop()
+        return
+      }
+      if (retryCount < MAX_RETRIES) {
+        retryCount++
+        playerState.value = 'loading'
+        setTimeout(() => {
+          if (playerState.value === 'loading' && currentPlaySong)
+            attemptPlay(currentPlaySong)
+        }, 1000 * retryCount)
+      } else {
+        const failedSong = playingSong.value
+        const failedYear = playingYear.value
+        useToastStore().show(`Failed to play "${song.title}" — skipping`)
+        stop()
+        if (failedSong && failedYear !== null)
+          playNext(failedSong, failedYear, 'skip')
+      }
+    }
 
     ytPlayer = new window.YT!.Player(playerContainerEl, {
       width: '480',
@@ -236,11 +269,13 @@ export const usePlayerStore = defineStore('player', () => {
       },
       events: {
         onReady: (event) => {
+          clearStallTimer()
           startProgressTimer()
           if (isMuted.value) event.target.mute()
           event.target.playVideo()
         },
         onStateChange: (event: YTPlayerEvent) => {
+          clearStallTimer()
           if (event.data === 1) playerState.value = 'playing'
           else if (event.data === 2) playerState.value = 'paused'
           else if (event.data === 3) playerState.value = 'loading'
@@ -253,30 +288,14 @@ export const usePlayerStore = defineStore('player', () => {
           }
           syncPlaybackProgress()
         },
-        onError: () => {
-          if (!navigator.onLine) {
-            useToastStore().show('No internet connection — playback stopped')
-            stop()
-            return
-          }
-          if (retryCount < MAX_RETRIES) {
-            retryCount++
-            playerState.value = 'loading'
-            setTimeout(() => {
-              if (playerState.value === 'loading' && currentPlaySong)
-                attemptPlay(currentPlaySong)
-            }, 1000 * retryCount)
-          } else {
-            const failedSong = playingSong.value
-            const failedYear = playingYear.value
-            useToastStore().show(`Failed to play "${song.title}" — skipping`)
-            stop()
-            if (failedSong && failedYear !== null)
-              playNext(failedSong, failedYear, 'skip')
-          }
-        },
+        onError: handlePlaybackError,
       },
     })
+
+    // Catch silent failures (e.g. mobile Safari postMessage origin mismatch)
+    stallTimerId = setTimeout(() => {
+      if (playerState.value === 'loading') handlePlaybackError()
+    }, STALL_TIMEOUT_MS)
   }
 
   const play = async (
