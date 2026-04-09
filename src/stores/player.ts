@@ -276,7 +276,7 @@ export const usePlayerStore = defineStore('player', () => {
           // Restart stall timer — playback should begin shortly after playVideo()
           stallTimerId = setTimeout(() => {
             if (playerState.value === 'loading') {
-              useToastStore().show('Playback unavailable — try again later')
+              useToastStore().show('Playback failed, try again later')
               stop()
             }
           }, STALL_TIMEOUT_MS)
@@ -302,7 +302,7 @@ export const usePlayerStore = defineStore('player', () => {
     // Catch silent failures (e.g. mobile Safari postMessage origin mismatch)
     stallTimerId = setTimeout(() => {
       if (playerState.value === 'loading') {
-        useToastStore().show('Playback unavailable — try again later')
+        useToastStore().show('Playback failed, try again later')
         stop()
       }
     }, STALL_TIMEOUT_MS)
