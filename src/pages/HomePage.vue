@@ -293,7 +293,7 @@ onUnmounted(() => {
               >
                 <Play
                   class="h-4 w-4"
-                  style="margin-left: 1px; fill: currentColor"
+                  style="margin-left: 1px; fill: currentcolor"
                 />
               </button>
             </div>
@@ -412,8 +412,9 @@ onUnmounted(() => {
 }
 
 .home-page-background-tile {
-  width: clamp(8rem, 14vw, 13rem);
   height: 100%;
+  aspect-ratio: 1 / 1;
+  width: auto;
   object-fit: cover;
   display: block;
   flex-shrink: 0;

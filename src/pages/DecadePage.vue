@@ -356,7 +356,7 @@ useHead(() => ({
                 >
                   <Play
                     class="h-4 w-4"
-                    style="margin-left: 1px; fill: currentColor"
+                    style="margin-left: 1px; fill: currentcolor"
                   />
                 </button>
               </div>
@@ -406,6 +406,7 @@ useHead(() => ({
   height: 100%;
   animation: decade-page-background-marquee var(--decade-row-duration) linear
     infinite;
+  will-change: transform;
 }
 
 .decade-page-background-track-reversed {
@@ -419,8 +420,9 @@ useHead(() => ({
 }
 
 .decade-page-tile {
-  width: clamp(8rem, 14vw, 13rem);
   height: 100%;
+  aspect-ratio: 1 / 1;
+  width: auto;
   object-fit: cover;
   display: block;
   flex-shrink: 0;
