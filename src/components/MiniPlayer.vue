@@ -78,7 +78,7 @@ const goToPlayingSong = async () => {
       v-if="player.isMiniPlayerVisible && player.playingSong"
       aria-label="Music player"
       :style="themeVars"
-      class="bg-surface/95 backdrop-blur-sm"
+      class="bg-surface/95 transition-colors hover:bg-surface backdrop-blur-sm"
     >
       <div :class="miniPlayerContainerClass">
         <div class="flex min-w-0 items-center gap-2.5">
@@ -116,7 +116,7 @@ const goToPlayingSong = async () => {
                 <span class="font-semibold text-text">
                   {{ player.playingSong.title }}
                 </span>
-                <span class="ml-1 font-medium text-text/55">
+                <span class="ml-1.5 font-medium text-text/55 sm:ml-2">
                   {{ player.playingSong.artist }}
                 </span>
               </span>
