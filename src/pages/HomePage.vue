@@ -269,18 +269,31 @@ onUnmounted(() => {
             }"
             :aria-labelledby="`decade-${group.decade}`"
           >
-            <h2
-              :id="`decade-${group.decade}`"
-              class="mb-3 text-2xl font-bold sm:text-3xl md:text-5xl"
-              :style="{ color: group.theme.colors.primary }"
-            >
-              <router-link
-                :to="getDecadePath(group.decade)"
-                class="transition-opacity duration-150 hover:opacity-80"
+            <div class="mb-3 flex items-center gap-3">
+              <h2
+                :id="`decade-${group.decade}`"
+                class="text-2xl font-bold sm:text-3xl md:text-5xl"
+                :style="{ color: group.theme.colors.primary }"
               >
-                {{ group.decade }}
-              </router-link>
-            </h2>
+                <router-link
+                  :to="getDecadePath(group.decade)"
+                  class="transition-opacity duration-150 hover:opacity-80"
+                >
+                  {{ group.decade }}
+                </router-link>
+              </h2>
+              <button
+                class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md transition-transform duration-150 hover:scale-110"
+                :style="{
+                  backgroundColor: group.theme.colors.primary,
+                  color: group.theme.colors.background,
+                }"
+                :aria-label="`Play top songs of the ${group.decade}`"
+                @click="playYear(group.years[0].year)"
+              >
+                <Play class="h-4 w-4" style="margin-left: 1px" />
+              </button>
+            </div>
             <p
               v-if="group.theme.description"
               class="mb-4 text-base leading-relaxed"
@@ -296,11 +309,7 @@ onUnmounted(() => {
                 Click on a year to see the Top 10:
               </p>
               <ul class="grid grid-cols-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                <li
-                  v-for="(tile, tileIndex) in group.years"
-                  :key="tile.year"
-                  class="relative"
-                >
+                <li v-for="(tile, tileIndex) in group.years" :key="tile.year">
                   <router-link
                     :to="getYearPath(tile.year)"
                     class="group relative isolate block aspect-square overflow-hidden rounded-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
@@ -352,17 +361,6 @@ onUnmounted(() => {
                       </span>
                     </span>
                   </router-link>
-                  <button
-                    class="absolute bottom-2 right-2 z-30 flex h-7 w-7 items-center justify-center rounded-full shadow-lg transition-transform duration-150 hover:scale-110"
-                    :style="{
-                      backgroundColor: group.theme.colors.primary,
-                      color: group.theme.colors.background,
-                    }"
-                    :aria-label="`Play top songs of ${tile.year}`"
-                    @click="playYear(tile.year)"
-                  >
-                    <Play class="h-3.5 w-3.5" style="margin-left: 1px" />
-                  </button>
                 </li>
               </ul>
             </div>
