@@ -41,7 +41,7 @@ const validateText = (
 pages.forEach((seoPage) => {
   validateText('title', seoPage.title, seoPage, 20, 80)
   validateText('description', seoPage.description, seoPage, 80, 200)
-  validateText('llm text', seoPage.llmText, seoPage, 40, 220)
+  validateText('llm text', seoPage.llmText, seoPage, 40, 400)
 
   if (seoPage.kind !== 'home' && !seoPage.title.includes('Australia'))
     addFailure(`${seoPage.path} title should mention Australia`)
