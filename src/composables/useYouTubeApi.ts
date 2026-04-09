@@ -1,7 +1,15 @@
 let resolveReady: (() => void) | null = null
-const readyPromise = new Promise<void>((resolve) => {
-  resolveReady = resolve
-})
+let rejectReady: ((reason: Error) => void) | null = null
+let readyPromise: Promise<void>
+
+const resetPromise = () => {
+  readyPromise = new Promise<void>((resolve, reject) => {
+    resolveReady = resolve
+    rejectReady = reject
+  })
+}
+resetPromise()
+
 let scriptAppended = false
 let activeStop: (() => void) | null = null
 
@@ -16,6 +24,13 @@ export const useYouTubeApi = () => {
 
       script.src = 'https://www.youtube.com/iframe_api'
       script.async = true
+
+      script.onerror = () => {
+        scriptAppended = false
+        const err = new Error('YouTube API script failed to load')
+        rejectReady?.(err)
+        resetPromise()
+      }
 
       if (!parentElement) {
         scriptAppended = false
