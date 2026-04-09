@@ -86,6 +86,7 @@ export const usePlayerStore = defineStore('player', () => {
   const isSeekDragging = ref(false)
   const seekPreviewSeconds = ref<number | null>(null)
   const isMuted = ref(false)
+  const hasStartedPlayback = ref(false)
 
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
@@ -101,6 +102,12 @@ export const usePlayerStore = defineStore('player', () => {
   let loadingStartedAt = 0
 
   const isActive = computed(() => playerState.value !== 'idle')
+  const isMiniPlayerVisible = computed(
+    () =>
+      hasStartedPlayback.value &&
+      playerState.value !== 'idle' &&
+      playingSong.value !== null,
+  )
   const displayedTimeSeconds = computed(
     () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
   )
@@ -280,6 +287,7 @@ export const usePlayerStore = defineStore('player', () => {
     durationSeconds.value = 0
     retryCount = 0
     currentPlaySong = null
+    hasStartedPlayback.value = false
     clearLoadingTracking()
     clearSeekPreview()
     clearActive()
@@ -355,6 +363,7 @@ export const usePlayerStore = defineStore('player', () => {
         onStateChange: (event: YTPlayerEvent) => {
           if (event.data === 1 || event.data === 2) clearStallTimer()
           if (event.data === 1) {
+            hasStartedPlayback.value = true
             clearLoadingTracking()
             playerState.value = 'playing'
           } else if (event.data === 2) {
@@ -641,6 +650,7 @@ export const usePlayerStore = defineStore('player', () => {
     playingSong.value = song
     playingYear.value = saved.year
     currentTimeSeconds.value = saved.timeSeconds
+    hasStartedPlayback.value = saved.timeSeconds > 0
     playerState.value = 'paused'
   }
 
@@ -665,6 +675,7 @@ export const usePlayerStore = defineStore('player', () => {
     showSeekBar,
     seekSliderValue,
     isActive,
+    isMiniPlayerVisible,
     isMuted,
     setPlayerContainer,
     setOnEnded,

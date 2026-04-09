@@ -72,7 +72,7 @@ useResizeObserver(marqueeContent, updateMarqueeState)
 <template>
   <Transition name="mini-player">
     <aside
-      v-if="player.isActive && player.playingSong"
+      v-if="player.isMiniPlayerVisible && player.playingSong"
       aria-label="Music player"
       :style="themeVars"
       class="relative bg-surface/95 px-4 py-1.5 backdrop-blur-sm"
