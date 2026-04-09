@@ -230,156 +230,163 @@ useHead(() => ({
       <div class="decade-page-overlay absolute inset-0" />
     </div>
 
-    <div
-      class="relative z-10 mx-auto max-w-[1300px] px-4 pt-4 pb-8 sm:pt-4 sm:pb-10"
-    >
-      <header class="mb-8">
-        <div class="rounded-2xl border border-white/10 bg-black/72 px-5 py-5">
-          <h1
-            class="theme-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary"
-            :style="{ fontFamily: theme.fontFamily }"
-          >
-            {{ heading }}
-          </h1>
-          <p
-            v-if="theme.description"
-            class="mt-4 max-w-3xl text-base leading-relaxed"
-            :style="{ color: theme.colors.textMuted }"
-          >
-            {{ theme.description }}
-          </p>
-          <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-muted/70">
-            {{ subtitle }}
-          </p>
+    <div class="relative z-10 pb-8 sm:pb-10">
+      <header class="decade-page-intro relative mb-8">
+        <div class="decade-page-intro-gradient absolute inset-0" />
+        <div class="relative mx-auto max-w-[1300px] px-4">
+          <div class="px-5 py-5">
+            <h1
+              class="theme-display text-2xl sm:text-3xl md:text-4xl font-bold text-primary"
+              :style="{ fontFamily: theme.fontFamily }"
+            >
+              {{ heading }}
+            </h1>
+            <p
+              v-if="theme.description"
+              class="mt-4 max-w-3xl text-base leading-relaxed"
+              :style="{ color: theme.colors.textMuted }"
+            >
+              {{ theme.description }}
+            </p>
+            <p
+              :class="theme.description ? 'mt-3' : 'mt-4'"
+              class="max-w-3xl text-base leading-relaxed"
+              :style="{ color: theme.colors.textMuted }"
+            >
+              {{ subtitle }}
+            </p>
+          </div>
         </div>
       </header>
 
-      <nav class="mb-3 flex items-center justify-between gap-3">
-        <router-link
-          v-if="previousDecade"
-          :to="getDecadePath(previousDecade)"
-          class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-          :style="getDecadeNavStyle(previousDecade)"
-        >
-          <ArrowLeft class="h-3.5 w-3.5" />
-          {{ previousDecade }}
-        </router-link>
-        <div v-else />
-
-        <router-link
-          v-if="nextDecade"
-          :to="getDecadePath(nextDecade)"
-          class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-          :style="getDecadeNavStyle(nextDecade)"
-        >
-          {{ nextDecade }}
-          <ArrowRight class="h-3.5 w-3.5" />
-        </router-link>
-        <div v-else />
-      </nav>
-
-      <section class="grid grid-cols-1 gap-4 min-[1260px]:grid-cols-2">
-        <div
-          v-for="(column, columnIndex) in yearColumns"
-          :key="columnIndex"
-          class="flex flex-col gap-4"
-          :class="{ 'min-[1260px]:pt-28': columnIndex === 1 }"
-        >
-          <article
-            v-for="year in column"
-            :key="year"
-            class="grid items-center gap-5 rounded-2xl border p-5 backdrop-blur-[6px] md:grid-cols-[168px_1fr]"
-            :style="{
-              backgroundColor: `${theme.colors.surface}e3`,
-              borderColor: `${theme.colors.primary}52`,
-              boxShadow: '0 24px 48px rgb(0 0 0 / 28%)',
-            }"
+      <div class="mx-auto max-w-[1300px] px-4">
+        <nav class="mb-3 flex items-center justify-between gap-3">
+          <router-link
+            v-if="previousDecade"
+            :to="getDecadePath(previousDecade)"
+            class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+            :style="getDecadeNavStyle(previousDecade)"
           >
-            <router-link
-              :to="getYearPath(year)"
-              :aria-label="`View top 10 songs of ${year}`"
-              class="group relative block aspect-square overflow-hidden rounded-xl"
+            <ArrowLeft class="h-3.5 w-3.5" />
+            {{ previousDecade }}
+          </router-link>
+          <div v-else />
+
+          <router-link
+            v-if="nextDecade"
+            :to="getDecadePath(nextDecade)"
+            class="decade-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+            :style="getDecadeNavStyle(nextDecade)"
+          >
+            {{ nextDecade }}
+            <ArrowRight class="h-3.5 w-3.5" />
+          </router-link>
+          <div v-else />
+        </nav>
+
+        <section class="grid grid-cols-1 gap-4 min-[1260px]:grid-cols-2">
+          <div
+            v-for="(column, columnIndex) in yearColumns"
+            :key="columnIndex"
+            class="flex flex-col gap-4"
+            :class="{ 'min-[1260px]:pt-28': columnIndex === 1 }"
+          >
+            <article
+              v-for="year in column"
+              :key="year"
+              class="grid items-center gap-5 rounded-2xl border p-5 backdrop-blur-[6px] md:grid-cols-[168px_1fr]"
               :style="{
-                backgroundColor: theme.colors.surface,
-                border: `1px solid ${theme.colors.primary}44`,
+                backgroundColor: `${theme.colors.surface}e3`,
+                borderColor: `${theme.colors.primary}52`,
+                boxShadow: '0 24px 48px rgb(0 0 0 / 28%)',
               }"
             >
-              <div class="grid h-full grid-cols-2 grid-rows-2">
-                <img
-                  v-for="(thumbnail, index) in getThumbnails(year)"
-                  :key="`${year}-${index}`"
-                  :src="thumbnail"
-                  :alt="`Top song ${index + 1} of ${year}`"
-                  class="h-full w-full object-cover"
-                />
-              </div>
-              <div
-                class="absolute inset-0"
-                style="
-                  background: linear-gradient(
-                    to top,
-                    rgb(0 0 0 / 95%) 0%,
-                    rgb(0 0 0 / 55%) 36%,
-                    transparent 78%
-                  );
-                "
-              />
-              <div
-                class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              <router-link
+                :to="getYearPath(year)"
+                :aria-label="`View top 10 songs of ${year}`"
+                class="group relative block aspect-square overflow-hidden rounded-xl"
+                :style="{
+                  backgroundColor: theme.colors.surface,
+                  border: `1px solid ${theme.colors.primary}44`,
+                }"
               >
-                <ArrowRight class="h-7 w-7 text-white drop-shadow-lg" />
-              </div>
-            </router-link>
-
-            <div class="flex flex-col">
-              <div class="flex items-center gap-2.5">
-                <h2
-                  class="text-lg sm:text-2xl font-bold"
-                  :style="{
-                    color: theme.colors.primary,
-                    fontFamily: theme.fontFamily,
-                  }"
+                <div class="grid h-full grid-cols-2 grid-rows-2">
+                  <img
+                    v-for="(thumbnail, index) in getThumbnails(year)"
+                    :key="`${year}-${index}`"
+                    :src="thumbnail"
+                    :alt="`Top song ${index + 1} of ${year}`"
+                    class="h-full w-full object-cover"
+                  />
+                </div>
+                <div
+                  class="absolute inset-0"
+                  style="
+                    background: linear-gradient(
+                      to top,
+                      rgb(0 0 0 / 95%) 0%,
+                      rgb(0 0 0 / 55%) 36%,
+                      transparent 78%
+                    );
+                  "
+                />
+                <div
+                  class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                 >
-                  <router-link
-                    :to="getYearPath(year)"
-                    class="text-inherit no-underline"
+                  <ArrowRight class="h-7 w-7 text-white drop-shadow-lg" />
+                </div>
+              </router-link>
+
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2.5">
+                  <h2
+                    class="text-2xl sm:text-3xl md:text-4xl font-bold"
+                    :style="{
+                      color: theme.colors.primary,
+                      fontFamily: theme.fontFamily,
+                    }"
                   >
-                    {{ year }}
-                  </router-link>
-                </h2>
-                <button
-                  class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md transition-transform duration-150 hover:scale-110"
+                    <router-link
+                      :to="getYearPath(year)"
+                      class="text-inherit no-underline"
+                    >
+                      {{ year }}
+                    </router-link>
+                  </h2>
+                  <button
+                    class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md transition-transform duration-150 hover:scale-110"
+                    :style="{
+                      backgroundColor: theme.colors.primary,
+                      color: theme.colors.background,
+                    }"
+                    :aria-label="`Play top songs of ${year}`"
+                    @click="playYear(year)"
+                  >
+                    <Play
+                      class="h-4 w-4"
+                      style="margin-left: 1px; fill: currentcolor"
+                    />
+                  </button>
+                </div>
+                <p class="mt-2 text-base leading-relaxed text-text-muted">
+                  {{ getYearSummaryText(year) }}
+                </p>
+                <router-link
+                  :to="getYearPath(year)"
+                  class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
                   :style="{
                     backgroundColor: theme.colors.primary,
                     color: theme.colors.background,
                   }"
-                  :aria-label="`Play top songs of ${year}`"
-                  @click="playYear(year)"
                 >
-                  <Play
-                    class="h-4 w-4"
-                    style="margin-left: 1px; fill: currentcolor"
-                  />
-                </button>
+                  Top 10 {{ year }}
+                  <ArrowRight class="h-5 w-5" />
+                </router-link>
               </div>
-              <p class="mt-2 text-base leading-relaxed text-text-muted">
-                {{ getYearSummaryText(year) }}
-              </p>
-              <router-link
-                :to="getYearPath(year)"
-                class="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl px-3 py-2 text-base font-bold text-black transition-transform duration-150 hover:scale-[1.02]"
-                :style="{
-                  backgroundColor: theme.colors.primary,
-                  color: theme.colors.background,
-                }"
-              >
-                Top 10 {{ year }}
-                <ArrowRight class="h-5 w-5" />
-              </router-link>
-            </div>
-          </article>
-        </div>
-      </section>
+            </article>
+          </div>
+        </section>
+      </div>
     </div>
   </main>
 </template>
@@ -435,6 +442,21 @@ useHead(() => ({
 .decade-page-overlay {
   background: rgb(0 0 0 / 82%);
   z-index: 1;
+}
+
+.decade-page-intro {
+  overflow: hidden;
+}
+
+.decade-page-intro-gradient {
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 78%) 0%,
+    rgb(0 0 0 / 62%) 40%,
+    rgb(0 0 0 / 28%) 76%,
+    transparent 100%
+  );
 }
 
 .decade-nav-button {
