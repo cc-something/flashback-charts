@@ -59,11 +59,12 @@ defineExpose({ focusInput })
             Sign up for our Newsletter
           </h2>
           <p class="mt-2 text-sm text-text-muted">
-            Get occasional updates from Flashback Charts, including new charts,
-            posts, discoveries, and other music info.
+            Get occasional updates from us, including when new features or
+            charts are added.
             <br />
             <br />
-            No spam, just the good stuff.
+            We don't share your email with anyone, and you can unsubscribe at
+            any time.
           </p>
 
           <form

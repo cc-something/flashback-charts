@@ -42,10 +42,10 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div
         class="flex flex-col items-center gap-4 text-center text-sm leading-relaxed text-text-muted"
       >
-        <p>© {{ new Date().getFullYear() }} CC Something</p>
+        <p>© CC Something {{ new Date().getFullYear() }}</p>
 
         <p>
-          Thank you to Matt &amp; Simon for the inspiration.
+          Thanks to Matt &amp; Simon for the inspiration.
           <br />
           Credit to
           <a
