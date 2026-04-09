@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Disc3, Flag, MonitorPlay } from 'lucide-vue-next'
+import { Disc3, Flag } from 'lucide-vue-next'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
 import type { Song } from '@/types/song'
@@ -57,11 +57,6 @@ const handleClick = () =>
     ? player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR, 'rickroll')
     : player.play(props.song, props.year, 'direct')
 const primePlayback = () => void player.preload()
-const youtubeVideoUrl = computed(() =>
-  displaySong.value.youtubeVideoId
-    ? `https://www.youtube.com/watch?v=${displaySong.value.youtubeVideoId}`
-    : '',
-)
 </script>
 
 <template>
@@ -180,23 +175,6 @@ const youtubeVideoUrl = computed(() =>
     <div
       class="absolute top-1.5 right-1.5 z-20 flex flex-row gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
     >
-      <div v-if="displaySong.youtubeVideoId" class="group/action relative">
-        <span
-          class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded bg-black/80 px-1.5 py-0.5 text-[0.65rem] font-medium text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
-        >
-          YouTube
-        </span>
-        <a
-          :aria-label="`Open ${displaySong.title} by ${displaySong.artist} on YouTube`"
-          :href="youtubeVideoUrl"
-          class="flex h-8 w-8 items-center justify-center rounded text-text-muted transition-colors duration-150 hover:bg-black/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <MonitorPlay class="h-5 w-5" aria-hidden="true" />
-        </a>
-      </div>
-
       <div class="group/action relative">
         <span
           class="pointer-events-none absolute right-full top-1/2 mr-1 -translate-y-1/2 whitespace-nowrap rounded bg-black/80 px-1.5 py-0.5 text-[0.65rem] font-medium text-white opacity-0 transition-opacity duration-75 group-hover/action:opacity-100 group-focus-within/action:opacity-100"
@@ -228,9 +206,9 @@ const youtubeVideoUrl = computed(() =>
         v-if="showSeekBar"
         class="pointer-events-none absolute inset-x-3 bottom-2.5 z-20 overflow-visible"
       >
-        <PlaybackSeekBar root-class="pointer-events-auto relative z-10" />
+        <PlaybackSeekBar root-class="pointer-events-auto relative z-10 mt-1" />
         <p
-          class="pointer-events-none absolute bottom-3.5 right-3.5 min-w-fit font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute bottom-2.5 right-0 min-w-fit font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
