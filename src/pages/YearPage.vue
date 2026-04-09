@@ -203,7 +203,7 @@ watch(
 <template>
   <main class="max-w-[50.4rem] mx-auto px-4 pt-4 pb-6">
     <h1
-      class="theme-display mb-4 text-xl sm:text-2xl md:text-3xl font-bold text-primary"
+      class="theme-display mb-4 text-xl sm:text-2xl md:text-3xl font-bold text-primary [text-wrap:balance]"
       :style="{ fontFamily: theme.fontFamily }"
     >
       {{ heading }}
