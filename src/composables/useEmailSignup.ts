@@ -1,33 +1,53 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useStorage } from '@vueuse/core'
-import { useRoute } from 'vue-router'
+import { usePlayerStore } from '@/stores/player'
 
 const DELAY_MS = 60_000
 
 export const useEmailSignup = () => {
   const dismissed = useStorage('email-signup-dismissed', false)
   const subscribedEmail = useStorage<string | null>('email-signup-email', null)
-  const hasVisitedYearPage = useStorage('email-signup-visited-year', false)
+  const hasSongPlayed = useStorage('email-signup-has-played', false)
   const hasWaited = ref(false)
   const show = ref(false)
   const timer = ref<ReturnType<typeof setTimeout> | null>(null)
-  const route = useRoute()
+  const player = usePlayerStore()
 
   const shouldShow = computed(
     () =>
       !dismissed.value &&
       !subscribedEmail.value &&
-      hasVisitedYearPage.value &&
-      hasWaited.value,
+      hasSongPlayed.value &&
+      hasWaited.value &&
+      player.playerState !== 'loading',
   )
 
+  const startTimerIfEligible = () => {
+    if (
+      timer.value ||
+      hasWaited.value ||
+      dismissed.value ||
+      subscribedEmail.value
+    )
+      return
+    if (!hasSongPlayed.value) return
+    timer.value = setTimeout(() => {
+      hasWaited.value = true
+    }, DELAY_MS)
+  }
+
   watch(
-    () => route.name,
-    (name) => {
-      if (name === 'year') hasVisitedYearPage.value = true
+    () => player.playerState,
+    (state) => {
+      if (state === 'playing' && !hasSongPlayed.value) {
+        hasSongPlayed.value = true
+      }
+      if (state === 'loading') show.value = false
     },
-    { immediate: true },
   )
+
+  watch(hasSongPlayed, startTimerIfEligible)
+
   watch(shouldShow, (val) => {
     if (val) show.value = true
   })
@@ -50,12 +70,7 @@ export const useEmailSignup = () => {
     show.value = false
   }
 
-  onMounted(() => {
-    if (!dismissed.value && !subscribedEmail.value)
-      timer.value = setTimeout(() => {
-        hasWaited.value = true
-      }, DELAY_MS)
-  })
+  onMounted(startTimerIfEligible)
 
   onUnmounted(() => {
     if (timer.value) clearTimeout(timer.value)
