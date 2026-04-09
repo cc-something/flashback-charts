@@ -1,18 +1,15 @@
 - privacy info
-- less aggressive newsletter; only after being on a year page, playing something?
 - donate
 
 - astley
   - idk if I like the simul seek bar on every song
 - play btns on decade cards/landings
+- site is a bit ug
 
 ## TODO
 
-- confirm analytics behaviour
-- confirm newsletter e2e
-- confirm social embeds
-- confirm playback works on mobile
-- confirm contact, report an issue
+- playback does not in fact work on mobile
+- also needs some kinda timeout/error, just hangs
 
 ## Nice to haves?
 
@@ -26,7 +23,6 @@
 
 ## Future SEO
 
-- LLM strings
 - Blog schedule, constant edits
 
 1. Research
