@@ -251,11 +251,11 @@ onUnmounted(() => {
         </p>
       </div>
 
-      <div class="grid grid-cols-1 gap-6 min-[1000px]:grid-cols-2">
+      <div class="grid grid-cols-1 gap-4 min-[1000px]:grid-cols-2">
         <div
           v-for="(column, columnIndex) in decadeColumns"
           :key="columnIndex"
-          class="flex flex-col gap-6"
+          class="flex flex-col gap-4"
           :class="{ 'min-[1000px]:pt-28': columnIndex === 1 }"
         >
           <section
