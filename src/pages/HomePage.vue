@@ -239,22 +239,24 @@ onUnmounted(() => {
       <div class="home-page-background-overlay absolute inset-0" />
     </div>
 
-    <div class="relative z-10 max-w-[1300px] mx-auto px-4 pt-4 pb-10">
+    <div class="relative z-10 pt-4 pb-10">
       <div class="home-page-intro relative mb-4">
-        <div
-          class="home-page-intro-gradient absolute inset-y-0 left-1/2 w-screen -translate-x-1/2"
-        />
-        <div class="relative px-5 py-5">
-          <h1 class="text-lg sm:text-2xl text-text-muted">
-            Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
-          </h1>
-          <p class="mt-2 text-base leading-relaxed text-text-muted/70">
-            {{ subtitle }}
-          </p>
+        <div class="home-page-intro-gradient absolute inset-0" />
+        <div class="relative mx-auto max-w-[1300px] px-4">
+          <div class="px-5 py-5">
+            <h1 class="text-lg sm:text-2xl text-text-muted">
+              Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
+            </h1>
+            <p class="mt-2 text-base leading-relaxed text-text-muted/70">
+              {{ subtitle }}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 gap-4 min-[1000px]:grid-cols-2">
+      <div
+        class="mx-auto grid max-w-[1300px] grid-cols-1 gap-4 px-4 min-[1000px]:grid-cols-2"
+      >
         <div
           v-for="(column, columnIndex) in decadeColumns"
           :key="columnIndex"
