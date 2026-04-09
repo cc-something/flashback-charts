@@ -342,7 +342,7 @@ onUnmounted(() => teardownKonamiListener())
         class="mt-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
       >
         <p class="text-sm text-text-muted/70">
-          © CC Something Pty Ltd {{ currentYear }}
+          © CC Something {{ currentYear }}
         </p>
         <button
           type="button"
@@ -358,7 +358,7 @@ onUnmounted(() => teardownKonamiListener())
           @click="isAboutOpen = true"
         >
           <Info class="h-3.5 w-3.5" />
-          Credits
+          About
         </button>
       </div>
     </footer>

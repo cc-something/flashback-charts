@@ -35,13 +35,15 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div class="mb-5 flex items-center justify-center gap-2.5">
         <Info class="h-5 w-5 text-primary" />
         <h2 id="about-modal-title" class="text-lg font-bold text-text">
-          Site Credits
+          About
         </h2>
       </div>
 
       <div
         class="flex flex-col items-center gap-4 text-center text-sm leading-relaxed text-text-muted"
       >
+        <p>© {{ new Date().getFullYear() }} CC Something</p>
+
         <p>
           Thank you to Matt &amp; Simon for the inspiration.
           <br />
