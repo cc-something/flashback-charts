@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed, nextTick, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { Song } from '@/types/song'
 import { useYouTubeApi } from '@/composables/useYouTubeApi'
@@ -105,7 +105,6 @@ export const usePlayerStore = defineStore('player', () => {
   const isSeekDragging = ref(false)
   const seekPreviewSeconds = ref<number | null>(null)
   const isMuted = ref(false)
-  const hasStartedPlayback = ref(false)
 
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
@@ -121,12 +120,6 @@ export const usePlayerStore = defineStore('player', () => {
   let loadingStartedAt = 0
 
   const isActive = computed(() => playerState.value !== 'idle')
-  const isMiniPlayerVisible = computed(
-    () =>
-      hasStartedPlayback.value &&
-      playerState.value !== 'idle' &&
-      playingSong.value !== null,
-  )
   const displayedTimeSeconds = computed(
     () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
   )
@@ -221,7 +214,7 @@ export const usePlayerStore = defineStore('player', () => {
   )
   const seekSliderValue = computed(() => [displayedTimeSeconds.value])
 
-  const setPlayerContainer = (el: HTMLDivElement) => {
+  const setPlayerContainer = (el: HTMLDivElement | null) => {
     playerContainerEl = el
   }
 
@@ -311,6 +304,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearStallTimer()
     ytPlayer?.destroy()
     ytPlayer = null
+    playerContainerEl?.replaceChildren()
     currentTimeSeconds.value = 0
     durationSeconds.value = 0
     retryCount = 0
@@ -325,10 +319,34 @@ export const usePlayerStore = defineStore('player', () => {
     playerState.value = 'idle'
     playingSong.value = null
     playingYear.value = null
-    hasStartedPlayback.value = false
     clearActive()
     deactivate()
     clearSavedState()
+  }
+  const waitForPlayerContainer = async () => {
+    if (typeof window === 'undefined') return null
+    for (let attemptIndex = 0; attemptIndex < 8; attemptIndex += 1) {
+      if (
+        playerContainerEl &&
+        playerContainerEl.clientWidth >= 200 &&
+        playerContainerEl.clientHeight >= 200
+      )
+        return playerContainerEl
+      await nextTick()
+      await new Promise<void>((resolve) =>
+        window.requestAnimationFrame(() => resolve()),
+      )
+    }
+    return playerContainerEl
+  }
+  const getPlayerMountEl = async () => {
+    const playerContainerHost = await waitForPlayerContainer()
+    if (!playerContainerHost) return null
+    playerContainerHost.replaceChildren()
+    const playerMountEl = document.createElement('div')
+    playerMountEl.className = 'h-full w-full'
+    playerContainerHost.appendChild(playerMountEl)
+    return playerMountEl
   }
   const openExternalPlayback = (song: Song) => {
     const youtubeVideoId = song.youtubeVideoId
@@ -362,19 +380,23 @@ export const usePlayerStore = defineStore('player', () => {
       playNext(failedSong, failedYear, 'skip')
   }
 
-  const attemptPlay = (song: Song, trigger: PlayTrigger, startAt?: number) => {
+  const attemptPlay = async (
+    song: Song,
+    trigger: PlayTrigger,
+    startAt?: number,
+  ) => {
     if (typeof window === 'undefined') {
       stop()
       return
     }
-    if (!playerContainerEl) {
-      stop()
-      return
-    }
-
     ytPlayer?.destroy()
     ytPlayer = null
     clearStallTimer()
+    const playerMountEl = await getPlayerMountEl()
+    if (!playerMountEl) {
+      stop()
+      return
+    }
 
     const handlePlaybackError = async (errorCode?: number) => {
       if (isEmbedBlockedError(errorCode))
@@ -386,7 +408,7 @@ export const usePlayerStore = defineStore('player', () => {
         playerState.value = 'loading'
         setTimeout(() => {
           if (playerState.value === 'loading' && currentPlaySong)
-            attemptPlay(currentPlaySong, trigger)
+            void attemptPlay(currentPlaySong, trigger)
         }, 1000 * retryCount)
       } else {
         if (isUserRequestedTrigger(trigger))
@@ -401,9 +423,9 @@ export const usePlayerStore = defineStore('player', () => {
       }
     }
 
-    ytPlayer = new window.YT!.Player(playerContainerEl, {
-      width: '480',
-      height: '270',
+    ytPlayer = new window.YT!.Player(playerMountEl, {
+      width: '100%',
+      height: '100%',
       videoId: song.youtubeVideoId,
       playerVars: {
         autoplay: 1,
@@ -431,7 +453,6 @@ export const usePlayerStore = defineStore('player', () => {
         onStateChange: (event: YTPlayerEvent) => {
           if (event.data === 1 || event.data === 2) clearStallTimer()
           if (event.data === 1) {
-            hasStartedPlayback.value = true
             clearLoadingTracking()
             playerState.value = 'playing'
           } else if (event.data === 2) {
@@ -545,7 +566,7 @@ export const usePlayerStore = defineStore('player', () => {
 
     if (playerState.value !== 'loading') return
 
-    attemptPlay(song, trigger, resumeAt)
+    void attemptPlay(song, trigger, resumeAt)
   }
 
   const togglePlayback = async () => {
@@ -724,7 +745,6 @@ export const usePlayerStore = defineStore('player', () => {
     playingSong.value = song
     playingYear.value = saved.year
     currentTimeSeconds.value = saved.timeSeconds
-    hasStartedPlayback.value = saved.timeSeconds > 0
     playerState.value = 'paused'
   }
 
@@ -749,7 +769,6 @@ export const usePlayerStore = defineStore('player', () => {
     showSeekBar,
     seekSliderValue,
     isActive,
-    isMiniPlayerVisible,
     isMuted,
     setPlayerContainer,
     setOnEnded,

@@ -10,7 +10,7 @@ import {
   watch,
 } from 'vue'
 import { useHead } from '@unhead/vue'
-import { useElementSize, useMediaQuery } from '@vueuse/core'
+import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { Info, Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
 import ErrorToast from '@/components/ErrorToast.vue'
@@ -72,10 +72,8 @@ const router = useRouter()
 const chart = useChartStore()
 const player = usePlayerStore()
 const toast = useToastStore()
-const playerContainer = ref<HTMLDivElement | null>(null)
 const stickyBar = ref<HTMLDivElement | null>(null)
 const { height: stickyBarHeight } = useElementSize(stickyBar)
-const isDesktopMiniPlayer = useMediaQuery('(min-width: 840px)')
 const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const isContactOpen = ref(false)
@@ -244,7 +242,6 @@ watch(isRickRollActive, (isActive) => {
 })
 
 onMounted(async () => {
-  if (playerContainer.value) player.setPlayerContainer(playerContainer.value)
   setupKonamiListener()
   await loadScript()
   trackPageview()
@@ -294,7 +291,7 @@ onUnmounted(() => teardownKonamiListener())
       </header>
 
       <YearTabs />
-      <MiniPlayer v-if="!isDesktopMiniPlayer" layout="mobile" />
+      <MiniPlayer />
       <RickRollBanner v-if="isRickRollActive" @deactivate="deactivate" />
     </div>
 
@@ -379,11 +376,6 @@ onUnmounted(() => teardownKonamiListener())
       @reveal="revealContactEmail"
     />
     <AboutModal v-if="isAboutOpen" @close="isAboutOpen = false" />
-    <MiniPlayer v-if="isDesktopMiniPlayer" layout="desktop" />
-    <div
-      ref="playerContainer"
-      class="fixed bottom-0 left-0 h-px w-px opacity-[0.01]"
-    />
     <ErrorToast v-if="hasToasts" />
   </div>
 </template>
