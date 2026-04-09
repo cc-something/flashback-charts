@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useHead } from '@unhead/vue'
-import { ArrowRight } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
+import { ArrowRight, Play } from 'lucide-vue-next'
 import {
   getDecadePageDescription,
   getDecadePageTitle,
@@ -23,6 +24,22 @@ import {
   getOpenGraphImageMeta,
   getYearPath,
 } from '@/utils/url'
+import { getYearData } from '@/data'
+import { useChartStore } from '@/stores/chart'
+import { usePlayerStore } from '@/stores/player'
+
+const router = useRouter()
+const chart = useChartStore()
+const player = usePlayerStore()
+
+const playYear = (year: number) => {
+  const songs = getYearData(year)
+  if (!songs?.length) return
+  const song = chart.sortOrder === 'desc' ? songs[songs.length - 1] : songs[0]
+  chart.selectYear(year)
+  router.push(getYearPath(year))
+  player.play(song, year, 'home-btn')
+}
 
 const { isRickRollActive } = useRickRollMode()
 const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
@@ -252,18 +269,34 @@ onUnmounted(() => {
             }"
             :aria-labelledby="`decade-${group.decade}`"
           >
-            <h2
-              :id="`decade-${group.decade}`"
-              class="mb-3 text-2xl font-bold sm:text-3xl md:text-5xl"
-              :style="{ color: group.theme.colors.primary }"
-            >
-              <router-link
-                :to="getDecadePath(group.decade)"
-                class="transition-opacity duration-150 hover:opacity-80"
+            <div class="mb-3 flex items-center gap-3">
+              <h2
+                :id="`decade-${group.decade}`"
+                class="text-2xl font-bold sm:text-3xl md:text-5xl"
+                :style="{ color: group.theme.colors.primary }"
               >
-                {{ group.decade }}
-              </router-link>
-            </h2>
+                <router-link
+                  :to="getDecadePath(group.decade)"
+                  class="transition-opacity duration-150 hover:opacity-80"
+                >
+                  {{ group.decade }}
+                </router-link>
+              </h2>
+              <button
+                class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md transition-transform duration-150 hover:scale-110"
+                :style="{
+                  backgroundColor: group.theme.colors.primary,
+                  color: group.theme.colors.background,
+                }"
+                :aria-label="`Play top songs of the ${group.decade}`"
+                @click="playYear(group.years[0].year)"
+              >
+                <Play
+                  class="h-4 w-4"
+                  style="margin-left: 1px; fill: currentColor"
+                />
+              </button>
+            </div>
             <p
               v-if="group.theme.description"
               class="mb-4 text-base leading-relaxed"

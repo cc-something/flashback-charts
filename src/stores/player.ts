@@ -50,6 +50,16 @@ const clearSavedState = () => {
 
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
+export type PlayTrigger =
+  | 'direct'
+  | 'autoplay'
+  | 'hotkey'
+  | 'home-btn'
+  | 'decade-btn'
+  | 'search'
+  | 'rickroll'
+  | 'skip'
+
 const MAX_RETRIES = 2
 const getYearSongs = async (year: number) => {
   const { getYearData } = await import('@/data')
@@ -262,14 +272,18 @@ export const usePlayerStore = defineStore('player', () => {
             useToastStore().show(`Failed to play "${song.title}" — skipping`)
             stop()
             if (failedSong && failedYear !== null)
-              playNext(failedSong, failedYear)
+              playNext(failedSong, failedYear, 'skip')
           }
         },
       },
     })
   }
 
-  const play = async (song: Song, year: number) => {
+  const play = async (
+    song: Song,
+    year: number,
+    trigger: PlayTrigger = 'direct',
+  ) => {
     if (typeof window === 'undefined') return
     if (!song.youtubeVideoId) return
 
@@ -318,6 +332,7 @@ export const usePlayerStore = defineStore('player', () => {
       artist: song.artist,
       title: song.title,
       year: String(year),
+      source: trigger,
     })
 
     if (chart.selectedYear === year) scrollSongIntoView(song)
@@ -430,7 +445,11 @@ export const usePlayerStore = defineStore('player', () => {
     return { songs, index, year }
   }
 
-  const playNext = async (fromSong?: Song, fromYear?: number) => {
+  const playNext = async (
+    fromSong?: Song,
+    fromYear?: number,
+    trigger: PlayTrigger = 'direct',
+  ) => {
     const chart = useChartStore()
     const song = fromSong ?? playingSong.value
     const year = fromYear ?? playingYear.value
@@ -446,7 +465,7 @@ export const usePlayerStore = defineStore('player', () => {
 
     if (index < songs.length - 1) {
       const nextSong = songs[index + 1]
-      if (nextSong) play(nextSong, year)
+      if (nextSong) play(nextSong, year, trigger)
       return
     }
 
@@ -457,17 +476,17 @@ export const usePlayerStore = defineStore('player', () => {
     const nextYearSongs = await getSortedYearData(nextYear)
     if (!nextYearSongs?.length) return
     chart.selectYear(nextYear)
-    await play(nextYearSongs[0], nextYear)
+    await play(nextYearSongs[0], nextYear, trigger)
   }
 
-  const playPrev = async () => {
+  const playPrev = async (trigger: PlayTrigger = 'direct') => {
     const chart = useChartStore()
     const { songs, index, year } = await getCurrentIndex()
     if (!songs || index === -1 || year === null) return
 
     if (index > 0) {
       const prevSong = songs[index - 1]
-      if (prevSong) play(prevSong, year)
+      if (prevSong) play(prevSong, year, trigger)
       return
     }
 
@@ -478,7 +497,7 @@ export const usePlayerStore = defineStore('player', () => {
     const prevYearSongs = await getSortedYearData(prevYear)
     if (!prevYearSongs?.length) return
     chart.selectYear(prevYear)
-    await play(prevYearSongs[prevYearSongs.length - 1], prevYear)
+    await play(prevYearSongs[prevYearSongs.length - 1], prevYear, trigger)
   }
 
   const scrollSongIntoView = (song: Song) => {

@@ -53,7 +53,7 @@ export const useHotkeys = (
   }
   const playTopSong = async () => {
     const topSong = await getTopSong()
-    if (topSong) await player.play(topSong, chart.selectedYear)
+    if (topSong) await player.play(topSong, chart.selectedYear, 'hotkey')
   }
 
   let konamiProgress = 0
@@ -130,13 +130,13 @@ export const useHotkeys = (
 
     if (isMod && e.key === 'ArrowLeft') {
       e.preventDefault()
-      player.playPrev()
+      player.playPrev('hotkey')
       return
     }
 
     if (isMod && e.key === 'ArrowRight') {
       e.preventDefault()
-      player.playNext()
+      player.playNext(undefined, undefined, 'hotkey')
       return
     }
 

@@ -241,7 +241,7 @@ watch(
 watch(isRickRollActive, (isActive) => {
   if (isActive) {
     trackEvent('rickroll_activated')
-    player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR)
+    player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR, 'rickroll')
   }
 })
 

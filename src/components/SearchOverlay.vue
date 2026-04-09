@@ -22,7 +22,7 @@ const goToSong = (year: number, rank: number) => {
 }
 
 const playSong = (song: (typeof results.value)[0]['song'], year: number) =>
-  player.play(song, year)
+  player.play(song, year, 'search')
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')

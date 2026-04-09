@@ -54,8 +54,8 @@ const handleImageError = (e: Event) => {
 
 const handleClick = () =>
   isRickRollActive.value
-    ? player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR)
-    : player.play(props.song, props.year)
+    ? player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR, 'rickroll')
+    : player.play(props.song, props.year, 'direct')
 const youtubeVideoUrl = computed(() =>
   displaySong.value.youtubeVideoId
     ? `https://www.youtube.com/watch?v=${displaySong.value.youtubeVideoId}`

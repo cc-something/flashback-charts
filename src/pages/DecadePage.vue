@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useHead } from '@unhead/vue'
-import { ArrowLeft, ArrowRight } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
+import { ArrowLeft, ArrowRight, Play } from 'lucide-vue-next'
 import {
   getAvailableDecades,
   getDecadePageDescription,
@@ -24,8 +25,24 @@ import {
   getOpenGraphImageMeta,
   getYearPath,
 } from '@/utils/url'
+import { getYearData } from '@/data'
+import { useChartStore } from '@/stores/chart'
+import { usePlayerStore } from '@/stores/player'
 
 const props = defineProps<{ decade: string }>()
+
+const router = useRouter()
+const chart = useChartStore()
+const player = usePlayerStore()
+
+const playYear = (year: number) => {
+  const songs = getYearData(year)
+  if (!songs?.length) return
+  const song = chart.sortOrder === 'desc' ? songs[songs.length - 1] : songs[0]
+  chart.selectYear(year)
+  router.push(getYearPath(year))
+  player.play(song, year, 'decade-btn')
+}
 const BACKGROUND_ROW_COUNT = 6
 const BACKGROUND_DUPLICATE_COUNT = 2
 
@@ -313,20 +330,36 @@ useHead(() => ({
             </router-link>
 
             <div class="flex flex-col">
-              <h2
-                class="text-lg sm:text-2xl font-bold"
-                :style="{
-                  color: theme.colors.primary,
-                  fontFamily: theme.fontFamily,
-                }"
-              >
-                <router-link
-                  :to="getYearPath(year)"
-                  class="text-inherit no-underline"
+              <div class="flex items-center gap-2.5">
+                <h2
+                  class="text-lg sm:text-2xl font-bold"
+                  :style="{
+                    color: theme.colors.primary,
+                    fontFamily: theme.fontFamily,
+                  }"
                 >
-                  {{ year }}
-                </router-link>
-              </h2>
+                  <router-link
+                    :to="getYearPath(year)"
+                    class="text-inherit no-underline"
+                  >
+                    {{ year }}
+                  </router-link>
+                </h2>
+                <button
+                  class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md transition-transform duration-150 hover:scale-110"
+                  :style="{
+                    backgroundColor: theme.colors.primary,
+                    color: theme.colors.background,
+                  }"
+                  :aria-label="`Play top songs of ${year}`"
+                  @click="playYear(year)"
+                >
+                  <Play
+                    class="h-4 w-4"
+                    style="margin-left: 1px; fill: currentColor"
+                  />
+                </button>
+              </div>
               <p class="mt-2 text-base leading-relaxed text-text-muted">
                 {{ getYearSummaryText(year) }}
               </p>
