@@ -230,7 +230,9 @@ useHead(() => ({
       <div class="decade-page-overlay absolute inset-0" />
     </div>
 
-    <div class="relative z-10 mx-auto max-w-[1300px] px-4 py-8 sm:py-10">
+    <div
+      class="relative z-10 mx-auto max-w-[1300px] px-4 pt-4 pb-8 sm:pt-4 sm:pb-10"
+    >
       <header class="mb-8">
         <div class="rounded-2xl border border-white/10 bg-black/72 px-5 py-5">
           <h1
