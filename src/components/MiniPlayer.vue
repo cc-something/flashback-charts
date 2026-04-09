@@ -78,7 +78,7 @@ const goToPlayingSong = async () => {
       v-if="player.isMiniPlayerVisible && player.playingSong"
       aria-label="Music player"
       :style="themeVars"
-      class="bg-surface/95 transition-colors hover:bg-surface backdrop-blur-sm"
+      class="group bg-surface/95 transition-colors duration-150 hover:bg-primary/10 backdrop-blur-sm"
     >
       <div :class="miniPlayerContainerClass">
         <div class="flex min-w-0 items-center gap-2.5">
@@ -99,7 +99,7 @@ const goToPlayingSong = async () => {
             type="button"
             title="Go to song (G)"
             aria-label="Go to song"
-            class="min-w-0 flex-1 cursor-pointer text-left"
+            class="min-w-0 flex-1 cursor-pointer rounded-md px-1 py-0.5 text-left transition-colors duration-150 group-hover:bg-black/5 hover:bg-black/5"
             @click="goToPlayingSong"
           >
             <span
