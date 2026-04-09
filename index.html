@@ -16,6 +16,16 @@
       name="description"
       content="The top 10 songs in Australia for every year from 1940 to the present. Browse Aussie hits by year and decade."
     />
+    <link rel="preconnect" href="https://www.youtube.com" />
+    <link rel="preconnect" href="https://www.google.com" />
+    <script>
+      window.__FLASHBACK_YT_API_READY__ = false
+      window.onYouTubeIframeAPIReady = () => {
+        window.__FLASHBACK_YT_API_READY__ = true
+        window.__FLASHBACK_YT_API_NOTIFY__?.()
+      }
+    </script>
+    <script async src="https://www.youtube.com/iframe_api"></script>
     <title>Flashback Charts Australia | Australia Top 10 Songs by Year</title>
   </head>
   <body>

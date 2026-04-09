@@ -1,6 +1,7 @@
 let resolveReady: (() => void) | null = null
 let rejectReady: ((reason: Error) => void) | null = null
 let readyPromise: Promise<void>
+const YOUTUBE_API_SRC = 'https://www.youtube.com/iframe_api'
 
 const resetPromise = () => {
   readyPromise = new Promise<void>((resolve, reject) => {
@@ -16,13 +17,17 @@ let activeStop: (() => void) | null = null
 export const useYouTubeApi = () => {
   const ensureLoaded = (): Promise<void> => {
     if (window.YT?.Player) return Promise.resolve()
+    if (window.__FLASHBACK_YT_API_READY__) return Promise.resolve()
+    window.__FLASHBACK_YT_API_NOTIFY__ = () => resolveReady?.()
     if (!scriptAppended) {
       scriptAppended = true
-      window.onYouTubeIframeAPIReady = () => resolveReady?.()
-      const script = document.createElement('script')
+      const existingScript = document.querySelector<HTMLScriptElement>(
+        `script[src="${YOUTUBE_API_SRC}"]`,
+      )
+      const script = existingScript ?? document.createElement('script')
       const parentElement = document.head ?? document.body
 
-      script.src = 'https://www.youtube.com/iframe_api'
+      script.src = YOUTUBE_API_SRC
       script.async = true
 
       script.onerror = () => {
@@ -37,7 +42,7 @@ export const useYouTubeApi = () => {
         return Promise.reject(new Error('YouTube API parent element missing'))
       }
 
-      parentElement.appendChild(script)
+      if (!existingScript) parentElement.appendChild(script)
     }
     return readyPromise
   }

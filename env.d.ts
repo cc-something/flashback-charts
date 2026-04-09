@@ -55,6 +55,8 @@ interface PlausibleFn {
 
 interface Window {
   YT?: YT
+  __FLASHBACK_YT_API_READY__?: boolean
+  __FLASHBACK_YT_API_NOTIFY__?: () => void
   onYouTubeIframeAPIReady?: () => void
   plausible?: PlausibleFn
 }
