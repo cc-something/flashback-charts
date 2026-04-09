@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Sexy Bitch',
     artist: 'David Guetta feat. Akon',
     album: 'One Love',
-    youtubeVideoId: 'aOl4oeHZnBk',
+    youtubeVideoId: 'N9hazmsUxrM',
     imageSelection: 'album',
     imageSources: {
       album:
