@@ -64,7 +64,7 @@ watch(
       v-if="player.isActive && player.playingSong"
       aria-label="Music player"
       :style="{ ...themeVars, ...mobileBottomStyle }"
-      class="fixed bottom-4 left-1/2 z-50 flex w-[calc(100vw-2rem)] max-w-xs -translate-x-1/2 flex-col overflow-visible rounded-t-xl bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10 sm:left-auto sm:right-4 sm:w-80 sm:translate-x-0"
+      class="fixed bottom-4 left-1/2 z-30 flex w-[calc(100vw-2rem)] max-w-xs -translate-x-1/2 flex-col overflow-visible rounded-t-xl bg-surface shadow-2xl shadow-black/40 ring-1 ring-white/10 sm:left-auto sm:right-4 sm:w-80 sm:translate-x-0"
     >
       <!-- Controls row -->
       <div
