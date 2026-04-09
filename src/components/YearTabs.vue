@@ -75,14 +75,10 @@ onMounted(scrollToActiveTab)
 </script>
 
 <template>
-  <nav
-    aria-label="Year navigation"
-    class="border-b border-primary/20 bg-surface"
-  >
-    <MiniPlayer />
+  <nav aria-label="Year navigation" class="bg-surface">
     <div
       ref="scrollContainer"
-      class="flex overflow-x-auto scrollbar-hide gap-0.5 px-4 py-2"
+      class="flex overflow-x-auto scrollbar-hide gap-0.5 border-b border-primary/20 px-4 py-2"
     >
       <button
         v-for="year in store.yearRange"
@@ -111,6 +107,7 @@ onMounted(scrollToActiveTab)
         {{ year }}
       </button>
     </div>
+    <MiniPlayer />
   </nav>
 </template>
 
