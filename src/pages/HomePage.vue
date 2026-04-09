@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useHead } from '@unhead/vue'
-import { ArrowRight } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
+import { ArrowRight, Play } from 'lucide-vue-next'
 import {
   getDecadePageDescription,
   getDecadePageTitle,
@@ -23,6 +24,22 @@ import {
   getOpenGraphImageMeta,
   getYearPath,
 } from '@/utils/url'
+import { getYearData } from '@/data'
+import { useChartStore } from '@/stores/chart'
+import { usePlayerStore } from '@/stores/player'
+
+const router = useRouter()
+const chart = useChartStore()
+const player = usePlayerStore()
+
+const playYear = (year: number) => {
+  const songs = getYearData(year)
+  if (!songs?.length) return
+  const song = chart.sortOrder === 'desc' ? songs[songs.length - 1] : songs[0]
+  chart.selectYear(year)
+  router.push(getYearPath(year))
+  player.play(song, year)
+}
 
 const { isRickRollActive } = useRickRollMode()
 const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
@@ -279,7 +296,11 @@ onUnmounted(() => {
                 Click on a year to see the Top 10:
               </p>
               <ul class="grid grid-cols-3 gap-3 sm:grid-cols-3 md:grid-cols-4">
-                <li v-for="(tile, tileIndex) in group.years" :key="tile.year">
+                <li
+                  v-for="(tile, tileIndex) in group.years"
+                  :key="tile.year"
+                  class="relative"
+                >
                   <router-link
                     :to="getYearPath(tile.year)"
                     class="group relative isolate block aspect-square overflow-hidden rounded-lg font-bold transition-all duration-200 hover:scale-105 hover:shadow-lg"
@@ -331,6 +352,17 @@ onUnmounted(() => {
                       </span>
                     </span>
                   </router-link>
+                  <button
+                    class="absolute bottom-2 right-2 z-30 flex h-7 w-7 items-center justify-center rounded-full shadow-lg transition-transform duration-150 hover:scale-110"
+                    :style="{
+                      backgroundColor: group.theme.colors.primary,
+                      color: group.theme.colors.background,
+                    }"
+                    :aria-label="`Play top songs of ${tile.year}`"
+                    @click="playYear(tile.year)"
+                  >
+                    <Play class="h-3.5 w-3.5" style="margin-left: 1px" />
+                  </button>
                 </li>
               </ul>
             </div>
