@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import { usePlayerStore } from '@/stores/player'
@@ -11,6 +12,7 @@ const route = useRoute()
 const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
 const playerViewportHost = ref<HTMLDivElement | null>(null)
+const isMobileViewport = useMediaQuery('(max-width: 839px)')
 
 const isMac =
   typeof navigator !== 'undefined' &&
@@ -19,7 +21,9 @@ const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldRenderPlayerDock = computed(
-  () => player.playingSong !== null && player.playerState !== 'idle',
+  () =>
+    isMobileViewport.value ||
+    (player.playingSong !== null && player.playerState !== 'idle'),
 )
 const playerDockContainerClass = computed(() =>
   route.name === 'year'
@@ -92,7 +96,7 @@ const goToPlayingSong = async () => {
 <template>
   <Transition name="player-dock">
     <aside
-      v-if="shouldRenderPlayerDock && player.playingSong"
+      v-if="shouldRenderPlayerDock"
       aria-label="Music player"
       :style="themeVars"
       class="z-30 bg-surface/95 backdrop-blur-sm shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 max-[839px]:border-b max-[839px]:border-primary/15 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:overflow-hidden min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10"
@@ -107,7 +111,7 @@ const goToPlayingSong = async () => {
           />
         </div>
 
-        <div class="mt-3 flex items-start gap-3">
+        <div v-if="player.playingSong" class="mt-3 flex items-start gap-3">
           <button
             type="button"
             title="Go to song (G)"
@@ -254,6 +258,24 @@ const goToPlayingSong = async () => {
         </div>
 
         <PlaybackSeekBar v-if="player.showSeekBar" root-class="mt-3 h-1.5" />
+
+        <div
+          v-else
+          class="mt-3 rounded-[1rem] border border-primary/10 bg-black/5 px-3 py-3"
+        >
+          <p
+            class="text-xs font-bold uppercase tracking-[0.16em] text-primary/80"
+          >
+            Ready To Play
+          </p>
+          <p class="mt-1 text-sm leading-snug text-text">
+            Tap any song to start inline playback.
+          </p>
+          <p class="mt-1 text-xs leading-snug text-text-muted">
+            The player stays mounted on mobile so YouTube can start without a
+            second tap.
+          </p>
+        </div>
       </div>
     </aside>
   </Transition>

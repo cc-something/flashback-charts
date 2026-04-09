@@ -43,6 +43,7 @@ const playYear = (year: number) => {
   router.push(getYearPath(year))
   player.play(song, year, 'decade-btn')
 }
+const primePlayback = () => void player.preload()
 const BACKGROUND_ROW_COUNT = 6
 const BACKGROUND_DUPLICATE_COUNT = 2
 
@@ -360,6 +361,7 @@ useHead(() => ({
                       color: theme.colors.background,
                     }"
                     :aria-label="`Play top songs of ${year}`"
+                    @pointerdown="primePlayback"
                     @click="playYear(year)"
                   >
                     <Play

@@ -56,6 +56,7 @@ const handleClick = () =>
   isRickRollActive.value
     ? player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR, 'rickroll')
     : player.play(props.song, props.year, 'direct')
+const primePlayback = () => void player.preload()
 const youtubeVideoUrl = computed(() =>
   displaySong.value.youtubeVideoId
     ? `https://www.youtube.com/watch?v=${displaySong.value.youtubeVideoId}`
@@ -76,6 +77,7 @@ const youtubeVideoUrl = computed(() =>
       type="button"
       :aria-label="`Play ${displaySong.title} by ${displaySong.artist}`"
       class="absolute inset-0 z-0 cursor-pointer"
+      @pointerdown="primePlayback"
       @click="handleClick"
     />
     <span
@@ -88,6 +90,7 @@ const youtubeVideoUrl = computed(() =>
       type="button"
       :aria-label="`Toggle playback for ${displaySong.title} by ${displaySong.artist}`"
       class="relative z-10 h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      @pointerdown="primePlayback"
       @click.stop="handleClick"
     >
       <img

@@ -243,6 +243,7 @@ watch(isRickRollActive, (isActive) => {
 
 onMounted(async () => {
   setupKonamiListener()
+  void player.preload()
   await loadScript()
   trackPageview()
   watch(

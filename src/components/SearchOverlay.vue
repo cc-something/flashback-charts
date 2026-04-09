@@ -23,6 +23,7 @@ const goToSong = (year: number, rank: number) => {
 
 const playSong = (song: (typeof results.value)[0]['song'], year: number) =>
   player.play(song, year, 'search')
+const primePlayback = () => void player.preload()
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')
@@ -118,6 +119,7 @@ defineExpose({ focusInput })
               type="button"
               :aria-label="`Play ${song.title} by ${song.artist}`"
               class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md ring-1 ring-black/10 transition duration-150 group-hover:scale-[1.03] group-hover:shadow-lg group-hover:shadow-black/20 hover:ring-primary/35 touch-manipulation"
+              @pointerdown="primePlayback"
               @click.stop="playSong(song, year)"
             >
               <img

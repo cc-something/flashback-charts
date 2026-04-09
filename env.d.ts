@@ -13,6 +13,7 @@ interface YTPlayerEvent {
 }
 
 interface YTPlayer {
+  loadVideoById(videoId: string, startSeconds?: number): void
   pauseVideo(): void
   playVideo(): void
   seekTo(seconds: number, allowSeekAhead?: boolean): void
@@ -20,6 +21,7 @@ interface YTPlayer {
   getDuration(): number
   mute(): void
   unMute(): void
+  stopVideo(): void
   destroy(): void
 }
 

@@ -107,9 +107,13 @@ export const usePlayerStore = defineStore('player', () => {
   let onEndedCallback: ((song: Song, year: number) => void) | null = null
   let retryCount = 0
   let currentPlaySong: Song | null = null
+  let currentPlayTrigger: PlayTrigger = 'direct'
+  let currentStartAtSeconds: number | undefined
   let offlineHandler: (() => void) | null = null
   let stallTimerId: ReturnType<typeof setTimeout> | null = null
   let connectivityCheckPromise: Promise<boolean> | null = null
+  let playerInitPromise: Promise<YTPlayer | null> | null = null
+  let isPlayerReady = false
   let loadingAttemptId = 0
   let loadingStartedAt = 0
 
@@ -154,7 +158,18 @@ export const usePlayerStore = defineStore('player', () => {
     return connectivityCheckPromise
   }
 
-  const ensurePlaybackConnection = () => getHasNetworkConnection()
+  const preload = async () => {
+    if (typeof window === 'undefined') return
+    try {
+      await ensurePlayerMounted()
+    } catch {
+      /* noop */
+    }
+  }
+  const getHasImmediateNetworkConnection = () => {
+    if (typeof window === 'undefined') return false
+    return navigator.onLine
+  }
   const clearLoadingTracking = () => {
     loadingStartedAt = 0
   }
@@ -202,7 +217,13 @@ export const usePlayerStore = defineStore('player', () => {
   const seekSliderValue = computed(() => [displayedTimeSeconds.value])
 
   const setPlayerContainer = (el: HTMLDivElement | null) => {
+    if (playerContainerEl === el) return
     playerContainerEl = el
+    if (!playerContainerEl) {
+      destroyPlayer()
+      return
+    }
+    void preload()
   }
 
   const setOnEnded = (cb: ((song: Song, year: number) => void) | null) => {
@@ -286,23 +307,31 @@ export const usePlayerStore = defineStore('player', () => {
       window.removeEventListener('offline', offlineHandler)
     offlineHandler = null
   }
-  const teardownPlaybackSession = () => {
+  const clearPlaybackSession = () => {
     clearProgressTimer()
     clearStallTimer()
-    ytPlayer?.destroy()
-    ytPlayer = null
-    playerContainerEl?.replaceChildren()
     currentTimeSeconds.value = 0
     durationSeconds.value = 0
     retryCount = 0
     currentPlaySong = null
+    currentStartAtSeconds = undefined
     clearLoadingTracking()
     clearSeekPreview()
     clearOfflineHandler()
   }
+  const destroyPlayer = () => {
+    clearProgressTimer()
+    clearStallTimer()
+    ytPlayer?.destroy()
+    ytPlayer = null
+    playerInitPromise = null
+    isPlayerReady = false
+    playerContainerEl?.replaceChildren()
+  }
   const stop = () => {
     clearSaveTimer()
-    teardownPlaybackSession()
+    clearPlaybackSession()
+    ytPlayer?.stopVideo()
     playerState.value = 'idle'
     playingSong.value = null
     playingYear.value = null
@@ -329,11 +358,32 @@ export const usePlayerStore = defineStore('player', () => {
   const getPlayerMountEl = async () => {
     const playerContainerHost = await waitForPlayerContainer()
     if (!playerContainerHost) return null
-    playerContainerHost.replaceChildren()
+    if (playerContainerHost.childElementCount > 0)
+      return playerContainerHost.firstElementChild as HTMLDivElement
     const playerMountEl = document.createElement('div')
     playerMountEl.className = 'h-full w-full'
     playerContainerHost.appendChild(playerMountEl)
     return playerMountEl
+  }
+  const startPlaybackStallTimer = () => {
+    clearStallTimer()
+    stallTimerId = setTimeout(async () => {
+      if (playerState.value !== 'loading') return
+      if (!(await getHasNetworkConnection()))
+        return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+      await failLoadingAttempt('Playback failed, try again later')
+    }, STALL_TIMEOUT_MS)
+  }
+  const loadCurrentSongIntoPlayer = () => {
+    if (!ytPlayer || !currentPlaySong?.youtubeVideoId) return
+    startProgressTimer()
+    if (isMuted.value) ytPlayer.mute()
+    else ytPlayer.unMute()
+    ytPlayer.loadVideoById(
+      currentPlaySong.youtubeVideoId,
+      currentStartAtSeconds ? Math.floor(currentStartAtSeconds) : undefined,
+    )
+    startPlaybackStallTimer()
   }
   const handleEmbedBlockedPlayback = async (
     song: Song,
@@ -354,109 +404,86 @@ export const usePlayerStore = defineStore('player', () => {
     if (failedSong && failedYear !== null)
       playNext(failedSong, failedYear, 'skip')
   }
-
-  const attemptPlay = async (
-    song: Song,
-    trigger: PlayTrigger,
-    startAt?: number,
-  ) => {
-    if (typeof window === 'undefined') {
-      stop()
+  const handlePlaybackError = async (errorCode?: number) => {
+    const failedSong = currentPlaySong
+    const failedTrigger = currentPlayTrigger
+    if (!failedSong) return
+    if (isEmbedBlockedError(errorCode))
+      return handleEmbedBlockedPlayback(failedSong, failedTrigger)
+    if (!(await getHasNetworkConnection()))
+      return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+    if (retryCount < MAX_RETRIES) {
+      retryCount += 1
+      playerState.value = 'loading'
+      setTimeout(() => {
+        if (playerState.value === 'loading' && currentPlaySong)
+          loadCurrentSongIntoPlayer()
+      }, 1000 * retryCount)
       return
     }
-    ytPlayer?.destroy()
-    ytPlayer = null
-    clearStallTimer()
-    const playerMountEl = await getPlayerMountEl()
-    if (!playerMountEl) {
-      stop()
-      return
-    }
-
-    const handlePlaybackError = async (errorCode?: number) => {
-      if (isEmbedBlockedError(errorCode))
-        return handleEmbedBlockedPlayback(song, trigger)
-      if (!(await getHasNetworkConnection()))
-        return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-      if (retryCount < MAX_RETRIES) {
-        retryCount++
+    if (isUserRequestedTrigger(failedTrigger))
+      return failLoadingAttempt(
+        `Failed to play "${failedSong.title}". Use the YouTube link instead.`,
+      )
+    const skippedSong = playingSong.value
+    const skippedYear = playingYear.value
+    await failLoadingAttempt(`Failed to play "${failedSong.title}". Skipping.`)
+    if (skippedSong && skippedYear !== null)
+      playNext(skippedSong, skippedYear, 'skip')
+  }
+  const handlePlayerStateChange = (event: YTPlayerEvent) => {
+    if (event.data === 1 || event.data === 2) clearStallTimer()
+    if (event.data === 1) {
+      clearLoadingTracking()
+      playerState.value = 'playing'
+    } else if (event.data === 2) {
+      clearLoadingTracking()
+      playerState.value = 'paused'
+    } else if (event.data === 3) playerState.value = 'loading'
+    else if (event.data === 0) {
+      const endedSong = playingSong.value
+      const endedYear = playingYear.value
+      if (endedSong && endedYear !== null && onEndedCallback) {
+        clearPlaybackSession()
         playerState.value = 'loading'
-        setTimeout(() => {
-          if (playerState.value === 'loading' && currentPlaySong)
-            void attemptPlay(currentPlaySong, trigger)
-        }, 1000 * retryCount)
-      } else {
-        if (isUserRequestedTrigger(trigger))
-          return failLoadingAttempt(
-            `Failed to play "${song.title}". Use the YouTube link instead.`,
-          )
-        const failedSong = playingSong.value
-        const failedYear = playingYear.value
-        await failLoadingAttempt(`Failed to play "${song.title}". Skipping.`)
-        if (failedSong && failedYear !== null)
-          playNext(failedSong, failedYear, 'skip')
-      }
+        void onEndedCallback(endedSong, endedYear)
+      } else stop()
     }
-
-    ytPlayer = new window.YT!.Player(playerMountEl, {
-      width: '100%',
-      height: '100%',
-      videoId: song.youtubeVideoId,
-      playerVars: {
-        autoplay: 1,
-        controls: 0,
-        playsinline: 1,
-        rel: 0,
-        origin: window.location.origin,
-        ...(startAt ? { start: Math.floor(startAt) } : {}),
-      },
-      events: {
-        onReady: (event) => {
-          clearStallTimer()
-          startProgressTimer()
-          if (isMuted.value) event.target.mute()
-          event.target.playVideo()
-          // Restart stall timer — playback should begin shortly after playVideo()
-          stallTimerId = setTimeout(async () => {
-            if (playerState.value === 'loading') {
-              if (!(await getHasNetworkConnection()))
-                return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-              await failLoadingAttempt('Playback failed, try again later')
-            }
-          }, STALL_TIMEOUT_MS)
+    syncPlaybackProgress()
+  }
+  const ensurePlayerMounted = async () => {
+    if (typeof window === 'undefined') return null
+    if (ytPlayer && isPlayerReady) return ytPlayer
+    if (playerInitPromise) return playerInitPromise
+    await ensureLoaded()
+    const playerMountEl = await getPlayerMountEl()
+    if (!playerMountEl) return null
+    playerInitPromise = new Promise<YTPlayer | null>((resolve) => {
+      ytPlayer = new window.YT!.Player(playerMountEl, {
+        width: '100%',
+        height: '100%',
+        playerVars: {
+          controls: 0,
+          playsinline: 1,
+          rel: 0,
+          origin: window.location.origin,
         },
-        onStateChange: (event: YTPlayerEvent) => {
-          if (event.data === 1 || event.data === 2) clearStallTimer()
-          if (event.data === 1) {
-            clearLoadingTracking()
-            playerState.value = 'playing'
-          } else if (event.data === 2) {
-            clearLoadingTracking()
-            playerState.value = 'paused'
-          } else if (event.data === 3) playerState.value = 'loading'
-          else if (event.data === 0) {
-            const endedSong = playingSong.value
-            const endedYear = playingYear.value
-            if (endedSong && endedYear !== null && onEndedCallback) {
-              teardownPlaybackSession()
-              playerState.value = 'loading'
-              void onEndedCallback(endedSong, endedYear)
-            } else stop()
-          }
-          syncPlaybackProgress()
+        events: {
+          onReady: (event) => {
+            isPlayerReady = true
+            playerInitPromise = Promise.resolve(event.target)
+            if (isMuted.value) event.target.mute()
+            resolve(event.target)
+            if (playerState.value === 'loading' && currentPlaySong)
+              loadCurrentSongIntoPlayer()
+          },
+          onStateChange: handlePlayerStateChange,
+          onError: (event: YTPlayerEvent) =>
+            void handlePlaybackError(event.data),
         },
-        onError: (event: YTPlayerEvent) => void handlePlaybackError(event.data),
-      },
+      })
     })
-
-    // Catch silent failures (e.g. mobile Safari postMessage origin mismatch)
-    stallTimerId = setTimeout(async () => {
-      if (playerState.value === 'loading') {
-        if (!(await getHasNetworkConnection()))
-          return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-        await failLoadingAttempt('Playback failed, try again later')
-      }
-    }, STALL_TIMEOUT_MS)
+    return playerInitPromise
   }
 
   const play = async (
@@ -478,7 +505,7 @@ export const usePlayerStore = defineStore('player', () => {
       }
       if (playerState.value === 'paused' && ytPlayer) {
         startLoadingAttempt()
-        if (await ensurePlaybackConnection()) {
+        if (getHasImmediateNetworkConnection()) {
           ytPlayer.playVideo()
           return
         }
@@ -502,7 +529,7 @@ export const usePlayerStore = defineStore('player', () => {
         : undefined
 
     const wasActive = isActive.value
-    if (wasActive) teardownPlaybackSession()
+    if (wasActive) clearPlaybackSession()
 
     const chart = useChartStore()
     playingSong.value = song
@@ -510,7 +537,9 @@ export const usePlayerStore = defineStore('player', () => {
     startLoadingAttempt()
     retryCount = 0
     currentPlaySong = song
-    if (!(await ensurePlaybackConnection()))
+    currentPlayTrigger = trigger
+    currentStartAtSeconds = resumeAt
+    if (!getHasImmediateNetworkConnection())
       return failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE)
 
     if (!wasActive) registerActive(stop)
@@ -531,24 +560,25 @@ export const usePlayerStore = defineStore('player', () => {
     }
     window.addEventListener('offline', offlineHandler, { once: true })
 
-    try {
-      await ensureLoaded()
-    } catch {
-      if (!(await getHasNetworkConnection()))
-        return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-      return failLoadingAttempt(PLAYER_LOAD_FAILED_MESSAGE)
-    }
-
     if (playerState.value !== 'loading') return
-
-    void attemptPlay(song, trigger, resumeAt)
+    if (ytPlayer && isPlayerReady) {
+      loadCurrentSongIntoPlayer()
+      return
+    }
+    void ensurePlayerMounted()
+      .then(() => undefined)
+      .catch(async () => {
+        if (!(await getHasNetworkConnection()))
+          return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+        return failLoadingAttempt(PLAYER_LOAD_FAILED_MESSAGE)
+      })
   }
 
   const togglePlayback = async () => {
     if (playerState.value === 'playing') ytPlayer?.pauseVideo()
     else if (playerState.value === 'paused' && ytPlayer) {
       startLoadingAttempt()
-      if (await ensurePlaybackConnection()) ytPlayer.playVideo()
+      if (getHasImmediateNetworkConnection()) ytPlayer.playVideo()
       else
         await failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE, () => {
           clearLoadingTracking()
@@ -745,6 +775,7 @@ export const usePlayerStore = defineStore('player', () => {
     seekSliderValue,
     isActive,
     isMuted,
+    preload,
     setPlayerContainer,
     setOnEnded,
     play,
