@@ -399,6 +399,7 @@ onUnmounted(() => {
   animation: home-page-background-marquee var(--home-row-duration) linear
     var(--home-row-delay) infinite both;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 .home-page-background-track-reversed {
@@ -433,11 +434,11 @@ onUnmounted(() => {
 
 @keyframes home-page-background-marquee {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 </style>

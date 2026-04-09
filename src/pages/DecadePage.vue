@@ -407,6 +407,7 @@ useHead(() => ({
   animation: decade-page-background-marquee var(--decade-row-duration) linear
     infinite;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 .decade-page-background-track-reversed {
@@ -448,11 +449,11 @@ useHead(() => ({
 
 @keyframes decade-page-background-marquee {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 </style>
