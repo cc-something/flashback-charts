@@ -1,15 +1,24 @@
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useStorage } from '@vueuse/core'
+import { useRoute } from 'vue-router'
 
-const DELAY_MS = 45_000
+const DELAY_MS = 60_000
 
 export const useEmailSignup = () => {
   const dismissed = useStorage('email-signup-dismissed', false)
   const subscribedEmail = useStorage<string | null>('email-signup-email', null)
+  const hasVisitedYearPage = useStorage('email-signup-visited-year', false)
+  const hasWaited = ref(false)
   const show = ref(false)
   const timer = ref<ReturnType<typeof setTimeout> | null>(null)
+  const route = useRoute()
 
-  const shouldShow = computed(() => !dismissed.value && !subscribedEmail.value)
+  const shouldShow = computed(
+    () => !dismissed.value && !subscribedEmail.value && hasVisitedYearPage.value && hasWaited.value,
+  )
+
+  watch(() => route.name, (name) => { if (name === 'year') hasVisitedYearPage.value = true }, { immediate: true })
+  watch(shouldShow, (val) => { if (val) show.value = true })
 
   const dismiss = () => {
     dismissed.value = true
@@ -30,10 +39,8 @@ export const useEmailSignup = () => {
   }
 
   onMounted(() => {
-    if (!shouldShow.value) return
-    timer.value = setTimeout(() => {
-      if (shouldShow.value) show.value = true
-    }, DELAY_MS)
+    if (!dismissed.value && !subscribedEmail.value)
+      timer.value = setTimeout(() => { hasWaited.value = true }, DELAY_MS)
   })
 
   onUnmounted(() => {
