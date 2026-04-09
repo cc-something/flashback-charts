@@ -1,20 +1,10 @@
-- mobile mini player placement
-  - sticky so its always above footer?
-
-- privacy info
-- donate
-
-- site is a bit ug
-
-## TODO
-
 - playback does not in fact work on mobile
-- also needs some kinda timeout/error, just hangs
 
-## Nice to haves?
+- nab AU, UK, US social handles
+- more concrete branding? our own CD emoji knock off?
 
-- privacy notice? idk if we need a policy, no signup
-  - but could mention privacy conscientiousness
+- privacy info?
+- donate?
 
 ## How to make money
 
@@ -34,8 +24,10 @@
 
 ## Hardening / CI
 
+- some youtube songs are just straight up wrong
 - integrity check of album names
 - roving actions workflow to check URL 404s
+  - and youtube link playback
 
 ## Other feature ideas
 
