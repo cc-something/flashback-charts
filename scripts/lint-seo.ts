@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { getSitemapEntries, getSeoPages, type SeoPage } from './seo'
+import { getYearDescription } from '../src/data/index'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(here, '..')
@@ -52,6 +53,11 @@ pages.forEach((seoPage) => {
     )
   )
     addFailure(`${seoPage.path} year title should match its route`)
+  if (seoPage.kind === 'year') {
+    const year = Number(seoPage.path.match(/\d{4}/)?.[0])
+    if (!getYearDescription(year))
+      addFailure(`${seoPage.path} is missing a custom llm description`)
+  }
   if (
     seoPage.kind === 'decade' &&
     !seoPage.title.includes(seoPage.path.match(/\d{4}s/u)?.[0] ?? '__missing__')
