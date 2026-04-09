@@ -201,9 +201,9 @@ watch(
 </script>
 
 <template>
-  <main class="max-w-[50.4rem] mx-auto px-4 pt-6 pb-6">
+  <main class="max-w-[50.4rem] mx-auto px-4 pt-4 pb-6">
     <header
-      class="sticky z-30 mb-6 bg-background py-3 -my-3"
+      class="sticky z-30 mb-4 bg-background py-3 -my-3"
       style="top: var(--sticky-bar-height)"
     >
       <h1
