@@ -42,7 +42,8 @@ const getWarningToastParts = (message: string) => {
     <div
       role="status"
       aria-live="polite"
-      class="pointer-events-none fixed right-4 top-4 z-[9999] flex w-[calc(100vw-2rem)] flex-col items-stretch gap-2 sm:w-auto"
+      class="pointer-events-none fixed right-4 z-[9999] flex w-[calc(100vw-2rem)] flex-col items-stretch gap-2 sm:w-auto"
+      :style="{ top: 'calc(var(--sticky-bar-height, 0px) + 1rem)' }"
     >
       <TransitionGroup name="toast-right">
         <div
@@ -111,7 +112,8 @@ const getWarningToastParts = (message: string) => {
     <div
       role="status"
       aria-live="polite"
-      class="pointer-events-none fixed left-4 top-4 z-[9999] flex flex-col gap-2"
+      class="pointer-events-none fixed left-4 z-[9999] flex flex-col gap-2"
+      :style="{ top: 'calc(var(--sticky-bar-height, 0px) + 1rem)' }"
     >
       <TransitionGroup name="toast-left">
         <div
