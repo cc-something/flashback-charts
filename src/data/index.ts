@@ -367,12 +367,14 @@ export type YearSearchMatch = {
   type: 'year'
   year: number
   path: string
+  thumbnailPath: string | null
 }
 
 export type DecadeSearchMatch = {
   type: 'decade'
   decade: string
   path: string
+  thumbnailPath: string | null
 }
 
 export type SearchMatch = SongSearchMatch | YearSearchMatch | DecadeSearchMatch
@@ -822,8 +824,13 @@ export const getYearDescription = (year: number): string | null =>
 export const getAvailableYears = (): number[] =>
   Object.keys(yearData).map(Number)
 
-const availableYears = getAvailableYears()
+const availableYears = getAvailableYears().sort(
+  (firstYear, secondYear) => firstYear - secondYear,
+)
 const availableYearSet = new Set(availableYears)
+const availableDecades = [
+  ...new Set(availableYears.map((year) => getDecadeForYear(year))),
+]
 const availableDecadeSet = new Set(
   availableYears.map((year) => getDecadeForYear(year)),
 )
@@ -833,6 +840,18 @@ const getNumericQuery = (query: string) =>
     .trim()
     .toLowerCase()
     .match(/^(\d{4})(s)?$/u)
+
+const getNumericPrefixQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^\d{1,4}$/u)
+
+const getYearThumbnailPath = (year: number) =>
+  getYearData(year)?.[0]?.thumbnailPath ?? null
+
+const getFirstYearForDecade = (decade: string) =>
+  availableYears.find((year) => getDecadeForYear(year) === decade) ?? null
 
 export const searchSongs = (query: string): SongSearchMatch[] => {
   if (!query.trim()) return []
@@ -863,17 +882,75 @@ const searchNumericTargets = (query: string): SearchMatch[] => {
   const results: SearchMatch[] = []
 
   if (!isDecadeOnlyQuery && availableYearSet.has(year))
-    results.push({ type: 'year', year, path: getYearPath(year) })
+    results.push({
+      type: 'year',
+      year,
+      path: getYearPath(year),
+      thumbnailPath: getYearThumbnailPath(year),
+    })
   if (
     (isDecadeOnlyQuery || isDecadeStartYear) &&
     availableDecadeSet.has(decade)
   )
-    results.push({ type: 'decade', decade, path: getDecadePath(decade) })
+    results.push({
+      type: 'decade',
+      decade,
+      path: getDecadePath(decade),
+      thumbnailPath: getYearThumbnailPath(
+        getFirstYearForDecade(decade) ?? year,
+      ),
+    })
 
   return results
 }
 
-export const searchCatalog = (query: string): SearchMatch[] => [
-  ...searchNumericTargets(query),
-  ...searchSongs(query),
-]
+const searchNumericCompletions = (query: string): SearchMatch[] => {
+  const numericPrefixQuery = getNumericPrefixQuery(query)
+  if (!numericPrefixQuery) return []
+
+  const prefix = numericPrefixQuery[0]
+  const matchingDecades = availableDecades
+    .filter((decade) => decade.startsWith(prefix))
+    .map((decade) => ({
+      type: 'decade' as const,
+      decade,
+      path: getDecadePath(decade),
+      thumbnailPath: getYearThumbnailPath(
+        getFirstYearForDecade(decade) ?? Number(prefix),
+      ),
+    }))
+  const matchingYears = availableYears
+    .filter((year) => String(year).startsWith(prefix))
+    .map((year) => ({
+      type: 'year' as const,
+      year,
+      path: getYearPath(year),
+      thumbnailPath: getYearThumbnailPath(year),
+    }))
+
+  return [...matchingDecades, ...matchingYears]
+}
+
+const dedupeSearchMatches = (results: SearchMatch[]) => {
+  const seenKeys = new Set<string>()
+
+  return results.filter((result) => {
+    const resultKey =
+      result.type === 'song'
+        ? `${result.type}-${result.year}-${result.song.rank}`
+        : result.path
+    if (seenKeys.has(resultKey)) return false
+    seenKeys.add(resultKey)
+    return true
+  })
+}
+
+export const searchCatalog = (query: string): SearchMatch[] => {
+  const songResults = searchSongs(query)
+  const numericResults = dedupeSearchMatches([
+    ...(songResults.length ? [] : searchNumericCompletions(query)),
+    ...searchNumericTargets(query),
+  ])
+
+  return [...numericResults, ...songResults]
+}

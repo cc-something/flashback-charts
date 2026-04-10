@@ -228,6 +228,22 @@ defineExpose({ focusInput })
 
             <template v-else>
               <div
+                v-if="result.thumbnailPath"
+                class="h-12 w-12 flex-shrink-0 overflow-hidden rounded shadow-md ring-1 ring-black/10"
+              >
+                <img
+                  :src="result.thumbnailPath"
+                  :alt="getTargetTitle(result)"
+                  class="block h-full w-full object-cover"
+                  @error="
+                    (e: Event) => {
+                      ;(e.target as HTMLImageElement).style.display = 'none'
+                    }
+                  "
+                />
+              </div>
+              <div
+                v-else
                 class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded bg-primary/12 text-sm font-bold text-primary ring-1 ring-primary/15"
               >
                 {{ getTargetBadge(result).slice(0, 1) }}

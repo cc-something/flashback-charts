@@ -9,11 +9,13 @@ describe('searchCatalog', () => {
           type: 'year',
           year: 1980,
           path: '/au/1980/',
+          thumbnailPath: expect.any(String),
         },
         {
           type: 'decade',
           decade: '1980s',
           path: '/au/1980s/',
+          thumbnailPath: expect.any(String),
         },
       ]),
     )
@@ -24,6 +26,7 @@ describe('searchCatalog', () => {
       type: 'year',
       year: 1984,
       path: '/au/1984/',
+      thumbnailPath: expect.any(String),
     })
     expect(searchCatalog('1984')).not.toContainEqual(
       expect.objectContaining({
@@ -37,6 +40,36 @@ describe('searchCatalog', () => {
       type: 'decade',
       decade: '1990s',
       path: '/au/1990s/',
+      thumbnailPath: expect.any(String),
     })
+  })
+
+  it('autocompletes numeric prefixes with decades first when song results are empty', () => {
+    expect(searchCatalog('194').slice(0, 4)).toEqual([
+      {
+        type: 'decade',
+        decade: '1940s',
+        path: '/au/1940s/',
+        thumbnailPath: expect.any(String),
+      },
+      {
+        type: 'year',
+        year: 1940,
+        path: '/au/1940/',
+        thumbnailPath: expect.any(String),
+      },
+      {
+        type: 'year',
+        year: 1941,
+        path: '/au/1941/',
+        thumbnailPath: expect.any(String),
+      },
+      {
+        type: 'year',
+        year: 1942,
+        path: '/au/1942/',
+        thumbnailPath: expect.any(String),
+      },
+    ])
   })
 })
