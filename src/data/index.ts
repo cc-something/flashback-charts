@@ -1,4 +1,6 @@
 import type { Song } from '@/types/song'
+import { getDecadeForYear } from '@/themes'
+import { getDecadePath, getYearPath } from '@/utils/url'
 import songs1940, {
   source as source1940,
   description as description1940,
@@ -354,6 +356,28 @@ interface YearChartData {
   source: YearSource | null
   description?: string
 }
+
+export type SongSearchMatch = {
+  type: 'song'
+  song: Song
+  year: number
+}
+
+export type YearSearchMatch = {
+  type: 'year'
+  year: number
+  path: string
+  thumbnailPath: string | null
+}
+
+export type DecadeSearchMatch = {
+  type: 'decade'
+  decade: string
+  path: string
+  thumbnailPath: string | null
+}
+
+export type SearchMatch = SongSearchMatch | YearSearchMatch | DecadeSearchMatch
 
 const yearData: Record<number, YearChartData> = {
   1940: {
@@ -800,10 +824,39 @@ export const getYearDescription = (year: number): string | null =>
 export const getAvailableYears = (): number[] =>
   Object.keys(yearData).map(Number)
 
-export const searchSongs = (query: string): { song: Song; year: number }[] => {
+const availableYears = getAvailableYears().sort(
+  (firstYear, secondYear) => firstYear - secondYear,
+)
+const availableYearSet = new Set(availableYears)
+const availableDecades = [
+  ...new Set(availableYears.map((year) => getDecadeForYear(year))),
+]
+const availableDecadeSet = new Set(
+  availableYears.map((year) => getDecadeForYear(year)),
+)
+
+const getNumericQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{4})(s)?$/u)
+
+const getNumericPrefixQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^\d{1,4}$/u)
+
+const getYearThumbnailPath = (year: number) =>
+  getYearData(year)?.[0]?.thumbnailPath ?? null
+
+const getFirstYearForDecade = (decade: string) =>
+  availableYears.find((year) => getDecadeForYear(year) === decade) ?? null
+
+export const searchSongs = (query: string): SongSearchMatch[] => {
   if (!query.trim()) return []
   const q = query.toLowerCase()
-  const results: { song: Song; year: number }[] = []
+  const results: SongSearchMatch[] = []
   for (const [yearStr, data] of Object.entries(yearData)) {
     const year = Number(yearStr)
     for (const song of data.songs) {
@@ -812,8 +865,92 @@ export const searchSongs = (query: string): { song: Song; year: number }[] => {
         song.artist.toLowerCase().includes(q) ||
         song.album?.toLowerCase().includes(q)
       )
-        results.push({ song, year })
+        results.push({ type: 'song', song, year })
     }
   }
   return results
+}
+
+const searchNumericTargets = (query: string): SearchMatch[] => {
+  const numericQuery = getNumericQuery(query)
+  if (!numericQuery) return []
+
+  const year = Number(numericQuery[1])
+  const isDecadeOnlyQuery = numericQuery[2] === 's'
+  const isDecadeStartYear = year % 10 === 0
+  const decade = getDecadeForYear(year)
+  const results: SearchMatch[] = []
+
+  if (!isDecadeOnlyQuery && availableYearSet.has(year))
+    results.push({
+      type: 'year',
+      year,
+      path: getYearPath(year),
+      thumbnailPath: getYearThumbnailPath(year),
+    })
+  if (
+    (isDecadeOnlyQuery || isDecadeStartYear) &&
+    availableDecadeSet.has(decade)
+  )
+    results.push({
+      type: 'decade',
+      decade,
+      path: getDecadePath(decade),
+      thumbnailPath: getYearThumbnailPath(
+        getFirstYearForDecade(decade) ?? year,
+      ),
+    })
+
+  return results
+}
+
+const searchNumericCompletions = (query: string): SearchMatch[] => {
+  const numericPrefixQuery = getNumericPrefixQuery(query)
+  if (!numericPrefixQuery) return []
+
+  const prefix = numericPrefixQuery[0]
+  const matchingDecades = availableDecades
+    .filter((decade) => decade.startsWith(prefix))
+    .map((decade) => ({
+      type: 'decade' as const,
+      decade,
+      path: getDecadePath(decade),
+      thumbnailPath: getYearThumbnailPath(
+        getFirstYearForDecade(decade) ?? Number(prefix),
+      ),
+    }))
+  const matchingYears = availableYears
+    .filter((year) => String(year).startsWith(prefix))
+    .map((year) => ({
+      type: 'year' as const,
+      year,
+      path: getYearPath(year),
+      thumbnailPath: getYearThumbnailPath(year),
+    }))
+
+  return [...matchingDecades, ...matchingYears]
+}
+
+const dedupeSearchMatches = (results: SearchMatch[]) => {
+  const seenKeys = new Set<string>()
+
+  return results.filter((result) => {
+    const resultKey =
+      result.type === 'song'
+        ? `${result.type}-${result.year}-${result.song.rank}`
+        : result.path
+    if (seenKeys.has(resultKey)) return false
+    seenKeys.add(resultKey)
+    return true
+  })
+}
+
+export const searchCatalog = (query: string): SearchMatch[] => {
+  const songResults = searchSongs(query)
+  const numericResults = dedupeSearchMatches([
+    ...(songResults.length ? [] : searchNumericCompletions(query)),
+    ...searchNumericTargets(query),
+  ])
+
+  return [...numericResults, ...songResults]
 }
