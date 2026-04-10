@@ -32,6 +32,7 @@
     "\n================= Testing =================": "",
     "test": "vitest run",
     "playback-integrity": "tsx --tsconfig tsconfig.node.json scripts/playback-integrity.ts",
+    "url-integrity": "tsx --tsconfig tsconfig.node.json scripts/url-integrity.ts",
     "\n================ Git Hooks ================": "",
     "hook:commit-msg": "commitlint --edit",
     "prepare": "husky"
