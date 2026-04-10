@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { AlertTriangle, CircleCheck, CircleX, Info, X } from 'lucide-vue-next'
 import { useToastStore } from '@/stores/toast'
 
 const toast = useToastStore()
@@ -12,31 +13,26 @@ const successToasts = computed(() =>
 const infoToasts = computed(() =>
   toast.toasts.filter((t) => t.variant === 'info'),
 )
+const warningToasts = computed(() =>
+  toast.toasts.filter((t) => t.variant === 'warning'),
+)
 </script>
 
 <template>
   <Teleport to="body">
-    <!-- Error toasts — top right -->
+    <!-- Status toasts — top right -->
     <div
       role="status"
       aria-live="polite"
-      class="pointer-events-none fixed bottom-4 left-1/2 z-[9999] flex w-[calc(100vw-2rem)] -translate-x-1/2 flex-col items-center gap-2 sm:bottom-auto sm:left-auto sm:right-4 sm:top-4 sm:w-auto sm:translate-x-0 sm:items-stretch"
+      class="pointer-events-none fixed right-4 top-4 z-[9999] flex w-[calc(100vw-2rem)] flex-col items-stretch gap-2 sm:w-auto"
     >
       <TransitionGroup name="toast-right">
         <div
           v-for="t in successToasts"
           :key="t.id"
-          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg"
+          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-emerald-600 px-4 py-2.5 text-left text-sm font-medium text-white shadow-lg"
         >
-          <svg
-            class="h-4 w-4 flex-shrink-0"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-2 14-4-4 1.41-1.41L10 13.17l6.59-6.58L18 8l-8 8Z"
-            />
-          </svg>
+          <CircleCheck class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
           {{ t.message }}
           <button
             type="button"
@@ -44,27 +40,31 @@ const infoToasts = computed(() =>
             class="ml-1 cursor-pointer opacity-70 transition-opacity hover:opacity-100"
             @click="toast.dismiss(t.id)"
           >
-            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              />
-            </svg>
+            <X class="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
+        </div>
+        <div
+          v-for="t in warningToasts"
+          :key="t.id"
+          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-amber-400 px-4 py-2.5 text-left text-sm font-medium text-amber-950 shadow-lg ring-1 ring-amber-500/20"
+        >
+          <AlertTriangle class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+          {{ t.message }}
+          <button
+            type="button"
+            aria-label="Dismiss"
+            class="ml-1 cursor-pointer opacity-70 transition-opacity hover:opacity-100"
+            @click="toast.dismiss(t.id)"
+          >
+            <X class="h-3.5 w-3.5" aria-hidden="true" />
           </button>
         </div>
         <div
           v-for="t in errorToasts"
           :key="t.id"
-          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg"
+          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-red-600 px-4 py-2.5 text-left text-sm font-medium text-white shadow-lg"
         >
-          <svg
-            class="h-4 w-4 flex-shrink-0"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
-            />
-          </svg>
+          <CircleX class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
           {{ t.message }}
           <button
             type="button"
@@ -72,11 +72,7 @@ const infoToasts = computed(() =>
             class="ml-1 cursor-pointer opacity-70 transition-opacity hover:opacity-100"
             @click="toast.dismiss(t.id)"
           >
-            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              />
-            </svg>
+            <X class="h-3.5 w-3.5" aria-hidden="true" />
           </button>
         </div>
       </TransitionGroup>
@@ -94,6 +90,7 @@ const infoToasts = computed(() =>
           :key="t.id"
           class="pointer-events-auto flex items-center gap-2 rounded-lg bg-surface px-4 py-2.5 text-left text-sm font-medium whitespace-pre-line text-text shadow-lg ring-1 ring-primary/25"
         >
+          <Info class="h-4 w-4 flex-shrink-0 text-primary" aria-hidden="true" />
           {{ t.message }}
         </div>
       </TransitionGroup>

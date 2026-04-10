@@ -482,7 +482,7 @@ export const usePlayerStore = defineStore('player', () => {
     const failedSong = playingSong.value
     const failedYear = playingYear.value
     if (!failedSong || failedYear === null) return
-    useToastStore().showInfo(
+    useToastStore().showWarning(
       `Unfortunately we can't play that song:\n${failedSong.title} by ${failedSong.artist}`,
     )
     await new Promise<void>((resolve) => setTimeout(resolve, 2000))
