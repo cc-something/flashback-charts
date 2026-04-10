@@ -23,6 +23,7 @@ import { usePlayerStore } from '@/stores/player'
 import { applyPendingTheme } from '@/composables/useDecadeTheme'
 import { getThemeForYear } from '@/themes'
 import SongCard from '@/components/SongCard.vue'
+import { getSongsForSortOrder } from '@/utils/chartOrder'
 import {
   getAbsoluteUrl,
   getDecadePath,
@@ -43,7 +44,9 @@ const decadeString = computed(
 const adjacentYears = computed(() => getAdjacentYears(yearNumber.value))
 const previousYear = computed(() => adjacentYears.value.previousYear)
 const nextYear = computed(() => adjacentYears.value.nextYear)
-const songs = computed<Song[]>(() => getYearData(yearNumber.value) ?? [])
+const songs = computed<Song[]>(() =>
+  getSongsForSortOrder(getYearData(yearNumber.value) ?? [], store.sortOrder),
+)
 const currentSource = computed<YearSource | null>(() =>
   getYearSource(yearNumber.value),
 )

@@ -21,7 +21,7 @@ const mailtoHref = computed(() => {
   ]
     .filter((line) => line !== undefined)
     .join('\n')
-  return `mailto:contact@flashbackcharts.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+  return `mailto:issues@flashbackcharts.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 })
 
 const handleKeydown = (e: KeyboardEvent) => {
@@ -97,7 +97,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             class="inline-flex items-center gap-2 rounded-lg bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary transition-opacity hover:opacity-80"
           >
             <Mail class="h-4 w-4 flex-shrink-0" />
-            contact@flashbackcharts.com
+            issues@flashbackcharts.com
           </a>
         </div>
       </div>
