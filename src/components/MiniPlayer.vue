@@ -122,6 +122,10 @@ const goToPlayingSong = async () => {
     query: { song: String(song.rank) },
   })
 }
+const resumePlayback = () => {
+  if (!player.playingSong || player.playingYear === null) return
+  void player.play(player.playingSong, player.playingYear, 'player-btn')
+}
 const toggleMobilePlayerCollapsed = () => {
   if (!isMobileViewport.value) return
   isMobilePlayerCollapsed.value = !isMobilePlayerCollapsed.value
@@ -296,9 +300,12 @@ const toggleMobilePlayerCollapsed = () => {
               </div>
             </div>
 
-            <div
+            <button
               v-else-if="shouldShowRestoredPoster && player.playingSong"
-              class="absolute inset-0"
+              type="button"
+              aria-label="Play playback"
+              class="absolute inset-0 cursor-pointer"
+              @click="resumePlayback"
             >
               <img
                 :src="player.playingSong.thumbnailPath"
@@ -309,7 +316,7 @@ const toggleMobilePlayerCollapsed = () => {
                 class="absolute inset-0"
                 :style="{
                   background:
-                    'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 6%, rgba(0, 0, 0, 0.94) 100%)',
+                    'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
                 }"
               />
               <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
@@ -325,7 +332,7 @@ const toggleMobilePlayerCollapsed = () => {
                   </svg>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
