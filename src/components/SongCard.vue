@@ -64,10 +64,7 @@ const primePlayback = () => void player.preload()
     :id="`song-${year}-${song.rank}`"
     :data-song-rank="song.rank"
     :data-song-id="song.youtubeVideoId"
-    :class="[
-      'group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 pt-3 transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl hover:bg-surface/80',
-      showSeekBar ? 'pb-8' : 'pb-3',
-    ]"
+    class="group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 py-3 transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl hover:bg-surface/80"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
@@ -207,11 +204,14 @@ const primePlayback = () => void player.preload()
     <Transition name="seek">
       <div
         v-if="showSeekBar"
-        class="pointer-events-none absolute inset-x-3 bottom-2.5 z-20 overflow-visible"
+        class="pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-visible"
       >
-        <PlaybackSeekBar root-class="pointer-events-auto relative z-10 mt-1" />
+        <PlaybackSeekBar
+          root-class="pointer-events-auto relative z-10"
+          track-class="rounded-none"
+        />
         <p
-          class="pointer-events-none absolute bottom-2.5 right-0 min-w-fit font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
+          class="pointer-events-none absolute right-3 bottom-2 min-w-fit font-mono text-[0.65rem] font-medium tabular-nums text-text-muted"
         >
           {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
         </p>
