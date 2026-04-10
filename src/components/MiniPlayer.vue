@@ -50,8 +50,8 @@ const playerDockContainerClass = computed(() =>
 )
 const playerDockClass = computed(() =>
   isMobileViewport.value
-    ? 'relative z-30 mx-3 mt-3 rounded-[1.35rem] border border-primary/15 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
-    : 'relative z-30 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10',
+    ? 'relative z-30 mx-3 mt-3 rounded-xl border border-primary/15 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
+    : 'relative z-30 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:rounded-xl min-[840px]:ring-1 min-[840px]:ring-black/10',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -141,10 +141,10 @@ const toggleMobilePlayerCollapsed = () => {
         type="button"
         title="Stop playback (Esc)"
         aria-label="Stop playback"
-        class="absolute top-0 right-0 z-30 inline-flex h-10 w-10 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-text/70 shadow-[0_10px_24px_rgb(0_0_0_/_0.18)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        class="absolute top-0 right-0 z-30 inline-flex h-5 w-5 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         @click="player.stop"
       >
-        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
           />
@@ -263,8 +263,8 @@ const toggleMobilePlayerCollapsed = () => {
         <div
           :class="
             isMobileViewport
-              ? 'mx-auto overflow-hidden rounded-[1rem] border border-white/10 bg-black shadow-lg'
-              : 'overflow-hidden rounded-[1.1rem] border border-white/10 bg-black shadow-lg'
+              ? 'mx-auto overflow-hidden border border-white/10 bg-black shadow-lg'
+              : 'overflow-hidden border border-white/10 bg-black shadow-lg'
           "
           :style="
             isMobileViewport
