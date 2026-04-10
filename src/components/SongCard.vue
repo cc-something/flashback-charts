@@ -44,6 +44,9 @@ const showSeekBar = computed(
     (!isRickRollActive.value ||
       props.song.youtubeVideoId === RICK_ASTLEY_SONG.youtubeVideoId),
 )
+const isTemporarilyHighlighted = computed(() =>
+  player.isSongHighlighted(props.year, props.song.rank),
+)
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement
@@ -64,7 +67,10 @@ const primePlayback = () => void player.preload()
     :id="`song-${year}-${song.rank}`"
     :data-song-rank="song.rank"
     :data-song-id="song.youtubeVideoId"
-    class="group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 py-3 transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl hover:bg-surface/80"
+    :class="[
+      'group relative flex items-center gap-3 overflow-visible bg-surface px-3.5 py-3 transition-[background-color,box-shadow] duration-150 first:rounded-t-xl last:rounded-b-xl hover:bg-surface/80',
+      isTemporarilyHighlighted && 'song-card-highlight',
+    ]"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
@@ -239,5 +245,10 @@ const primePlayback = () => void player.preload()
 .seek-enter-from,
 .seek-leave-to {
   opacity: 0;
+}
+
+.song-card-highlight {
+  box-shadow: inset 0 0 0 2px
+    color-mix(in srgb, var(--color-primary) 78%, transparent);
 }
 </style>

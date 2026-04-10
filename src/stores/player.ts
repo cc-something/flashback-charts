@@ -16,6 +16,7 @@ const OFFLINE_PLAYBACK_STOPPED_MESSAGE =
   'No internet connection. Playback stopped.'
 const PLAYER_LOAD_FAILED_MESSAGE =
   'Failed to load player. Check your connection.'
+const SONG_ROW_HIGHLIGHT_DURATION_MS = 2_000
 
 interface SavedPlayerState {
   year: number
@@ -100,6 +101,8 @@ export const usePlayerStore = defineStore('player', () => {
   const seekPreviewSeconds = ref<number | null>(null)
   const isMuted = ref(false)
   const hasMountedPlayer = ref(false)
+  const highlightedSongKey = ref<string | null>(null)
+  const pendingHighlightedSongKey = ref<string | null>(null)
 
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
@@ -117,6 +120,7 @@ export const usePlayerStore = defineStore('player', () => {
   let isPlayerReady = false
   let loadingAttemptId = 0
   let loadingStartedAt = 0
+  let clearSongHighlightTimerId: ReturnType<typeof setTimeout> | null = null
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -124,6 +128,7 @@ export const usePlayerStore = defineStore('player', () => {
   )
   const showOfflinePlaybackStoppedToast = () =>
     useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+  const getSongHighlightKey = (year: number, rank: number) => `${year}-${rank}`
 
   const getConnectivityCheckUrl = () => {
     const connectivityCheckUrl = new URL('/favicon.svg', window.location.origin)
@@ -241,6 +246,37 @@ export const usePlayerStore = defineStore('player', () => {
     clearTimeout(stallTimerId)
     stallTimerId = null
   }
+  const clearSongHighlightTimer = () => {
+    if (clearSongHighlightTimerId === null) return
+    clearTimeout(clearSongHighlightTimerId)
+    clearSongHighlightTimerId = null
+  }
+  const clearSongHighlight = () => {
+    clearSongHighlightTimer()
+    highlightedSongKey.value = null
+  }
+  const queueSongHighlight = (year: number, rank: number) => {
+    pendingHighlightedSongKey.value = getSongHighlightKey(year, rank)
+  }
+  const flashSongHighlight = (year: number, rank: number) => {
+    const songHighlightKey = getSongHighlightKey(year, rank)
+    pendingHighlightedSongKey.value = null
+    clearSongHighlightTimer()
+    highlightedSongKey.value = songHighlightKey
+    if (typeof window === 'undefined') return
+    clearSongHighlightTimerId = window.setTimeout(() => {
+      if (highlightedSongKey.value === songHighlightKey)
+        highlightedSongKey.value = null
+      clearSongHighlightTimerId = null
+    }, SONG_ROW_HIGHLIGHT_DURATION_MS)
+  }
+  const revealQueuedSongHighlight = (year: number, rank: number) => {
+    if (pendingHighlightedSongKey.value !== getSongHighlightKey(year, rank))
+      return
+    flashSongHighlight(year, rank)
+  }
+  const isSongHighlighted = (year: number, rank: number) =>
+    highlightedSongKey.value === getSongHighlightKey(year, rank)
 
   const clearSeekPreview = () => {
     isSeekDragging.value = false
@@ -332,6 +368,8 @@ export const usePlayerStore = defineStore('player', () => {
   const stop = () => {
     clearSaveTimer()
     clearPlaybackSession()
+    clearSongHighlight()
+    pendingHighlightedSongKey.value = null
     ytPlayer?.stopVideo()
     playerState.value = 'idle'
     playingSong.value = null
@@ -829,6 +867,10 @@ export const usePlayerStore = defineStore('player', () => {
     handleSeekInput,
     handleSeekCommit,
     isSongActive,
+    isSongHighlighted,
+    queueSongHighlight,
+    flashSongHighlight,
+    revealQueuedSongHighlight,
     playNext,
     playPrev,
     goToSong,

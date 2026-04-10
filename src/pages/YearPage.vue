@@ -171,15 +171,20 @@ useHead(() => ({
 player.setOnEnded((song, year) => player.playNext(song, year, 'autoplay'))
 onUnmounted(() => player.setOnEnded(null))
 
+const waitForScrollSettle = () =>
+  new Promise<void>((resolve) => window.setTimeout(resolve, 450))
+
 const scrollToSelectedSong = async () => {
   if (typeof window === 'undefined') return
   if (selectedSongRank.value === null) return
   await nextTick()
-  requestAnimationFrame(() => {
+  requestAnimationFrame(async () => {
     const selectedSongElement = document.getElementById(
       `song-${yearNumber.value}-${selectedSongRank.value}`,
     )
     selectedSongElement?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    await waitForScrollSettle()
+    player.revealQueuedSongHighlight(yearNumber.value, selectedSongRank.value)
   })
 }
 

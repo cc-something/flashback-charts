@@ -69,15 +69,19 @@ const updateThemeVars = (year: number | null) => {
     'font-family': theme.bodyFontFamily ?? theme.fontFamily,
   }
 }
+const waitForScrollSettle = () =>
+  new Promise<void>((resolve) => window.setTimeout(resolve, 450))
 const scrollToPlayingSongRow = async () => {
   const year = player.playingYear
   const song = player.playingSong
   if (typeof window === 'undefined' || year === null || !song) return
   await nextTick()
-  requestAnimationFrame(() => {
+  requestAnimationFrame(async () => {
     document
       .getElementById(`song-${year}-${song.rank}`)
       ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    await waitForScrollSettle()
+    player.flashSongHighlight(year, song.rank)
   })
 }
 const syncPlayerContainer = async () => {
@@ -112,6 +116,7 @@ const goToPlayingSong = async () => {
     await scrollToPlayingSongRow()
     return
   }
+  player.queueSongHighlight(year, song.rank)
   await router.push({
     path: getYearPath(year),
     query: { song: String(song.rank) },
