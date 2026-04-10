@@ -197,6 +197,40 @@ describe('checkHttpIntegrityTarget', () => {
     })
   })
 
+  it('uses the last-resort browser probe after both fetch profiles fail', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+    const browserProbe = vi.fn(async () => ({
+      finalUrl: 'https://example.com/1940',
+      message: 'Last-resort browser probe resolved with HTTP 200',
+      status: 'passed' as const,
+      statusCode: 200,
+    }))
+
+    await expect(
+      checkHttpIntegrityTarget(
+        {
+          kind: 'year-source',
+          id: 'year-source-1940',
+          url: 'https://example.com/1940',
+          references: [{ label: 'year:1940' }],
+        },
+        { browserProbe, fetchImpl, retryCount: 0 },
+      ),
+    ).resolves.toMatchObject({
+      attempts: 3,
+      reason: 'http-ok',
+      status: 'passed',
+      statusCode: 200,
+    })
+    expect(browserProbe).toHaveBeenCalledWith(
+      'https://example.com/1940',
+      undefined,
+    )
+  })
+
   it('fails on network errors', async () => {
     const fetchImpl = vi.fn(async () => {
       throw new Error('socket hang up')

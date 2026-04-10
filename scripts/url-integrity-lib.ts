@@ -48,6 +48,13 @@ export interface UrlIntegrityResult {
   url: string
 }
 
+export interface BrowserProbeResult {
+  finalUrl: string | null
+  message: string
+  statusCode: number | null
+  status: 'passed' | 'failed'
+}
+
 interface FetchWithTimeoutOptions {
   fetchImpl?: typeof fetch
   headers?: HeadersInit
@@ -55,6 +62,10 @@ interface FetchWithTimeoutOptions {
 }
 
 interface UrlIntegrityCheckOptions extends FetchWithTimeoutOptions {
+  browserProbe?: (
+    url: string,
+    timeoutMs?: number,
+  ) => Promise<BrowserProbeResult>
   retryCount?: number
 }
 
@@ -314,6 +325,27 @@ const runHttpProbeProfile = async (
   })
 }
 
+const runBrowserProbe = async (
+  target: HttpIntegrityTarget,
+  browserProbe: NonNullable<UrlIntegrityCheckOptions['browserProbe']>,
+  timeoutMs: number | undefined,
+  attemptOffset: number,
+) => {
+  try {
+    const browserProbeResult = await browserProbe(target.url, timeoutMs)
+    return createResult(target, {
+      attempts: attemptOffset + 1,
+      finalUrl: browserProbeResult.finalUrl,
+      message: browserProbeResult.message,
+      reason: browserProbeResult.status === 'passed' ? 'http-ok' : 'http-error',
+      status: browserProbeResult.status,
+      statusCode: browserProbeResult.statusCode,
+    })
+  } catch (error) {
+    return getNetworkFailureResult(target, attemptOffset + 1, error)
+  }
+}
+
 export const checkHttpIntegrityTarget = async (
   target: HttpIntegrityTarget,
   options: UrlIntegrityCheckOptions = {},
@@ -330,12 +362,24 @@ export const checkHttpIntegrityTarget = async (
     defaultProbeResult.reason === 'network-error'
   )
     return defaultProbeResult
-
-  return runHttpProbeProfile(
+  const fallbackFetchResult = await runHttpProbeProfile(
     target,
     { ...options, headers: browserLikeHeaders },
     true,
     defaultProbeResult.attempts,
+  )
+  if (fallbackFetchResult.status === 'passed') return fallbackFetchResult
+  if (!options.browserProbe) return fallbackFetchResult
+  if (
+    fallbackFetchResult.reason === 'timeout' ||
+    fallbackFetchResult.reason === 'network-error'
+  )
+    return fallbackFetchResult
+  return runBrowserProbe(
+    target,
+    options.browserProbe,
+    options.timeoutMs,
+    fallbackFetchResult.attempts,
   )
 }
 

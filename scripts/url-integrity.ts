@@ -1,5 +1,8 @@
 import process from 'node:process'
+import { chromium } from 'playwright'
+import type { Browser } from 'playwright'
 import {
+  type BrowserProbeResult,
   checkUrlIntegrityTarget,
   collectUrlIntegrityTargets,
   type UrlIntegrityResult,
@@ -14,6 +17,7 @@ interface UrlIntegritySummary {
 }
 
 const concurrencyLimit = 6
+const browserProbeTimeoutMs = 20_000
 
 const logDivider = () =>
   console.log('------------------------------------------------------------')
@@ -52,31 +56,82 @@ const runWithConcurrency = async <TItem, TResult>(
   return results
 }
 
+const createBrowserProbe = () => {
+  let browserPromise: Promise<Browser> | null = null
+
+  const getBrowser = () => {
+    if (browserPromise) return browserPromise
+    browserPromise = chromium.launch({ headless: true })
+    return browserPromise
+  }
+
+  const probe = async (
+    url: string,
+    timeoutMs = browserProbeTimeoutMs,
+  ): Promise<BrowserProbeResult> => {
+    const browser = await getBrowser()
+    const page = await browser.newPage()
+
+    try {
+      const response = await page.goto(url, {
+        timeout: timeoutMs,
+        waitUntil: 'domcontentloaded',
+      })
+      const statusCode = response?.status() ?? null
+      const finalUrl = page.url() || null
+      return {
+        finalUrl,
+        message: `Last-resort browser probe resolved with HTTP ${statusCode ?? 'unknown'}`,
+        status: statusCode !== null && statusCode < 400 ? 'passed' : 'failed',
+        statusCode,
+      }
+    } finally {
+      await page.close()
+    }
+  }
+
+  const close = async () => {
+    if (!browserPromise) return
+    const browser = await browserPromise
+    await browser.close()
+    browserPromise = null
+  }
+
+  return { close, probe }
+}
+
 const runUrlIntegrity = async () => {
   const selection = resolveIntegritySelection(process.argv.slice(2))
   const targets = collectUrlIntegrityTargets(selection)
+  const browserProbe = createBrowserProbe()
 
   console.log(
     `URL integrity selection years=${selection.years.join(',')} targets=${targets.length} concurrency=${concurrencyLimit}`,
   )
   logDivider()
 
-  const results = await runWithConcurrency(
-    targets,
-    concurrencyLimit,
-    async (target: UrlIntegrityTarget) => {
-      const result = await checkUrlIntegrityTarget(target)
-      console.log(formatResultLine(result))
-      return result
-    },
-  )
-  const summary = createSummary(results)
+  try {
+    const results = await runWithConcurrency(
+      targets,
+      concurrencyLimit,
+      async (target: UrlIntegrityTarget) => {
+        const result = await checkUrlIntegrityTarget(target, {
+          browserProbe: browserProbe.probe,
+        })
+        console.log(formatResultLine(result))
+        return result
+      },
+    )
+    const summary = createSummary(results)
 
-  logDivider()
-  console.log(
-    `SUMMARY years=${selection.years.join(',')} total=${summary.total} passed=${summary.passed} failed=${summary.failed}`,
-  )
-  process.exitCode = summary.failed > 0 ? 1 : 0
+    logDivider()
+    console.log(
+      `SUMMARY years=${selection.years.join(',')} total=${summary.total} passed=${summary.passed} failed=${summary.failed}`,
+    )
+    process.exitCode = summary.failed > 0 ? 1 : 0
+  } finally {
+    await browserProbe.close()
+  }
 }
 
 runUrlIntegrity().catch((error) => {
