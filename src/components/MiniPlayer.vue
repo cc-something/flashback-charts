@@ -14,7 +14,7 @@ const player = usePlayerStore()
 const route = useRoute()
 const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
-const playerViewportHost = ref<HTMLDivElement | null>(null)
+const playerViewportMountHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isFullscreen = ref(false)
 const isMobileViewport = useMediaQuery('(max-width: 839px)')
@@ -112,15 +112,15 @@ const scrollToPlayingSongRow = async () => {
   })
 }
 const syncPlayerContainer = async () => {
-  if (!playerViewportHost.value) {
+  if (!playerViewportMountHost.value) {
     player.setPlayerContainer(null)
     return
   }
   await nextTick()
-  player.setPlayerContainer(playerViewportHost.value)
+  player.setPlayerContainer(playerViewportMountHost.value)
 }
 watch(() => player.playingYear, updateThemeVars, { immediate: true })
-watch(playerViewportHost, () => {
+watch(playerViewportMountHost, () => {
   void syncPlayerContainer()
 })
 watch(shouldShowPlayerDock, (shouldShow) => {
@@ -236,7 +236,12 @@ const toggleFullscreen = () => {
       />
 
       <div :class="playerFrameClass">
-        <div ref="playerViewportHost" :class="playerViewportClass">
+        <div :class="playerViewportClass">
+          <div
+            ref="playerViewportMountHost"
+            class="absolute inset-0"
+            aria-hidden="true"
+          />
           <button
             v-if="shouldShowRestoredPoster && player.playingSong"
             type="button"
