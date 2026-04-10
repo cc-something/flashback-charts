@@ -23,9 +23,6 @@ const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const mobilePlayerButtonClass =
   'inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-const playbackCoverHoldMs = 700
-let playbackCoverHideTimerId: number | null = null
-const shouldHoldPlaybackCover = ref(false)
 const isMobilePlayerCollapsed = useStorage(
   'flashback-mobile-player-collapsed',
   true,
@@ -37,6 +34,9 @@ const shouldRenderPlayerDock = computed(
 )
 const shouldShowIdleDock = computed(
   () => isMobileViewport.value && player.playingSong === null,
+)
+const shouldShowRestoredPoster = computed(
+  () => player.playingSong !== null && !player.hasMountedPlayer,
 )
 const shouldShowExpandedPlayerDetails = computed(
   () => !isMobileViewport.value || !isMobilePlayerCollapsed.value,
@@ -71,18 +71,6 @@ const updateThemeVars = (year: number | null) => {
 }
 const waitForScrollSettle = () =>
   new Promise<void>((resolve) => window.setTimeout(resolve, 450))
-const clearPlaybackCoverHideTimer = () => {
-  if (playbackCoverHideTimerId === null) return
-  window.clearTimeout(playbackCoverHideTimerId)
-  playbackCoverHideTimerId = null
-}
-const hidePlaybackCoverAfterDelay = () => {
-  clearPlaybackCoverHideTimer()
-  playbackCoverHideTimerId = window.setTimeout(() => {
-    shouldHoldPlaybackCover.value = false
-    playbackCoverHideTimerId = null
-  }, playbackCoverHoldMs)
-}
 const scrollToPlayingSongRow = async () => {
   const year = player.playingYear
   const song = player.playingSong
@@ -105,40 +93,13 @@ const syncPlayerContainer = async () => {
   player.setPlayerContainer(playerViewportHost.value)
 }
 watch(() => player.playingYear, updateThemeVars, { immediate: true })
-watch(
-  [() => player.playerState, () => player.playingSong?.youtubeVideoId],
-  ([playerState, songId], [previousPlayerState, previousSongId]) => {
-    if (typeof window === 'undefined') return
-    if (!songId || playerState === 'idle') {
-      shouldHoldPlaybackCover.value = false
-      clearPlaybackCoverHideTimer()
-      return
-    }
-
-    if (playerState === 'loading' || playerState === 'paused') {
-      shouldHoldPlaybackCover.value = true
-      clearPlaybackCoverHideTimer()
-      return
-    }
-
-    if (
-      playerState === 'playing' &&
-      (previousPlayerState !== 'playing' || previousSongId !== songId)
-    )
-      hidePlaybackCoverAfterDelay()
-  },
-  { immediate: true },
-)
 watch([shouldRenderPlayerDock, playerViewportHost], () => {
   void syncPlayerContainer()
 })
 watch(isMobileViewport, (isMobile) => {
   if (!isMobile) isMobilePlayerCollapsed.value = false
 })
-onUnmounted(() => {
-  clearPlaybackCoverHideTimer()
-  player.setPlayerContainer(null)
-})
+onUnmounted(() => player.setPlayerContainer(null))
 
 const goToPlayingSong = async () => {
   const year = player.playingYear
@@ -300,7 +261,6 @@ const toggleMobilePlayerCollapsed = () => {
         </div>
 
         <div
-          class="relative"
           :class="
             isMobileViewport
               ? 'mx-auto overflow-hidden border border-white/10 bg-black shadow-lg'
@@ -335,18 +295,38 @@ const toggleMobilePlayerCollapsed = () => {
                 </p>
               </div>
             </div>
-          </div>
 
-          <Transition name="playback-cover">
             <div
-              v-if="shouldShowPlaybackCover"
-              class="pointer-events-none absolute inset-0 z-20"
-              :style="{
-                background:
-                  'linear-gradient(180deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.94) 62%, rgba(0, 0, 0, 0) 100%)',
-              }"
-            />
-          </Transition>
+              v-else-if="shouldShowRestoredPoster && player.playingSong"
+              class="absolute inset-0"
+            >
+              <img
+                :src="player.playingSong.thumbnailPath"
+                :alt="player.playingSong.title"
+                class="h-full w-full object-cover"
+              />
+              <div
+                class="absolute inset-0"
+                :style="{
+                  background:
+                    'linear-gradient(180deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.94) 62%, rgba(0, 0, 0, 0) 100%)',
+                }"
+              />
+              <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                >
+                  <svg
+                    class="h-6 w-6 translate-x-[0.5px] text-white"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div
@@ -516,16 +496,6 @@ const toggleMobilePlayerCollapsed = () => {
 .player-dock-leave-to {
   opacity: 0;
   transform: translateY(-0.35rem);
-}
-
-.playback-cover-enter-active,
-.playback-cover-leave-active {
-  transition: opacity 0.18s ease;
-}
-
-.playback-cover-enter-from,
-.playback-cover-leave-to {
-  opacity: 0;
 }
 
 .player-viewport {
