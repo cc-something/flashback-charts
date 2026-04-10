@@ -9,15 +9,16 @@ const theme: DecadeTheme = {
   bodyFontFamily: defaultBodyFontFamily,
   fontUrl: 'https://fonts.bunny.net/css2?family=Righteous&display=swap',
   colors: {
-    background: '#0f0520',
-    surface: '#1c0c38',
+    background: '#1b093a',
+    surface: '#3d1a7a',
+    player: '#2c1559',
     primary: '#ff7a00',
     secondary: '#ff4fd8',
     text: '#fff3bf',
     textMuted: '#d8b3ff',
     accent: '#b8ff2c',
     tabActive: '#ff7a00',
-    tabInactive: '#40206c',
+    tabInactive: '#4e219b',
   },
 }
 

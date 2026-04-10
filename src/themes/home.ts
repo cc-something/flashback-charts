@@ -6,15 +6,16 @@ const homeTheme: DecadeTheme = {
   fontFamily: defaultBodyFontFamily,
   bodyFontFamily: defaultBodyFontFamily,
   colors: {
-    background: '#0a0f1f',
-    surface: '#131c33',
+    background: '#111934',
+    surface: '#223460',
+    player: '#18274a',
     primary: '#7dd3fc',
     secondary: '#f59e0b',
     text: '#f8fbff',
     textMuted: '#9fb2d3',
     accent: '#f97316',
     tabActive: '#7dd3fc',
-    tabInactive: '#131c33',
+    tabInactive: '#223460',
   },
 }
 

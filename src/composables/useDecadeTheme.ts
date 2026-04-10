@@ -15,6 +15,7 @@ const applyThemeProperties = (theme: DecadeTheme) => {
 
   root.style.setProperty('--theme-background', theme.colors.background)
   root.style.setProperty('--theme-surface', theme.colors.surface)
+  root.style.setProperty('--theme-player', theme.colors.player)
   root.style.setProperty('--theme-primary', theme.colors.primary)
   root.style.setProperty('--theme-secondary', theme.colors.secondary)
   root.style.setProperty('--theme-text', theme.colors.text)

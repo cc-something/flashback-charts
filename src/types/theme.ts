@@ -7,6 +7,7 @@ export interface DecadeTheme {
   colors: {
     background: string
     surface: string
+    player: string
     primary: string
     secondary: string
     text: string

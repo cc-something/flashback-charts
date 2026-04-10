@@ -12,6 +12,7 @@ const theme: DecadeTheme = {
   colors: {
     background: '#331c00',
     surface: '#251400',
+    player: '#1d1000',
     primary: '#ff8c00',
     secondary: '#e65100',
     text: '#fff3e0',

@@ -10,15 +10,16 @@ const theme: DecadeTheme = {
   fontUrl:
     'https://fonts.bunny.net/css2?family=Syne:wght@400;600;700;800&display=swap',
   colors: {
-    background: '#080810',
-    surface: '#0e0e20',
+    background: '#141428',
+    surface: '#262658',
+    player: '#1d1d41',
     primary: '#d4ff3e',
     secondary: '#ff3cac',
     text: '#f2f2ff',
     textMuted: '#8088a0',
     accent: '#6c63ff',
     tabActive: '#d4ff3e',
-    tabInactive: '#0e0e20',
+    tabInactive: '#262658',
   },
 }
 

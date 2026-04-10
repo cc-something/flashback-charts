@@ -9,15 +9,16 @@ const theme: DecadeTheme = {
   fontFamily: "'Michroma', sans-serif",
   fontUrl: 'https://fonts.bunny.net/css2?family=Michroma&display=swap',
   colors: {
-    background: '#07111f',
-    surface: '#0f1f35',
+    background: '#111b31',
+    surface: '#23497c',
+    player: '#182944',
     primary: '#69e2ff',
     secondary: '#ff4db8',
     text: '#edf8ff',
     textMuted: '#93b8d8',
     accent: '#c7f464',
     tabActive: '#69e2ff',
-    tabInactive: '#0f1f35',
+    tabInactive: '#23497c',
   },
 }
 
