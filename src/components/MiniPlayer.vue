@@ -23,8 +23,6 @@ const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const mobilePlayerButtonClass =
   'inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-const playerMetaClass =
-  'truncate text-[0.8rem] font-bold uppercase tracking-[0.06em] text-primary/80'
 const isMobilePlayerCollapsed = useStorage(
   'flashback-mobile-player-collapsed',
   true,
@@ -173,7 +171,10 @@ const toggleMobilePlayerCollapsed = () => {
               />
             </button>
             <div class="min-w-0">
-              <p v-if="player.playingSong" :class="playerMetaClass">
+              <p
+                v-if="player.playingSong"
+                class="truncate text-[0.72rem] font-bold uppercase tracking-[0.16em] text-primary/80"
+              >
                 {{ player.playingYear }} #{{ player.playingSong.rank }}
               </p>
               <p class="truncate text-sm font-bold leading-snug text-text">
@@ -349,7 +350,9 @@ const toggleMobilePlayerCollapsed = () => {
             class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
             @click="goToPlayingSong"
           >
-            <p :class="playerMetaClass">
+            <p
+              class="text-xs font-bold uppercase tracking-[0.16em] text-primary/80"
+            >
               {{ player.playingYear }} #{{ player.playingSong.rank }}
             </p>
             <p class="truncate text-base font-bold leading-snug text-text">
