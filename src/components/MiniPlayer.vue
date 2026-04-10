@@ -19,6 +19,7 @@ const isReportModalOpen = ref(false)
 const isFullscreen = ref(false)
 const isMobileViewport = useMediaQuery('(max-width: 839px)')
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
+const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
 
 const isMac =
   typeof navigator !== 'undefined' &&
@@ -126,9 +127,19 @@ watch(shouldShowPlayerDock, (shouldShow) => {
   if (shouldShow) return
   isFullscreen.value = false
 })
+watch(isFullscreen, (shouldShowFullscreen) => {
+  if (typeof document === 'undefined') return
+  document.documentElement.dataset.playerFullscreen = shouldShowFullscreen
+    ? 'true'
+    : 'false'
+})
 const handleFullscreenToggle = () => {
   if (!player.playingSong || shouldShowMobilePlaybackCta.value) return
   toggleFullscreen()
+}
+const closeFullscreen = () => {
+  if (!isFullscreen.value) return
+  isFullscreen.value = false
 }
 onMounted(() =>
   window.addEventListener(
@@ -137,11 +148,21 @@ onMounted(() =>
   ),
 )
 onUnmounted(() => player.setPlayerContainer(null))
+onUnmounted(() => {
+  if (typeof document === 'undefined') return
+  delete document.documentElement.dataset.playerFullscreen
+})
 onUnmounted(() =>
   window.removeEventListener(
     PLAYER_FULLSCREEN_TOGGLE_EVENT,
     handleFullscreenToggle,
   ),
+)
+onMounted(() =>
+  window.addEventListener(PLAYER_FULLSCREEN_CLOSE_EVENT, closeFullscreen),
+)
+onUnmounted(() =>
+  window.removeEventListener(PLAYER_FULLSCREEN_CLOSE_EVENT, closeFullscreen),
 )
 
 const goToPlayingSong = async () => {

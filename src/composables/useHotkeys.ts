@@ -19,6 +19,7 @@ const KONAMI = [
   'KeyA',
 ]
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
+const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
 
 const getIsInputFocused = () => {
   const el = document.activeElement
@@ -34,6 +35,9 @@ const getIsInputFocused = () => {
 const getHasEscapeConsumer = () =>
   typeof document !== 'undefined' &&
   document.querySelector('[data-esc-closes]') !== null
+const getIsPlayerFullscreen = () =>
+  typeof document !== 'undefined' &&
+  document.documentElement.dataset.playerFullscreen === 'true'
 
 export const useHotkeys = (
   openSearch: () => void,
@@ -172,6 +176,10 @@ export const useHotkeys = (
     if (e.code === 'Escape' && !isMod) {
       if (getHasEscapeConsumer()) return
       e.preventDefault()
+      if (player.isActive && getIsPlayerFullscreen()) {
+        window.dispatchEvent(new Event(PLAYER_FULLSCREEN_CLOSE_EVENT))
+        return
+      }
       if (player.isActive) player.stop()
       deactivateRickRoll()
       return
