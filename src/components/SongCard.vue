@@ -111,7 +111,7 @@ const primePlayback = () => void player.preload()
       <Transition name="overlay">
         <div
           v-if="showOverlay"
-          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/65"
+          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black via-black/40 to-transparent"
         >
           <!-- spinner -->
           <svg
