@@ -1,6 +1,7 @@
-- miniplayer on mobile
-- fullscreen mode for the miniplayer
 - playback does not in fact work on mobile
+- miniplayer on mobile?
+- sticky so the miniplayer doesnt clash w/ the sticky footer?
+- fullscreen mode for the miniplayer
 
 - spotify "seo"
 - nab AU, UK, US social handles
