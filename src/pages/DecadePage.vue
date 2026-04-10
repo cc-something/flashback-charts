@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useRouter } from 'vue-router'
 import { ArrowLeft, ArrowRight, Play } from 'lucide-vue-next'
@@ -111,6 +111,10 @@ const title = computed(() => getDecadePageTitle(props.decade))
 const heading = computed(() => getDecadePageHeading(props.decade))
 const description = computed(() => getDecadePageDescription(props.decade))
 const subtitle = computed(() => getDecadePageSubtitle(props.decade))
+const shouldExpandIntro = ref(false)
+const introPreview = computed(() =>
+  [description.value, subtitle.value].filter(Boolean).join(' '),
+)
 const siteUrl = computed(() => {
   const env = import.meta.env.VITE_SITE_URL as string | undefined
   return env?.replace(/\/$/, '') ?? ''
@@ -189,6 +193,14 @@ useHead(() => ({
     },
   ],
 }))
+
+watch(
+  () => props.decade,
+  () => {
+    shouldExpandIntro.value = false
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -243,15 +255,47 @@ useHead(() => ({
               {{ heading }}
             </h1>
             <p
+              v-if="!shouldExpandIntro"
+              class="mt-4 flex max-w-3xl w-full min-w-0 items-baseline gap-2 text-base leading-relaxed sm:hidden"
+              :style="{ color: theme.colors.textMuted }"
+            >
+              <span class="min-w-0 flex-1 truncate">
+                {{ introPreview }}
+              </span>
+              <button
+                type="button"
+                class="shrink-0 whitespace-nowrap text-current underline decoration-primary/35 underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+                @click="shouldExpandIntro = true"
+              >
+                Read more
+              </button>
+            </p>
+            <template v-if="shouldExpandIntro">
+              <p
+                v-if="theme.description"
+                class="mt-4 max-w-3xl text-base leading-relaxed sm:hidden"
+                :style="{ color: theme.colors.textMuted }"
+              >
+                {{ theme.description }}
+              </p>
+              <p
+                :class="theme.description ? 'mt-3' : 'mt-4'"
+                class="max-w-3xl text-base leading-relaxed sm:hidden"
+                :style="{ color: theme.colors.textMuted }"
+              >
+                {{ subtitle }}
+              </p>
+            </template>
+            <p
               v-if="theme.description"
-              class="mt-4 max-w-3xl text-base leading-relaxed"
+              class="mt-4 hidden max-w-3xl text-base leading-relaxed sm:block"
               :style="{ color: theme.colors.textMuted }"
             >
               {{ theme.description }}
             </p>
             <p
               :class="theme.description ? 'mt-3' : 'mt-4'"
-              class="max-w-3xl text-base leading-relaxed"
+              class="hidden max-w-3xl text-base leading-relaxed sm:block"
               :style="{ color: theme.colors.textMuted }"
             >
               {{ subtitle }}
