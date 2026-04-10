@@ -388,10 +388,10 @@ const toggleMobilePlayerCollapsed = () => {
                 type="button"
                 title="Report issue"
                 aria-label="Report issue"
-                class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                class="inline-flex h-4 w-4 shrink-0 self-center items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 @click.stop="openReportModal"
               >
-                <Flag class="h-3.5 w-3.5" aria-hidden="true" />
+                <Flag class="h-3 w-3" aria-hidden="true" />
               </button>
             </div>
           </div>
