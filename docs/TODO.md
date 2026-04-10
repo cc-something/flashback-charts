@@ -1,5 +1,8 @@
+- miniplayer on mobile
+- fullscreen mode for the miniplayer
 - playback does not in fact work on mobile
 
+- spotify "seo"
 - nab AU, UK, US social handles
 - more concrete branding? our own CD emoji knock off?
 
@@ -26,9 +29,25 @@
 
 - some youtube songs are just straight up wrong
 - integrity check of album names
+  - maybe we can just straight up remove these
 - roving actions workflow to check URL 404s
   - and youtube link playback
 
 ## Other feature ideas
 
 - lyrics
+- playback settings
+  - when finished playing list
+    - play next year
+    - play previous year
+    - loop
+    - stop
+
+## Next
+
+- global charts
+- us / uk charts
+
+## Known bugs/jank
+
+- when resuming the miniplayer, yt ui flashes up for a ms; jank
