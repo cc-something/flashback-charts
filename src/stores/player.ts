@@ -567,6 +567,10 @@ export const usePlayerStore = defineStore('player', () => {
         playerVars: {
           autoplay: currentPlaySong ? 1 : 0,
           controls: 0,
+          disablekb: 1,
+          fs: 0,
+          iv_load_policy: 3,
+          modestbranding: 1,
           playsinline: 1,
           rel: 0,
           origin: window.location.origin,
