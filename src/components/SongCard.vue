@@ -79,7 +79,7 @@ const primePlayback = () => void player.preload()
       @click="handleClick"
     />
     <span
-      class="w-9 flex-shrink-0 self-start pt-0.5 text-left text-lg sm:text-xl font-bold leading-none text-primary"
+      class="w-9 flex-shrink-0 text-left text-lg sm:text-xl font-bold leading-none text-primary"
     >
       #{{ displaySong.rank }}
     </span>
