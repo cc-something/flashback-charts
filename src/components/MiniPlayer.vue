@@ -25,7 +25,7 @@ const isMac =
   navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-black/30 hover:bg-black hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
