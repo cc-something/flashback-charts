@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Quicksilver',
     artist: 'Bing Crosby',
     album: 'Quicksilver',
-    youtubeVideoId: '_lhpHop0fJo',
+    youtubeVideoId: 'Vr6qlYa2214',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'I Told Them All About You',
     artist: 'Donald Peers',
     album: 'I Told Them All About You',
-    youtubeVideoId: 'jKsAXWxudw8',
+    youtubeVideoId: '48zWdSchLO4',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: "You're Breaking My Heart",
     artist: 'Vic Damone',
     album: "You're Breaking My Heart",
-    youtubeVideoId: '2hGSiN8w1gg',
+    youtubeVideoId: '7FrgdhEoT6I',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Mona Lisa',
     artist: 'Nat King Cole',
     album: 'Mona Lisa',
-    youtubeVideoId: 'G2vgJ0MGOlg',
+    youtubeVideoId: 'NIDX18Xl16s',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'Goodnight Irene',
     artist: 'Gordon Jenkins',
     album: 'Goodnight Irene',
-    youtubeVideoId: 'saykpHOm5fc',
+    youtubeVideoId: 'lQrA3VcjIhU',
     imageSelection: 'artist',
     imageSources: {
       album: null,

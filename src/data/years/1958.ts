@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Tom Dooley',
     artist: 'The Kingston Trio',
     album: 'Tom Dooley',
-    youtubeVideoId: 'VhXuO4Gz3Wo',
+    youtubeVideoId: 'S3zdE8bliGI',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Catch a Falling Star',
     artist: 'Perry Como',
     album: 'Catch a Falling Star',
-    youtubeVideoId: '_VJlHWESyLI',
+    youtubeVideoId: 'B_sJdH6fGd0',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Bird Dog',
     artist: 'The Everly Brothers',
     album: 'Bird Dog',
-    youtubeVideoId: 'ah637P0_cts',
+    youtubeVideoId: 'ESSlYHp8wPA',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: "He's Got the Whole World in His Hands",
     artist: 'Laurie London',
     album: "He's Got the Whole World in His Hands",
-    youtubeVideoId: 'WFpGQoOBrLY',
+    youtubeVideoId: '2Zz8iHOdu0c',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Twilight Time',
     artist: 'The Platters',
     album: 'Twilight Time',
-    youtubeVideoId: '5jV-E09efRE',
+    youtubeVideoId: 's0kprJ30_HU',
     imageSelection: 'artist',
     imageSources: {
       album: null,

@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Because of You',
     artist: 'Tony Bennett',
     album: 'Because of You',
-    youtubeVideoId: 'i-4zvArJDGg',
+    youtubeVideoId: 'XdweWtYAw14',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Here in My Heart',
     artist: 'Al Martino',
     album: 'Here in My Heart',
-    youtubeVideoId: 'cMD-k0C1AM8',
+    youtubeVideoId: 'wbDOvyMp2dE',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Anytime',
     artist: 'Eddie Fisher',
     album: 'Anytime',
-    youtubeVideoId: 'XTi6HBVSksk',
+    youtubeVideoId: 'ix56aHg-9xA',
     imageSelection: 'artist',
     imageSources: {
       album: null,

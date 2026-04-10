@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Tennessee Waltz',
     artist: 'Pee Wee King',
     album: 'Tennessee Waltz',
-    youtubeVideoId: '7Sm4lrT9N24',
+    youtubeVideoId: 'yL5lLDdnDgo',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'If',
     artist: 'Perry Como',
     album: 'If',
-    youtubeVideoId: 'nk7yRsSEPIM',
+    youtubeVideoId: 'U_N3TVbLLx4',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'The Loveliest Night of the Year',
     artist: 'Mario Lanza',
     album: 'The Loveliest Night of the Year',
-    youtubeVideoId: '0VeiwX5wVtw',
+    youtubeVideoId: 'BRkcI8B9gXw',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Too Young',
     artist: 'Nat King Cole',
     album: 'Too Young',
-    youtubeVideoId: 'KaFtsqU2V6U',
+    youtubeVideoId: 'tbhIlGHNgn4',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Sweet Violets',
     artist: 'Dinah Shore',
     album: 'Sweet Violets',
-    youtubeVideoId: 'LtnLvrmyh3E',
+    youtubeVideoId: '-nJdAz9DAi0',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Aba Daba Honeymoon',
     artist: 'Debbie Reynolds',
     album: 'Aba Daba Honeymoon',
-    youtubeVideoId: 'QjXv2SYWVTs',
+    youtubeVideoId: 'iuf1vLBgXaQ',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Come On-a My House',
     artist: 'Rosemary Clooney',
     album: 'Come On-a My House',
-    youtubeVideoId: 'mriXncI96lw',
+    youtubeVideoId: 'vyCNNrc8F_s',
     imageSelection: 'artist',
     imageSources: {
       album: null,

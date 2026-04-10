@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: "I'm Walking Behind You",
     artist: 'Frank Sinatra',
     album: "I'm Walking Behind You",
-    youtubeVideoId: '-E98Zxbj3bQ',
+    youtubeVideoId: 'jTrVEQE2VDU',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'I Went to Your Wedding',
     artist: 'Patti Page',
     album: 'I Went to Your Wedding',
-    youtubeVideoId: 'AR-_JC36vXM',
+    youtubeVideoId: '9lwruR3CENw',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: "Don't Let the Stars Get in Your Eyes",
     artist: 'Perry Como',
     album: "Don't Let the Stars Get in Your Eyes",
-    youtubeVideoId: 'TVm-_rc8B6g',
+    youtubeVideoId: 'fhN8l2Qxprk',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Tell Me a Story',
     artist: 'Frankie Laine & Jimmy Boyd',
     album: 'Tell Me a Story',
-    youtubeVideoId: 'LjBWApYXSTg',
+    youtubeVideoId: '1tVbim2gl-0',
     imageSelection: 'artist',
     imageSources: {
       album: null,
