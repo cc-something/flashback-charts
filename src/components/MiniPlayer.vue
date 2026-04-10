@@ -25,7 +25,7 @@ const isMac =
   navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-black/0 text-text/70 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-black/30 hover:bg-black hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -402,9 +402,9 @@ const toggleFullscreen = () => {
         v-if="
           player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
         "
-        class="mt-1.5 flex items-center justify-between gap-1"
+        class="mt-1.5 flex items-center gap-1"
       >
-        <div class="flex items-center gap-1">
+        <div class="flex flex-1 items-center gap-1">
           <button
             type="button"
             :title="`Previous song (${mod}+←)`"
@@ -484,7 +484,7 @@ const toggleFullscreen = () => {
           </button>
         </div>
 
-        <div class="ml-auto flex items-center justify-end">
+        <div class="-mr-1 flex items-center justify-end">
           <button
             type="button"
             :title="fullscreenToggleTitle"
@@ -501,10 +501,10 @@ const toggleFullscreen = () => {
         v-if="
           player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
         "
-        class="mt-1 flex justify-end"
+        class="mt-0.5 flex justify-end pr-0.5"
       >
         <p
-          class="mr-0.5 font-mono text-[0.64rem] tabular-nums text-text-muted"
+          class="font-mono text-[0.62rem] tabular-nums text-text-muted"
           :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
         >
           <template v-if="player.showSeekBar">
@@ -518,11 +518,12 @@ const toggleFullscreen = () => {
         v-if="
           player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
         "
-        class="relative mt-1.5 h-1.5"
+        class="relative mt-0.5 -mx-0.5 px-0.5"
       >
         <PlaybackSeekBar
           :disabled="!player.showSeekBar"
-          root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
+          root-class="pointer-events-auto h-4 cursor-pointer"
+          track-class="h-1.5"
         />
       </div>
     </div>
