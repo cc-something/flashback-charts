@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SearchMatch, SongSearchMatch } from '@/data'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { X } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { usePlayerStore } from '@/stores/player'
@@ -13,9 +13,13 @@ const router = useRouter()
 const player = usePlayerStore()
 const query = ref('')
 const inputRef = ref<HTMLInputElement | null>(null)
+const activeResultIndex = ref(-1)
 
 const allResults = computed(() => searchCatalog(query.value))
 const results = computed(() => allResults.value.slice(0, 50))
+const activeResult = computed(
+  () => results.value[activeResultIndex.value] ?? null,
+)
 
 const goToSong = (year: number, rank: number) => {
   player.queueSongHighlight(year, rank)
@@ -41,6 +45,7 @@ const getResultKey = (result: SearchMatch, index: number) =>
   result.type === 'song'
     ? `${result.year}-${result.song.rank}-${index}`
     : `${result.type}-${result.path}`
+const getResultId = (index: number) => `search-result-${index}`
 
 const getTargetTitle = (result: Exclude<SearchMatch, SongSearchMatch>) =>
   result.type === 'year' ? String(result.year) : result.decade
@@ -64,16 +69,53 @@ const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')
 }
 const handleInputKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'ArrowDown') {
+    if (!results.value.length) return
+    e.preventDefault()
+    activeResultIndex.value = Math.min(
+      activeResultIndex.value + 1,
+      results.value.length - 1,
+    )
+    return
+  }
+
+  if (e.key === 'ArrowUp') {
+    if (!results.value.length) return
+    e.preventDefault()
+    activeResultIndex.value = Math.max(activeResultIndex.value - 1, 0)
+    return
+  }
+
   if (e.key !== 'Enter') return
-  const firstResult = results.value[0]
-  if (!firstResult) return
+  if (!activeResult.value) return
   e.preventDefault()
-  goToResult(firstResult)
+  goToResult(activeResult.value)
 }
 
 const focusInput = () => inputRef.value?.focus()
+const setActiveResultIndex = (index: number) => {
+  activeResultIndex.value = index
+}
 
 defineExpose({ focusInput })
+
+watch(
+  results,
+  async (nextResults) => {
+    if (!nextResults.length) {
+      activeResultIndex.value = -1
+      return
+    }
+    if (activeResultIndex.value < 0) activeResultIndex.value = 0
+    if (activeResultIndex.value > nextResults.length - 1)
+      activeResultIndex.value = nextResults.length - 1
+    await nextTick()
+    document
+      .getElementById(getResultId(activeResultIndex.value))
+      ?.scrollIntoView({ block: 'nearest' })
+  },
+  { immediate: true },
+)
 
 onMounted(() => {
   inputRef.value?.focus()
@@ -113,7 +155,7 @@ onMounted(() => {
                   aria-label="Search songs, artists, albums, years, or decades"
                   placeholder="Search songs, artists, albums, years…"
                   class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
-                  @keydown.enter="handleInputKeydown"
+                  @keydown="handleInputKeydown"
                   @keydown.escape="emit('close')"
                 />
                 <!-- Search icon -->
@@ -153,8 +195,14 @@ onMounted(() => {
         <div v-else class="flex flex-col gap-2 pb-8 pt-3">
           <div
             v-for="(result, i) in results"
+            :id="getResultId(i)"
             :key="getResultKey(result, i)"
-            class="group flex cursor-pointer items-center gap-3 rounded-lg border border-transparent bg-surface p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-surface/75 hover:shadow-lg hover:shadow-black/10 focus-visible:-translate-y-0.5 focus-visible:border-primary/30 focus-visible:bg-surface/75 focus-visible:shadow-lg focus-visible:shadow-black/10"
+            :class="[
+              'group flex cursor-pointer items-center gap-3 rounded-lg border bg-surface p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-surface/75 hover:shadow-lg hover:shadow-black/10 focus-visible:-translate-y-0.5 focus-visible:border-primary/30 focus-visible:bg-surface/75 focus-visible:shadow-lg focus-visible:shadow-black/10',
+              i === activeResultIndex
+                ? 'border-primary/30 bg-surface/75 shadow-lg shadow-black/10'
+                : 'border-transparent',
+            ]"
             role="button"
             tabindex="0"
             :aria-label="
@@ -162,9 +210,12 @@ onMounted(() => {
                 ? `Go to ${result.song.title} in ${result.year}`
                 : getTargetAriaLabel(result)
             "
+            :aria-selected="i === activeResultIndex"
             @click="goToResult(result)"
             @keydown.enter="goToResult(result)"
             @keydown.space.prevent="goToResult(result)"
+            @focus="setActiveResultIndex(i)"
+            @mouseenter="setActiveResultIndex(i)"
           >
             <template v-if="result.type === 'song'">
               <!-- Thumbnail / play -->
