@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SearchMatch, SongSearchMatch } from '@/data'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { X } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import { usePlayerStore } from '@/stores/player'
@@ -66,6 +66,10 @@ const handleKeydown = (e: KeyboardEvent) => {
 const focusInput = () => inputRef.value?.focus()
 
 defineExpose({ focusInput })
+
+onMounted(() => {
+  inputRef.value?.focus()
+})
 </script>
 
 <template>

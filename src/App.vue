@@ -82,7 +82,6 @@ const isHotkeysOpen = ref(false)
 const isContactOpen = ref(false)
 const isAboutOpen = ref(false)
 const isContactEmailRevealed = ref(false)
-const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const hasToasts = computed(() => toast.toasts.length > 0)
 const isHomeRoute = computed(() => route.name === 'home')
 const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
@@ -183,10 +182,8 @@ const headerIconStyle = computed(() => ({
   transition: 'width 220ms ease, height 220ms ease',
 }))
 
-const openSearch = async () => {
+const openSearch = () => {
   isSearchOpen.value = true
-  await nextTick()
-  searchOverlay.value?.focusInput()
 }
 
 provide('openSearch', openSearch)
@@ -398,11 +395,7 @@ onUnmounted(() => teardownKonamiListener())
         </div>
       </div>
     </footer>
-    <SearchOverlay
-      v-if="isSearchOpen"
-      ref="searchOverlay"
-      @close="isSearchOpen = false"
-    />
+    <SearchOverlay v-if="isSearchOpen" @close="isSearchOpen = false" />
     <HotkeysModal v-if="isHotkeysOpen" @close="isHotkeysOpen = false" />
     <EmailSignupModal
       v-if="emailSignup.show.value"
