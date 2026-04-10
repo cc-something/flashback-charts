@@ -177,7 +177,7 @@ const toggleMobilePlayerCollapsed = () => {
             <div class="min-w-0">
               <p
                 v-if="player.playingSong"
-                class="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-primary/80"
+                class="text-[0.72rem] font-bold uppercase tracking-[0.04em] text-primary/80"
               >
                 {{ player.playingYear }} #{{ player.playingSong.rank }}
               </p>
@@ -362,7 +362,7 @@ const toggleMobilePlayerCollapsed = () => {
             @click="goToPlayingSong"
           >
             <p
-              class="text-xs font-bold uppercase tracking-[0.16em] text-primary/80"
+              class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
             >
               {{ player.playingYear }} #{{ player.playingSong.rank }}
             </p>
