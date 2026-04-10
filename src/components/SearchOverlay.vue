@@ -18,6 +18,7 @@ const allResults = computed(() => searchCatalog(query.value))
 const results = computed(() => allResults.value.slice(0, 50))
 
 const goToSong = (year: number, rank: number) => {
+  player.queueSongHighlight(year, rank)
   router.push({ path: getYearPath(year), query: { song: String(rank) } })
   emit('close')
 }
