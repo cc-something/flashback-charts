@@ -288,27 +288,12 @@ const toggleMobilePlayerCollapsed = () => {
               <div
                 class="absolute inset-0 bg-gradient-to-t from-black/78 via-black/25 to-black/35"
               />
-              <div
-                class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-3"
-              >
-                <div class="min-w-0">
-                  <p
-                    class="truncate text-[0.68rem] font-bold uppercase tracking-[0.16em] text-primary/80"
-                  >
-                    Paused
-                  </p>
-                  <p class="truncate text-sm font-bold leading-snug text-white">
-                    {{ player.playingSong.title }}
-                  </p>
-                  <p class="truncate text-xs leading-snug text-white/75">
-                    {{ player.playingSong.artist }}
-                  </p>
-                </div>
+              <div class="absolute inset-x-0 bottom-0 flex justify-end p-4">
                 <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/45 ring-1 ring-white/15"
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-black/45 ring-1 ring-white/15"
                 >
                   <svg
-                    class="h-4 w-4 translate-x-[1px] text-white"
+                    class="h-6 w-6 translate-x-[1px] text-white"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
