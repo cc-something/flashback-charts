@@ -39,7 +39,7 @@ const progressPercent = computed(() => {
       as="div"
       :style="{ '--playback-seek-progress': `${progressPercent}%` }"
       :class="[
-        'playback-seek-track relative h-1.5 w-full overflow-hidden rounded-full bg-black/10',
+        'playback-seek-track relative h-1.5 w-full overflow-hidden rounded-full bg-black/20',
         trackClass,
       ]"
     >
@@ -48,7 +48,10 @@ const progressPercent = computed(() => {
       />
     </SliderTrack>
     <SliderThumb
-      class="playback-seek-thumb block h-3 w-3 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none"
+      :class="[
+        'playback-seek-thumb block h-3 w-3 rounded-full border border-white/90 bg-primary shadow-[0_1px_3px_rgb(0_0_0_/_0.25)] outline-none',
+        disabled && 'grayscale-[0.5] opacity-80',
+      ]"
     />
   </SliderRoot>
 </template>
@@ -67,8 +70,8 @@ const progressPercent = computed(() => {
     to right,
     var(--color-primary) 0%,
     var(--color-primary) var(--playback-seek-progress),
-    rgb(0 0 0 / 10%) var(--playback-seek-progress),
-    rgb(0 0 0 / 10%) 100%
+    rgb(0 0 0 / 20%) var(--playback-seek-progress),
+    rgb(0 0 0 / 20%) 100%
   );
 }
 
