@@ -35,7 +35,7 @@ interface PlaybackIntegrityAttemptResult {
 
 const browserLaunchArgs = ['--autoplay-policy=no-user-gesture-required']
 const playbackHarnessPath = '/__integrity/playback'
-const playbackAttemptTimeoutMs = 8_000
+const playbackAttemptTimeoutMs = 15_000
 const defaultServerOrigin = 'http://127.0.0.1:4719'
 
 const formatSongLabel = (year: number, song: Song) =>
@@ -118,18 +118,16 @@ const runHarnessAttempt = async (
     )
   try {
     return await page.evaluate(
-      ({ artist, timeoutMs, title, videoId }) =>
+      ({ timeoutMs, year, song }) =>
         window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
-          artist,
+          song,
           timeoutMs,
-          title,
-          videoId,
+          year,
         }),
       {
-        artist: song.artist,
+        song,
         timeoutMs: playbackAttemptTimeoutMs,
-        title: song.title,
-        videoId: song.youtubeVideoId,
+        year,
       },
     )
   } catch (error) {

@@ -58,9 +58,20 @@ type PlaybackIntegrityAttemptReason =
   | 'aborted'
 
 interface PlaybackIntegrityAttemptOptions {
-  videoId: string
-  title: string
-  artist: string
+  year: number
+  song: {
+    rank: number
+    title: string
+    artist: string
+    album: string
+    youtubeVideoId: string | null
+    thumbnailPath: string
+    imageSelection: 'album' | 'artist'
+    imageSources: {
+      album: string | null
+      artist: string | null
+    }
+  }
   timeoutMs: number
 }
 
