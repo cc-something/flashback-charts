@@ -51,7 +51,7 @@ const playerDockContainerClass = computed(() =>
 const playerDockClass = computed(() =>
   isMobileViewport.value
     ? 'relative z-30 mx-3 mt-3 rounded-xl border border-white/12 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
-    : 'relative z-30 border border-white/12 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[calc(200px*16/9)] min-[840px]:rounded-xl',
+    : 'relative z-30 border border-white/12 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[calc(200px*16/9+2px)] min-[840px]:rounded-xl',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
