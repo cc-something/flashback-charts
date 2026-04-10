@@ -6,6 +6,7 @@ import { usePlayerStore } from '@/stores/player'
 defineProps<{
   rootClass?: string
   trackClass?: string
+  disabled?: boolean
 }>()
 
 const player = usePlayerStore()
@@ -20,14 +21,16 @@ const progressPercent = computed(() => {
 <template>
   <SliderRoot
     :key="player.playingSong?.youtubeVideoId"
-    :max="player.durationSeconds"
+    :max="player.durationSeconds || 100"
     :min="0"
+    :disabled="disabled"
     :model-value="player.seekSliderValue"
     :step="0.1"
     aria-label="Seek playback"
     :class="[
       'playback-seek flex w-full touch-manipulation items-center',
       rootClass,
+      disabled && 'opacity-50 grayscale-[0.5]',
     ]"
     @update:model-value="player.handleSeekInput"
     @value-commit="player.handleSeekCommit"
