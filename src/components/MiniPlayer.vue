@@ -20,9 +20,11 @@ const isMac =
   navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const mobilePlayerButtonClass =
-  'inline-flex h-8 w-8 items-center justify-center rounded-full text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const playerMetaClass =
+  'truncate text-[0.8rem] font-bold uppercase tracking-[0.06em] text-primary/80'
 const isMobilePlayerCollapsed = useStorage(
   'flashback-mobile-player-collapsed',
   true,
@@ -43,10 +45,10 @@ const shouldShowExpandedPlayerDetails = computed(
 )
 const playerDockContainerClass = computed(() =>
   isMobileViewport.value
-    ? 'mx-auto w-full max-w-[16.75rem] px-3 pt-3 pb-1.5'
+    ? 'mx-auto w-full max-w-[16.75rem] px-3 pt-3 pb-3'
     : route.name === 'year'
-      ? 'mx-auto max-w-[50.4rem] px-4 pt-3 pb-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-1.5'
-      : 'mx-auto max-w-[1300px] px-4 pt-3 pb-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-1.5',
+      ? 'mx-auto max-w-[50.4rem] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3'
+      : 'mx-auto max-w-[1300px] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3',
 )
 const playerDockClass = computed(() =>
   isMobileViewport.value
@@ -141,10 +143,10 @@ const toggleMobilePlayerCollapsed = () => {
         type="button"
         title="Stop playback (Esc)"
         aria-label="Stop playback"
-        class="absolute top-0 right-0 z-30 inline-flex h-8 w-8 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border border-white/12 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        class="absolute top-0 right-0 z-30 inline-flex h-6 w-6 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border-1 border-white/25 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         @click="player.stop"
       >
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
           />
@@ -171,10 +173,7 @@ const toggleMobilePlayerCollapsed = () => {
               />
             </button>
             <div class="min-w-0">
-              <p
-                v-if="player.playingSong"
-                class="truncate text-[0.72rem] font-bold uppercase tracking-[0.16em] text-primary/80"
-              >
+              <p v-if="player.playingSong" :class="playerMetaClass">
                 {{ player.playingYear }} #{{ player.playingSong.rank }}
               </p>
               <p class="truncate text-sm font-bold leading-snug text-text">
@@ -306,14 +305,14 @@ const toggleMobilePlayerCollapsed = () => {
                 class="h-full w-full object-cover"
               />
               <div
-                class="absolute inset-0 bg-gradient-to-t from-black/78 via-black/25 to-black/35"
+                class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"
               />
-              <div class="absolute inset-x-0 bottom-0 flex justify-end p-4">
+              <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
                 <div
-                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-black/45 ring-1 ring-white/15"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
                 >
                   <svg
-                    class="h-6 w-6 translate-x-[1px] text-white"
+                    class="h-6 w-6 translate-x-[0.5px] text-white"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
@@ -350,9 +349,7 @@ const toggleMobilePlayerCollapsed = () => {
             class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
             @click="goToPlayingSong"
           >
-            <p
-              class="text-xs font-bold uppercase tracking-[0.16em] text-primary/80"
-            >
+            <p :class="playerMetaClass">
               {{ player.playingYear }} #{{ player.playingSong.rank }}
             </p>
             <p class="truncate text-base font-bold leading-snug text-text">
@@ -437,9 +434,7 @@ const toggleMobilePlayerCollapsed = () => {
                 <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
               </svg>
             </button>
-          </div>
 
-          <div class="flex items-center gap-1">
             <button
               type="button"
               title="Go to song (G)"
@@ -454,21 +449,26 @@ const toggleMobilePlayerCollapsed = () => {
               </svg>
             </button>
           </div>
+
+          <div class="flex items-center gap-1">
+            <p
+              class="mr-1 font-mono text-[0.72rem] tabular-nums text-text-muted"
+              :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
+            >
+              <template v-if="player.showSeekBar">
+                {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+              </template>
+              <template v-else>0:00/0:00</template>
+            </p>
+          </div>
         </div>
 
         <div
           v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="relative mt-1 h-7"
+          class="relative mt-1 h-1.5"
         >
-          <p
-            class="pointer-events-none absolute top-0 right-0 font-mono text-[0.72rem] tabular-nums text-text-muted"
-          >
-            <template v-if="player.showSeekBar">
-              {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-            </template>
-          </p>
           <PlaybackSeekBar
-            v-if="player.showSeekBar"
+            :disabled="!player.showSeekBar"
             root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
           />
         </div>
