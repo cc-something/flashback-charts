@@ -74,19 +74,8 @@ export type PlayTrigger =
 const MAX_RETRIES = 2
 const STALL_TIMEOUT_MS = 4_000
 const EMBED_BLOCKED_ERROR_CODES = new Set([101, 150])
-const userRequestedTriggers = new Set<PlayTrigger>([
-  'direct',
-  'hotkey',
-  'player-btn',
-  'home-btn',
-  'decade-btn',
-  'search',
-  'rickroll',
-])
 const isEmbedBlockedError = (errorCode?: number) =>
   errorCode !== undefined && EMBED_BLOCKED_ERROR_CODES.has(errorCode)
-const isUserRequestedTrigger = (trigger: PlayTrigger) =>
-  userRequestedTriggers.has(trigger)
 const getYearSongs = async (year: number) => {
   const { getYearData } = await import('@/data')
   return getYearData(year) ?? null
@@ -115,7 +104,6 @@ export const usePlayerStore = defineStore('player', () => {
   let onEndedCallback: ((song: Song, year: number) => void) | null = null
   let retryCount = 0
   let currentPlaySong: Song | null = null
-  let currentPlayTrigger: PlayTrigger = 'direct'
   let currentStartAtSeconds: number | undefined
   let offlineHandler: (() => void) | null = null
   let stallTimerId: ReturnType<typeof setTimeout> | null = null
@@ -490,31 +478,17 @@ export const usePlayerStore = defineStore('player', () => {
     )
     startPlaybackStallTimer()
   }
-  const handleEmbedBlockedPlayback = async (
-    song: Song,
-    trigger: PlayTrigger,
-  ) => {
-    if (isUserRequestedTrigger(trigger)) {
-      await failLoadingAttempt(
-        `"${song.title}" can't play in the embedded player. Use the YouTube link instead.`,
-      )
-      return
-    }
-
+  const handleEmbedBlockedPlayback = async () => {
     const failedSong = playingSong.value
     const failedYear = playingYear.value
-    await failLoadingAttempt(
-      `"${song.title}" can't play in the embedded player. Skipping.`,
-    )
+    await failLoadingAttempt("Couldn't play that song, skipping", () => {})
     if (failedSong && failedYear !== null)
       playNext(failedSong, failedYear, 'skip')
   }
   const handlePlaybackError = async (errorCode?: number) => {
     const failedSong = currentPlaySong
-    const failedTrigger = currentPlayTrigger
     if (!failedSong) return
-    if (isEmbedBlockedError(errorCode))
-      return handleEmbedBlockedPlayback(failedSong, failedTrigger)
+    if (isEmbedBlockedError(errorCode)) return handleEmbedBlockedPlayback()
     if (!(await getHasNetworkConnection()))
       return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
     if (retryCount < MAX_RETRIES) {
@@ -526,10 +500,6 @@ export const usePlayerStore = defineStore('player', () => {
       }, 1000 * retryCount)
       return
     }
-    if (isUserRequestedTrigger(failedTrigger))
-      return failLoadingAttempt(
-        `Failed to play "${failedSong.title}". Use the YouTube link instead.`,
-      )
     const skippedSong = playingSong.value
     const skippedYear = playingYear.value
     await failLoadingAttempt(`Failed to play "${failedSong.title}". Skipping.`)
@@ -669,7 +639,6 @@ export const usePlayerStore = defineStore('player', () => {
     startLoadingAttempt()
     retryCount = 0
     currentPlaySong = song
-    currentPlayTrigger = trigger
     currentStartAtSeconds = resumeAt
     if (!getHasImmediateNetworkConnection())
       return failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE)
