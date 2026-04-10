@@ -19,7 +19,7 @@ defineProps<{ isActive: boolean }>()
 .disco-ball-shell {
   position: fixed;
   top: 0;
-  left: clamp(0.75rem, 2vw, 1.5rem);
+  left: clamp(0.75rem, 2vw, 1.75rem);
   z-index: 30;
   pointer-events: none;
 }
@@ -31,16 +31,16 @@ defineProps<{ isActive: boolean }>()
 }
 
 .disco-ball-image {
-  width: clamp(7.5rem, 18vw, 11rem);
+  width: clamp(12rem, 30vw, 18rem);
   height: auto;
   filter: drop-shadow(0 0.8rem 1.2rem rgb(0 0 0 / 18%));
 }
 
 .disco-ball-glow {
   position: absolute;
-  top: 4.25rem;
+  top: 6.5rem;
   left: 50%;
-  width: 78%;
+  width: 82%;
   aspect-ratio: 1;
   border-radius: 9999px;
   background: radial-gradient(
@@ -63,13 +63,13 @@ defineProps<{ isActive: boolean }>()
 .disco-ball-enter-from,
 .disco-ball-leave-to {
   opacity: 0;
-  transform: translate3d(0, -13rem, 0);
+  transform: translate3d(0, -16rem, 0);
 }
 
 .disco-ball-enter-to,
 .disco-ball-leave-from {
   opacity: 1;
-  transform: translate3d(0, -0.35rem, 0);
+  transform: translate3d(0, 5.5rem, 0);
 }
 
 @keyframes disco-ball-sway {
