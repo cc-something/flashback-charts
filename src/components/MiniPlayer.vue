@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
-import { ChevronDown, ChevronUp, Flag, X } from 'lucide-vue-next'
-import { useMediaQuery, useStorage } from '@vueuse/core'
+import { Flag, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
@@ -15,7 +14,6 @@ const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
 const playerViewportHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
-const isMobileViewport = useMediaQuery('(max-width: 839px)')
 
 const isMac =
   typeof navigator !== 'undefined' &&
@@ -23,37 +21,20 @@ const isMac =
 const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-const mobilePlayerButtonClass =
-  'inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-const isMobilePlayerCollapsed = useStorage(
-  'flashback-mobile-player-collapsed',
-  true,
-)
 const shouldRenderPlayerDock = computed(
-  () =>
-    isMobileViewport.value ||
-    (player.playingSong !== null && player.playerState !== 'idle'),
-)
-const shouldShowIdleDock = computed(
-  () => isMobileViewport.value && player.playingSong === null,
+  () => player.playingSong !== null && player.playerState !== 'idle',
 )
 const shouldShowRestoredPoster = computed(
   () => player.playingSong !== null && !player.hasMountedPlayer,
 )
-const shouldShowExpandedPlayerDetails = computed(
-  () => !isMobileViewport.value || !isMobilePlayerCollapsed.value,
-)
 const playerDockContainerClass = computed(() =>
-  isMobileViewport.value
-    ? 'mx-auto w-full max-w-[16.75rem] px-3 pt-3 pb-3'
-    : route.name === 'year'
-      ? 'mx-auto max-w-[50.4rem] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3'
-      : 'mx-auto max-w-[1300px] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3',
+  route.name === 'year'
+    ? 'mx-auto max-w-[50.4rem] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3'
+    : 'mx-auto max-w-[1300px] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3',
 )
-const playerDockClass = computed(() =>
-  isMobileViewport.value
-    ? 'relative z-30 mx-3 mt-3 rounded-xl border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
-    : 'relative z-30 border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[calc(200px*16/9+2px)] min-[840px]:rounded-xl',
+const playerDockClass = computed(
+  () =>
+    'relative z-30 border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[calc(200px*16/9+2px)] min-[840px]:rounded-xl',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -99,9 +80,6 @@ watch(() => player.playingYear, updateThemeVars, { immediate: true })
 watch([shouldRenderPlayerDock, playerViewportHost], () => {
   void syncPlayerContainer()
 })
-watch(isMobileViewport, (isMobile) => {
-  if (!isMobile) isMobilePlayerCollapsed.value = false
-})
 onUnmounted(() => player.setPlayerContainer(null))
 
 const goToPlayingSong = async () => {
@@ -133,10 +111,6 @@ const openReportModal = () => {
   if (!player.playingSong || player.playingYear === null) return
   isReportModalOpen.value = true
 }
-const toggleMobilePlayerCollapsed = () => {
-  if (!isMobileViewport.value) return
-  isMobilePlayerCollapsed.value = !isMobilePlayerCollapsed.value
-}
 </script>
 
 <template>
@@ -148,7 +122,7 @@ const toggleMobilePlayerCollapsed = () => {
       :class="playerDockClass"
     >
       <button
-        v-if="player.playingSong && shouldShowExpandedPlayerDetails"
+        v-if="player.playingSong"
         type="button"
         title="Stop playback (Esc)"
         aria-label="Stop playback"
@@ -159,152 +133,13 @@ const toggleMobilePlayerCollapsed = () => {
       </button>
 
       <div :class="playerDockContainerClass">
-        <div
-          v-if="isMobileViewport"
-          class="mb-2 flex items-center justify-between gap-2"
-        >
-          <div class="min-w-0 flex items-center gap-2">
-            <button
-              v-if="player.playingSong"
-              type="button"
-              aria-label="Go to song"
-              class="h-10 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-black/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-              @click="goToPlayingSong"
-            >
-              <img
-                :src="player.playingSong.thumbnailPath"
-                :alt="player.playingSong.title"
-                class="block h-full w-full object-cover"
-              />
-            </button>
-            <div class="min-w-0">
-              <p
-                v-if="player.playingSong"
-                class="text-[0.72rem] font-bold uppercase tracking-[0.04em] text-primary/80"
-              >
-                {{ player.playingYear }} #{{ player.playingSong.rank }}
-              </p>
-              <p class="break-words text-sm font-bold leading-snug text-text">
-                {{
-                  player.playingSong ? player.playingSong.title : 'Mini Player'
-                }}
-              </p>
-              <p class="break-words text-xs leading-snug text-text-muted">
-                {{
-                  player.playingSong
-                    ? player.playingSong.artist
-                    : 'Tap any song to start playback.'
-                }}
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-1">
-            <button
-              v-if="player.playingSong"
-              type="button"
-              title="Play / pause"
-              aria-label="Toggle playback"
-              :class="mobilePlayerButtonClass"
-              @click="player.togglePlayback('player-btn')"
-            >
-              <svg
-                v-if="player.playerState === 'loading'"
-                class="h-4 w-4 animate-spin"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                />
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                />
-              </svg>
-              <svg
-                v-else-if="player.playerState === 'playing'"
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-              </svg>
-              <svg
-                v-else
-                class="h-4 w-4"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </button>
-
-            <button
-              type="button"
-              :title="
-                isMobilePlayerCollapsed
-                  ? 'Expand mini player'
-                  : 'Collapse mini player'
-              "
-              :aria-label="
-                isMobilePlayerCollapsed
-                  ? 'Expand mini player'
-                  : 'Collapse mini player'
-              "
-              :class="mobilePlayerButtonClass"
-              @click="toggleMobilePlayerCollapsed"
-            >
-              <ChevronDown v-if="isMobilePlayerCollapsed" class="h-4 w-4" />
-              <ChevronUp v-else class="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-
-        <div
-          :class="
-            isMobileViewport
-              ? 'mx-auto overflow-hidden border border-white/10 bg-black shadow-lg'
-              : 'overflow-hidden border border-white/10 bg-black shadow-lg'
-          "
-          :style="
-            isMobileViewport
-              ? { width: '200px', minHeight: '200px' }
-              : undefined
-          "
-        >
+        <div class="overflow-hidden border border-white/10 bg-black shadow-lg">
           <div
             ref="playerViewportHost"
-            :class="
-              isMobileViewport
-                ? 'player-viewport-mobile w-full min-h-[200px] bg-black'
-                : 'player-viewport w-full min-h-[200px] bg-black'
-            "
+            class="player-viewport w-full min-h-[200px] bg-black"
           >
-            <div
-              v-if="shouldShowIdleDock"
-              class="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,#3f175f,transparent_58%),linear-gradient(180deg,#160324,#05010a)] px-6 text-center"
-            >
-              <div>
-                <p
-                  class="text-xs font-bold uppercase tracking-[0.16em] text-primary/80"
-                >
-                  Ready To Play
-                </p>
-                <p class="mt-2 text-sm leading-snug text-white/92">
-                  Tap any song to start inline playback.
-                </p>
-              </div>
-            </div>
-
             <button
-              v-else-if="shouldShowRestoredPoster && player.playingSong"
+              v-if="shouldShowRestoredPoster && player.playingSong"
               type="button"
               aria-label="Play playback"
               class="absolute inset-0 cursor-pointer"
@@ -339,10 +174,7 @@ const toggleMobilePlayerCollapsed = () => {
           </div>
         </div>
 
-        <div
-          v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="mt-1.5 flex items-start gap-2.5"
-        >
+        <div v-if="player.playingSong" class="mt-1.5 flex items-start gap-2.5">
           <button
             type="button"
             title="Go to song (G)"
@@ -397,7 +229,7 @@ const toggleMobilePlayerCollapsed = () => {
         </div>
 
         <div
-          v-if="player.playingSong && shouldShowExpandedPlayerDetails"
+          v-if="player.playingSong"
           class="mt-1 flex items-center justify-between gap-1.5"
         >
           <div class="flex items-center gap-1">
@@ -498,10 +330,7 @@ const toggleMobilePlayerCollapsed = () => {
           </div>
         </div>
 
-        <div
-          v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="relative mt-1 h-1.5"
-        >
+        <div v-if="player.playingSong" class="relative mt-1 h-1.5">
           <PlaybackSeekBar
             :disabled="!player.showSeekBar"
             root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
@@ -542,19 +371,7 @@ const toggleMobilePlayerCollapsed = () => {
   position: relative;
 }
 
-.player-viewport-mobile {
-  aspect-ratio: 1 / 1;
-  position: relative;
-}
-
 .player-viewport :deep(iframe) {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.player-viewport-mobile :deep(iframe) {
   display: block;
   width: 100%;
   height: 100%;
