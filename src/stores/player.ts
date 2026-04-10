@@ -624,9 +624,12 @@ export const usePlayerStore = defineStore('player', () => {
       // Restored from storage — fall through to full play
     }
 
-    // Capture resume time before stop() clears it
+    const isResumingSameSong =
+      !ytPlayer &&
+      playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
+      playingYear.value === year
     const resumeAt =
-      currentTimeSeconds.value > 0 && !ytPlayer
+      isResumingSameSong && currentTimeSeconds.value > 0
         ? currentTimeSeconds.value
         : undefined
 
