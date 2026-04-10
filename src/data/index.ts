@@ -1,4 +1,6 @@
 import type { Song } from '@/types/song'
+import { getDecadeForYear } from '@/themes'
+import { getDecadePath, getYearPath } from '@/utils/url'
 import songs1940, {
   source as source1940,
   description as description1940,
@@ -354,6 +356,26 @@ interface YearChartData {
   source: YearSource | null
   description?: string
 }
+
+export type SongSearchMatch = {
+  type: 'song'
+  song: Song
+  year: number
+}
+
+export type YearSearchMatch = {
+  type: 'year'
+  year: number
+  path: string
+}
+
+export type DecadeSearchMatch = {
+  type: 'decade'
+  decade: string
+  path: string
+}
+
+export type SearchMatch = SongSearchMatch | YearSearchMatch | DecadeSearchMatch
 
 const yearData: Record<number, YearChartData> = {
   1940: {
@@ -800,10 +822,22 @@ export const getYearDescription = (year: number): string | null =>
 export const getAvailableYears = (): number[] =>
   Object.keys(yearData).map(Number)
 
-export const searchSongs = (query: string): { song: Song; year: number }[] => {
+const availableYears = getAvailableYears()
+const availableYearSet = new Set(availableYears)
+const availableDecadeSet = new Set(
+  availableYears.map((year) => getDecadeForYear(year)),
+)
+
+const getNumericQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{4})(s)?$/u)
+
+export const searchSongs = (query: string): SongSearchMatch[] => {
   if (!query.trim()) return []
   const q = query.toLowerCase()
-  const results: { song: Song; year: number }[] = []
+  const results: SongSearchMatch[] = []
   for (const [yearStr, data] of Object.entries(yearData)) {
     const year = Number(yearStr)
     for (const song of data.songs) {
@@ -812,8 +846,34 @@ export const searchSongs = (query: string): { song: Song; year: number }[] => {
         song.artist.toLowerCase().includes(q) ||
         song.album?.toLowerCase().includes(q)
       )
-        results.push({ song, year })
+        results.push({ type: 'song', song, year })
     }
   }
   return results
 }
+
+const searchNumericTargets = (query: string): SearchMatch[] => {
+  const numericQuery = getNumericQuery(query)
+  if (!numericQuery) return []
+
+  const year = Number(numericQuery[1])
+  const isDecadeOnlyQuery = numericQuery[2] === 's'
+  const isDecadeStartYear = year % 10 === 0
+  const decade = getDecadeForYear(year)
+  const results: SearchMatch[] = []
+
+  if (!isDecadeOnlyQuery && availableYearSet.has(year))
+    results.push({ type: 'year', year, path: getYearPath(year) })
+  if (
+    (isDecadeOnlyQuery || isDecadeStartYear) &&
+    availableDecadeSet.has(decade)
+  )
+    results.push({ type: 'decade', decade, path: getDecadePath(decade) })
+
+  return results
+}
+
+export const searchCatalog = (query: string): SearchMatch[] => [
+  ...searchNumericTargets(query),
+  ...searchSongs(query),
+]
