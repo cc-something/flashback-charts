@@ -43,10 +43,10 @@ const shouldShowExpandedPlayerDetails = computed(
 )
 const playerDockContainerClass = computed(() =>
   isMobileViewport.value
-    ? 'mx-auto w-full max-w-[16.75rem] px-3 py-3'
+    ? 'mx-auto w-full max-w-[16.75rem] px-3 py-2'
     : route.name === 'year'
-      ? 'mx-auto max-w-[50.4rem] px-4 py-3 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-3'
-      : 'mx-auto max-w-[1300px] px-4 py-3 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-3',
+      ? 'mx-auto max-w-[50.4rem] px-4 py-2 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-2'
+      : 'mx-auto max-w-[1300px] px-4 py-2 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-2',
 )
 const playerDockClass = computed(() =>
   isMobileViewport.value
@@ -141,10 +141,10 @@ const toggleMobilePlayerCollapsed = () => {
         type="button"
         title="Stop playback (Esc)"
         aria-label="Stop playback"
-        class="absolute top-0 right-0 z-30 inline-flex h-5 w-5 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        class="absolute top-2 right-2 z-30 inline-flex h-7 w-7 items-center justify-center rounded-full bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         @click="player.stop"
       >
-        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
           />
@@ -154,7 +154,7 @@ const toggleMobilePlayerCollapsed = () => {
       <div :class="playerDockContainerClass">
         <div
           v-if="isMobileViewport"
-          class="mb-3 flex items-center justify-between gap-2"
+          class="mb-2 flex items-center justify-between gap-2"
         >
           <div class="min-w-0 flex items-center gap-2">
             <button
@@ -327,13 +327,13 @@ const toggleMobilePlayerCollapsed = () => {
 
         <div
           v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="mt-3 flex items-start gap-3"
+          class="mt-2 flex items-start gap-2.5"
         >
           <button
             type="button"
             title="Go to song (G)"
             aria-label="Go to song"
-            class="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+            class="relative h-[4.2rem] w-[4.2rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
             @click="goToPlayingSong"
           >
             <img
@@ -347,7 +347,7 @@ const toggleMobilePlayerCollapsed = () => {
             type="button"
             title="Go to song (G)"
             aria-label="Go to song"
-            class="min-w-0 flex-1 rounded-xl px-2 py-1 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+            class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
             @click="goToPlayingSong"
           >
             <p
@@ -366,7 +366,7 @@ const toggleMobilePlayerCollapsed = () => {
 
         <div
           v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="mt-3 flex items-center justify-between gap-1.5"
+          class="mt-1.5 flex items-center justify-between gap-1.5"
         >
           <div class="flex items-center gap-1">
             <button
@@ -458,7 +458,7 @@ const toggleMobilePlayerCollapsed = () => {
 
         <div
           v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="relative mt-3 h-7"
+          class="relative mt-1.5 h-7"
         >
           <p
             class="pointer-events-none absolute top-0 right-0 font-mono text-[0.72rem] tabular-nums text-text-muted"
