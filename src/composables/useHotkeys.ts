@@ -18,6 +18,7 @@ const KONAMI = [
   'KeyB',
   'KeyA',
 ]
+const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 
 const getIsInputFocused = () => {
   const el = document.activeElement
@@ -159,6 +160,12 @@ export const useHotkeys = (
     if (e.code === 'KeyG' && !isMod) {
       e.preventDefault()
       void goToPlayingSong()
+      return
+    }
+
+    if (e.code === 'KeyF' && !isMod && player.isActive) {
+      e.preventDefault()
+      window.dispatchEvent(new Event(PLAYER_FULLSCREEN_TOGGLE_EVENT))
       return
     }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
@@ -18,13 +18,14 @@ const playerViewportHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isFullscreen = ref(false)
 const isMobileViewport = useMediaQuery('(max-width: 839px)')
+const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 
 const isMac =
   typeof navigator !== 'undefined' &&
   navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-black/0 text-text/70 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -73,7 +74,9 @@ const playerActionRowClass = computed(() =>
     : 'flex items-center gap-1',
 )
 const fullscreenToggleTitle = computed(() =>
-  isFullscreen.value ? 'Exit full-screen player' : 'Open full-screen player',
+  isFullscreen.value
+    ? 'Exit full-screen player (F)'
+    : 'Open full-screen player (F)',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -123,7 +126,23 @@ watch(shouldShowPlayerDock, (shouldShow) => {
   if (shouldShow) return
   isFullscreen.value = false
 })
+const handleFullscreenToggle = () => {
+  if (!player.playingSong || shouldShowMobilePlaybackCta.value) return
+  toggleFullscreen()
+}
+onMounted(() =>
+  window.addEventListener(
+    PLAYER_FULLSCREEN_TOGGLE_EVENT,
+    handleFullscreenToggle,
+  ),
+)
 onUnmounted(() => player.setPlayerContainer(null))
+onUnmounted(() =>
+  window.removeEventListener(
+    PLAYER_FULLSCREEN_TOGGLE_EVENT,
+    handleFullscreenToggle,
+  ),
+)
 
 const goToPlayingSong = async () => {
   const year = player.playingYear
@@ -383,7 +402,7 @@ const toggleFullscreen = () => {
         v-if="
           player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
         "
-        class="mt-1.5 flex items-center justify-between gap-1.5"
+        class="mt-1.5 flex items-center justify-between gap-1"
       >
         <div class="flex items-center gap-1">
           <button
@@ -465,7 +484,7 @@ const toggleFullscreen = () => {
           </button>
         </div>
 
-        <div class="flex items-center gap-1">
+        <div class="ml-auto flex items-center justify-end">
           <button
             type="button"
             :title="fullscreenToggleTitle"
@@ -482,7 +501,7 @@ const toggleFullscreen = () => {
         v-if="
           player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
         "
-        class="mt-2 flex justify-end"
+        class="mt-1 flex justify-end"
       >
         <p
           class="mr-0.5 font-mono text-[0.64rem] tabular-nums text-text-muted"
