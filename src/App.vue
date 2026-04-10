@@ -34,6 +34,7 @@ import {
   mergeFontLinks,
   getThemeFontLinks,
 } from '@/themes/font'
+import { socialLinks } from '@/constants/externalLinks'
 import { getHomePath, getYearPath } from '@/utils/url'
 import MiniPlayer from '@/components/MiniPlayer.vue'
 import RickRollDiscoBall from '@/components/RickRollDiscoBall.vue'
@@ -87,18 +88,6 @@ const isHomeRoute = computed(() => route.name === 'home')
 const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
 const waitForScrollSettle = () =>
   new Promise<void>((resolve) => window.setTimeout(resolve, 450))
-const socialLinks = [
-  {
-    href: 'https://www.facebook.com/people/Flashback-Charts/61572091223850/',
-    label: 'Facebook',
-    network: 'facebook',
-  },
-  {
-    href: 'https://www.x.com/FlashbackCharts',
-    label: 'X.com',
-    network: 'x',
-  },
-] as const
 const handleSocialLinkClick = (network: string) =>
   trackEvent('social_link_click', { network })
 const revealContactEmail = () => {
