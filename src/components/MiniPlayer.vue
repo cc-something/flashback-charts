@@ -50,8 +50,8 @@ const playerDockContainerClass = computed(() =>
 )
 const playerDockClass = computed(() =>
   isMobileViewport.value
-    ? 'z-30 mx-3 mt-3 rounded-[1.35rem] border border-primary/15 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
-    : 'z-30 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:overflow-hidden min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10',
+    ? 'relative z-30 mx-3 mt-3 rounded-[1.35rem] border border-primary/15 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
+    : 'relative z-30 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:overflow-hidden min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -136,6 +136,21 @@ const toggleMobilePlayerCollapsed = () => {
       :style="themeVars"
       :class="playerDockClass"
     >
+      <button
+        v-if="player.playingSong && shouldShowExpandedPlayerDetails"
+        type="button"
+        title="Stop playback (Esc)"
+        aria-label="Stop playback"
+        class="absolute top-3 right-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        @click="player.stop"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+          />
+        </svg>
+      </button>
+
       <div :class="playerDockContainerClass">
         <div
           v-if="isMobileViewport"
@@ -424,13 +439,6 @@ const toggleMobilePlayerCollapsed = () => {
             </button>
           </div>
 
-          <p
-            v-if="player.showSeekBar"
-            class="shrink-0 font-mono text-[0.72rem] tabular-nums text-text-muted"
-          >
-            {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-          </p>
-
           <div class="flex items-center gap-1">
             <button
               type="button"
@@ -445,31 +453,24 @@ const toggleMobilePlayerCollapsed = () => {
                 />
               </svg>
             </button>
-
-            <button
-              type="button"
-              title="Stop playback (Esc)"
-              aria-label="Stop playback"
-              :class="playerButtonClass"
-              @click="player.stop"
-            >
-              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-                />
-              </svg>
-            </button>
           </div>
         </div>
 
-        <PlaybackSeekBar
+        <div
           v-if="
             player.playingSong &&
             player.showSeekBar &&
             shouldShowExpandedPlayerDetails
           "
-          root-class="mt-3 h-1.5"
-        />
+          class="relative mt-3 pb-4"
+        >
+          <PlaybackSeekBar root-class="h-1.5" />
+          <p
+            class="pointer-events-none absolute right-0 bottom-0 font-mono text-[0.72rem] tabular-nums text-text-muted"
+          >
+            {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+          </p>
+        </div>
       </div>
     </aside>
   </Transition>
