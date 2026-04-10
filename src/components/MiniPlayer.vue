@@ -43,10 +43,10 @@ const shouldShowExpandedPlayerDetails = computed(
 )
 const playerDockContainerClass = computed(() =>
   isMobileViewport.value
-    ? 'mx-auto w-full max-w-[16.75rem] px-3 py-1.5'
+    ? 'mx-auto w-full max-w-[16.75rem] px-3 pt-3 pb-1.5'
     : route.name === 'year'
-      ? 'mx-auto max-w-[50.4rem] px-4 py-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-1.5'
-      : 'mx-auto max-w-[1300px] px-4 py-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-1.5',
+      ? 'mx-auto max-w-[50.4rem] px-4 pt-3 pb-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-1.5'
+      : 'mx-auto max-w-[1300px] px-4 pt-3 pb-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-1.5',
 )
 const playerDockClass = computed(() =>
   isMobileViewport.value
