@@ -92,7 +92,7 @@ const infoToasts = computed(() =>
         <div
           v-for="t in infoToasts"
           :key="t.id"
-          class="pointer-events-auto flex items-center gap-2 rounded-lg bg-surface px-4 py-2.5 text-sm font-medium text-text shadow-lg ring-1 ring-primary/25"
+          class="pointer-events-auto flex items-center gap-2 rounded-lg bg-surface px-4 py-2.5 text-left text-sm font-medium whitespace-pre-line text-text shadow-lg ring-1 ring-primary/25"
         >
           {{ t.message }}
         </div>

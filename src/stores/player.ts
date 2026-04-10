@@ -481,8 +481,12 @@ export const usePlayerStore = defineStore('player', () => {
   const handleEmbedBlockedPlayback = async () => {
     const failedSong = playingSong.value
     const failedYear = playingYear.value
-    await failLoadingAttempt("Couldn't play that song, skipping", () => {})
-    if (failedSong && failedYear !== null)
+    if (!failedSong || failedYear === null) return
+    useToastStore().showInfo(
+      `Unfortunately we can't play that song:\n${failedSong.title} by ${failedSong.artist}`,
+    )
+    await new Promise<void>((resolve) => setTimeout(resolve, 2000))
+    if (playingSong.value === failedSong && playingYear.value === failedYear)
       playNext(failedSong, failedYear, 'skip')
   }
   const handlePlaybackError = async (errorCode?: number) => {
