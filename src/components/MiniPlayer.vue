@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import { Flag, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
@@ -14,6 +15,7 @@ const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
 const playerViewportHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
+const isMobileViewport = useMediaQuery('(max-width: 839px)')
 
 const isMac =
   typeof navigator !== 'undefined' &&
@@ -26,6 +28,9 @@ const shouldShowPlayerDock = computed(
 )
 const shouldShowRestoredPoster = computed(
   () => player.playingSong !== null && !player.hasMountedPlayer,
+)
+const shouldShowMobilePlaybackCta = computed(
+  () => isMobileViewport.value && player.isAwaitingMobilePlaybackStart,
 )
 const playerDockContainerClass = computed(() => 'px-3 pt-3 pb-3')
 const playerDockClass = computed(() =>
@@ -168,7 +173,18 @@ const openReportModal = () => {
         </div>
       </div>
 
-      <div v-if="player.playingSong" class="mt-1.5 flex items-start gap-2.5">
+      <p
+        v-if="shouldShowMobilePlaybackCta && player.playingSong"
+        class="mt-3 px-1 text-sm leading-snug text-text-muted"
+      >
+        Tap the play button in the video above to start
+        {{ ` ${player.playingSong.title}` }}.
+      </p>
+
+      <div
+        v-if="player.playingSong && !shouldShowMobilePlaybackCta"
+        class="mt-1.5 flex items-start gap-2.5"
+      >
         <button
           type="button"
           title="Go to song (G)"
@@ -221,7 +237,7 @@ const openReportModal = () => {
       </div>
 
       <div
-        v-if="player.playingSong"
+        v-if="player.playingSong && !shouldShowMobilePlaybackCta"
         class="mt-1 flex items-center justify-between gap-1.5"
       >
         <div class="flex items-center gap-1">
@@ -317,7 +333,10 @@ const openReportModal = () => {
         </div>
       </div>
 
-      <div v-if="player.playingSong" class="relative mt-1 h-1.5">
+      <div
+        v-if="player.playingSong && !shouldShowMobilePlaybackCta"
+        class="relative mt-1 h-1.5"
+      >
         <PlaybackSeekBar
           :disabled="!player.showSeekBar"
           root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
