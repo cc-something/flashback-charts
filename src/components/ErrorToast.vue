@@ -16,6 +16,24 @@ const infoToasts = computed(() =>
 const warningToasts = computed(() =>
   toast.toasts.filter((t) => t.variant === 'warning'),
 )
+
+const getWarningToastParts = (message: string) => {
+  const [headline, songLine = ''] = message.split('\n')
+  const match = songLine.match(/^(.+) by (.+)$/)
+  if (!match)
+    return {
+      headline,
+      title: songLine,
+      artist: '',
+      hasStructuredSongLine: false,
+    }
+  return {
+    headline,
+    title: match[1],
+    artist: match[2],
+    hasStructuredSongLine: true,
+  }
+}
 </script>
 
 <template>
@@ -46,10 +64,21 @@ const warningToasts = computed(() =>
         <div
           v-for="t in warningToasts"
           :key="t.id"
-          class="pointer-events-auto flex items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-amber-400 px-4 py-2.5 text-left text-sm font-medium text-amber-950 shadow-lg ring-1 ring-amber-500/20"
+          class="pointer-events-auto flex items-start gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-left text-sm font-medium text-amber-950 shadow-lg ring-1 ring-amber-500/20"
         >
           <AlertTriangle class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
-          {{ t.message }}
+          <div class="min-w-0 flex-1">
+            <p>{{ getWarningToastParts(t.message).headline }}</p>
+            <p
+              v-if="getWarningToastParts(t.message).hasStructuredSongLine"
+              class="whitespace-pre-line"
+            >
+              <strong>{{ getWarningToastParts(t.message).title }}</strong>
+              by
+              {{ getWarningToastParts(t.message).artist }}
+            </p>
+            <p v-else class="whitespace-pre-line">{{ t.message }}</p>
+          </div>
           <button
             type="button"
             aria-label="Dismiss"
