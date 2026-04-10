@@ -329,12 +329,12 @@ watch(
           <div v-else />
         </nav>
 
-        <section class="grid grid-cols-1 gap-4 min-[1260px]:grid-cols-2">
+        <section class="grid grid-cols-1 gap-4 min-[1000px]:grid-cols-2">
           <div
             v-for="(column, columnIndex) in yearColumns"
             :key="columnIndex"
             class="flex flex-col gap-4"
-            :class="{ 'min-[1260px]:pt-28': columnIndex === 1 }"
+            :class="{ 'min-[1000px]:pt-28': columnIndex === 1 }"
           >
             <article
               v-for="year in column"
