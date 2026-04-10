@@ -68,6 +68,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           <p class="font-bold text-text">
             {{ props.song.title }}
           </p>
+          <p>
+            {{ props.song.artist }}
+          </p>
           <p v-if="props.song.album">
             {{ props.song.album }}
           </p>
