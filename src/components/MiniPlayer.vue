@@ -44,13 +44,13 @@ const playerDockContainerClass = computed(() =>
 const playerDockClass = computed(() =>
   isFullscreen.value
     ? [
-        'fixed inset-x-0 bottom-0 z-30 overflow-y-auto bg-[color:var(--color-player)] transition-all duration-150',
+        'fixed inset-x-0 bottom-0 z-30 overflow-y-auto bg-[color:var(--color-player)]',
         shouldShowPlayerDock.value
           ? 'pointer-events-auto opacity-100'
           : 'pointer-events-none opacity-0',
       ].join(' ')
     : [
-        'fixed right-4 bottom-4 z-30 w-[calc(200px*16/9+2px)] rounded-xl border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-all duration-150',
+        'fixed right-4 bottom-4 z-30 w-[calc(200px*16/9+2px)] rounded-xl border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)]',
         shouldShowPlayerDock.value
           ? 'pointer-events-auto opacity-100'
           : 'pointer-events-none opacity-0',
