@@ -36,6 +36,7 @@ import {
 } from '@/themes/font'
 import { getHomePath, getYearPath } from '@/utils/url'
 import MiniPlayer from '@/components/MiniPlayer.vue'
+import RickRollDiscoBall from '@/components/RickRollDiscoBall.vue'
 import YearTabs from '@/components/YearTabs.vue'
 const RickRollBanner = defineAsyncComponent(
   () => import('@/components/RickRollBanner.vue'),
@@ -290,6 +291,7 @@ onUnmounted(() => teardownKonamiListener())
     class="flex min-h-screen flex-col bg-background text-text"
     :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }"
   >
+    <RickRollDiscoBall :is-active="isRickRollActive" />
     <div ref="stickyBar" class="sticky top-0 z-40">
       <header class="border-b border-primary/15 bg-surface">
         <div :class="headerContainerClass">
