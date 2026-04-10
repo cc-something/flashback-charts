@@ -309,7 +309,7 @@ const toggleMobilePlayerCollapsed = () => {
                 class="absolute inset-0"
                 :style="{
                   background:
-                    'linear-gradient(180deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.94) 62%, rgba(0, 0, 0, 0) 100%)',
+                    'linear-gradient(to top, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.94) 62%, rgba(0, 0, 0, 0) 100%)',
                 }"
               />
               <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
