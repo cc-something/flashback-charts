@@ -43,10 +43,10 @@ const shouldShowExpandedPlayerDetails = computed(
 )
 const playerDockContainerClass = computed(() =>
   isMobileViewport.value
-    ? 'mx-auto w-full max-w-[16.75rem] px-3 py-2'
+    ? 'mx-auto w-full max-w-[16.75rem] px-3 py-1.5'
     : route.name === 'year'
-      ? 'mx-auto max-w-[50.4rem] px-4 py-2 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-2'
-      : 'mx-auto max-w-[1300px] px-4 py-2 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-2',
+      ? 'mx-auto max-w-[50.4rem] px-4 py-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-1.5'
+      : 'mx-auto max-w-[1300px] px-4 py-1.5 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:py-1.5',
 )
 const playerDockClass = computed(() =>
   isMobileViewport.value
@@ -141,10 +141,10 @@ const toggleMobilePlayerCollapsed = () => {
         type="button"
         title="Stop playback (Esc)"
         aria-label="Stop playback"
-        class="absolute top-2 right-2 z-30 inline-flex h-7 w-7 items-center justify-center rounded-full bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        class="absolute top-0 right-0 z-30 inline-flex h-8 w-8 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border border-white/12 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         @click="player.stop"
       >
-        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
           />
@@ -199,7 +199,7 @@ const toggleMobilePlayerCollapsed = () => {
               title="Play / pause"
               aria-label="Toggle playback"
               :class="mobilePlayerButtonClass"
-              @click="player.togglePlayback"
+              @click="player.togglePlayback('player-btn')"
             >
               <svg
                 v-if="player.playerState === 'loading'"
@@ -327,7 +327,7 @@ const toggleMobilePlayerCollapsed = () => {
 
         <div
           v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="mt-2 flex items-start gap-2.5"
+          class="mt-1.5 flex items-start gap-2.5"
         >
           <button
             type="button"
@@ -366,7 +366,7 @@ const toggleMobilePlayerCollapsed = () => {
 
         <div
           v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="mt-1.5 flex items-center justify-between gap-1.5"
+          class="mt-1 flex items-center justify-between gap-1.5"
         >
           <div class="flex items-center gap-1">
             <button
@@ -374,7 +374,7 @@ const toggleMobilePlayerCollapsed = () => {
               :title="`Previous song (${mod}+←)`"
               aria-label="Previous song"
               :class="playerButtonClass"
-              @click="player.playPrev()"
+              @click="player.playPrev('player-btn')"
             >
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
@@ -386,7 +386,7 @@ const toggleMobilePlayerCollapsed = () => {
               title="Play / pause (Space or K)"
               aria-label="Toggle playback"
               :class="playerButtonClass"
-              @click="player.togglePlayback"
+              @click="player.togglePlayback('player-btn')"
             >
               <svg
                 v-if="player.playerState === 'loading'"
@@ -431,7 +431,7 @@ const toggleMobilePlayerCollapsed = () => {
               :title="`Next song (${mod}+→)`"
               aria-label="Next song"
               :class="playerButtonClass"
-              @click="player.playNext()"
+              @click="player.playNext(undefined, undefined, 'player-btn')"
             >
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
@@ -458,7 +458,7 @@ const toggleMobilePlayerCollapsed = () => {
 
         <div
           v-if="player.playingSong && shouldShowExpandedPlayerDetails"
-          class="relative mt-1.5 h-7"
+          class="relative mt-1 h-7"
         >
           <p
             class="pointer-events-none absolute top-0 right-0 font-mono text-[0.72rem] tabular-nums text-text-muted"
