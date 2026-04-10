@@ -74,7 +74,9 @@ const chart = useChartStore()
 const player = usePlayerStore()
 const toast = useToastStore()
 const stickyBar = ref<HTMLDivElement | null>(null)
+const topHeaderChrome = ref<HTMLDivElement | null>(null)
 const { height: stickyBarHeight } = useElementSize(stickyBar)
+const { height: topHeaderChromeHeight } = useElementSize(topHeaderChrome)
 const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const isContactOpen = ref(false)
@@ -291,39 +293,44 @@ onUnmounted(() => teardownKonamiListener())
     class="flex min-h-screen flex-col bg-background text-text"
     :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }"
   >
-    <RickRollDiscoBall :is-active="isRickRollActive" />
+    <RickRollDiscoBall
+      :is-active="isRickRollActive"
+      :top-offset="topHeaderChromeHeight"
+    />
     <div ref="stickyBar" class="sticky top-0 z-40">
-      <header class="border-b border-primary/15 bg-surface">
-        <div :class="headerContainerClass">
-          <router-link
-            :to="getHomePath()"
-            :class="headerWordmarkClass"
-            :style="headerWordmarkStyle"
-          >
-            <img src="/cd.webp" alt="" :style="discStyle" />
-            Flashback Charts Australia
-          </router-link>
-          <button
-            type="button"
-            aria-label="Search songs"
-            class="flex h-10 w-10 self-start items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary sm:self-center"
-            @click="openSearch"
-          >
-            <svg
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
+      <div ref="topHeaderChrome">
+        <header class="border-b border-primary/15 bg-surface">
+          <div :class="headerContainerClass">
+            <router-link
+              :to="getHomePath()"
+              :class="headerWordmarkClass"
+              :style="headerWordmarkStyle"
             >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" stroke-linecap="round" />
-            </svg>
-          </button>
-        </div>
-      </header>
+              <img src="/cd.webp" alt="" :style="discStyle" />
+              Flashback Charts Australia
+            </router-link>
+            <button
+              type="button"
+              aria-label="Search songs"
+              class="flex h-10 w-10 self-start items-center justify-center rounded-full text-text-muted transition-colors duration-150 hover:text-primary sm:self-center"
+              @click="openSearch"
+            >
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+        </header>
 
-      <YearTabs />
+        <YearTabs />
+      </div>
       <MiniPlayer />
       <RickRollBanner v-if="isRickRollActive" @deactivate="deactivate" />
     </div>

@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import discoBallImage from '@/assets/disco-ball.png'
+import { computed } from 'vue'
 
-defineProps<{ isActive: boolean }>()
+const props = defineProps<{ isActive: boolean; topOffset: number }>()
+const discoBallShellStyle = computed(() => ({
+  top: `calc(${props.topOffset}px + 0.25rem)`,
+}))
 </script>
 
 <template>
   <Transition name="disco-ball">
-    <div v-if="isActive" aria-hidden="true" class="disco-ball-shell">
+    <div
+      v-if="isActive"
+      aria-hidden="true"
+      class="disco-ball-shell"
+      :style="discoBallShellStyle"
+    >
       <div class="disco-ball-pendulum">
         <div class="disco-ball-glow" />
         <img :src="discoBallImage" alt="" class="disco-ball-image" />
@@ -18,8 +27,7 @@ defineProps<{ isActive: boolean }>()
 <style scoped>
 .disco-ball-shell {
   position: fixed;
-  top: 0;
-  left: clamp(0.75rem, 2vw, 1.75rem);
+  left: clamp(1rem, 2.8vw, 2.35rem);
   z-index: 30;
   pointer-events: none;
 }
@@ -31,16 +39,16 @@ defineProps<{ isActive: boolean }>()
 }
 
 .disco-ball-image {
-  width: clamp(12rem, 30vw, 18rem);
+  width: clamp(10rem, 24vw, 14rem);
   height: auto;
   filter: drop-shadow(0 0.8rem 1.2rem rgb(0 0 0 / 18%));
 }
 
 .disco-ball-glow {
   position: absolute;
-  top: 6.5rem;
+  top: 5.5rem;
   left: 50%;
-  width: 82%;
+  width: 80%;
   aspect-ratio: 1;
   border-radius: 9999px;
   background: radial-gradient(
@@ -63,13 +71,13 @@ defineProps<{ isActive: boolean }>()
 .disco-ball-enter-from,
 .disco-ball-leave-to {
   opacity: 0;
-  transform: translate3d(0, -16rem, 0);
+  transform: translate3d(0, -13rem, 0);
 }
 
 .disco-ball-enter-to,
 .disco-ball-leave-from {
   opacity: 1;
-  transform: translate3d(0, 5.5rem, 0);
+  transform: translate3d(0, 1rem, 0);
 }
 
 @keyframes disco-ball-sway {
