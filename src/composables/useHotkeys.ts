@@ -129,6 +129,12 @@ export const useHotkeys = (
       return
     }
 
+    if (isMod && e.code === 'KeyK') {
+      e.preventDefault()
+      openSearch()
+      return
+    }
+
     if (e.code === 'KeyJ' && !isMod) {
       e.preventDefault()
       player.seekRelative(-10)

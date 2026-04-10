@@ -63,6 +63,13 @@ const primePlayback = () => void player.preload()
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')
 }
+const handleInputKeydown = (e: KeyboardEvent) => {
+  if (e.key !== 'Enter') return
+  const firstResult = results.value[0]
+  if (!firstResult) return
+  e.preventDefault()
+  goToResult(firstResult)
+}
 
 const focusInput = () => inputRef.value?.focus()
 
@@ -106,6 +113,7 @@ onMounted(() => {
                   aria-label="Search songs, artists, albums, years, or decades"
                   placeholder="Search songs, artists, albums, years…"
                   class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
+                  @keydown.enter="handleInputKeydown"
                   @keydown.escape="emit('close')"
                 />
                 <!-- Search icon -->
