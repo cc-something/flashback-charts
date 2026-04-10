@@ -10,7 +10,7 @@ const theme: DecadeTheme = {
   fontUrl:
     'https://fonts.bunny.net/css2?family=Orbitron:wght@400;700&display=swap',
   colors: {
-    background: '#05000f',
+    background: '#120033',
     surface: '#0f0024',
     primary: '#ff0090',
     secondary: '#00fff0',
