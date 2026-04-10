@@ -11,14 +11,14 @@ const theme: DecadeTheme = {
     'https://fonts.bunny.net/css2?family=Unbounded:wght@400;700&display=swap',
   colors: {
     background: '#331c00',
-    surface: '#2d1800',
+    surface: '#251400',
     primary: '#ff8c00',
     secondary: '#e65100',
     text: '#fff3e0',
     textMuted: '#c47a30',
     accent: '#ffd600',
     tabActive: '#ff8c00',
-    tabInactive: '#2d1800',
+    tabInactive: '#251400',
   },
 }
 
