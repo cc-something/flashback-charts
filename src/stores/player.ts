@@ -6,6 +6,7 @@ import { useRickRollMode } from '@/composables/useRickRollMode'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
+import { getSongsForSortOrder } from '@/utils/chartOrder'
 
 const STORAGE_KEY = 'flashback-miniplayer'
 const SAVE_INTERVAL_MS = 3_000
@@ -845,8 +846,7 @@ export const usePlayerStore = defineStore('player', () => {
     const songs = await getYearSongs(year)
     if (!songs) return null
     const chart = useChartStore()
-    if (chart.sortOrder === 'desc') return [...songs].reverse()
-    return songs
+    return getSongsForSortOrder(songs, chart.sortOrder)
   }
 
   const getCurrentIndex = async () => {
