@@ -50,6 +50,7 @@ export interface UrlIntegrityResult {
 
 interface FetchWithTimeoutOptions {
   fetchImpl?: typeof fetch
+  headers?: HeadersInit
   timeoutMs?: number
 }
 
@@ -69,6 +70,20 @@ const removedVideoPatterns = [
   /this video has been removed/iu,
   /watch on the latest version of youtube/iu,
 ]
+const browserLikeHeaders = {
+  'accept':
+    'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+  'accept-language': 'en-AU,en;q=0.9',
+  'cache-control': 'no-cache',
+  'pragma': 'no-cache',
+  'sec-fetch-dest': 'document',
+  'sec-fetch-mode': 'navigate',
+  'sec-fetch-site': 'none',
+  'sec-fetch-user': '?1',
+  'upgrade-insecure-requests': '1',
+  'user-agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
+} as const
 
 const createReference = (label: string): UrlIntegrityTargetReference => ({
   label,
@@ -174,7 +189,11 @@ const getTimeoutError = (timeoutMs: number) => {
 
 const fetchWithTimeout = async (
   input: string,
-  { fetchImpl = fetch, timeoutMs = defaultTimeoutMs }: FetchWithTimeoutOptions,
+  {
+    fetchImpl = fetch,
+    headers,
+    timeoutMs = defaultTimeoutMs,
+  }: FetchWithTimeoutOptions,
 ) => {
   const abortController = new AbortController()
   const timeoutId = setTimeout(
@@ -184,6 +203,7 @@ const fetchWithTimeout = async (
 
   try {
     return await fetchImpl(input, {
+      headers,
       redirect: 'follow',
       signal: abortController.signal,
     })
@@ -206,63 +226,117 @@ const createResult = (
   ...result,
 })
 
-export const checkHttpIntegrityTarget = async (
+const getHttpProbeLabel = (usedFallbackProfile: boolean) =>
+  usedFallbackProfile ? 'Fallback browser-like probe' : 'Default probe'
+
+const getHttpFailureResult = (
+  target: HttpIntegrityTarget,
+  attemptCount: number,
+  response: Response,
+  usedFallbackProfile: boolean,
+) =>
+  createResult(target, {
+    attempts: attemptCount,
+    finalUrl: response.url || target.url,
+    message: `${getHttpProbeLabel(usedFallbackProfile)} resolved with HTTP ${response.status}`,
+    reason: 'http-error',
+    status: 'failed',
+    statusCode: response.status,
+  })
+
+const getNetworkFailureResult = (
+  target: HttpIntegrityTarget,
+  attemptCount: number,
+  error: unknown,
+) => {
+  const errorMessage = error instanceof Error ? error.message : String(error)
+  const errorName = error instanceof Error ? error.name : ''
+  return createResult(target, {
+    attempts: attemptCount,
+    finalUrl: null,
+    message: errorMessage,
+    reason: errorName === timeoutErrorName ? 'timeout' : 'network-error',
+    status: 'failed',
+    statusCode: null,
+  })
+}
+
+const runHttpProbeProfile = async (
   target: HttpIntegrityTarget,
   {
     fetchImpl = fetch,
+    headers,
     retryCount = defaultRetryCount,
     timeoutMs,
-  }: UrlIntegrityCheckOptions = {},
-): Promise<UrlIntegrityResult> => {
+  }: UrlIntegrityCheckOptions,
+  usedFallbackProfile: boolean,
+  attemptOffset: number,
+) => {
   for (let attemptIndex = 0; attemptIndex <= retryCount; attemptIndex += 1) {
+    const attemptCount = attemptOffset + attemptIndex + 1
     try {
       const response = await fetchWithTimeout(target.url, {
         fetchImpl,
+        headers,
         timeoutMs,
       })
       if (response.ok || (response.status >= 300 && response.status < 400))
         return createResult(target, {
-          attempts: attemptIndex + 1,
+          attempts: attemptCount,
           finalUrl: response.url || target.url,
-          message: `Resolved with HTTP ${response.status}`,
+          message: `${getHttpProbeLabel(usedFallbackProfile)} resolved with HTTP ${response.status}`,
           reason: 'http-ok',
           status: 'passed',
           statusCode: response.status,
         })
       if (isRetriableStatus(response.status) && attemptIndex < retryCount)
         continue
-      return createResult(target, {
-        attempts: attemptIndex + 1,
-        finalUrl: response.url || target.url,
-        message: `Resolved with HTTP ${response.status}`,
-        reason: 'http-error',
-        status: 'failed',
-        statusCode: response.status,
-      })
+      return getHttpFailureResult(
+        target,
+        attemptCount,
+        response,
+        usedFallbackProfile,
+      )
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error)
       const errorName = error instanceof Error ? error.name : ''
       if (attemptIndex < retryCount && errorName !== timeoutErrorName) continue
-      return createResult(target, {
-        attempts: attemptIndex + 1,
-        finalUrl: null,
-        message: errorMessage,
-        reason: errorName === timeoutErrorName ? 'timeout' : 'network-error',
-        status: 'failed',
-        statusCode: null,
-      })
+      return getNetworkFailureResult(target, attemptCount, error)
     }
   }
 
   return createResult(target, {
-    attempts: retryCount + 1,
+    attempts: attemptOffset + retryCount + 1,
     finalUrl: null,
     message: 'HTTP integrity failed unexpectedly.',
     reason: 'network-error',
     status: 'failed',
     statusCode: null,
   })
+}
+
+export const checkHttpIntegrityTarget = async (
+  target: HttpIntegrityTarget,
+  options: UrlIntegrityCheckOptions = {},
+): Promise<UrlIntegrityResult> => {
+  const defaultProbeResult = await runHttpProbeProfile(
+    target,
+    options,
+    false,
+    0,
+  )
+  if (defaultProbeResult.status === 'passed') return defaultProbeResult
+  if (
+    defaultProbeResult.reason === 'timeout' ||
+    defaultProbeResult.reason === 'network-error'
+  )
+    return defaultProbeResult
+
+  return runHttpProbeProfile(
+    target,
+    { ...options, headers: browserLikeHeaders },
+    true,
+    defaultProbeResult.attempts,
+  )
 }
 
 const getYoutubeOembedUrl = (videoId: string) =>

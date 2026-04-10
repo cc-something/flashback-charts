@@ -119,6 +119,39 @@ describe('checkHttpIntegrityTarget', () => {
     })
   })
 
+  it('falls back to a browser-like request profile after a hard HTTP failure', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+      .mockResolvedValueOnce(new Response('', { status: 200 }))
+
+    await expect(
+      checkHttpIntegrityTarget(
+        {
+          kind: 'year-source',
+          id: 'year-source-1940',
+          url: 'https://example.com/1940',
+          references: [{ label: 'year:1940' }],
+        },
+        { fetchImpl, retryCount: 0 },
+      ),
+    ).resolves.toMatchObject({
+      attempts: 2,
+      reason: 'http-ok',
+      status: 'passed',
+      statusCode: 200,
+    })
+    expect(fetchImpl).toHaveBeenNthCalledWith(
+      2,
+      'https://example.com/1940',
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'user-agent': expect.stringContaining('Mozilla/5.0'),
+        }),
+      }),
+    )
+  })
+
   it('retries retriable responses and then fails', async () => {
     const fetchImpl = vi.fn(async () => new Response('', { status: 500 }))
 
@@ -133,10 +166,34 @@ describe('checkHttpIntegrityTarget', () => {
         { fetchImpl, retryCount: 1 },
       ),
     ).resolves.toMatchObject({
-      attempts: 2,
+      attempts: 4,
       reason: 'http-error',
       status: 'failed',
       statusCode: 500,
+    })
+  })
+
+  it('fails after fallback is exhausted', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+
+    await expect(
+      checkHttpIntegrityTarget(
+        {
+          kind: 'year-source',
+          id: 'year-source-1940',
+          url: 'https://example.com/1940',
+          references: [{ label: 'year:1940' }],
+        },
+        { fetchImpl, retryCount: 0 },
+      ),
+    ).resolves.toMatchObject({
+      attempts: 2,
+      reason: 'http-error',
+      status: 'failed',
+      statusCode: 403,
     })
   })
 
