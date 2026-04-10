@@ -19,7 +19,7 @@ const KONAMI_SEQUENCE = [
 export const RICK_ASTLEY_YEAR = 1988
 
 export const RICK_ASTLEY_SONG: Song = {
-  rank: 1,
+  rank: 8,
   title: 'Never Gonna Give You Up',
   artist: 'Rick Astley',
   album: 'The Best Of Me: Never Edition',

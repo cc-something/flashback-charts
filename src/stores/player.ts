@@ -90,7 +90,7 @@ const getYearSongs = async (year: number) => {
 
 export const usePlayerStore = defineStore('player', () => {
   const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()
-  const { deactivate } = useRickRollMode()
+  const { deactivate, isRickRollActive } = useRickRollMode()
 
   const playingSong = ref<Song | null>(null)
   const playingYear = ref<number | null>(null)
@@ -129,6 +129,10 @@ export const usePlayerStore = defineStore('player', () => {
   const showOfflinePlaybackStoppedToast = () =>
     useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
   const getSongHighlightKey = (year: number, rank: number) => `${year}-${rank}`
+  const deactivateRickRollIfNeeded = () => {
+    if (!isRickRollActive.value) return
+    deactivate()
+  }
 
   const getConnectivityCheckUrl = () => {
     const connectivityCheckUrl = new URL('/favicon.svg', window.location.origin)
@@ -755,6 +759,7 @@ export const usePlayerStore = defineStore('player', () => {
     fromYear?: number,
     trigger: PlayTrigger = 'direct',
   ) => {
+    deactivateRickRollIfNeeded()
     const chart = useChartStore()
     const stopAutoplayIfNeeded = () => {
       if (trigger === 'autoplay') stop()
@@ -789,6 +794,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const playPrev = async (trigger: PlayTrigger = 'direct') => {
+    deactivateRickRollIfNeeded()
     const chart = useChartStore()
     const { songs, index, year } = await getCurrentIndex()
     if (!songs || index === -1 || year === null) return
