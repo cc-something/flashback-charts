@@ -27,14 +27,10 @@ const shouldRenderPlayerDock = computed(
 const shouldShowRestoredPoster = computed(
   () => player.playingSong !== null && !player.hasMountedPlayer,
 )
-const playerDockContainerClass = computed(() =>
-  route.name === 'year'
-    ? 'mx-auto max-w-[50.4rem] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3'
-    : 'mx-auto max-w-[1300px] px-4 pt-3 pb-4 min-[840px]:mx-0 min-[840px]:max-w-none min-[840px]:px-3 min-[840px]:pt-3 min-[840px]:pb-3',
-)
+const playerDockContainerClass = computed(() => 'px-3 pt-3 pb-3')
 const playerDockClass = computed(
   () =>
-    'relative z-30 border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[calc(200px*16/9+2px)] min-[840px]:rounded-xl',
+    'fixed right-4 bottom-4 z-30 w-[calc(200px*16/9+2px)] border border-white/12 rounded-xl bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
