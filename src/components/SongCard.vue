@@ -81,7 +81,7 @@ const primePlayback = () => void player.preload()
     <span
       class="w-9 flex-shrink-0 text-left text-lg sm:text-xl font-bold leading-none text-primary"
     >
-      #{{ displaySong.rank }}
+      {{ displaySong.rank }}
     </span>
 
     <button
