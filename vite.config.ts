@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { configDefaults } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
@@ -39,6 +40,9 @@ export default defineConfig({
     watch: {
       ignored: ['**/docs/**'],
     },
+  },
+  test: {
+    exclude: [...configDefaults.exclude, '.worktrees/**'],
   },
   // @ts-expect-error vite-ssg extends vite config at runtime
   ssgOptions: {

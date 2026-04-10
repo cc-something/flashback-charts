@@ -66,15 +66,9 @@ const playerViewportClass = computed(() =>
     ? 'player-viewport-fullscreen w-full bg-black'
     : 'player-viewport w-full min-h-[200px] bg-black',
 )
-const playerDetailsClass = computed(() =>
-  isFullscreen.value ? 'mt-4 grid gap-4' : 'mt-1.5 flex items-start gap-2.5',
-)
-const playerMetaClass = computed(() =>
-  isFullscreen.value ? 'min-w-0' : 'min-w-0 flex-1',
-)
 const playerActionRowClass = computed(() =>
   isFullscreen.value
-    ? 'mt-4 flex flex-wrap items-center gap-1'
+    ? 'mt-4 flex flex-wrap items-center justify-center gap-1'
     : 'flex items-center gap-1',
 )
 const fullscreenToggleTitle = computed(() =>
@@ -187,6 +181,93 @@ const toggleFullscreen = () => {
     </button>
 
     <div :class="playerDockContainerClass">
+      <div
+        v-if="
+          isFullscreen && player.playingSong && !shouldShowMobilePlaybackCta
+        "
+        class="mb-4 overflow-hidden rounded-[1.4rem] border border-white/12 bg-surface/70 shadow-[0_18px_48px_rgb(0_0_0_/_0.16)] backdrop-blur-sm"
+      >
+        <div class="relative flex items-start gap-3 px-4 py-4 sm:px-5">
+          <button
+            type="button"
+            title="Go to song (G)"
+            aria-label="Go to song"
+            class="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+            @click="goToPlayingSong"
+          >
+            <img
+              :src="player.playingSong.thumbnailPath"
+              :alt="player.playingSong.title"
+              class="block h-full w-full object-cover"
+            />
+          </button>
+
+          <div class="min-w-0 flex-1">
+            <div class="flex items-start justify-between gap-3">
+              <button
+                type="button"
+                title="Go to song (G)"
+                aria-label="Go to song"
+                class="min-w-0 flex-1 cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                @click="goToPlayingSong"
+              >
+                <p
+                  class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
+                >
+                  {{ player.playingYear }} #{{ player.playingSong.rank }}
+                </p>
+                <p
+                  class="mt-1 break-words text-xl font-bold leading-tight text-text sm:text-2xl"
+                >
+                  {{ player.playingSong.title }}
+                </p>
+                <p
+                  class="mt-1 break-words text-base leading-snug text-text-muted"
+                >
+                  {{ player.playingSong.artist }}
+                </p>
+                <p
+                  v-if="player.playingSong.album"
+                  class="mt-1 break-words text-sm leading-snug italic text-text-muted/75"
+                >
+                  {{ player.playingSong.album }}
+                </p>
+              </button>
+
+              <div class="flex items-center gap-2">
+                <p
+                  class="font-mono text-[0.72rem] tabular-nums text-text-muted"
+                  :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
+                >
+                  <template v-if="player.showSeekBar">
+                    {{ player.formattedCurrentTime }}/{{
+                      player.formattedDuration
+                    }}
+                  </template>
+                  <template v-else>0:00/0:00</template>
+                </p>
+                <button
+                  type="button"
+                  title="Report issue"
+                  aria-label="Report issue"
+                  class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                  @click.stop="openReportModal"
+                >
+                  <Flag class="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+
+            <div class="relative mt-4 h-1.5">
+              <PlaybackSeekBar
+                :disabled="!player.showSeekBar"
+                root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div :class="playerFrameClass">
         <div ref="playerViewportHost" :class="playerViewportClass">
           <button
@@ -234,18 +315,16 @@ const toggleFullscreen = () => {
       </p>
 
       <div
-        v-if="player.playingSong && !shouldShowMobilePlaybackCta"
-        :class="playerDetailsClass"
+        v-if="
+          player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
+        "
+        class="mt-1.5 flex items-start gap-2.5"
       >
         <button
           type="button"
           title="Go to song (G)"
           aria-label="Go to song"
-          :class="
-            isFullscreen
-              ? 'relative hidden h-24 w-24 shrink-0 overflow-hidden rounded-2xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 lg:block'
-              : 'relative h-[4.2rem] w-[4.2rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-          "
+          class="relative h-[4.2rem] w-[4.2rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           @click="goToPlayingSong"
         >
           <img
@@ -255,17 +334,13 @@ const toggleFullscreen = () => {
           />
         </button>
 
-        <div :class="playerMetaClass">
+        <div class="min-w-0 flex-1">
           <div class="flex items-start gap-1.5">
             <button
               type="button"
               title="Go to song (G)"
               aria-label="Go to song"
-              :class="
-                isFullscreen
-                  ? 'min-w-0 flex-1 cursor-pointer rounded-2xl px-0 py-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-                  : 'min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-              "
+              class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
               @click="goToPlayingSong"
             >
               <div class="flex items-center justify-between gap-1.5">
@@ -275,22 +350,10 @@ const toggleFullscreen = () => {
                   {{ player.playingYear }} #{{ player.playingSong.rank }}
                 </p>
               </div>
-              <p
-                :class="
-                  isFullscreen
-                    ? 'break-words text-xl font-bold leading-tight text-text sm:text-2xl'
-                    : 'break-words text-base font-bold leading-snug text-text'
-                "
-              >
+              <p class="break-words text-base font-bold leading-snug text-text">
                 {{ player.playingSong.title }}
               </p>
-              <p
-                :class="
-                  isFullscreen
-                    ? 'break-words text-base leading-snug text-text-muted'
-                    : 'break-words text-sm leading-snug text-text-muted'
-                "
-              >
+              <p class="break-words text-sm leading-snug text-text-muted">
                 {{ player.playingSong.artist }}
               </p>
             </button>
@@ -305,123 +368,88 @@ const toggleFullscreen = () => {
               <Flag class="h-3 w-3" aria-hidden="true" />
             </button>
           </div>
-
-          <div v-if="isFullscreen">
-            <div :class="playerActionRowClass">
-              <button
-                type="button"
-                :title="fullscreenToggleTitle"
-                :aria-label="fullscreenToggleTitle"
-                :class="playerButtonClass"
-                @click="toggleFullscreen"
-              >
-                <Minimize class="h-4.5 w-4.5" />
-              </button>
-
-              <button
-                type="button"
-                :title="`Previous song (${mod}+←)`"
-                aria-label="Previous song"
-                :class="playerButtonClass"
-                @click="player.playPrev('player-btn')"
-              >
-                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-                </svg>
-              </button>
-
-              <button
-                type="button"
-                title="Play / pause (Space or K)"
-                aria-label="Toggle playback"
-                :class="playerButtonClass"
-                @click="player.togglePlayback('player-btn')"
-              >
-                <svg
-                  v-if="player.playerState === 'loading'"
-                  class="h-5 w-5 animate-spin"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  />
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
-                <svg
-                  v-else-if="player.playerState === 'playing'"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-                <svg
-                  v-else
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </button>
-
-              <button
-                type="button"
-                :title="`Next song (${mod}+→)`"
-                aria-label="Next song"
-                :class="playerButtonClass"
-                @click="player.playNext(undefined, undefined, 'player-btn')"
-              >
-                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-                </svg>
-              </button>
-
-              <button
-                type="button"
-                title="Go to song (G)"
-                aria-label="Go to song"
-                :class="playerButtonClass"
-                @click="goToPlayingSong"
-              >
-                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 10.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
-                  />
-                </svg>
-              </button>
-
-              <p
-                class="mr-1 font-mono text-[0.72rem] tabular-nums text-text-muted"
-                :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
-              >
-                <template v-if="player.showSeekBar">
-                  {{ player.formattedCurrentTime }}/{{
-                    player.formattedDuration
-                  }}
-                </template>
-                <template v-else>0:00/0:00</template>
-              </p>
-            </div>
-
-            <div class="relative mt-2 h-1.5">
-              <PlaybackSeekBar
-                :disabled="!player.showSeekBar"
-                root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
-              />
-            </div>
-          </div>
         </div>
+      </div>
+
+      <div
+        v-if="
+          player.playingSong && !shouldShowMobilePlaybackCta && isFullscreen
+        "
+        :class="playerActionRowClass"
+      >
+        <button
+          type="button"
+          :title="fullscreenToggleTitle"
+          :aria-label="fullscreenToggleTitle"
+          :class="playerButtonClass"
+          @click="toggleFullscreen"
+        >
+          <Minimize class="h-4.5 w-4.5" />
+        </button>
+
+        <button
+          type="button"
+          :title="`Previous song (${mod}+←)`"
+          aria-label="Previous song"
+          :class="playerButtonClass"
+          @click="player.playPrev('player-btn')"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          title="Play / pause (Space or K)"
+          aria-label="Toggle playback"
+          :class="playerButtonClass"
+          @click="player.togglePlayback('player-btn')"
+        >
+          <svg
+            v-if="player.playerState === 'loading'"
+            class="h-5 w-5 animate-spin"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            />
+          </svg>
+          <svg
+            v-else-if="player.playerState === 'playing'"
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
+          <svg v-else class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          :title="`Next song (${mod}+→)`"
+          aria-label="Next song"
+          :class="playerButtonClass"
+          @click="player.playNext(undefined, undefined, 'player-btn')"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+          </svg>
+        </button>
       </div>
 
       <div
