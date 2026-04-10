@@ -588,6 +588,26 @@ export const usePlayerStore = defineStore('player', () => {
     if (!playerMountEl || !currentPlaySong?.youtubeVideoId) return null
     return createPlayer(playerMountEl)
   }
+  const primePlayback = async (song?: Song, year?: number) => {
+    await preload()
+    if (
+      typeof window === 'undefined' ||
+      !song?.youtubeVideoId ||
+      year === undefined ||
+      year === null ||
+      ytPlayer ||
+      playerInitPromise ||
+      !playerContainerEl
+    )
+      return
+    currentPlaySong = song
+    currentStartAtSeconds = undefined
+    try {
+      await ensurePlayerMounted()
+    } catch {
+      /* noop */
+    }
+  }
 
   const play = async (
     song: Song,
@@ -886,6 +906,7 @@ export const usePlayerStore = defineStore('player', () => {
     isMuted,
     hasMountedPlayer,
     preload,
+    primePlayback,
     setPlayerContainer,
     setOnEnded,
     play,

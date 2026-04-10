@@ -59,7 +59,10 @@ const handleClick = () =>
   isRickRollActive.value
     ? player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR, 'rickroll')
     : player.play(props.song, props.year, 'direct')
-const primePlayback = () => void player.preload()
+const primePlayback = () =>
+  isRickRollActive.value
+    ? void player.primePlayback(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR)
+    : void player.primePlayback(props.song, props.year)
 </script>
 
 <template>

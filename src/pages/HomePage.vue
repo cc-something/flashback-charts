@@ -40,7 +40,12 @@ const playYear = (year: number) => {
   router.push(getYearPath(year))
   player.play(song, year, 'home-btn')
 }
-const primePlayback = () => void player.preload()
+const primePlayback = (year: number) => {
+  const songs = getYearData(year)
+  if (!songs?.length) return
+  const song = chart.sortOrder === 'desc' ? songs[songs.length - 1] : songs[0]
+  void player.primePlayback(song, year)
+}
 
 const { isRickRollActive } = useRickRollMode()
 const rickThumbnail = RICK_ASTLEY_SONG.thumbnailPath
@@ -319,7 +324,7 @@ onUnmounted(() => {
                   color: group.theme.colors.background,
                 }"
                 :aria-label="`Play top songs of the ${group.decade}`"
-                @pointerdown="primePlayback"
+                @pointerdown="primePlayback(group.years[0].year)"
                 @click="playYear(group.years[0].year)"
               >
                 <Play

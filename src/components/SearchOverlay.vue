@@ -63,7 +63,8 @@ const getTargetAriaLabel = (result: Exclude<SearchMatch, SongSearchMatch>) =>
 
 const playSong = (song: SongSearchMatch['song'], year: number) =>
   player.play(song, year, 'search')
-const primePlayback = () => void player.preload()
+const primePlayback = (song: SongSearchMatch['song'], year: number) =>
+  void player.primePlayback(song, year)
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')
@@ -223,7 +224,7 @@ onMounted(() => {
                 type="button"
                 :aria-label="`Play ${result.song.title} by ${result.song.artist}`"
                 class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md ring-1 ring-black/10 transition duration-150 group-hover:scale-[1.03] group-hover:shadow-lg group-hover:shadow-black/20 hover:ring-primary/35 touch-manipulation"
-                @pointerdown="primePlayback"
+                @pointerdown="primePlayback(result.song, result.year)"
                 @click.stop="playSong(result.song, result.year)"
               >
                 <img
