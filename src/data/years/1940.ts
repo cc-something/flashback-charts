@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Till the Lights of London Shine Again',
     artist: 'Joe Loss',
     album: 'Till the Lights of London Shine Again',
-    youtubeVideoId: '61uq93r5FA8',
+    youtubeVideoId: 'v-dxiAlZPQg',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Begin the Beguine',
     artist: 'Joe Loss; Artie Shaw',
     album: 'Begin the Beguine',
-    youtubeVideoId: 'cCYGyg1H56s',
+    youtubeVideoId: '-QPjlYe1GB4',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Oh Johnny, Oh Johnny, Oh!',
     artist: 'Joe Loss; The Andrews Sisters',
     album: 'Oh Johnny, Oh Johnny, Oh!',
-    youtubeVideoId: 'qfY7L__-kIQ',
+    youtubeVideoId: 'dRIRX5tf8PM',
     imageSelection: 'artist',
     imageSources: {
       album: null,

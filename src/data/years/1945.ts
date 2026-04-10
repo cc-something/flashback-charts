@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: "Don't Fence Me In",
     artist: 'Bing Crosby & The Andrews Sisters',
     album: "Don't Fence Me In",
-    youtubeVideoId: 'vMnLoOnrwbg',
+    youtubeVideoId: 'RLz8zYqazt0',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Amor, Amor',
     artist: 'Bing Crosby',
     album: 'Amor, Amor',
-    youtubeVideoId: 'frcalTfX9SU',
+    youtubeVideoId: '2HaCkfzOVao',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Long Ago (And Far Away)',
     artist: 'Perry Como; Vera Lynn',
     album: 'Long Ago (And Far Away)',
-    youtubeVideoId: '--hVuzfGhJk',
+    youtubeVideoId: 'kJCB3aZF6DM',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'My Dreams Are Getting Better All the Time',
     artist: 'Les Brown',
     album: 'My Dreams Are Getting Better All the Time',
-    youtubeVideoId: 'SVDAkkcwODM',
+    youtubeVideoId: 'n6a6f3SLVKE',
     imageSelection: 'artist',
     imageSources: {
       album: null,

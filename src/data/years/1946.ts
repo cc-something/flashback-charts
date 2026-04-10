@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Symphony',
     artist: 'Freddy Martin; Bing Crosby',
     album: 'Symphony',
-    youtubeVideoId: 'CyCaLRpZ08w',
+    youtubeVideoId: 'HtwLWKs5xNs',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'On the Atchison, Topeka and the Santa Fe',
     artist: 'Bing Crosby; Judy Garland',
     album: 'On the Atchison, Topeka and the Santa Fe',
-    youtubeVideoId: 'rZmmTZ3ONIg',
+    youtubeVideoId: 'zSgrOvMLWsY',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Rum and Coca-Cola',
     artist: 'Andrews Sisters',
     album: 'Rum and Coca-Cola',
-    youtubeVideoId: 'WiayZdPESno',
+    youtubeVideoId: 'qxG4y6NVU9o',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'A Friend of Yours',
     artist: 'Bing Crosby; Frank Sinatra',
     album: 'A Friend of Yours',
-    youtubeVideoId: 'RH1R7NB7POA',
+    youtubeVideoId: '6rkFsB-eJI8',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Sioux City Sue',
     artist: 'Bing Crosby & Jesters; Kate Smith',
     album: 'Sioux City Sue',
-    youtubeVideoId: 'DP1mq0xfeyw',
+    youtubeVideoId: 'f0IAJ8PlgyE',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: "I'm Beginning to See the Light",
     artist: 'Ella Fitzgerald & Ink Spots; Duke Ellington',
     album: "I'm Beginning to See the Light",
-    youtubeVideoId: 'udjA9Pk3LMU',
+    youtubeVideoId: 'UaIqLNarX98',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Into Each Life Some Rain Must Fall',
     artist: 'Ella Fitzgerald & Ink Spots',
     album: 'Into Each Life Some Rain Must Fall',
-    youtubeVideoId: 'PJ9IaplRrm4',
+    youtubeVideoId: 'vaQqgfqrp6s',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: "It's Been a Long, Long Time",
     artist: 'Bing Crosby & Carmen Cavallaro',
     album: "It's Been a Long, Long Time",
-    youtubeVideoId: 'uVFDztq-eCs',
+    youtubeVideoId: 'Dx9np2KpxHo',
     imageSelection: 'artist',
     imageSources: {
       album: null,

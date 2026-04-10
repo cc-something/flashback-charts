@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Anniversary Song',
     artist: 'Al Jolson; Bing Crosby',
     album: 'Anniversary Song',
-    youtubeVideoId: '3VcQVNw2w78',
+    youtubeVideoId: 'PcnpbM0pIJA',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'To Each His Own',
     artist: 'Ink Spots; Freddy Martin',
     album: 'To Each His Own',
-    youtubeVideoId: 'vbJTkC5fkvo',
+    youtubeVideoId: 'bYFFkABCMoc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: "Mam'selle",
     artist: 'Frank Sinatra; Dick Haymes',
     album: "Mam'selle",
-    youtubeVideoId: '06HTPKamRDc',
+    youtubeVideoId: '2szBW-R926E',
     imageSelection: 'artist',
     imageSources: {
       album: null,

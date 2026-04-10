@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Lavender Blue (Dilly Dilly)',
     artist: 'Burl Ives; Dinah Shore',
     album: 'Lavender Blue (Dilly Dilly)',
-    youtubeVideoId: 'oH5q11bG3zk',
+    youtubeVideoId: '_KVYDT84O7o',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Far Away Places',
     artist: 'Bing Crosby; Joe Loss',
     album: 'Far Away Places',
-    youtubeVideoId: 'HVfexxLtyLg',
+    youtubeVideoId: '8HZn3SPEtT8',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Galway Bay',
     artist: 'Bing Crosby',
     album: 'Galway Bay',
-    youtubeVideoId: 'gt7NdiFeYJA',
+    youtubeVideoId: '9icGKmiWKhc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'My Happiness',
     artist: 'Jon & Sandra Steele; Marlin Sisters',
     album: 'My Happiness',
-    youtubeVideoId: 'ewCRI04Sq10',
+    youtubeVideoId: 'FfNGZFJPQ8o',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/8/82/My_Happiness.png',

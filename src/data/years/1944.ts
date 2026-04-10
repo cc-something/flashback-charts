@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: "You'll Never Know",
     artist: 'Vera Lynn; Joe Loss',
     album: "You'll Never Know",
-    youtubeVideoId: 'JZtWNlCTc6o',
+    youtubeVideoId: '0arra0O8m4c',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Sunday, Monday or Always',
     artist: 'Bing Crosby; Frank Sinatra',
     album: 'Sunday, Monday or Always',
-    youtubeVideoId: '5jpH1__t2rU',
+    youtubeVideoId: 'BDsEJhLYilU',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'A Lovely Way to Spend an Evening',
     artist: 'Ink Spots; Frank Sinatra',
     album: 'A Lovely Way to Spend an Evening',
-    youtubeVideoId: 'juYsysVMa78',
+    youtubeVideoId: 'Q1nVibkdDVM',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'All or Nothing at All',
     artist: 'Frank Sinatra',
     album: 'All or Nothing at All',
-    youtubeVideoId: 'IAN_jLnD_Q8',
+    youtubeVideoId: 'dHBulKUTyOE',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: "Pistol Packin' Mama",
     artist: 'Bing Crosby & The Andrews Sisters',
     album: "Pistol Packin' Mama",
-    youtubeVideoId: 'PjgqQcKE3DY',
+    youtubeVideoId: 'ocOgJU0mxbg',
     imageSelection: 'artist',
     imageSources: {
       album: null,
