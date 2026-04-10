@@ -5,6 +5,7 @@ import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
+import SongRow from './SongRow.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
 import { getYearPath } from '@/utils/url'
@@ -181,92 +182,18 @@ const toggleFullscreen = () => {
     </button>
 
     <div :class="playerDockContainerClass">
-      <div
+      <SongRow
         v-if="
-          isFullscreen && player.playingSong && !shouldShowMobilePlaybackCta
+          isFullscreen &&
+          player.playingSong &&
+          player.playingYear !== null &&
+          !shouldShowMobilePlaybackCta
         "
-        class="mb-4 overflow-hidden rounded-[1.4rem] border border-white/12 bg-surface/70 shadow-[0_18px_48px_rgb(0_0_0_/_0.16)] backdrop-blur-sm"
-      >
-        <div class="relative flex items-start gap-3 px-4 py-4 sm:px-5">
-          <button
-            type="button"
-            title="Go to song (G)"
-            aria-label="Go to song"
-            class="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-            @click="goToPlayingSong"
-          >
-            <img
-              :src="player.playingSong.thumbnailPath"
-              :alt="player.playingSong.title"
-              class="block h-full w-full object-cover"
-            />
-          </button>
-
-          <div class="min-w-0 flex-1">
-            <div class="flex items-start justify-between gap-3">
-              <button
-                type="button"
-                title="Go to song (G)"
-                aria-label="Go to song"
-                class="min-w-0 flex-1 cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-                @click="goToPlayingSong"
-              >
-                <p
-                  class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
-                >
-                  {{ player.playingYear }} #{{ player.playingSong.rank }}
-                </p>
-                <p
-                  class="mt-1 break-words text-xl font-bold leading-tight text-text sm:text-2xl"
-                >
-                  {{ player.playingSong.title }}
-                </p>
-                <p
-                  class="mt-1 break-words text-base leading-snug text-text-muted"
-                >
-                  {{ player.playingSong.artist }}
-                </p>
-                <p
-                  v-if="player.playingSong.album"
-                  class="mt-1 break-words text-sm leading-snug italic text-text-muted/75"
-                >
-                  {{ player.playingSong.album }}
-                </p>
-              </button>
-
-              <div class="flex items-center gap-2">
-                <p
-                  class="font-mono text-[0.72rem] tabular-nums text-text-muted"
-                  :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
-                >
-                  <template v-if="player.showSeekBar">
-                    {{ player.formattedCurrentTime }}/{{
-                      player.formattedDuration
-                    }}
-                  </template>
-                  <template v-else>0:00/0:00</template>
-                </p>
-                <button
-                  type="button"
-                  title="Report issue"
-                  aria-label="Report issue"
-                  class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-                  @click.stop="openReportModal"
-                >
-                  <Flag class="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-
-            <div class="relative mt-4 h-1.5">
-              <PlaybackSeekBar
-                :disabled="!player.showSeekBar"
-                root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+        class="mb-4"
+        :song="player.playingSong"
+        :year="player.playingYear"
+        variant="maxi"
+      />
 
       <div :class="playerFrameClass">
         <div ref="playerViewportHost" :class="playerViewportClass">
