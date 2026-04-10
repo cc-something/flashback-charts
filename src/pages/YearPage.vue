@@ -201,13 +201,9 @@ watch(
   { immediate: true },
 )
 
-watch(
-  [yearNumber, () => store.sortOrder, selectedSongRank],
-  scrollToSelectedSong,
-  {
-    immediate: true,
-  },
-)
+watch([yearNumber, selectedSongRank], scrollToSelectedSong, {
+  immediate: true,
+})
 </script>
 
 <template>
