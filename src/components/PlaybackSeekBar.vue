@@ -24,7 +24,7 @@ const progressPercent = computed(() => {
     :max="player.durationSeconds || 100"
     :min="0"
     :disabled="disabled"
-    :model-value="player.seekSliderValue"
+    :model-value="disabled ? [0] : player.seekSliderValue"
     :step="0.1"
     aria-label="Seek playback"
     :class="[
