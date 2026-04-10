@@ -369,11 +369,13 @@ const toggleMobilePlayerCollapsed = () => {
                 class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 @click="goToPlayingSong"
               >
-                <p
-                  class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
-                >
-                  {{ player.playingYear }} #{{ player.playingSong.rank }}
-                </p>
+                <div class="flex items-center justify-between gap-1.5">
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
+                  >
+                    {{ player.playingYear }} #{{ player.playingSong.rank }}
+                  </p>
+                </div>
                 <p
                   class="break-words text-base font-bold leading-snug text-text"
                 >
@@ -388,7 +390,7 @@ const toggleMobilePlayerCollapsed = () => {
                 type="button"
                 title="Report issue"
                 aria-label="Report issue"
-                class="inline-flex h-4 w-4 shrink-0 self-center items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                class="mt-[0.1rem] inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 @click.stop="openReportModal"
               >
                 <Flag class="h-3 w-3" aria-hidden="true" />
