@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
-import { ChevronDown, ChevronUp } from 'lucide-vue-next'
+import { ChevronDown, ChevronUp, Flag } from 'lucide-vue-next'
 import { useMediaQuery, useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
+import ReportIssueModal from './ReportIssueModal.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
 import { getYearPath } from '@/utils/url'
@@ -13,6 +14,7 @@ const route = useRoute()
 const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
 const playerViewportHost = ref<HTMLDivElement | null>(null)
+const isReportModalOpen = ref(false)
 const isMobileViewport = useMediaQuery('(max-width: 839px)')
 
 const isMac =
@@ -125,6 +127,10 @@ const goToPlayingSong = async () => {
 const resumePlayback = () => {
   if (!player.playingSong || player.playingYear === null) return
   void player.play(player.playingSong, player.playingYear, 'player-btn')
+}
+const openReportModal = () => {
+  if (!player.playingSong || player.playingYear === null) return
+  isReportModalOpen.value = true
 }
 const toggleMobilePlayerCollapsed = () => {
   if (!isMobileViewport.value) return
@@ -354,25 +360,41 @@ const toggleMobilePlayerCollapsed = () => {
             />
           </button>
 
-          <button
-            type="button"
-            title="Go to song (G)"
-            aria-label="Go to song"
-            class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-            @click="goToPlayingSong"
-          >
-            <p
-              class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
-            >
-              {{ player.playingYear }} #{{ player.playingSong.rank }}
-            </p>
-            <p class="break-words text-base font-bold leading-snug text-text">
-              {{ player.playingSong.title }}
-            </p>
-            <p class="break-words text-sm leading-snug text-text-muted">
-              {{ player.playingSong.artist }}
-            </p>
-          </button>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-start gap-1.5">
+              <button
+                type="button"
+                title="Go to song (G)"
+                aria-label="Go to song"
+                class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                @click="goToPlayingSong"
+              >
+                <p
+                  class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
+                >
+                  {{ player.playingYear }} #{{ player.playingSong.rank }}
+                </p>
+                <p
+                  class="break-words text-base font-bold leading-snug text-text"
+                >
+                  {{ player.playingSong.title }}
+                </p>
+                <p class="break-words text-sm leading-snug text-text-muted">
+                  {{ player.playingSong.artist }}
+                </p>
+              </button>
+
+              <button
+                type="button"
+                title="Report issue"
+                aria-label="Report issue"
+                class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                @click.stop="openReportModal"
+              >
+                <Flag class="h-3.5 w-3.5" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
         </div>
 
         <div
@@ -489,6 +511,17 @@ const toggleMobilePlayerCollapsed = () => {
       </div>
     </aside>
   </Transition>
+
+  <Teleport to="body">
+    <ReportIssueModal
+      v-if="
+        isReportModalOpen && player.playingSong && player.playingYear !== null
+      "
+      :song="player.playingSong"
+      :year="player.playingYear"
+      @dismiss="isReportModalOpen = false"
+    />
+  </Teleport>
 </template>
 
 <style scoped>

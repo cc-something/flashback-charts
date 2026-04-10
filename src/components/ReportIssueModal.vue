@@ -55,7 +55,21 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           <X class="h-5 w-5" />
         </button>
 
-        <h2 id="report-issue-title" class="text-xl font-bold text-text">
+        <div class="space-y-2">
+          <p
+            class="text-xs font-bold uppercase tracking-[0.08em] text-primary/80"
+          >
+            #{{ props.song.rank }} in {{ props.year }}
+          </p>
+          <h2 class="text-xl font-bold leading-tight text-text">
+            {{ props.song.title }}
+          </h2>
+          <p class="text-sm text-text-muted">
+            {{ props.song.artist }}
+          </p>
+        </div>
+
+        <h2 id="report-issue-title" class="mt-5 text-xl font-bold text-text">
           Report an issue with this song
         </h2>
         <p class="mt-2 text-sm text-text-muted">
