@@ -51,7 +51,7 @@ const playerDockContainerClass = computed(() =>
 const playerDockClass = computed(() =>
   isMobileViewport.value
     ? 'relative z-30 mx-3 mt-3 rounded-[1.35rem] border border-primary/15 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors duration-150'
-    : 'relative z-30 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:overflow-hidden min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10',
+    : 'relative z-30 bg-surface/95 shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-colors duration-150 min-[840px]:fixed min-[840px]:right-4 min-[840px]:bottom-4 min-[840px]:w-[22.5rem] min-[840px]:rounded-[1.4rem] min-[840px]:ring-1 min-[840px]:ring-black/10',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -141,7 +141,7 @@ const toggleMobilePlayerCollapsed = () => {
         type="button"
         title="Stop playback (Esc)"
         aria-label="Stop playback"
-        class="absolute top-3 right-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+        class="absolute top-0 right-0 z-30 inline-flex h-10 w-10 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-text/70 shadow-[0_10px_24px_rgb(0_0_0_/_0.18)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         @click="player.stop"
       >
         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
@@ -457,19 +457,20 @@ const toggleMobilePlayerCollapsed = () => {
         </div>
 
         <div
-          v-if="
-            player.playingSong &&
-            player.showSeekBar &&
-            shouldShowExpandedPlayerDetails
-          "
-          class="relative mt-3 pb-4"
+          v-if="player.playingSong && shouldShowExpandedPlayerDetails"
+          class="relative mt-3 h-7"
         >
-          <PlaybackSeekBar root-class="h-1.5" />
           <p
-            class="pointer-events-none absolute right-0 bottom-0 font-mono text-[0.72rem] tabular-nums text-text-muted"
+            class="pointer-events-none absolute top-0 right-0 font-mono text-[0.72rem] tabular-nums text-text-muted"
           >
-            {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+            <template v-if="player.showSeekBar">
+              {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+            </template>
           </p>
+          <PlaybackSeekBar
+            v-if="player.showSeekBar"
+            root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
+          />
         </div>
       </div>
     </aside>
