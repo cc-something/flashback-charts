@@ -366,7 +366,7 @@ const toggleMobilePlayerCollapsed = () => {
                 type="button"
                 title="Go to song (G)"
                 aria-label="Go to song"
-                class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                class="min-w-0 flex-1 rounded-xl px-1.5 py-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 @click="goToPlayingSong"
               >
                 <div class="flex items-center justify-between gap-1.5">
