@@ -83,6 +83,8 @@ const searchOverlay = ref<InstanceType<typeof SearchOverlay> | null>(null)
 const hasToasts = computed(() => toast.toasts.length > 0)
 const isHomeRoute = computed(() => route.name === 'home')
 const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
+const waitForScrollSettle = () =>
+  new Promise<void>((resolve) => window.setTimeout(resolve, 450))
 const socialLinks = [
   {
     href: 'https://www.facebook.com/people/Flashback-Charts/61572091223850/',
@@ -101,6 +103,33 @@ const revealContactEmail = () => {
   if (isContactEmailRevealed.value) return
   isContactEmailRevealed.value = true
   trackEvent('reveal email')
+}
+const scrollToRickAstleySong = async () => {
+  if (typeof window === 'undefined') return
+  await nextTick()
+  requestAnimationFrame(async () => {
+    document
+      .getElementById(`song-${RICK_ASTLEY_YEAR}-${RICK_ASTLEY_SONG.rank}`)
+      ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    await waitForScrollSettle()
+    player.flashSongHighlight(RICK_ASTLEY_YEAR, RICK_ASTLEY_SONG.rank)
+  })
+}
+const goToRickAstleySong = async () => {
+  const routeSong = Array.isArray(route.query.song)
+    ? route.query.song[0]
+    : route.query.song
+  if (
+    route.name === 'year' &&
+    Number(route.params.year) === RICK_ASTLEY_YEAR &&
+    Number(routeSong) === RICK_ASTLEY_SONG.rank
+  )
+    return scrollToRickAstleySong()
+  player.queueSongHighlight(RICK_ASTLEY_YEAR, RICK_ASTLEY_SONG.rank)
+  await router.push({
+    path: getYearPath(RICK_ASTLEY_YEAR),
+    query: { song: String(RICK_ASTLEY_SONG.rank) },
+  })
 }
 const getActiveTheme = () => {
   if (route.name === 'year') {
@@ -234,10 +263,11 @@ watch(
   },
 )
 
-watch(isRickRollActive, (isActive) => {
+watch(isRickRollActive, async (isActive) => {
   if (isActive) {
     trackEvent('rickroll_activated')
-    player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR, 'rickroll')
+    await goToRickAstleySong()
+    await player.play(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR, 'rickroll')
   }
 })
 
