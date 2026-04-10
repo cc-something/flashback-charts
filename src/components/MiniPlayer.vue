@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
-import { ChevronDown, ChevronUp, Flag } from 'lucide-vue-next'
+import { ChevronDown, ChevronUp, Flag, X } from 'lucide-vue-next'
 import { useMediaQuery, useStorage } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
@@ -155,11 +155,7 @@ const toggleMobilePlayerCollapsed = () => {
         class="absolute top-0 right-0 z-30 inline-flex h-6 w-6 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border-1 border-white/25 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         @click="player.stop"
       >
-        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-          />
-        </svg>
+        <X class="h-3.5 w-3.5" />
       </button>
 
       <div :class="playerDockContainerClass">
