@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted } from 'vue'
+import { nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
@@ -44,6 +44,8 @@ export const useHotkeys = (
   const player = usePlayerStore()
   const chart = useChartStore()
   const toast = useToastStore()
+  const waitForScrollSettle = () =>
+    new Promise<void>((resolve) => window.setTimeout(resolve, 350))
   const getTopSong = async (): Promise<Song | null> => {
     if (route.name !== 'year') return null
     const { getYearData } = await import('@/data')
@@ -51,14 +53,17 @@ export const useHotkeys = (
     if (chart.sortOrder === 'desc') return songs[songs.length - 1] ?? null
     return songs[0] ?? null
   }
-  const scrollToPlayingSongRow = () => {
+  const scrollToPlayingSongRow = async () => {
     const year = player.playingYear
     const song = player.playingSong
     if (typeof window === 'undefined' || year === null || !song) return
-    requestAnimationFrame(() => {
+    await nextTick()
+    requestAnimationFrame(async () => {
       document
         .getElementById(`song-${year}-${song.rank}`)
         ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      await waitForScrollSettle()
+      player.flashSongHighlight(year, song.rank)
     })
   }
   const goToPlayingSong = async () => {
@@ -73,9 +78,10 @@ export const useHotkeys = (
       Number(route.params.year) === year &&
       Number(routeSong) === song.rank
     ) {
-      scrollToPlayingSongRow()
+      await scrollToPlayingSongRow()
       return
     }
+    player.queueSongHighlight(year, song.rank)
     await router.push({
       path: getYearPath(year),
       query: { song: String(song.rank) },
@@ -106,7 +112,7 @@ export const useHotkeys = (
     if (e.code === 'Space' && !isMod) {
       e.preventDefault()
       if (player.isActive) {
-        player.togglePlayback()
+        player.togglePlayback('hotkey')
       } else if (route.name === 'year') {
         void playTopSong()
       }
@@ -116,7 +122,7 @@ export const useHotkeys = (
     if (e.code === 'KeyK' && !isMod) {
       e.preventDefault()
       if (player.isActive) {
-        player.togglePlayback()
+        player.togglePlayback('hotkey')
       } else if (route.name === 'year') {
         void playTopSong()
       }

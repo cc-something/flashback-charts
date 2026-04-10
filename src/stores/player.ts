@@ -16,7 +16,9 @@ const OFFLINE_PLAYBACK_STOPPED_MESSAGE =
   'No internet connection. Playback stopped.'
 const PLAYER_LOAD_FAILED_MESSAGE =
   'Failed to load player. Check your connection.'
-const SONG_ROW_HIGHLIGHT_DURATION_MS = 2_000
+const SONG_ROW_HIGHLIGHT_DURATION_MS = 1_000
+const SONG_ROW_LOOKUP_ATTEMPTS = 24
+const SONG_ROW_SCROLL_SETTLE_MS = 350
 
 interface SavedPlayerState {
   year: number
@@ -62,6 +64,7 @@ export type PlayTrigger =
   | 'direct'
   | 'autoplay'
   | 'hotkey'
+  | 'player-btn'
   | 'home-btn'
   | 'decade-btn'
   | 'search'
@@ -74,6 +77,7 @@ const EMBED_BLOCKED_ERROR_CODES = new Set([101, 150])
 const userRequestedTriggers = new Set<PlayTrigger>([
   'direct',
   'hotkey',
+  'player-btn',
   'home-btn',
   'decade-btn',
   'search',
@@ -259,6 +263,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearSongHighlightTimer()
     highlightedSongKey.value = null
   }
+  const getSongRowId = (year: number, rank: number) => `song-${year}-${rank}`
   const queueSongHighlight = (year: number, rank: number) => {
     pendingHighlightedSongKey.value = getSongHighlightKey(year, rank)
   }
@@ -281,6 +286,43 @@ export const usePlayerStore = defineStore('player', () => {
   }
   const isSongHighlighted = (year: number, rank: number) =>
     highlightedSongKey.value === getSongHighlightKey(year, rank)
+  const findSongRowElement = async (year: number, rank: number) => {
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return null
+    for (
+      let attemptIndex = 0;
+      attemptIndex < SONG_ROW_LOOKUP_ATTEMPTS;
+      attemptIndex += 1
+    ) {
+      const songRowElement = document.getElementById(getSongRowId(year, rank))
+      if (songRowElement) return songRowElement
+      await nextTick()
+      await new Promise<void>((resolve) =>
+        window.requestAnimationFrame(() => resolve()),
+      )
+    }
+    return null
+  }
+  const waitForSongRowScrollSettle = () =>
+    new Promise<void>((resolve) =>
+      window.setTimeout(resolve, SONG_ROW_SCROLL_SETTLE_MS),
+    )
+  const revealSongRowHighlight = (year: number, rank: number) => {
+    if (useChartStore().selectedYear !== year) return
+    flashSongHighlight(year, rank)
+  }
+  const scrollSongIntoView = async (
+    song: Song,
+    year: number,
+    shouldHighlight = false,
+  ) => {
+    const songRowElement = await findSongRowElement(year, song.rank)
+    if (!songRowElement) return
+    songRowElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (!shouldHighlight) return
+    await waitForSongRowScrollSettle()
+    flashSongHighlight(year, song.rank)
+  }
 
   const clearSeekPreview = () => {
     isSeekDragging.value = false
@@ -583,10 +625,12 @@ export const usePlayerStore = defineStore('player', () => {
       playingYear.value === year
     ) {
       if (playerState.value === 'playing') {
+        if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
         ytPlayer?.pauseVideo()
         return
       }
       if (playerState.value === 'paused' && ytPlayer) {
+        if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
         startLoadingAttempt()
         if (getHasImmediateNetworkConnection()) {
           ytPlayer.playVideo()
@@ -599,6 +643,7 @@ export const usePlayerStore = defineStore('player', () => {
         return
       }
       if (playerState.value === 'loading') {
+        if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
         stop()
         return
       }
@@ -632,7 +677,8 @@ export const usePlayerStore = defineStore('player', () => {
       year: String(year),
       source: trigger,
     })
-    if (chart.selectedYear === year) scrollSongIntoView(song)
+    if (chart.selectedYear === year)
+      void scrollSongIntoView(song, year, trigger !== 'direct')
     offlineHandler = () => {
       if (playerState.value === 'loading')
         void failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
@@ -658,7 +704,14 @@ export const usePlayerStore = defineStore('player', () => {
       })
   }
 
-  const togglePlayback = async () => {
+  const togglePlayback = async (trigger: PlayTrigger = 'direct') => {
+    if (
+      trigger !== 'direct' &&
+      playingSong.value &&
+      playingYear.value !== null &&
+      playerState.value !== 'idle'
+    )
+      revealSongRowHighlight(playingYear.value, playingSong.value.rank)
     if (playerState.value === 'playing') ytPlayer?.pauseVideo()
     else if (playerState.value === 'paused' && ytPlayer) {
       startLoadingAttempt()
@@ -674,7 +727,7 @@ export const usePlayerStore = defineStore('player', () => {
       playingSong.value &&
       playingYear.value !== null
     )
-      play(playingSong.value, playingYear.value)
+      play(playingSong.value, playingYear.value, trigger)
   }
 
   const getSeekValue = (nextValue: number[]) => {
@@ -815,16 +868,6 @@ export const usePlayerStore = defineStore('player', () => {
     await play(prevYearSongs[prevYearSongs.length - 1], prevYear, trigger)
   }
 
-  const scrollSongIntoView = (song: Song) => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return
-    requestAnimationFrame(() => {
-      const el = document.querySelector(
-        `[data-song-id="${song.youtubeVideoId}"]`,
-      )
-      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    })
-  }
-
   const restoreFromStorage = async () => {
     if (typeof window === 'undefined') return
     const saved = loadSavedState()
@@ -845,7 +888,7 @@ export const usePlayerStore = defineStore('player', () => {
     const chart = useChartStore()
     if (playingYear.value === null || !playingSong.value) return
     chart.selectYear(playingYear.value)
-    scrollSongIntoView(playingSong.value)
+    void scrollSongIntoView(playingSong.value, playingYear.value, true)
   }
 
   return {
