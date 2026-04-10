@@ -177,16 +177,16 @@ const toggleMobilePlayerCollapsed = () => {
             <div class="min-w-0">
               <p
                 v-if="player.playingSong"
-                class="truncate text-[0.72rem] font-bold uppercase tracking-[0.16em] text-primary/80"
+                class="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-primary/80"
               >
                 {{ player.playingYear }} #{{ player.playingSong.rank }}
               </p>
-              <p class="truncate text-sm font-bold leading-snug text-text">
+              <p class="break-words text-sm font-bold leading-snug text-text">
                 {{
                   player.playingSong ? player.playingSong.title : 'Mini Player'
                 }}
               </p>
-              <p class="truncate text-xs leading-snug text-text-muted">
+              <p class="break-words text-xs leading-snug text-text-muted">
                 {{
                   player.playingSong
                     ? player.playingSong.artist
@@ -366,10 +366,10 @@ const toggleMobilePlayerCollapsed = () => {
             >
               {{ player.playingYear }} #{{ player.playingSong.rank }}
             </p>
-            <p class="truncate text-base font-bold leading-snug text-text">
+            <p class="break-words text-base font-bold leading-snug text-text">
               {{ player.playingSong.title }}
             </p>
-            <p class="truncate text-sm leading-snug text-text-muted">
+            <p class="break-words text-sm leading-snug text-text-muted">
               {{ player.playingSong.artist }}
             </p>
           </button>
