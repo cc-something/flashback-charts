@@ -383,19 +383,9 @@ const toggleFullscreen = () => {
         v-if="
           player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
         "
-        class="mt-1 flex items-center justify-between gap-1.5"
+        class="mt-1.5 flex items-center justify-between gap-1.5"
       >
         <div class="flex items-center gap-1">
-          <button
-            type="button"
-            :title="fullscreenToggleTitle"
-            :aria-label="fullscreenToggleTitle"
-            :class="playerButtonClass"
-            @click="toggleFullscreen"
-          >
-            <Expand class="h-4.5 w-4.5" />
-          </button>
-
           <button
             type="button"
             :title="`Previous song (${mod}+←)`"
@@ -476,15 +466,15 @@ const toggleFullscreen = () => {
         </div>
 
         <div class="flex items-center gap-1">
-          <p
-            class="mr-1 font-mono text-[0.72rem] tabular-nums text-text-muted"
-            :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
+          <button
+            type="button"
+            :title="fullscreenToggleTitle"
+            :aria-label="fullscreenToggleTitle"
+            :class="playerButtonClass"
+            @click="toggleFullscreen"
           >
-            <template v-if="player.showSeekBar">
-              {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-            </template>
-            <template v-else>0:00/0:00</template>
-          </p>
+            <Expand class="h-4.5 w-4.5" />
+          </button>
         </div>
       </div>
 
@@ -492,7 +482,24 @@ const toggleFullscreen = () => {
         v-if="
           player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
         "
-        class="relative mt-1 h-1.5"
+        class="mt-2 flex justify-end"
+      >
+        <p
+          class="mr-0.5 font-mono text-[0.64rem] tabular-nums text-text-muted"
+          :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
+        >
+          <template v-if="player.showSeekBar">
+            {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+          </template>
+          <template v-else>0:00/0:00</template>
+        </p>
+      </div>
+
+      <div
+        v-if="
+          player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
+        "
+        class="relative mt-1.5 h-1.5"
       >
         <PlaybackSeekBar
           :disabled="!player.showSeekBar"
