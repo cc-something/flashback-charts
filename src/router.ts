@@ -20,6 +20,11 @@ export const routes: RouteRecordRaw[] = [
     props: true,
   },
   {
+    path: '/__integrity/playback',
+    name: 'playback-integrity',
+    component: () => import('@/pages/PlaybackIntegrityPage.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFound.vue'),
