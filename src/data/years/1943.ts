@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'I Had the Craziest Dream',
     artist: 'Harry James; Vera Lynn',
     album: 'I Had the Craziest Dream',
-    youtubeVideoId: '9CoC3oo_HOA',
+    youtubeVideoId: 'tayW72gZkfM',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'When the Lights Go On Again (All Over the World)',
     artist: 'Vaughn Monroe; Vera Lynn',
     album: 'When the Lights Go On Again (All Over the World)',
-    youtubeVideoId: 'zVg97yrjkwA',
+    youtubeVideoId: '0KVVPqE3_Ng',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Jingle, Jangle, Jingle',
     artist: 'Gene Autry',
     album: 'Jingle, Jangle, Jingle',
-    youtubeVideoId: 'F5fFkrigxHg',
+    youtubeVideoId: 'mctfvAMrqrs',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Tangerine',
     artist: 'Jimmy Dorsey; Victor Silvester',
     album: 'Tangerine',
-    youtubeVideoId: 'q-JDUnZv1N0',
+    youtubeVideoId: 'SAx9Z0uUn8w',
     imageSelection: 'artist',
     imageSources: {
       album: null,

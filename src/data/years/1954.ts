@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Pretend',
     artist: 'Nat King Cole',
     album: 'Pretend',
-    youtubeVideoId: 'ciS5GikZ5Jo',
+    youtubeVideoId: 'L3AGW_1r3fY',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: "That's Amore",
     artist: 'Dean Martin',
     album: "That's Amore",
-    youtubeVideoId: 'RUz1pZ_LujU',
+    youtubeVideoId: 'HbTvKUttFXI',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Young at Heart',
     artist: 'Frank Sinatra',
     album: 'Young at Heart',
-    youtubeVideoId: 'aZRn4auk4PQ',
+    youtubeVideoId: 'aFgb9EWGxqw',
     imageSelection: 'artist',
     imageSources: {
       album: null,

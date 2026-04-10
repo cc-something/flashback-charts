@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Smoke Gets in Your Eyes',
     artist: 'The Platters',
     album: 'Smoke Gets in Your Eyes',
-    youtubeVideoId: 'vfBboBz3yoc',
+    youtubeVideoId: 'DznMuCN3GWk',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: "Joey's Song",
     artist: 'Bill Haley and His Comets',
     album: "Joey's Song",
-    youtubeVideoId: '9fmyJLclU1M',
+    youtubeVideoId: 'gGUgagVq8w0',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Personality',
     artist: 'Lloyd Price',
     album: 'Personality',
-    youtubeVideoId: 'MvPU-cvaKCM',
+    youtubeVideoId: 'W2aD25M5Su8',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Oh Yeah Uh Huh',
     artist: 'Col Joye and the Joy Boys',
     album: 'Oh Yeah Uh Huh',
-    youtubeVideoId: '7QqXYK2uFsM',
+    youtubeVideoId: '8Y7AqJrFvBc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Venus',
     artist: 'Frankie Avalon',
     album: 'Venus',
-    youtubeVideoId: 'PIb3VCbBrHo',
+    youtubeVideoId: '0ZBslJWXR54',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'Mona Lisa',
     artist: 'Conway Twitty',
     album: 'Mona Lisa',
-    youtubeVideoId: 'tvUz3CyQbHk',
+    youtubeVideoId: 'cb3kxUwsKZY',
     imageSelection: 'artist',
     imageSources: {
       album: null,

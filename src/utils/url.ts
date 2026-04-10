@@ -1,6 +1,8 @@
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '')
 const getVersionedImageUrl = (imageUrl: string) =>
   `${imageUrl}${imageUrl.includes('?') ? '&' : '?'}v=${__SOCIAL_IMAGE_VERSION__}`
+const devHostnamePattern =
+  /(^localhost$)|(^127(?:\.\d{1,3}){3}$)|((?:^|\.)ngrok-free\.app$)/u
 
 const ogImageWidth = '1200'
 const ogImageHeight = '630'
@@ -15,6 +17,11 @@ export const getYearPath = (year: number | string) => `/au/${year}/`
 export const getAbsoluteUrl = (siteUrl: string | undefined, path: string) => {
   if (!siteUrl) return undefined
   return `${trimTrailingSlash(siteUrl)}${path}`
+}
+
+export const getIsDevHostname = (hostname: string | undefined) => {
+  if (!hostname) return false
+  return devHostnamePattern.test(hostname)
 }
 
 export const getOpenGraphImageMeta = (

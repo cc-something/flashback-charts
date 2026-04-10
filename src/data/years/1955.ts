@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Rock Around the Clock',
     artist: 'Bill Haley and His Comets',
     album: 'Rock Around the Clock',
-    youtubeVideoId: 'ZgdufzXvjqw',
+    youtubeVideoId: '-Hlbn3O7Rpo',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Melody of Love',
     artist: 'Billy Vaughn',
     album: 'Melody of Love',
-    youtubeVideoId: 'LjBcBe9gcrA',
+    youtubeVideoId: 'M_jd9ClV8-8',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Unchained Melody',
     artist: 'Al Hibbler',
     album: 'Unchained Melody',
-    youtubeVideoId: 'GC7obNtXLYU',
+    youtubeVideoId: 'DjiA5RzosEY',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'I Need You Now',
     artist: 'Eddie Fisher',
     album: 'I Need You Now',
-    youtubeVideoId: 'BdAcH8QQZJ4',
+    youtubeVideoId: 'B1-b63U5uFc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Let Me Go, Lover',
     artist: 'Teresa Brewer',
     album: 'Let Me Go, Lover',
-    youtubeVideoId: 'kJsB1RuWRRg',
+    youtubeVideoId: 'cExfS_g763s',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Cherry Pink and Apple Blossom White',
     artist: 'Perez Prado',
     album: 'Cherry Pink and Apple Blossom White',
-    youtubeVideoId: 'zj64NlRnpDY',
+    youtubeVideoId: 'ggSDeyPu_e4',
     imageSelection: 'artist',
     imageSources: {
       album: null,

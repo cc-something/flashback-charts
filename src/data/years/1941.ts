@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'In the Mood',
     artist: 'Glenn Miller; Joe Loss',
     album: 'In the Mood',
-    youtubeVideoId: 'aME0qvhZ37o',
+    youtubeVideoId: 'dGUEyZshBgE',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: "It's a Great Day for the Irish",
     artist: 'Judy Garland; The Jesters',
     album: "It's a Great Day for the Irish",
-    youtubeVideoId: 'lYJGd92W0KI',
+    youtubeVideoId: 'gS-I-XGBPYw',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: "Goodbye Little Darlin' Goodbye",
     artist: 'Gene Autry; Bing Crosby',
     album: "Goodbye Little Darlin' Goodbye",
-    youtubeVideoId: 'QKbEDxOXtSQ',
+    youtubeVideoId: 'zWzJ2ETYCu8',
     imageSelection: 'artist',
     imageSources: {
       album: null,

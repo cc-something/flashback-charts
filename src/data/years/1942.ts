@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Deep in the Heart of Texas',
     artist: 'Gene Autry; Horace Heidt',
     album: 'Deep in the Heart of Texas',
-    youtubeVideoId: 'pe4AOhwfRq4',
+    youtubeVideoId: '2OGROZ8_gp8',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Daddy',
     artist: 'Sammy Kaye; Andrews Sisters',
     album: 'Daddy',
-    youtubeVideoId: '5xY2vd-mNSU',
+    youtubeVideoId: 'GzekTSu4thg',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: "Elmer's Tune",
     artist: 'Glenn Miller; Victor Silvester',
     album: "Elmer's Tune",
-    youtubeVideoId: 'QmAoLjFEAi8',
+    youtubeVideoId: '0k7w3ZpJSLY',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Chattanooga Choo Choo',
     artist: 'Glenn Miller; Joe Loss',
     album: 'Chattanooga Choo Choo',
-    youtubeVideoId: 'V2aj0zhXlLA',
+    youtubeVideoId: 'M_e189EWy6I',
     imageSelection: 'artist',
     imageSources: {
       album: null,

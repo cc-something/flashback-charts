@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Near You',
     artist: 'Francis Craig; The Andrews Sisters',
     album: 'Near You',
-    youtubeVideoId: 'hkFZ_TCPSjU',
+    youtubeVideoId: 'CbZLpAMnclQ',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Chi-Baba, Chi-Baba',
     artist: 'Perry Como; Joe Loss',
     album: 'Chi-Baba, Chi-Baba',
-    youtubeVideoId: 'lIiSXQ9QCDE',
+    youtubeVideoId: 'GOzoS1gMv-g',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'When You Were Sweet Sixteen',
     artist: 'Al Jolson; Perry Como',
     album: 'When You Were Sweet Sixteen',
-    youtubeVideoId: 'JVp9qnj24r0',
+    youtubeVideoId: 'AYL3DBJL6o8',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Golden Earrings',
     artist: 'Peggy Lee; Bing Crosby',
     album: 'Golden Earrings',
-    youtubeVideoId: 'qWnVg5eidq8',
+    youtubeVideoId: 'mL9HI19m4NM',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: "McNamara's Band",
     artist: 'Bing Crosby & Jesters',
     album: "McNamara's Band",
-    youtubeVideoId: '815hVSAAOjo',
+    youtubeVideoId: 'Y8wAK8EjooQ',
     imageSelection: 'artist',
     imageSources: {
       album: null,

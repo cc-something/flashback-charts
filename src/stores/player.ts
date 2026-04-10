@@ -404,7 +404,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearPlaybackSession()
     clearSongHighlight()
     pendingHighlightedSongKey.value = null
-    ytPlayer?.stopVideo()
+    if (typeof ytPlayer?.stopVideo === 'function') ytPlayer.stopVideo()
     playerState.value = 'idle'
     playingSong.value = null
     playingYear.value = null

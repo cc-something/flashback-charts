@@ -3,6 +3,7 @@ import {
   getAbsoluteUrl,
   getDecadePath,
   getHomePath,
+  getIsDevHostname,
   getOpenGraphImageMeta,
   getYearPath,
 } from './url'
@@ -18,6 +19,14 @@ describe('url helpers', () => {
     expect(getAbsoluteUrl('https://flashbackcharts.com/', '/au/2024/')).toBe(
       'https://flashbackcharts.com/au/2024/',
     )
+  })
+
+  it('treats local and ngrok hosts as dev hosts', () => {
+    expect(getIsDevHostname('localhost')).toBe(true)
+    expect(getIsDevHostname('127.0.0.1')).toBe(true)
+    expect(getIsDevHostname('168a-79-127-155-71.ngrok-free.app')).toBe(true)
+    expect(getIsDevHostname('flashbackcharts.com')).toBe(false)
+    expect(getIsDevHostname(undefined)).toBe(false)
   })
 
   it('returns robust social image tags', () => {

@@ -1,12 +1,17 @@
+import { getIsDevHostname } from '@/utils/url'
+
 let scriptAppended = false
 let plausibleReady = false
 
 const SCRIPT_SRC = 'https://plausible.io/js/pa-gD0FxLEq89YQCoqWIxRMg.js'
+const getShouldUseDevAnalyticsLogging = () =>
+  import.meta.env.DEV ||
+  (typeof window !== 'undefined' && getIsDevHostname(window.location.hostname))
 
 const loadScript = (): Promise<void> =>
   new Promise((resolve) => {
     if (typeof window === 'undefined') return resolve()
-    if (import.meta.env.DEV) return resolve()
+    if (getShouldUseDevAnalyticsLogging()) return resolve()
     if (scriptAppended) return resolve()
     scriptAppended = true
 
@@ -34,13 +39,14 @@ const loadScript = (): Promise<void> =>
   })
 
 const trackPageview = () => {
-  if (import.meta.env.DEV) return console.log('[plausible] pageview')
+  if (getShouldUseDevAnalyticsLogging())
+    return console.log('[plausible] pageview')
   if (!plausibleReady) return
   window.plausible?.('pageview')
 }
 
 const trackEvent = (name: string, props?: Record<string, string | number>) => {
-  if (import.meta.env.DEV)
+  if (getShouldUseDevAnalyticsLogging())
     return console.log('[plausible] event:', name, props ?? '')
   window.plausible?.(name, props ? { props } : undefined)
 }

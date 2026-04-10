@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Just Walking in the Rain',
     artist: 'Johnnie Ray',
     album: 'Just Walking in the Rain',
-    youtubeVideoId: '8uCsvWgmjwg',
+    youtubeVideoId: 'kCjTWYoRTzM',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'The Yellow Rose of Texas',
     artist: 'Mitch Miller',
     album: 'The Yellow Rose of Texas',
-    youtubeVideoId: 'q29aJSpA2o0',
+    youtubeVideoId: 'mIEXj1gjIXo',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Memories Are Made of This',
     artist: 'Dean Martin',
     album: 'Memories Are Made of This',
-    youtubeVideoId: 'KqVUwJvde44',
+    youtubeVideoId: 'NS2k43NJycE',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'The Rock and Roll Waltz',
     artist: 'Kay Starr',
     album: 'The Rock and Roll Waltz',
-    youtubeVideoId: 'pJcJIK5olDo',
+    youtubeVideoId: 'e2U02-ltGHc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Hot Diggity (Dog Ziggity Boom)',
     artist: 'Perry Como',
     album: 'Hot Diggity (Dog Ziggity Boom)',
-    youtubeVideoId: '1jVECp5Dzp4',
+    youtubeVideoId: '-OHYREiQzK4',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Mack the Knife',
     artist: 'Louis Armstrong',
     album: 'Mack the Knife',
-    youtubeVideoId: 'fZ0OOHLWo4w',
+    youtubeVideoId: 'S-lHrDPjGfQ',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'The Great Pretender',
     artist: 'The Platters',
     album: 'The Great Pretender',
-    youtubeVideoId: 'RBj2HN2uuNA',
+    youtubeVideoId: 'XJERvYiDbP4',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'The Poor People of Paris',
     artist: 'Les Baxter',
     album: 'The Poor People of Paris',
-    youtubeVideoId: 'bv0Ga_i7O6M',
+    youtubeVideoId: 'HEPv9cvqjAo',
     imageSelection: 'artist',
     imageSources: {
       album: null,

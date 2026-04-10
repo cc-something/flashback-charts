@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Around the World',
     artist: 'Bing Crosby',
     album: 'Around the World',
-    youtubeVideoId: 'a0oClVu9P2w',
+    youtubeVideoId: 'JIF_IWzP7Qk',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Love Letters in the Sand',
     artist: 'Pat Boone',
     album: 'Love Letters in the Sand',
-    youtubeVideoId: '2ENzT9k1LRs',
+    youtubeVideoId: '1W6T36-J_XU',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Round and Round',
     artist: 'Perry Como',
     album: 'Round and Round',
-    youtubeVideoId: 'xofvO08NWBk',
+    youtubeVideoId: 'sxtDaTD5S98',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Hey There',
     artist: 'Rosemary Clooney',
     album: 'Hey There',
-    youtubeVideoId: 'T45e9EzFFHQ',
+    youtubeVideoId: 'n-_licBGCLc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'A White Sport Coat (and a Pink Carnation)',
     artist: 'Marty Robbins',
     album: 'A White Sport Coat (and a Pink Carnation)',
-    youtubeVideoId: 'zD8MnvyAi6I',
+    youtubeVideoId: 'wYIIzEOI7Kg',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Young Love',
     artist: 'Tab Hunter',
     album: 'Young Love',
-    youtubeVideoId: 'OrWiRo92tIA',
+    youtubeVideoId: 'gCC5CeiL3-U',
     imageSelection: 'artist',
     imageSources: {
       album: null,
