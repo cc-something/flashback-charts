@@ -125,6 +125,7 @@ const latestYear = getLatestYear()
 const title = getHomePageTitle()
 const description = getHomePageDescription()
 const subtitle = getHomePageSubtitle()
+const shouldExpandSubtitle = ref(false)
 const homePath = getHomePath()
 const homeUrl = getAbsoluteUrl(siteUrl, homePath)
 const homeImage = getAbsoluteUrl(siteUrl, '/og/au/home.jpg')
@@ -248,7 +249,30 @@ onUnmounted(() => {
             <h1 class="text-lg sm:text-2xl text-text-muted">
               Australia's Top 10 Songs by Year, 1940 to {{ latestYear }}
             </h1>
-            <p class="mt-2 text-base leading-relaxed text-text-muted/70">
+            <p
+              v-if="!shouldExpandSubtitle"
+              class="mt-2 flex w-full min-w-0 items-baseline gap-2 text-base leading-relaxed text-text-muted/70 sm:hidden"
+            >
+              <span class="min-w-0 flex-1 truncate">
+                {{ subtitle }}
+              </span>
+              <button
+                type="button"
+                class="shrink-0 whitespace-nowrap text-text-muted/70 underline decoration-primary/35 underline-offset-4 transition-colors duration-150 hover:text-text-muted hover:decoration-text-muted"
+                @click="shouldExpandSubtitle = true"
+              >
+                Read more
+              </button>
+            </p>
+            <p
+              v-if="shouldExpandSubtitle"
+              class="mt-2 text-base leading-relaxed text-text-muted/70 sm:hidden"
+            >
+              {{ subtitle }}
+            </p>
+            <p
+              class="mt-2 hidden text-base leading-relaxed text-text-muted/70 sm:block"
+            >
               {{ subtitle }}
             </p>
           </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, watch } from 'vue'
+import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
 import type { YearSource } from '@/data'
@@ -51,6 +51,7 @@ const currentDescription = computed<string | null>(() =>
   getYearDescription(yearNumber.value),
 )
 const hasData = computed(() => songs.value.length > 0)
+const shouldExpandDescription = ref(false)
 const getYearNavStyle = (year: number) => {
   const yearTheme = getThemeForYear(year)
 
@@ -192,6 +193,7 @@ watch(
   yearNumber,
   (next) => {
     if (!Number.isNaN(next)) store.setYear(next)
+    shouldExpandDescription.value = false
   },
   { immediate: true },
 )
@@ -216,8 +218,29 @@ watch(
 
     <div class="mb-4 flex flex-col gap-3">
       <p
+        v-if="currentDescription && !shouldExpandDescription"
+        class="flex w-full min-w-0 items-baseline gap-2 text-base leading-relaxed text-text-muted sm:hidden"
+      >
+        <span class="min-w-0 flex-1 truncate">
+          {{ currentDescription }}
+        </span>
+        <button
+          type="button"
+          class="shrink-0 whitespace-nowrap text-text-muted underline decoration-primary/35 underline-offset-4 transition-colors duration-150 hover:text-text hover:decoration-text-muted"
+          @click="shouldExpandDescription = true"
+        >
+          Read more
+        </button>
+      </p>
+      <p
+        v-if="currentDescription && shouldExpandDescription"
+        class="text-base leading-relaxed text-text-muted sm:hidden"
+      >
+        {{ currentDescription }}
+      </p>
+      <p
         v-if="currentDescription"
-        class="text-base leading-relaxed text-text-muted"
+        class="hidden text-base leading-relaxed text-text-muted sm:block"
       >
         {{ currentDescription }}
       </p>
