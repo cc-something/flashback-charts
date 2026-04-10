@@ -178,7 +178,7 @@ onMounted(() => {
                   "
                 />
                 <div
-                  class="absolute inset-0 flex items-center justify-center bg-black/40 transition-colors duration-150 group-hover:bg-black/55"
+                  class="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black via-black/40 to-transparent transition-colors duration-150 group-hover:from-black group-hover:via-black/55"
                 >
                   <svg
                     v-if="
