@@ -42,9 +42,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div
         class="flex flex-col gap-6 text-center text-sm leading-relaxed text-text-muted"
       >
-        <div class="flex flex-col items-center gap-1">
+        <div class="flex flex-col items-center">
           <p>Source links are on each page. Summary:</p>
-          <ul class="list-none space-y-1">
+          <ul class="list-none">
             <li>1940-1949: Australian Chart Book</li>
             <li>1950-1959: Australian Chart Book</li>
             <li>1960-1986: Kent Music Report</li>
