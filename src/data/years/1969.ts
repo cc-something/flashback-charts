@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Something / Come Together',
     artist: 'The Beatles',
     album: 'Abbey Road (Super Deluxe Edition) [2019 Remix & Remaster]',
-    youtubeVideoId: '45cYwDMibGo',
+    youtubeVideoId: '8JKoFCUaUbY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Honky Tonk Women',
     artist: 'The Rolling Stones',
     album: "Honky Tonk Women / You Can't Always Get What You Want - EP",
-    youtubeVideoId: 'hqqkGxZ1_8I',
+    youtubeVideoId: 'gqtJELaLG5k',
     imageSelection: 'album',
     imageSources: {
       album:
