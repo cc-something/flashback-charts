@@ -29,6 +29,10 @@ const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenButtonClass =
   'inline-flex h-[clamp(3.5rem,10vw,5rem)] w-[clamp(3.5rem,10vw,5rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const playerFullscreenSubtleButtonClass =
+  'inline-flex h-[clamp(3.5rem,10vw,5rem)] w-[clamp(3.5rem,10vw,5rem)] items-center justify-center rounded-full border border-white/10 bg-transparent text-text/45 transition-colors hover:border-white/50 hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const playerFullscreenCloseButtonClass =
+  'inline-flex h-[clamp(3rem,8vw,3.5rem)] w-[clamp(3rem,8vw,3.5rem)] items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -250,18 +254,14 @@ const closeMaxiPlayer = () => {
     :class="playerDockClass"
   >
     <button
-      v-if="player.playingSong"
+      v-if="player.playingSong && !shouldUseMaxiPlayer"
       type="button"
       title="Stop playback (Esc)"
       aria-label="Stop playback"
-      :class="
-        shouldUseMaxiPlayer
-          ? 'absolute top-4 right-4 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-surface/90 text-text/70 shadow-[0_12px_28px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-          : 'absolute top-0 right-0 z-30 inline-flex h-6 w-6 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border-1 border-white/25 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-      "
+      class="absolute top-0 right-0 z-30 inline-flex h-6 w-6 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border-1 border-white/25 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       @click="player.stop"
     >
-      <X :class="shouldUseMaxiPlayer ? 'h-4 w-4' : 'h-3.5 w-3.5'" />
+      <X class="h-3.5 w-3.5" />
     </button>
 
     <div :class="playerDockContainerClass">
@@ -269,13 +269,28 @@ const closeMaxiPlayer = () => {
         v-if="player.playingSong && !shouldShowPlaybackStartCta"
         :class="playerContentClass"
       >
-        <div v-if="shouldUseMaxiPlayer" class="mb-4 w-full">
-          <SongRow
-            v-if="player.playingYear !== null"
-            :song="player.playingSong"
-            :year="player.playingYear"
-            variant="maxi"
-          />
+        <div
+          v-if="shouldUseMaxiPlayer"
+          class="mb-4 flex w-full items-start gap-3 sm:gap-4"
+        >
+          <div class="min-w-0 flex-1 pr-1 sm:pr-2">
+            <SongRow
+              v-if="player.playingYear !== null"
+              :song="player.playingSong"
+              :year="player.playingYear"
+              variant="maxi"
+            />
+          </div>
+
+          <button
+            type="button"
+            title="Stop playback (Esc)"
+            aria-label="Stop playback"
+            :class="playerFullscreenCloseButtonClass"
+            @click="player.stop"
+          >
+            <X class="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+          </button>
         </div>
 
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
@@ -583,7 +598,7 @@ const closeMaxiPlayer = () => {
               type="button"
               :title="maxiPlayerCloseTitle"
               :aria-label="maxiPlayerCloseTitle"
-              :class="playerFullscreenButtonClass"
+              :class="playerFullscreenSubtleButtonClass"
               @click="closeMaxiPlayer"
             >
               <Minimize
