@@ -43,7 +43,7 @@ const shouldShowPlaybackStartCta = computed(
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 py-4 sm:px-6 sm:py-6'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 py-4 sm:px-6 sm:py-6'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockClass = computed(() =>

@@ -116,6 +116,7 @@ export const usePlayerStore = defineStore('player', () => {
   let loadingAttemptId = 0
   let loadingStartedAt = 0
   let clearSongHighlightTimerId: ReturnType<typeof setTimeout> | null = null
+  let shouldRestorePlayerOnContainerReady = false
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -228,14 +229,45 @@ export const usePlayerStore = defineStore('player', () => {
     () => playerState.value !== 'idle' && durationSeconds.value > 0,
   )
   const seekSliderValue = computed(() => [displayedTimeSeconds.value])
+  const getShouldAutoplayOnMount = () =>
+    !isAwaitingPlaybackStart.value &&
+    (playerState.value === 'playing' || playerState.value === 'loading')
+
+  const storePlaybackPositionForRemount = () => {
+    if (!ytPlayer) return
+    syncPlaybackProgress()
+    const nextCurrentTime = ytPlayer.getCurrentTime?.()
+    if (!Number.isFinite(nextCurrentTime) || !nextCurrentTime) return
+    currentTimeSeconds.value = nextCurrentTime
+    currentStartAtSeconds = nextCurrentTime
+  }
+
+  const restorePlayerAfterContainerSwap = async () => {
+    if (!currentPlaySong?.youtubeVideoId || !playerContainerEl) return
+    const mountedPlayer = await ensurePlayerMounted()
+    if (!mountedPlayer) return
+    if (isAwaitingPlaybackStart.value || playerState.value === 'paused') {
+      cueCurrentSongInPlayer()
+      return
+    }
+    playerState.value = 'loading'
+    loadCurrentSongIntoPlayer()
+  }
 
   const setPlayerContainer = (el: HTMLDivElement | null) => {
     if (playerContainerEl === el) return
     playerContainerEl = el
     if (!playerContainerEl) {
+      if (playerState.value !== 'idle' && currentPlaySong?.youtubeVideoId) {
+        storePlaybackPositionForRemount()
+        shouldRestorePlayerOnContainerReady = true
+      }
       destroyPlayer()
       return
     }
+    if (!shouldRestorePlayerOnContainerReady) return
+    shouldRestorePlayerOnContainerReady = false
+    void restorePlayerAfterContainerSwap()
   }
 
   const setOnEnded = (cb: ((song: Song, year: number) => void) | null) => {
@@ -400,6 +432,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearLoadingTracking()
     clearSeekPreview()
     clearOfflineHandler()
+    shouldRestorePlayerOnContainerReady = false
   }
   const destroyPlayer = () => {
     clearProgressTimer()
@@ -593,7 +626,7 @@ export const usePlayerStore = defineStore('player', () => {
         height: '100%',
         videoId: currentPlaySong?.youtubeVideoId,
         playerVars: {
-          autoplay: currentPlaySong && !isAwaitingPlaybackStart.value ? 1 : 0,
+          autoplay: getShouldAutoplayOnMount() ? 1 : 0,
           controls: isAwaitingPlaybackStart.value ? 1 : 0,
           disablekb: 1,
           fs: 0,
@@ -612,7 +645,7 @@ export const usePlayerStore = defineStore('player', () => {
             playerInitPromise = Promise.resolve(event.target)
             if (isMuted.value) event.target.mute()
             resolve(event.target)
-            if (currentPlaySong && !isAwaitingPlaybackStart.value) {
+            if (currentPlaySong && getShouldAutoplayOnMount()) {
               startProgressTimer()
               startPlaybackStallTimer()
             }
