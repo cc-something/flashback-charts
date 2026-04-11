@@ -53,7 +53,7 @@ const songs: Song[] = [
     title: 'Tingles',
     artist: 'Ratcat',
     album: 'Tingles (EP)',
-    youtubeVideoId: 'PWA0l2D8GHs',
+    youtubeVideoId: 'kZpXABSO_4Q',
     imageSelection: 'album',
     imageSources: {
       album:
