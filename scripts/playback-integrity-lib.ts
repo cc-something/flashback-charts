@@ -2,6 +2,7 @@ import { availableYears } from '@/data/availableYears'
 
 export interface PlaybackIntegritySelection {
   years: number[]
+  rank: number | null
 }
 
 const decadeSpan = 10
@@ -48,6 +49,7 @@ export const resolvePlaybackIntegritySelection = (
     )
 
   const selectedYears = new Set<number>()
+  let selectedRank: number | null = null
   let hasSelector = false
 
   for (const arg of filteredArgs) {
@@ -72,6 +74,14 @@ export const resolvePlaybackIntegritySelection = (
         for (const year of getDecadeYears(decade)) selectedYears.add(year)
       continue
     }
+    if (arg.startsWith('--rank=')) {
+      hasSelector = true
+      const rank = Number(arg.slice('--rank='.length))
+      if (!Number.isInteger(rank) || rank <= 0)
+        throw new Error('Expected --rank=1-style input.')
+      selectedRank = rank
+      continue
+    }
     throw new Error(`Unknown argument "${arg}".`)
   }
 
@@ -80,5 +90,8 @@ export const resolvePlaybackIntegritySelection = (
       'Playback integrity requires at least one selector: --all, --year=1945,1946, or --decade=1940.',
     )
 
-  return { years: [...selectedYears].sort((left, right) => left - right) }
+  return {
+    years: [...selectedYears].sort((left, right) => left - right),
+    rank: selectedRank,
+  }
 }

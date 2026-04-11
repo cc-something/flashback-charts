@@ -7,6 +7,8 @@ import { useToastStore } from '@/stores/toast'
 const playerViewportEl = ref<HTMLDivElement | null>(null)
 const statusMessage = ref('Waiting for initialization')
 const lastAttempt = ref<PlaybackIntegrityAttemptResult | null>(null)
+const previousMutedState = ref<boolean | null>(null)
+const pendingAttempt = ref<PlaybackIntegrityAttemptOptions | null>(null)
 const player = usePlayerStore()
 const toast = useToastStore()
 
@@ -45,6 +47,9 @@ const createAttemptResult = (
 const initialize = async () => {
   await nextTick()
   player.setPlayerContainer(playerViewportEl.value)
+  if (previousMutedState.value === null)
+    previousMutedState.value = player.isMuted
+  player.setMuted(true)
   await player.preload()
   statusMessage.value = 'Playback integrity harness ready'
 }
@@ -60,7 +65,7 @@ const reset = () => {
   statusMessage.value = 'Playback integrity harness ready'
 }
 
-const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
+const executeAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
   reset()
   activeAttemptId += 1
   const attemptId = activeAttemptId
@@ -134,9 +139,7 @@ const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
         player.stop()
         resolve(result)
       }, options.timeoutMs)
-      void player.preload().then(() => {
-        void player.play(options.song, options.year, 'direct')
-      })
+      void player.play(options.song, options.year, 'direct')
     })
   } catch (error) {
     const result = createAttemptResult(
@@ -155,10 +158,26 @@ const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
   }
 }
 
+const queueAttempt = (options: PlaybackIntegrityAttemptOptions) => {
+  pendingAttempt.value = options
+}
+
+const startQueuedAttempt = () => {
+  if (!pendingAttempt.value) return
+  const queuedAttempt = pendingAttempt.value
+  pendingAttempt.value = null
+  void executeAttempt(queuedAttempt)
+}
+
+const runAttempt = (options: PlaybackIntegrityAttemptOptions) =>
+  executeAttempt(options)
+
 onMounted(() => {
   player.setPlayerContainer(playerViewportEl.value)
   window.__FLASHBACK_PLAYBACK_INTEGRITY__ = {
     initialize,
+    queueAttempt,
+    startQueuedAttempt,
     runAttempt,
     reset,
     getLastAttempt: () => lastAttempt.value,
@@ -170,7 +189,10 @@ onUnmounted(() => {
   clearAttemptTimeout()
   clearToasts()
   player.stop()
+  if (previousMutedState.value !== null)
+    player.setMuted(previousMutedState.value)
   player.setPlayerContainer(null)
+  pendingAttempt.value = null
 })
 </script>
 
@@ -199,6 +221,15 @@ onUnmounted(() => {
         />
       </div>
     </section>
+
+    <button
+      data-testid="playback-integrity-start"
+      class="fixed left-4 top-4 z-50 rounded bg-black px-2 py-1 font-mono text-[10px] text-white shadow-lg"
+      type="button"
+      @click="startQueuedAttempt"
+    >
+      Start playback integrity attempt
+    </button>
 
     <section
       class="rounded-2xl border border-black/10 bg-surface p-5 shadow-sm"

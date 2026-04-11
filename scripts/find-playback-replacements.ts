@@ -28,10 +28,12 @@ type Replacement = {
 
 const execFileAsync = promisify(execFile)
 const playbackHarnessPath = '/__integrity/playback'
-const playbackAttemptTimeoutMs = 15000
+const playbackAttemptTimeoutMs = 8000
 const browserLaunchArgs = ['--autoplay-policy=no-user-gesture-required']
-const maxCandidatesPerSong = 6
-const minimumCandidateScore = 80
+const browserUserAgent =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
+const maxCandidatesPerSong = 12
+const minimumCandidateScore = 40
 
 const normalizeText = (value: string) =>
   value
@@ -74,30 +76,49 @@ const getYears = () => {
     .filter((entry) => Number.isInteger(entry))
 }
 
+const getRankFilter = () => {
+  const rankArg = process.argv.slice(2).find((arg) => arg.startsWith('--rank='))
+  if (!rankArg) return null
+  const rank = Number(rankArg.slice('--rank='.length))
+  if (!Number.isInteger(rank) || rank <= 0)
+    throw new Error('Expected --rank=1-style input.')
+  return rank
+}
+
 const searchCandidates = async (song: Song) => {
   const query = `${song.title} ${song.artist.replace(/;/g, ' ')}`
-  const { stdout } = await execFileAsync('/opt/homebrew/bin/yt-dlp', [
-    '--flat-playlist',
-    `ytsearch12:${query}`,
-    '--print',
-    '%(id)s\t%(title)s\t%(uploader)s',
-    '--skip-download',
-    '--no-warnings',
-  ])
-  return stdout
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
+  const searchQueries = [
+    query,
+    `${query} official audio`,
+    `${query} official video`,
+  ]
+  const searchResults = await Promise.all(
+    searchQueries.map(async (searchQuery) => {
+      const { stdout } = await execFileAsync('/opt/homebrew/bin/yt-dlp', [
+        '--flat-playlist',
+        `ytsearch12:${searchQuery}`,
+        '--print',
+        '%(id)s\t%(title)s\t%(uploader)s',
+        '--skip-download',
+        '--no-warnings',
+      ])
+      return stdout
+    }),
+  )
+  const candidatesById = new Map<string, Candidate>()
+  for (const stdout of searchResults)
+    for (const line of stdout.split('\n').map((entry) => entry.trim())) {
+      if (!line) continue
       const [id, title = '', uploader = ''] = line.split('\t')
-      return {
+      if (!id || id === song.youtubeVideoId || candidatesById.has(id)) continue
+      candidatesById.set(id, {
         id,
         title,
         uploader,
         score: scoreCandidate(song, { title, uploader }),
-      }
-    })
-    .filter((candidate) => candidate.id && candidate.id !== song.youtubeVideoId)
+      })
+    }
+  return [...candidatesById.values()]
     .sort((left, right) => right.score - left.score)
     .slice(0, maxCandidatesPerSong)
 }
@@ -160,13 +181,36 @@ const runHarnessAttemptSafe = async (
   try {
     return await runHarnessAttempt(page, year, song)
   } catch (error) {
-    if (
-      !(error instanceof Error) ||
-      !error.message.includes('Execution context was destroyed')
-    )
-      throw error
-    await initializeHarness(page, serverOrigin)
-    return runHarnessAttempt(page, year, song)
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    const shouldReinitialize =
+      page.isClosed() ||
+      errorMessage.includes('Execution context was destroyed') ||
+      errorMessage.includes('Target page, context or browser has been closed')
+    if (shouldReinitialize) {
+      await initializeHarness(page, serverOrigin)
+      try {
+        return await runHarnessAttempt(page, year, song)
+      } catch (retryError) {
+        const retryMessage =
+          retryError instanceof Error ? retryError.message : String(retryError)
+        return {
+          status: 'failed',
+          reason: 'player-load-failed',
+          errorCode: null,
+          message: retryMessage,
+          durationMs: 0,
+          stateSequence: [],
+        }
+      }
+    }
+    return {
+      status: 'failed',
+      reason: 'player-load-failed',
+      errorCode: null,
+      message: errorMessage,
+      durationMs: 0,
+      stateSequence: [],
+    }
   }
 }
 
@@ -174,12 +218,16 @@ const resetHarnessSafe = async (page: Page, serverOrigin: string) => {
   try {
     await resetHarness(page)
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
     if (
-      !(error instanceof Error) ||
-      !error.message.includes('Execution context was destroyed')
-    )
-      throw error
-    await initializeHarness(page, serverOrigin)
+      page.isClosed() ||
+      errorMessage.includes('Execution context was destroyed') ||
+      errorMessage.includes('Target page, context or browser has been closed')
+    ) {
+      await initializeHarness(page, serverOrigin)
+      return
+    }
+    throw error
   }
 }
 
@@ -187,8 +235,11 @@ const findReplacements = async (
   page: Page,
   serverOrigin: string,
   year: number,
+  rankFilter: number | null,
 ) => {
-  const songs = getYearData(year) ?? []
+  const songs = (getYearData(year) ?? []).filter((song) =>
+    rankFilter === null ? true : song.rank === rankFilter,
+  )
   const replacements: Replacement[] = []
 
   for (const song of songs) {
@@ -233,7 +284,9 @@ const findReplacements = async (
 
 const main = async () => {
   const years = getYears()
+  const rankFilter = getRankFilter()
   let browser: Browser | null = null
+  let browserContext: import('playwright').BrowserContext | null = null
   let page: Page | null = null
   let viteServer: ViteDevServer | null = null
 
@@ -244,18 +297,28 @@ const main = async () => {
       headless: true,
       args: browserLaunchArgs,
     })
-    page = await browser.newPage({ viewport: { width: 1440, height: 1024 } })
+    browserContext = await browser.newContext({
+      viewport: { width: 1440, height: 1024 },
+      userAgent: browserUserAgent,
+    })
+    page = await browserContext.newPage()
     await initializeHarness(page, serverSetup.serverOrigin)
 
     const replacements: Replacement[] = []
     for (const year of years)
       replacements.push(
-        ...(await findReplacements(page, serverSetup.serverOrigin, year)),
+        ...(await findReplacements(
+          page,
+          serverSetup.serverOrigin,
+          year,
+          rankFilter,
+        )),
       )
 
     console.log(JSON.stringify(replacements, null, 2))
   } finally {
     await page?.close()
+    await browserContext?.close()
     await browser?.close()
     await viteServer?.close()
   }
