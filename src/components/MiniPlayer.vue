@@ -49,7 +49,7 @@ const playerDockContainerClass = computed(() =>
 const playerDockClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? [
-        'fixed inset-x-0 bottom-0 z-30 bg-[color:var(--color-player)]',
+        'fixed inset-x-0 z-30 bg-[color:var(--color-player)]',
         shouldShowPlayerDock.value
           ? 'pointer-events-auto opacity-100'
           : 'pointer-events-none opacity-0',
@@ -273,7 +273,12 @@ const closeMaxiPlayer = () => {
         />
       </div>
 
-      <div v-if="shouldUseMaxiPlayer" class="flex w-full flex-col items-center">
+      <div
+        v-if="player.playingSong && !shouldShowPlaybackStartCta"
+        :class="
+          shouldUseMaxiPlayer ? 'mx-auto mb-4 w-full max-w-[1200px]' : 'mb-1.5'
+        "
+      >
         <div :class="playerFrameClass">
           <div :class="playerViewportClass">
             <div
@@ -316,108 +321,108 @@ const closeMaxiPlayer = () => {
             </button>
           </div>
         </div>
+      </div>
 
-        <div
-          v-if="
-            player.playingSong &&
-            !shouldShowPlaybackStartCta &&
-            shouldUseMaxiPlayer
-          "
-          :class="playerActionRowClass"
-          class="mx-auto w-full max-w-[1200px]"
-        >
-          <div class="flex items-center justify-center gap-1">
-            <button
-              type="button"
-              :title="`Previous song (${mod}+←)`"
-              aria-label="Previous song"
-              :class="playerFullscreenButtonClass"
-              @click="player.playPrev('player-btn')"
+      <div
+        v-if="
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          shouldUseMaxiPlayer
+        "
+        :class="playerActionRowClass"
+        class="mx-auto w-full max-w-[1200px]"
+      >
+        <div class="flex items-center justify-center gap-1">
+          <button
+            type="button"
+            :title="`Previous song (${mod}+←)`"
+            aria-label="Previous song"
+            :class="playerFullscreenButtonClass"
+            @click="player.playPrev('player-btn')"
+          >
+            <svg
+              class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
             >
-              <svg
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-              </svg>
-            </button>
+              <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+            </svg>
+          </button>
 
-            <button
-              type="button"
-              title="Play / pause (Space or K)"
-              aria-label="Toggle playback"
-              :class="playerFullscreenButtonClass"
-              @click="player.togglePlayback('player-btn')"
+          <button
+            type="button"
+            title="Play / pause (Space or K)"
+            aria-label="Toggle playback"
+            :class="playerFullscreenButtonClass"
+            @click="player.togglePlayback('player-btn')"
+          >
+            <svg
+              v-if="player.playerState === 'loading'"
+              class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)] animate-spin"
+              viewBox="0 0 24 24"
+              fill="none"
             >
-              <svg
-                v-if="player.playerState === 'loading'"
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)] animate-spin"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                />
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                />
-              </svg>
-              <svg
-                v-else-if="player.playerState === 'playing'"
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-              </svg>
-              <svg
-                v-else
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </button>
-
-            <button
-              type="button"
-              :title="`Next song (${mod}+→)`"
-              aria-label="Next song"
-              :class="playerFullscreenButtonClass"
-              @click="player.playNext(undefined, undefined, 'player-btn')"
-            >
-              <svg
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="absolute right-0">
-            <button
-              type="button"
-              :title="maxiPlayerCloseTitle"
-              :aria-label="maxiPlayerCloseTitle"
-              :class="playerFullscreenButtonClass"
-              @click="closeMaxiPlayer"
-            >
-              <Minimize
-                class="h-[clamp(1.125rem,3.6vw,2.25rem)] w-[clamp(1.125rem,3.6vw,2.25rem)]"
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
               />
-            </button>
-          </div>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+            <svg
+              v-else-if="player.playerState === 'playing'"
+              class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+            <svg
+              v-else
+              class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            :title="`Next song (${mod}+→)`"
+            aria-label="Next song"
+            :class="playerFullscreenButtonClass"
+            @click="player.playNext(undefined, undefined, 'player-btn')"
+          >
+            <svg
+              class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="absolute right-0">
+          <button
+            type="button"
+            :title="maxiPlayerCloseTitle"
+            :aria-label="maxiPlayerCloseTitle"
+            :class="playerFullscreenButtonClass"
+            @click="closeMaxiPlayer"
+          >
+            <Minimize
+              class="h-[clamp(1.125rem,3.6vw,2.25rem)] w-[clamp(1.125rem,3.6vw,2.25rem)]"
+            />
+          </button>
         </div>
       </div>
 
