@@ -89,6 +89,9 @@ const playerActionRowClass = computed(() =>
     ? 'relative mt-4 flex items-center justify-center'
     : 'flex items-center gap-1',
 )
+const playerBottomSpacerClass = computed(() =>
+  shouldUseMaxiPlayer.value ? 'h-12 shrink-0 sm:h-16' : 'hidden',
+)
 const fullscreenToggleTitle = computed(() =>
   shouldUseMaxiPlayer.value && !isTinyViewport.value
     ? 'Exit full-screen player (F)'
@@ -589,6 +592,8 @@ const closeMaxiPlayer = () => {
             </button>
           </div>
         </div>
+
+        <div :class="playerBottomSpacerClass" aria-hidden="true" />
       </div>
 
       <p
