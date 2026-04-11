@@ -271,7 +271,10 @@ onUnmounted(() => teardownKonamiListener())
 <template>
   <div
     class="flex min-h-screen flex-col bg-background text-text"
-    :style="{ '--sticky-bar-height': stickyBarHeight + 'px' }"
+    :style="{
+      '--sticky-bar-height': stickyBarHeight + 'px',
+      '--sticky-header-height': topHeaderChromeHeight + 'px',
+    }"
   >
     <RickRollDiscoBall
       :is-active="isRickRollActive"
