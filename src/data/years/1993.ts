@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: "I'd Do Anything for Love (But I Won't Do That)",
     artist: 'Meat Loaf',
     album: 'Bat Out of Hell II: Back into Hell',
-    youtubeVideoId: '9X_ViIPA-Gc',
+    youtubeVideoId: 'DpBSxhc8ZiA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'I Will Always Love You',
     artist: 'Whitney Houston',
     album: 'The Bodyguard: Original Soundtrack Album',
-    youtubeVideoId: '3JWTaaS7LdU',
+    youtubeVideoId: 'ardglr9MVVQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Please Forgive Me',
     artist: 'Bryan Adams',
     album: 'So Far So Good',
-    youtubeVideoId: '9EHAo6rEuas',
+    youtubeVideoId: 'Qy4zFJmE-1E',
     imageSelection: 'album',
     imageSources: {
       album:
