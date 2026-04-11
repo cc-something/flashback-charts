@@ -28,9 +28,9 @@ const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenButtonClass =
-  'inline-flex h-[clamp(3.5rem,10vw,5rem)] w-[clamp(3.5rem,10vw,5rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenSubtleButtonClass =
-  'inline-flex h-[clamp(3.5rem,10vw,5rem)] w-[clamp(3.5rem,10vw,5rem)] items-center justify-center rounded-full border border-white/10 bg-transparent text-text/45 transition-colors hover:border-white/50 hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
   'inline-flex h-[clamp(2.5rem,6.5vw,3rem)] w-[clamp(2.5rem,6.5vw,3rem)] items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
@@ -94,7 +94,7 @@ const playerActionRowClass = computed(() =>
     : 'flex items-center gap-1',
 )
 const playerBottomSpacerClass = computed(() =>
-  shouldUseMaxiPlayer.value ? 'h-12 shrink-0 sm:h-16' : 'hidden',
+  shouldUseMaxiPlayer.value ? 'h-20 shrink-0 sm:h-24' : 'hidden',
 )
 const fullscreenToggleTitle = computed(() =>
   shouldUseMaxiPlayer.value && !isTinyViewport.value
@@ -273,7 +273,9 @@ const closeMaxiPlayer = () => {
           v-if="shouldUseMaxiPlayer"
           class="mb-4 flex w-full items-start gap-3 sm:gap-4"
         >
-          <div class="min-w-0 flex-1 pr-1 sm:pr-2">
+          <div
+            class="min-w-0 flex-1 rounded-[1.15rem] border border-white/12 px-2 py-1.5 pr-3 sm:px-3 sm:py-2 sm:pr-4"
+          >
             <SongRow
               v-if="player.playingYear !== null"
               :song="player.playingSong"
@@ -523,7 +525,7 @@ const closeMaxiPlayer = () => {
               @click="player.playPrev('player-btn')"
             >
               <svg
-                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
+                class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -540,7 +542,7 @@ const closeMaxiPlayer = () => {
             >
               <svg
                 v-if="player.playerState === 'loading'"
-                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)] animate-spin"
+                class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)] animate-spin"
                 viewBox="0 0 24 24"
                 fill="none"
               >
@@ -560,7 +562,7 @@ const closeMaxiPlayer = () => {
               </svg>
               <svg
                 v-else-if="player.playerState === 'playing'"
-                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
+                class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -568,7 +570,7 @@ const closeMaxiPlayer = () => {
               </svg>
               <svg
                 v-else
-                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
+                class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -584,7 +586,7 @@ const closeMaxiPlayer = () => {
               @click="player.playNext(undefined, undefined, 'player-btn')"
             >
               <svg
-                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
+                class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -602,7 +604,7 @@ const closeMaxiPlayer = () => {
               @click="closeMaxiPlayer"
             >
               <Minimize
-                class="h-[clamp(1.5rem,4.5vw,2.25rem)] w-[clamp(1.5rem,4.5vw,2.25rem)]"
+                class="h-[clamp(1.35rem,4vw,2.1rem)] w-[clamp(1.35rem,4vw,2.1rem)]"
               />
             </button>
           </div>
