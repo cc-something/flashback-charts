@@ -5,7 +5,7 @@ const year = 2002
 
 export const source = {
   label: 'ARIA Charts',
-  url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2002_in_Australia',
+  url: 'https://www.aria.com.au/charts/2002/singles-chart',
 }
 
 export const description =

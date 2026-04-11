@@ -40,25 +40,42 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       </div>
 
       <div
-        class="flex flex-col items-center gap-4 text-center text-sm leading-relaxed text-text-muted"
+        class="flex flex-col gap-6 text-center text-sm leading-relaxed text-text-muted"
       >
-        <p>© CC Something {{ new Date().getFullYear() }}</p>
+        <div class="flex flex-col items-center">
+          <p><strong>Source links are on each page. Summary:</strong></p>
+          <ul class="list-none">
+            <li>1940-1949: Australian Chart Book</li>
+            <li>1950-1959: Australian Chart Book</li>
+            <li>1960-1986: Kent Music Report</li>
+            <li>1987: Australian Music Report</li>
+            <li>1988-1989: ARIA Charts</li>
+            <li>1990-1999: ARIA End of Year singles chart</li>
+            <li>2000-2009: ARIA Charts</li>
+            <li>2010-2019: ARIA End of Year Singles Chart</li>
+            <li>2020-2025: ARIA Top 100 Singles</li>
+          </ul>
+        </div>
 
-        <p>
-          Thanks to Matt &amp; Simon for the inspiration.
-          <br />
-          Credit to
-          <a
-            href="https://lucide.dev/license"
-            target="_blank"
-            rel="noreferrer"
-            class="inline-flex items-center gap-1 text-primary transition-opacity hover:opacity-80"
-          >
-            Lucide
-            <ExternalLink class="h-3.5 w-3.5" />
-          </a>
-          for the icons.
-        </p>
+        <div class="flex flex-col items-center gap-4">
+          <p>
+            Thanks to Matt &amp; Simon for the inspiration.
+            <br />
+            Credit to
+            <a
+              href="https://lucide.dev/license"
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center gap-1 text-primary transition-opacity hover:opacity-80"
+            >
+              Lucide
+              <ExternalLink class="h-3.5 w-3.5" />
+            </a>
+            for the icons.
+          </p>
+
+          <p>© CC Something {{ new Date().getFullYear() }}</p>
+        </div>
       </div>
     </div>
   </div>

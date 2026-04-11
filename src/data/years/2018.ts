@@ -5,7 +5,7 @@ const year = 2018
 
 export const source = {
   label: 'ARIA End of Year Singles Chart',
-  url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2018_in_Australia',
+  url: 'https://www.aria.com.au/charts/2018/singles-chart',
 }
 
 export const description =
