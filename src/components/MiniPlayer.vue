@@ -246,46 +246,138 @@ const toggleFullscreen = () => {
             : undefined
         "
       >
-        <div :class="playerFrameClass">
-          <div :class="playerViewportClass">
-            <div
-              ref="playerViewportMountHost"
-              class="absolute inset-0"
-              aria-hidden="true"
-            />
-            <button
-              v-if="shouldShowRestoredPoster && player.playingSong"
-              type="button"
-              aria-label="Play playback"
-              class="absolute inset-0 cursor-pointer"
-              @click="resumePlayback"
-            >
-              <img
-                :src="player.playingSong.thumbnailPath"
-                :alt="player.playingSong.title"
-                class="h-full w-full object-cover"
-              />
+        <div :class="isFullscreen ? 'flex w-full flex-col' : undefined">
+          <div :class="playerFrameClass">
+            <div :class="playerViewportClass">
               <div
+                ref="playerViewportMountHost"
                 class="absolute inset-0"
-                :style="{
-                  background:
-                    'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
-                }"
+                aria-hidden="true"
               />
-              <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+              <button
+                v-if="shouldShowRestoredPoster && player.playingSong"
+                type="button"
+                aria-label="Play playback"
+                class="absolute inset-0 cursor-pointer"
+                @click="resumePlayback"
+              >
+                <img
+                  :src="player.playingSong.thumbnailPath"
+                  :alt="player.playingSong.title"
+                  class="h-full w-full object-cover"
+                />
                 <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
-                >
-                  <svg
-                    class="h-6 w-6 translate-x-[0.5px] text-white"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+                  class="absolute inset-0"
+                  :style="{
+                    background:
+                      'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
+                  }"
+                />
+                <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+                  <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
                   >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
+                    <svg
+                      class="h-6 w-6 translate-x-[0.5px] text-white"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-            </button>
+              </button>
+            </div>
+          </div>
+
+          <div
+            v-if="
+              player.playingSong && !shouldShowMobilePlaybackCta && isFullscreen
+            "
+            :class="playerActionRowClass"
+          >
+            <div class="flex items-center justify-center gap-1">
+              <button
+                type="button"
+                :title="`Previous song (${mod}+←)`"
+                aria-label="Previous song"
+                :class="playerFullscreenButtonClass"
+                @click="player.playPrev('player-btn')"
+              >
+                <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                title="Play / pause (Space or K)"
+                aria-label="Toggle playback"
+                :class="playerFullscreenButtonClass"
+                @click="player.togglePlayback('player-btn')"
+              >
+                <svg
+                  v-if="player.playerState === 'loading'"
+                  class="h-10 w-10 animate-spin"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  />
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
+                </svg>
+                <svg
+                  v-else-if="player.playerState === 'playing'"
+                  class="h-10 w-10"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+                <svg
+                  v-else
+                  class="h-10 w-10"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                :title="`Next song (${mod}+→)`"
+                aria-label="Next song"
+                :class="playerFullscreenButtonClass"
+                @click="player.playNext(undefined, undefined, 'player-btn')"
+              >
+                <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="absolute right-0">
+              <button
+                type="button"
+                :title="fullscreenToggleTitle"
+                :aria-label="fullscreenToggleTitle"
+                :class="playerFullscreenButtonClass"
+                @click="toggleFullscreen"
+              >
+                <Minimize class="h-9 w-9" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -352,96 +444,6 @@ const toggleFullscreen = () => {
               <Flag class="h-3 w-3" aria-hidden="true" />
             </button>
           </div>
-        </div>
-      </div>
-
-      <div
-        v-if="
-          player.playingSong && !shouldShowMobilePlaybackCta && isFullscreen
-        "
-        :class="playerActionRowClass"
-      >
-        <div class="flex items-center justify-center gap-1">
-          <button
-            type="button"
-            :title="`Previous song (${mod}+←)`"
-            aria-label="Previous song"
-            :class="playerFullscreenButtonClass"
-            @click="player.playPrev('player-btn')"
-          >
-            <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            title="Play / pause (Space or K)"
-            aria-label="Toggle playback"
-            :class="playerFullscreenButtonClass"
-            @click="player.togglePlayback('player-btn')"
-          >
-            <svg
-              v-if="player.playerState === 'loading'"
-              class="h-10 w-10 animate-spin"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              />
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            <svg
-              v-else-if="player.playerState === 'playing'"
-              class="h-10 w-10"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-            </svg>
-            <svg
-              v-else
-              class="h-10 w-10"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            :title="`Next song (${mod}+→)`"
-            aria-label="Next song"
-            :class="playerFullscreenButtonClass"
-            @click="player.playNext(undefined, undefined, 'player-btn')"
-          >
-            <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-            </svg>
-          </button>
-        </div>
-
-        <div class="absolute right-0">
-          <button
-            type="button"
-            :title="fullscreenToggleTitle"
-            :aria-label="fullscreenToggleTitle"
-            :class="playerFullscreenButtonClass"
-            @click="toggleFullscreen"
-          >
-            <Minimize class="h-9 w-9" />
-          </button>
         </div>
       </div>
 
