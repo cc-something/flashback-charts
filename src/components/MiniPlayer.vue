@@ -32,7 +32,7 @@ const playerFullscreenButtonClass =
 const playerFullscreenSubtleButtonClass =
   'inline-flex h-[clamp(3.5rem,10vw,5rem)] w-[clamp(3.5rem,10vw,5rem)] items-center justify-center rounded-full border border-white/10 bg-transparent text-text/45 transition-colors hover:border-white/50 hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
-  'inline-flex h-[clamp(3rem,8vw,3.5rem)] w-[clamp(3rem,8vw,3.5rem)] items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(2.5rem,6.5vw,3rem)] w-[clamp(2.5rem,6.5vw,3rem)] items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
