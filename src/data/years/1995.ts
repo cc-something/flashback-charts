@@ -8,7 +8,7 @@ export const description =
 
 export const source = {
   label: 'ARIA End of Year singles chart',
-  url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_1995_in_Australia',
+  url: 'https://www.aria.com.au/charts/1995/singles-chart',
 }
 
 const getSong = ({

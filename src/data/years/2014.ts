@@ -3,7 +3,7 @@ import type { Song } from '@/types/song'
 
 export const source = {
   label: 'ARIA End of Year Singles Chart',
-  url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2014_in_Australia',
+  url: 'https://www.aria.com.au/charts/2014/singles-chart',
 }
 
 export const description =

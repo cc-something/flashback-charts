@@ -5,7 +5,7 @@ const year = 2023
 
 export const source = {
   label: 'ARIA Top 100 Singles',
-  url: 'https://en.wikipedia.org/wiki/List_of_Top_25_singles_for_2023_in_Australia',
+  url: 'https://www.aria.com.au/charts/2023/singles-chart',
 }
 
 export const description =

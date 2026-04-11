@@ -5,7 +5,7 @@ const year = 2007
 
 export const source = {
   label: 'ARIA Charts',
-  url: 'https://en.wikipedia.org/wiki/List_of_top_25_singles_for_2007_in_Australia',
+  url: 'https://www.aria.com.au/charts/2007/singles-chart',
 }
 
 export const description =
