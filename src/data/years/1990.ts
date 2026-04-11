@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Nothing Compares 2 U',
     artist: "Sinéad O'Connor",
     album: "I Do Not Want What I Haven't Got",
-    youtubeVideoId: '0-EF60neguk',
+    youtubeVideoId: '5h1GZ96-g14',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -149,7 +149,7 @@ const songs: Song[] = [
     title: "Girl I'm Gonna Miss You",
     artist: 'Milli Vanilli',
     album: "All or Nothing and Girl You Know It's True",
-    youtubeVideoId: 'ZbUENJ5FjBk',
+    youtubeVideoId: 'ZAbbnKiUz0k',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -163,7 +163,7 @@ const songs: Song[] = [
     title: 'Love Shack',
     artist: "The B-52's",
     album: 'Cosmic Thing',
-    youtubeVideoId: '9SOryJvTAGs',
+    youtubeVideoId: 'diOFiZi0T7c',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/f/f7/Loveshack.jpg',
