@@ -14,7 +14,8 @@ const player = usePlayerStore()
 const route = useRoute()
 const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
-const playerViewportMountHost = ref<HTMLDivElement | null>(null)
+const miniPlayerViewportMountHost = ref<HTMLDivElement | null>(null)
+const maxiPlayerViewportMountHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
 const isTinyViewport = useMediaQuery('(max-width: 839px)')
@@ -81,7 +82,7 @@ const playerViewportClass = computed(() =>
 )
 const playerActionRowClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'relative mt-4 mb-16 flex items-center justify-center sm:mb-20'
+    ? 'relative mt-4 flex items-center justify-center'
     : 'flex items-center gap-1',
 )
 const fullscreenToggleTitle = computed(() =>
@@ -125,17 +126,28 @@ const scrollToPlayingSongRow = async () => {
   })
 }
 const syncPlayerContainer = async () => {
-  if (!playerViewportMountHost.value) {
+  const playerViewportMountHost = shouldUseMaxiPlayer.value
+    ? maxiPlayerViewportMountHost.value
+    : miniPlayerViewportMountHost.value
+  if (!playerViewportMountHost) {
     player.setPlayerContainer(null)
     return
   }
   await nextTick()
-  player.setPlayerContainer(playerViewportMountHost.value)
+  player.setPlayerContainer(playerViewportMountHost)
 }
 watch(() => player.playingYear, updateThemeVars, { immediate: true })
-watch(playerViewportMountHost, () => {
-  void syncPlayerContainer()
-})
+watch(
+  [
+    miniPlayerViewportMountHost,
+    maxiPlayerViewportMountHost,
+    shouldUseMaxiPlayer,
+  ],
+  () => {
+    void syncPlayerContainer()
+  },
+  { flush: 'post' },
+)
 watch(shouldShowPlayerDock, (shouldShow) => {
   if (shouldShow) return
   isDesktopFullscreen.value = false
@@ -263,7 +275,7 @@ const closeMaxiPlayer = () => {
           player.playingSong &&
           !shouldShowPlaybackStartCta
         "
-        class="my-auto mx-auto flex w-full max-w-[1200px] flex-col"
+        class="my-auto mx-auto flex w-full max-w-[1200px] flex-col pb-12 sm:pb-16"
       >
         <div class="mb-4 w-full">
           <SongRow
@@ -278,7 +290,7 @@ const closeMaxiPlayer = () => {
           <div :class="playerFrameClass">
             <div :class="playerViewportClass">
               <div
-                ref="playerViewportMountHost"
+                ref="maxiPlayerViewportMountHost"
                 class="absolute inset-0"
                 aria-hidden="true"
               />
@@ -422,6 +434,58 @@ const closeMaxiPlayer = () => {
         Tap the play button in the video above to start
         {{ ` ${player.playingSong.title}` }}.
       </p>
+
+      <div
+        v-if="
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
+        "
+        class="mb-1.5"
+      >
+        <div :class="playerFrameClass">
+          <div :class="playerViewportClass">
+            <div
+              ref="miniPlayerViewportMountHost"
+              class="absolute inset-0"
+              aria-hidden="true"
+            />
+            <button
+              v-if="shouldShowRestoredPoster && player.playingSong"
+              type="button"
+              aria-label="Play playback"
+              class="absolute inset-0 cursor-pointer"
+              @click="resumePlayback"
+            >
+              <img
+                :src="player.playingSong.thumbnailPath"
+                :alt="player.playingSong.title"
+                class="h-full w-full object-cover"
+              />
+              <div
+                class="absolute inset-0"
+                :style="{
+                  background:
+                    'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
+                }"
+              />
+              <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                >
+                  <svg
+                    class="h-6 w-6 translate-x-[0.5px] text-white"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div
         v-if="
