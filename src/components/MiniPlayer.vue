@@ -28,7 +28,7 @@ const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenButtonClass =
-  'inline-flex h-20 w-20 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(2.5rem,8vw,5rem)] w-[clamp(2.5rem,8vw,5rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -304,7 +304,11 @@ const toggleFullscreen = () => {
                 :class="playerFullscreenButtonClass"
                 @click="player.playPrev('player-btn')"
               >
-                <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+                <svg
+                  class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
                 </svg>
               </button>
@@ -318,7 +322,7 @@ const toggleFullscreen = () => {
               >
                 <svg
                   v-if="player.playerState === 'loading'"
-                  class="h-10 w-10 animate-spin"
+                  class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)] animate-spin"
                   viewBox="0 0 24 24"
                   fill="none"
                 >
@@ -338,7 +342,7 @@ const toggleFullscreen = () => {
                 </svg>
                 <svg
                   v-else-if="player.playerState === 'playing'"
-                  class="h-10 w-10"
+                  class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
@@ -346,7 +350,7 @@ const toggleFullscreen = () => {
                 </svg>
                 <svg
                   v-else
-                  class="h-10 w-10"
+                  class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
@@ -361,7 +365,11 @@ const toggleFullscreen = () => {
                 :class="playerFullscreenButtonClass"
                 @click="player.playNext(undefined, undefined, 'player-btn')"
               >
-                <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+                <svg
+                  class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
                 </svg>
               </button>
@@ -375,7 +383,9 @@ const toggleFullscreen = () => {
                 :class="playerFullscreenButtonClass"
                 @click="toggleFullscreen"
               >
-                <Minimize class="h-9 w-9" />
+                <Minimize
+                  class="h-[clamp(1.125rem,3.6vw,2.25rem)] w-[clamp(1.125rem,3.6vw,2.25rem)]"
+                />
               </button>
             </div>
           </div>
