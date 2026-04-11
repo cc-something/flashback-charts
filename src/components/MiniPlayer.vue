@@ -83,6 +83,11 @@ const playerFrameStyle = computed(() =>
     ? { width: `${playerFrameWidth.value}px` }
     : undefined,
 )
+const playerMaxiContentStyle = computed(() =>
+  shouldUseMaxiPlayer.value && playerFrameWidth.value
+    ? { width: `${playerFrameWidth.value}px` }
+    : undefined,
+)
 const playerActionRowClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? 'relative mt-4 mb-12 flex items-center justify-center sm:mb-14'
@@ -310,7 +315,8 @@ const closeMaxiPlayer = () => {
           !shouldShowPlaybackStartCta
         "
         ref="maxiPlayerHeaderHost"
-        class="mb-4"
+        :style="playerMaxiContentStyle"
+        class="mb-4 mx-auto"
       >
         <SongRow
           :song="player.playingSong"
@@ -382,7 +388,9 @@ const closeMaxiPlayer = () => {
             shouldUseMaxiPlayer
           "
           ref="maxiPlayerControlsHost"
+          :style="playerMaxiContentStyle"
           :class="playerActionRowClass"
+          class="mx-auto"
         >
           <div class="flex items-center justify-center gap-1">
             <button
