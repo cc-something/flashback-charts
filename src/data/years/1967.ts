@@ -39,7 +39,7 @@ const songs: Song[] = [
     artist: 'Engelbert Humperdinck',
     album:
       '20th Century Masters - The Millennium Collection: Engelbert Humperdinck',
-    youtubeVideoId: 'Wll-a6MOLtY',
+    youtubeVideoId: '8UMZtCag3OU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -52,7 +52,7 @@ const songs: Song[] = [
     title: 'This Is My Song',
     artist: 'Petula Clark',
     album: 'Platinum & Gold Collection',
-    youtubeVideoId: 'V8XmLuTmKIM',
+    youtubeVideoId: 'C5-k7YRaeU0',
     imageSelection: 'album',
     imageSources: {
       album:

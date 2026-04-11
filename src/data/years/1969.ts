@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Ob-La-Di, Ob-La-Da / While My Guitar Gently Weeps',
     artist: 'The Beatles',
     album: 'The Beatles (The White Album)',
-    youtubeVideoId: 'YFDg-pgE0Hk',
+    youtubeVideoId: 'g_Kh_L26604',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'The Real Thing',
     artist: 'Russell Morris',
     album: 'The Dish (Music From the Motion Picture)',
-    youtubeVideoId: 'WDel7m72iJU',
+    youtubeVideoId: 'tAVPerpD44k',
     imageSelection: 'album',
     imageSources: {
       album:
