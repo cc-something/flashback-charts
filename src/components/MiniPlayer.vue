@@ -47,7 +47,7 @@ const shouldShowPlaybackStartCta = computed(
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 pt-4 pb-24 sm:px-6 sm:pt-6 sm:pb-28'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-14'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockClass = computed(() =>
@@ -85,7 +85,7 @@ const playerFrameStyle = computed(() =>
 )
 const playerActionRowClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'relative mt-4 mb-24 flex items-center justify-center sm:mb-28'
+    ? 'relative mt-4 mb-12 flex items-center justify-center sm:mb-14'
     : 'flex items-center gap-1',
 )
 const fullscreenToggleTitle = computed(() =>
