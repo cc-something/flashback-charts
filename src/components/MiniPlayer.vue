@@ -134,6 +134,7 @@ watch(isFullscreen, (shouldShowFullscreen) => {
   document.documentElement.dataset.playerFullscreen = shouldShowFullscreen
     ? 'true'
     : 'false'
+  document.body.style.overflow = shouldShowFullscreen ? 'hidden' : ''
 })
 const handleFullscreenToggle = () => {
   if (!player.playingSong || shouldShowMobilePlaybackCta.value) return
@@ -153,6 +154,7 @@ onUnmounted(() => player.setPlayerContainer(null))
 onUnmounted(() => {
   if (typeof document === 'undefined') return
   delete document.documentElement.dataset.playerFullscreen
+  document.body.style.overflow = ''
 })
 onUnmounted(() =>
   window.removeEventListener(
