@@ -47,7 +47,7 @@ const shouldShowPlaybackStartCta = computed(
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-14'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 py-4 sm:px-6 sm:py-6'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockClass = computed(() =>
@@ -325,59 +325,47 @@ const closeMaxiPlayer = () => {
         />
       </div>
 
-      <div
-        :class="
-          shouldUseMaxiPlayer ? 'flex min-h-0 flex-1 flex-col' : undefined
-        "
-      >
-        <div
-          :class="
-            shouldUseMaxiPlayer
-              ? 'flex min-h-0 flex-1 items-start justify-center'
-              : undefined
-          "
-        >
-          <div :class="playerFrameClass" :style="playerFrameStyle">
-            <div :class="playerViewportClass">
-              <div
-                ref="playerViewportMountHost"
-                class="absolute inset-0"
-                aria-hidden="true"
+      <div v-if="shouldUseMaxiPlayer" class="flex w-full flex-col items-center">
+        <div :class="playerFrameClass" :style="playerFrameStyle">
+          <div :class="playerViewportClass">
+            <div
+              ref="playerViewportMountHost"
+              class="absolute inset-0"
+              aria-hidden="true"
+            />
+            <button
+              v-if="shouldShowRestoredPoster && player.playingSong"
+              type="button"
+              aria-label="Play playback"
+              class="absolute inset-0 cursor-pointer"
+              @click="resumePlayback"
+            >
+              <img
+                :src="player.playingSong.thumbnailPath"
+                :alt="player.playingSong.title"
+                class="h-full w-full object-cover"
               />
-              <button
-                v-if="shouldShowRestoredPoster && player.playingSong"
-                type="button"
-                aria-label="Play playback"
-                class="absolute inset-0 cursor-pointer"
-                @click="resumePlayback"
-              >
-                <img
-                  :src="player.playingSong.thumbnailPath"
-                  :alt="player.playingSong.title"
-                  class="h-full w-full object-cover"
-                />
+              <div
+                class="absolute inset-0"
+                :style="{
+                  background:
+                    'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
+                }"
+              />
+              <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
                 <div
-                  class="absolute inset-0"
-                  :style="{
-                    background:
-                      'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
-                  }"
-                />
-                <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
-                  <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                >
+                  <svg
+                    class="h-6 w-6 translate-x-[0.5px] text-white"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
                   >
-                    <svg
-                      class="h-6 w-6 translate-x-[0.5px] text-white"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </div>
-              </button>
-            </div>
+              </div>
+            </button>
           </div>
         </div>
 
