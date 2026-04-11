@@ -265,8 +265,18 @@ export const usePlayerStore = defineStore('player', () => {
       destroyPlayer()
       return
     }
-    if (!shouldRestorePlayerOnContainerReady) return
-    shouldRestorePlayerOnContainerReady = false
+    if (shouldRestorePlayerOnContainerReady) {
+      shouldRestorePlayerOnContainerReady = false
+      void restorePlayerAfterContainerSwap()
+      return
+    }
+    if (
+      playerState.value === 'idle' ||
+      !currentPlaySong?.youtubeVideoId ||
+      ytPlayer ||
+      playerInitPromise
+    )
+      return
     void restorePlayerAfterContainerSwap()
   }
 
