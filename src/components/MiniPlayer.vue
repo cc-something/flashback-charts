@@ -40,13 +40,13 @@ const shouldShowMobilePlaybackCta = computed(
 )
 const playerDockContainerClass = computed(() =>
   isFullscreen.value
-    ? 'mx-auto flex w-full max-w-[1200px] flex-col px-4 pt-4 pb-5 sm:px-6 sm:pt-6 sm:pb-6'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 pt-4 pb-5 sm:px-6 sm:pt-6 sm:pb-6'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockClass = computed(() =>
   isFullscreen.value
     ? [
-        'fixed inset-x-0 bottom-0 z-30 overflow-y-auto bg-[color:var(--color-player)]',
+        'fixed inset-x-0 bottom-0 z-30 bg-[color:var(--color-player)]',
         shouldShowPlayerDock.value
           ? 'pointer-events-auto opacity-100'
           : 'pointer-events-none opacity-0',
@@ -63,7 +63,7 @@ const playerDockStyle = computed(() =>
 )
 const playerFrameClass = computed(() =>
   isFullscreen.value
-    ? 'overflow-hidden rounded-[1.4rem] border border-white/10 bg-black shadow-[0_30px_90px_rgb(0_0_0_/_0.32)]'
+    ? 'mx-auto w-full overflow-hidden rounded-[1.4rem] border border-white/10 bg-black shadow-[0_30px_90px_rgb(0_0_0_/_0.32)]'
     : 'overflow-hidden border border-white/10 bg-black shadow-lg',
 )
 const playerViewportClass = computed(() =>
@@ -237,46 +237,54 @@ const toggleFullscreen = () => {
         variant="maxi"
       />
 
-      <div :class="playerFrameClass">
-        <div :class="playerViewportClass">
-          <div
-            ref="playerViewportMountHost"
-            class="absolute inset-0"
-            aria-hidden="true"
-          />
-          <button
-            v-if="shouldShowRestoredPoster && player.playingSong"
-            type="button"
-            aria-label="Play playback"
-            class="absolute inset-0 cursor-pointer"
-            @click="resumePlayback"
-          >
-            <img
-              :src="player.playingSong.thumbnailPath"
-              :alt="player.playingSong.title"
-              class="h-full w-full object-cover"
-            />
+      <div
+        :class="
+          isFullscreen
+            ? 'flex flex-1 min-h-0 items-start justify-center'
+            : undefined
+        "
+      >
+        <div :class="playerFrameClass">
+          <div :class="playerViewportClass">
             <div
+              ref="playerViewportMountHost"
               class="absolute inset-0"
-              :style="{
-                background:
-                  'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
-              }"
+              aria-hidden="true"
             />
-            <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+            <button
+              v-if="shouldShowRestoredPoster && player.playingSong"
+              type="button"
+              aria-label="Play playback"
+              class="absolute inset-0 cursor-pointer"
+              @click="resumePlayback"
+            >
+              <img
+                :src="player.playingSong.thumbnailPath"
+                :alt="player.playingSong.title"
+                class="h-full w-full object-cover"
+              />
               <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
-              >
-                <svg
-                  class="h-6 w-6 translate-x-[0.5px] text-white"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
+                class="absolute inset-0"
+                :style="{
+                  background:
+                    'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
+                }"
+              />
+              <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
                 >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+                  <svg
+                    class="h-6 w-6 translate-x-[0.5px] text-white"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -587,7 +595,8 @@ const toggleFullscreen = () => {
 .player-viewport-fullscreen {
   aspect-ratio: 16 / 9;
   position: relative;
-  min-height: min(70dvh, 675px);
+  height: auto;
+  max-height: 100%;
 }
 
 .player-viewport :deep(iframe) {
