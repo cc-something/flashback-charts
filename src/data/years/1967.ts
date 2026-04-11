@@ -37,8 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: 'The Last Waltz',
     artist: 'Engelbert Humperdinck',
-    album:
-      '20th Century Masters - The Millennium Collection: Engelbert Humperdinck',
+    album: 'The Last Waltz',
     youtubeVideoId: 'Wll-a6MOLtY',
     imageSelection: 'album',
     imageSources: {
@@ -51,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'This Is My Song',
     artist: 'Petula Clark',
-    album: 'Platinum & Gold Collection',
+    album: 'These Are My Songs',
     youtubeVideoId: 'V8XmLuTmKIM',
     imageSelection: 'album',
     imageSources: {
@@ -64,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Snoopy vs. the Red Baron',
     artist: 'The Royal Guardsmen',
-    album: 'The Best Of The Royal Guardsmen',
+    album: 'Snoopy vs. the Red Baron',
     youtubeVideoId: 'Oxzg_iM-T4E',
     imageSelection: 'album',
     imageSources: {
@@ -90,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'Penny Lane / Strawberry Fields Forever',
     artist: 'The Beatles',
-    album: 'Strawberry Fields Forever / Penny Lane - Single',
+    album: 'Penny Lane / Strawberry Fields Forever',
     youtubeVideoId: 'S-rB0pHI9fU',
     imageSelection: 'album',
     imageSources: {
@@ -103,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: "Somethin' Stupid",
     artist: 'Nancy Sinatra and Frank Sinatra',
-    album: 'Nothing But the Best (Remastered)',
+    album: "Somethin' Stupid",
     youtubeVideoId: '0f48fpoSEPU',
     imageSelection: 'album',
     imageSources: {
@@ -116,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: 'Georgy Girl',
     artist: 'The Seekers',
-    album: 'The Very Best of The Seekers',
+    album: 'Come the Day',
     youtubeVideoId: 'wsIbfYEizLk',
     imageSelection: 'album',
     imageSources: {
@@ -142,8 +141,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'A Whiter Shade of Pale',
     artist: 'Procol Harum',
-    album:
-      'The Big Chill (Original Motion Picture Soundtrack) [15th Anniversary]',
+    album: 'Procol Harum',
     youtubeVideoId: 'z0vCwGUZe1I',
     imageSelection: 'album',
     imageSources: {
@@ -156,7 +154,7 @@ const songs: Song[] = [
     rank: 10,
     title: "I'm a Believer / (I'm Not Your) Steppin' Stone",
     artist: 'The Monkees',
-    album: "I'm a Believer / (I'm Not Your) Steppin' Stone - EP",
+    album: 'More of the Monkees',
     youtubeVideoId: 'ehWbMmFm6G0',
     imageSelection: 'album',
     imageSources: {

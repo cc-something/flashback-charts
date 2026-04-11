@@ -37,7 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: 'Something / Come Together',
     artist: 'The Beatles',
-    album: 'Abbey Road (Super Deluxe Edition) [2019 Remix & Remaster]',
+    album: 'Abbey Road',
     youtubeVideoId: '45cYwDMibGo',
     imageSelection: 'album',
     imageSources: {
@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'Honky Tonk Women',
     artist: 'The Rolling Stones',
-    album: "Honky Tonk Women / You Can't Always Get What You Want - EP",
+    album: 'Honky Tonk Women',
     youtubeVideoId: 'hqqkGxZ1_8I',
     imageSelection: 'album',
     imageSources: {
@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'The Real Thing',
     artist: 'Russell Morris',
-    album: 'The Dish (Music From the Motion Picture)',
+    album: 'The Real Thing',
     youtubeVideoId: 'WDel7m72iJU',
     imageSelection: 'album',
     imageSources: {
@@ -89,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'Suspicious Minds',
     artist: 'Elvis Presley',
-    album: 'Elv1s: 30 #1 Hits',
+    album: 'Suspicious Minds',
     youtubeVideoId: 'WrMGGouem3c',
     imageSelection: 'album',
     imageSources: {
@@ -102,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: 'Part Three into Paper Walls / The Girl That I Love',
     artist: 'Russell Morris',
-    album: 'Fundamentalist',
+    album: 'Part Three into Paper Walls / The Girl That I Love',
     youtubeVideoId: 'zKHzUHb6g4Q',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: "Get Back / Don't Let Me Down",
     artist: 'The Beatles',
-    album: 'Get Back: The Rooftop Performance (Live)',
+    album: "Get Back / Don't Let Me Down",
     youtubeVideoId: 'NCtzkaL2t_Y',
     imageSelection: 'album',
     imageSources: {
@@ -141,7 +141,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'Hair',
     artist: 'The Cowsills',
-    album: 'The Best of the Cowsills',
+    album: 'The Cowsills in Concert',
     youtubeVideoId: 'Qt_yKPNORLM',
     imageSelection: 'album',
     imageSources: {

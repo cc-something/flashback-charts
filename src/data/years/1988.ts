@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Get Outta My Dreams, Get into My Car',
     artist: 'Billy Ocean',
-    album: 'The Very Best of Billy Ocean',
+    album: 'Tear Down These Walls',
     youtubeVideoId: 'zNgcYGgtf8M',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'Never Gonna Give You Up',
     artist: 'Rick Astley',
-    album: 'The Best Of Me: Never Edition',
+    album: 'Whenever You Need Somebody',
     youtubeVideoId: 'dQw4w9WgXcQ',
     imageSelection: 'album',
     imageSources: {

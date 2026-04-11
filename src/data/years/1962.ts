@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Roses Are Red (My Love)',
     artist: 'Bobby Vinton',
-    album: 'The Best of Bobby Vinton',
+    album: 'Roses Are Red',
     youtubeVideoId: '8rjPC7-JMUM',
     imageSelection: 'album',
     imageSources: {
@@ -154,7 +154,7 @@ const songs: Song[] = [
     rank: 10,
     title: 'The Swiss Maid',
     artist: 'Del Shannon',
-    album: 'Greatest Hits',
+    album: 'The Swiss Maid',
     youtubeVideoId: 'nn27xBY8X68',
     imageSelection: 'album',
     imageSources: {

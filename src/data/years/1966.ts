@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'We Can Work It Out / Day Tripper',
     artist: 'The Beatles',
-    album: 'Past Masters, Vols. 1 & 2',
+    album: 'We Can Work It Out / Day Tripper',
     youtubeVideoId: 'Qyclqo_AV2M',
     imageSelection: 'album',
     imageSources: {
@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Hitch Hiker',
     artist: 'Bobby and Laurie',
-    album: 'Best Of………',
+    album: 'Hitch Hiker',
     youtubeVideoId: 'rY1Bu2fgck4',
     imageSelection: 'album',
     imageSources: {
@@ -142,7 +142,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'Winchester Cathedral',
     artist: 'The New Vaudeville Band',
-    album: 'Winchester Cathedral - Single',
+    album: 'Winchester Cathedral',
     youtubeVideoId: '0GcPYzYYM9M',
     imageSelection: 'album',
     imageSources: {

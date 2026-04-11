@@ -61,7 +61,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'See You Again',
     artist: 'Wiz Khalifa featuring Charlie Puth',
-    album: 'Furious 7 soundtrack',
+    album: 'Furious 7: Original Motion Picture Soundtrack',
     youtubeVideoId: 'RgKAFK5djSk',
     imageSelection: 'album',
     imageSources: {

@@ -37,7 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: 'We Are the World',
     artist: 'USA for Africa',
-    album: 'We Are the World - Single',
+    album: 'We Are the World',
     youtubeVideoId: '9AjkUyX0rVw',
     imageSelection: 'album',
     imageSources: {
@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Crazy for You',
     artist: 'Madonna',
-    album: 'Something to Remember',
+    album: 'Vision Quest',
     youtubeVideoId: 'DHutZXREZ0E',
     imageSelection: 'album',
     imageSources: {
@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Live It Up',
     artist: 'Mental As Anything',
-    album: 'Essential as Anything (30th Anniversary Edition)',
+    album: 'Fundamental',
     youtubeVideoId: 'kK_eQImKnPA',
     imageSelection: 'album',
     imageSources: {
@@ -102,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: 'Out of Mind, Out of Sight',
     artist: 'Models',
-    album: 'Out Of Mind, Out Of Sight (35th Anniversary Edition)',
+    album: 'Out Of Mind, Out Of Sight',
     youtubeVideoId: 'k5EZmJoNeYs',
     imageSelection: 'album',
     imageSources: {
@@ -115,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: 'Money for Nothing',
     artist: 'Dire Straits',
-    album: 'Private Investigations: The Best of Dire Straits & Mark Knopfler',
+    album: 'Brothers in Arms',
     youtubeVideoId: 'wTP2RUD_cL0',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'I Got You Babe',
     artist: 'UB40 with Chrissie Hynde',
-    album: 'The Very Best Of',
+    album: 'Baggariddim',
     youtubeVideoId: '2aP4GaAruws',
     imageSelection: 'album',
     imageSources: {
@@ -141,7 +141,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'I Should Have Known Better',
     artist: 'Jim Diamond',
-    album: 'With Love From PolyGram 50th Anniversary',
+    album: 'Double Crossed',
     youtubeVideoId: 'qWEFNFsFrgE',
     imageSelection: 'album',
     imageSources: {
@@ -154,7 +154,7 @@ const songs: Song[] = [
     rank: 10,
     title: 'Would I Lie to You?',
     artist: 'Eurythmics',
-    album: 'Ultimate Collection (Remastered)',
+    album: 'Be Yourself Tonight',
     youtubeVideoId: 'Uhpu2N4rQZM',
     imageSelection: 'album',
     imageSources: {

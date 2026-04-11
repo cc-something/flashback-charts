@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'Turning Japanese',
     artist: 'The Vapors',
-    album: 'Turning Japanese - Best of the Vapors',
+    album: 'New Clear Days',
     youtubeVideoId: 'nGy9uomagO4',
     imageSelection: 'album',
     imageSources: {
@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Crazy Little Thing Called Love',
     artist: 'Queen',
-    album: 'The Game (Deluxe Edition)',
+    album: 'The Game',
     youtubeVideoId: 'zO6D_BAuYCI',
     imageSelection: 'album',
     imageSources: {
@@ -89,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'Brass in Pocket',
     artist: 'Pretenders',
-    album: 'Pretenders (Expanded Edition) [2006 Remaster]',
+    album: 'Pretenders',
     youtubeVideoId: '0H6re3PCP3E',
     imageSelection: 'album',
     imageSources: {
@@ -102,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: "Can't Stop the Music",
     artist: 'Village People',
-    album: "Can't Stop The Music (The Original Motion Picture Soundtrack)",
+    album: "Can't Stop the Music: Original Motion Picture Soundtrack",
     youtubeVideoId: 'H_GT_2Z4xlU',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'More Than I Can Say',
     artist: 'Leo Sayer',
-    album: 'The Very Best of Leo Sayer',
+    album: 'Living in a Fantasy',
     youtubeVideoId: 'GnIlo91CrBw',
     imageSelection: 'album',
     imageSources: {

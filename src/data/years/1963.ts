@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'She Loves You',
     artist: 'The Beatles',
-    album: 'Past Masters, Vols. 1 & 2',
+    album: 'She Loves You',
     youtubeVideoId: 'nGbWU8S3vzs',
     imageSelection: 'album',
     imageSources: {
@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'From a Jack to a King',
     artist: 'Ned Miller',
-    album: 'From a Jack to a King (Remastered) - Single',
+    album: 'From a Jack to a King',
     youtubeVideoId: 'vJEs2uM7zaM',
     imageSelection: 'album',
     imageSources: {
@@ -102,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: 'Hey Paula',
     artist: 'Paul and Paula',
-    album: 'Hey Paula (Remastered) - Single',
+    album: 'Hey Paula',
     youtubeVideoId: 'tu26InG0bmE',
     imageSelection: 'album',
     imageSources: {
@@ -115,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: 'Sugar Shack',
     artist: 'Jimmy Gilmer and the Fireballs',
-    album: "The Best of the Fireballs' Vocals",
+    album: 'Sugar Shack',
     youtubeVideoId: '5ksZvHFxd9M',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'I Will Follow Him',
     artist: 'Little Peggy March',
-    album: 'I Will Follow Him (Remastered) - Single',
+    album: 'I Will Follow Him',
     youtubeVideoId: 'IRk9gAqjLgg',
     imageSelection: 'album',
     imageSources: {

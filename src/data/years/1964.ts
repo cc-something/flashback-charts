@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: "I Feel Fine / She's a Woman",
     artist: 'The Beatles',
-    album: 'Past Masters, Vols. 1 & 2',
+    album: "I Feel Fine / She's a Woman",
     youtubeVideoId: 'WrAV5EVI4tU',
     imageSelection: 'album',
     imageSources: {
@@ -115,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: "Ain't That Loving You Baby",
     artist: 'Elvis Presley',
-    album: "The King of Rock 'n' Roll: The Complete 50's Masters",
+    album: "Ain't That Loving You Baby",
     youtubeVideoId: 'KhTkiZOI2sE',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'Have I the Right?',
     artist: 'The Honeycombs',
-    album: 'Have I the Right - The Very Best of the Honeycombs',
+    album: 'The Honeycombs',
     youtubeVideoId: '2ZUWHfI6EuE',
     imageSelection: 'album',
     imageSources: {

@@ -37,7 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: 'Australiana',
     artist: 'Austen Tayshus',
-    album: 'The Mule (Original Soundtrack)',
+    album: 'Australiana',
     youtubeVideoId: 'StcXGhuliRk',
     imageSelection: 'album',
     imageSources: {
@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Gloria',
     artist: 'Laura Branigan',
-    album: 'The Best of Branigan',
+    album: 'Branigan',
     youtubeVideoId: 'nNEb2k_EmMg',
     imageSelection: 'album',
     imageSources: {
@@ -103,7 +103,7 @@ const songs: Song[] = [
     rank: 6,
     title: 'Total Eclipse of the Heart',
     artist: 'Bonnie Tyler',
-    album: 'The Very Best of Bonnie Tyler',
+    album: 'Faster Than the Speed of Night',
     youtubeVideoId: 'lcOxhH8N3Bo',
     imageSelection: 'album',
     imageSources: {
@@ -155,7 +155,7 @@ const songs: Song[] = [
     rank: 10,
     title: 'Every Breath You Take',
     artist: 'The Police',
-    album: 'The Very Best of Sting & The Police',
+    album: 'Synchronicity',
     youtubeVideoId: 'OMOGaugKpzs',
     imageSelection: 'album',
     imageSources: {

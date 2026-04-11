@@ -78,7 +78,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'It Must Have Been Love',
     artist: 'Roxette',
-    album: 'Pretty Woman (soundtrack)',
+    album: 'Pretty Woman: Original Motion Picture Soundtrack',
     youtubeVideoId: 'k2C5TjS2sh4',
     imageSelection: 'album',
     imageSources: {

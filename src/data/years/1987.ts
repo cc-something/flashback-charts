@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Old Time Rock and Roll',
     artist: 'Bob Seger',
-    album: 'Nine Tonight (Live) [Remastered]',
+    album: 'Stranger in Town',
     youtubeVideoId: 'W1LsRShUPtY',
     imageSelection: 'album',
     imageSources: {
@@ -89,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'Respectable',
     artist: 'Mel and Kim',
-    album: 'F.L.M. (Deluxe Edition)',
+    album: 'F.L.M.',
     youtubeVideoId: 'ykDsmAqExH8',
     imageSelection: 'album',
     imageSources: {
@@ -115,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: 'Walk Like an Egyptian',
     artist: 'The Bangles',
-    album: 'Greatest Hits',
+    album: 'Different Light',
     youtubeVideoId: 'vth-T1u7A58',
     imageSelection: 'album',
     imageSources: {
@@ -155,7 +155,7 @@ const songs: Song[] = [
     rank: 10,
     title: 'The Final Countdown',
     artist: 'Europe',
-    album: 'The Final Countdown (Expanded Edition)',
+    album: 'The Final Countdown',
     youtubeVideoId: '9jK-NcRmVcw',
     imageSelection: 'album',
     imageSources: {

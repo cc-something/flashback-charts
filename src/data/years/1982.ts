@@ -37,7 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: 'Eye of the Tiger',
     artist: 'Survivor',
-    album: 'Eye of the Tiger (Remastered)',
+    album: 'Eye of the Tiger',
     youtubeVideoId: 'btPJPFnesV4',
     imageSelection: 'album',
     imageSources: {
@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Tainted Love',
     artist: 'Soft Cell',
-    album: 'Tainted Love / Where Did Our Love Go - Single',
+    album: 'Non-Stop Erotic Cabaret',
     youtubeVideoId: 'XZVpR3Pk-r8',
     imageSelection: 'album',
     imageSources: {
@@ -89,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'Key Largo',
     artist: 'Bertie Higgins',
-    album: 'Bertie Higgins: The Ultimate Collection',
+    album: 'Just Another Day in Paradise',
     youtubeVideoId: 'Ru2tsT32pHA',
     imageSelection: 'album',
     imageSources: {
@@ -115,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: "I Love Rock 'n Roll",
     artist: 'Joan Jett & The Blackhearts',
-    album: "I Love Rock 'N' Roll (Expanded Edition)",
+    album: "I Love Rock 'n Roll",
     youtubeVideoId: 'A4cFIzr85cU',
     imageSelection: 'album',
     imageSources: {
@@ -141,7 +141,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'Believe It or Not',
     artist: 'Joey Scarbury',
-    album: 'The Greatest American Hero',
+    album: "America's Greatest Hero",
     youtubeVideoId: 'WqF5M7IK7I0',
     imageSelection: 'album',
     imageSources: {
@@ -154,7 +154,7 @@ const songs: Song[] = [
     rank: 10,
     title: "Hard to Say I'm Sorry",
     artist: 'Chicago',
-    album: 'Chicago 16 (Expanded Edition)',
+    album: 'Chicago 16',
     youtubeVideoId: '1A0MPWseJIE',
     imageSelection: 'album',
     imageSources: {
