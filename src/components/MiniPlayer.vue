@@ -73,7 +73,7 @@ const playerViewportClass = computed(() =>
 )
 const playerActionRowClass = computed(() =>
   isFullscreen.value
-    ? 'mt-4 flex flex-wrap items-center justify-center gap-1'
+    ? 'relative mt-4 flex items-center justify-center'
     : 'flex items-center gap-1',
 )
 const fullscreenToggleTitle = computed(() =>
@@ -351,79 +351,88 @@ const toggleFullscreen = () => {
         "
         :class="playerActionRowClass"
       >
-        <button
-          type="button"
-          :title="fullscreenToggleTitle"
-          :aria-label="fullscreenToggleTitle"
-          :class="playerFullscreenButtonClass"
-          @click="toggleFullscreen"
-        >
-          <Minimize class="h-9 w-9" />
-        </button>
-
-        <button
-          type="button"
-          :title="`Previous song (${mod}+←)`"
-          aria-label="Previous song"
-          :class="playerFullscreenButtonClass"
-          @click="player.playPrev('player-btn')"
-        >
-          <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-          </svg>
-        </button>
-
-        <button
-          type="button"
-          title="Play / pause (Space or K)"
-          aria-label="Toggle playback"
-          :class="playerFullscreenButtonClass"
-          @click="player.togglePlayback('player-btn')"
-        >
-          <svg
-            v-if="player.playerState === 'loading'"
-            class="h-10 w-10 animate-spin"
-            viewBox="0 0 24 24"
-            fill="none"
+        <div class="flex items-center justify-center gap-1">
+          <button
+            type="button"
+            :title="`Previous song (${mod}+←)`"
+            aria-label="Previous song"
+            :class="playerFullscreenButtonClass"
+            @click="player.playPrev('player-btn')"
           >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            />
-            <path
-              class="opacity-75"
+            <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            title="Play / pause (Space or K)"
+            aria-label="Toggle playback"
+            :class="playerFullscreenButtonClass"
+            @click="player.togglePlayback('player-btn')"
+          >
+            <svg
+              v-if="player.playerState === 'loading'"
+              class="h-10 w-10 animate-spin"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              />
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+            <svg
+              v-else-if="player.playerState === 'playing'"
+              class="h-10 w-10"
+              viewBox="0 0 24 24"
               fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            />
-          </svg>
-          <svg
-            v-else-if="player.playerState === 'playing'"
-            class="h-10 w-10"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-          </svg>
-          <svg v-else class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </button>
+            >
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+            <svg
+              v-else
+              class="h-10 w-10"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </button>
 
-        <button
-          type="button"
-          :title="`Next song (${mod}+→)`"
-          aria-label="Next song"
-          :class="playerFullscreenButtonClass"
-          @click="player.playNext(undefined, undefined, 'player-btn')"
-        >
-          <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-          </svg>
-        </button>
+          <button
+            type="button"
+            :title="`Next song (${mod}+→)`"
+            aria-label="Next song"
+            :class="playerFullscreenButtonClass"
+            @click="player.playNext(undefined, undefined, 'player-btn')"
+          >
+            <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="absolute right-0">
+          <button
+            type="button"
+            :title="fullscreenToggleTitle"
+            :aria-label="fullscreenToggleTitle"
+            :class="playerFullscreenButtonClass"
+            @click="toggleFullscreen"
+          >
+            <Minimize class="h-9 w-9" />
+          </button>
+        </div>
       </div>
 
       <div
