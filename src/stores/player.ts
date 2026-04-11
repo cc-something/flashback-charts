@@ -20,7 +20,7 @@ const PLAYER_LOAD_FAILED_MESSAGE =
 const SONG_ROW_HIGHLIGHT_DURATION_MS = 1_000
 const SONG_ROW_LOOKUP_ATTEMPTS = 24
 const SONG_ROW_SCROLL_SETTLE_MS = 350
-const MOBILE_VIEWPORT_MEDIA_QUERY = '(max-width: 839px)'
+const TINY_VIEWPORT_MEDIA_QUERY = '(max-width: 839px)'
 
 interface SavedPlayerState {
   year: number
@@ -96,7 +96,7 @@ export const usePlayerStore = defineStore('player', () => {
   const seekPreviewSeconds = ref<number | null>(null)
   const isMuted = ref(false)
   const hasMountedPlayer = ref(false)
-  const isAwaitingMobilePlaybackStart = ref(false)
+  const isAwaitingPlaybackStart = ref(false)
   const highlightedSongKey = ref<string | null>(null)
   const pendingHighlightedSongKey = ref<string | null>(null)
 
@@ -175,13 +175,13 @@ export const usePlayerStore = defineStore('player', () => {
     if (typeof window === 'undefined') return false
     return navigator.onLine
   }
-  const getShouldRequireMobilePlaybackStart = () => {
+  const getIsTinyViewport = () => {
     if (
       typeof window === 'undefined' ||
       typeof window.matchMedia !== 'function'
     )
       return false
-    return window.matchMedia(MOBILE_VIEWPORT_MEDIA_QUERY).matches
+    return window.matchMedia(TINY_VIEWPORT_MEDIA_QUERY).matches
   }
   const clearLoadingTracking = () => {
     loadingStartedAt = 0
@@ -396,7 +396,7 @@ export const usePlayerStore = defineStore('player', () => {
     retryCount = 0
     currentPlaySong = null
     currentStartAtSeconds = undefined
-    isAwaitingMobilePlaybackStart.value = false
+    isAwaitingPlaybackStart.value = false
     clearLoadingTracking()
     clearSeekPreview()
     clearOfflineHandler()
@@ -410,6 +410,29 @@ export const usePlayerStore = defineStore('player', () => {
     isPlayerReady = false
     hasMountedPlayer.value = false
     playerContainerEl?.replaceChildren()
+  }
+  const enterPlaybackStartGate = async () => {
+    if (!currentPlaySong?.youtubeVideoId) return
+    clearStallTimer()
+    clearLoadingTracking()
+    clearProgressTimer()
+    if (currentTimeSeconds.value > 0)
+      currentStartAtSeconds = currentTimeSeconds.value
+    isAwaitingPlaybackStart.value = true
+    playerState.value = 'paused'
+    if (ytPlayer || playerInitPromise) destroyPlayer()
+    const mountedPlayer = mountPlayerIfPossible()
+    if (mountedPlayer) {
+      await mountedPlayer
+      cueCurrentSongInPlayer()
+      return
+    }
+    try {
+      await ensurePlayerMounted()
+      if (isAwaitingPlaybackStart.value) cueCurrentSongInPlayer()
+    } catch {
+      /* noop */
+    }
   }
   const stop = () => {
     clearSaveTimer()
@@ -476,6 +499,7 @@ export const usePlayerStore = defineStore('player', () => {
       if (playerState.value !== 'loading') return
       if (!(await getHasNetworkConnection()))
         return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+      if (!isAwaitingPlaybackStart.value) return enterPlaybackStartGate()
       await failLoadingAttempt('Playback failed, try again later')
     }, STALL_TIMEOUT_MS)
   }
@@ -521,6 +545,8 @@ export const usePlayerStore = defineStore('player', () => {
     if (isEmbedBlockedError(errorCode)) return handleEmbedBlockedPlayback()
     if (!(await getHasNetworkConnection()))
       return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+    if (!isAwaitingPlaybackStart.value && retryCount >= MAX_RETRIES)
+      return enterPlaybackStartGate()
     if (retryCount < MAX_RETRIES) {
       retryCount += 1
       playerState.value = 'loading'
@@ -540,11 +566,11 @@ export const usePlayerStore = defineStore('player', () => {
     if (!playingSong.value || playingYear.value === null) return
     if (event.data === 1 || event.data === 2) clearStallTimer()
     if (event.data === 1) {
-      isAwaitingMobilePlaybackStart.value = false
+      isAwaitingPlaybackStart.value = false
       clearLoadingTracking()
       playerState.value = 'playing'
     } else if (event.data === 2) {
-      isAwaitingMobilePlaybackStart.value = false
+      isAwaitingPlaybackStart.value = false
       clearLoadingTracking()
       playerState.value = 'paused'
     } else if (event.data === 3) playerState.value = 'loading'
@@ -567,9 +593,8 @@ export const usePlayerStore = defineStore('player', () => {
         height: '100%',
         videoId: currentPlaySong?.youtubeVideoId,
         playerVars: {
-          autoplay:
-            currentPlaySong && !isAwaitingMobilePlaybackStart.value ? 1 : 0,
-          controls: isAwaitingMobilePlaybackStart.value ? 1 : 0,
+          autoplay: currentPlaySong && !isAwaitingPlaybackStart.value ? 1 : 0,
+          controls: isAwaitingPlaybackStart.value ? 1 : 0,
           disablekb: 1,
           fs: 0,
           iv_load_policy: 3,
@@ -587,7 +612,7 @@ export const usePlayerStore = defineStore('player', () => {
             playerInitPromise = Promise.resolve(event.target)
             if (isMuted.value) event.target.mute()
             resolve(event.target)
-            if (currentPlaySong && !isAwaitingMobilePlaybackStart.value) {
+            if (currentPlaySong && !isAwaitingPlaybackStart.value) {
               startProgressTimer()
               startPlaybackStallTimer()
             }
@@ -629,8 +654,8 @@ export const usePlayerStore = defineStore('player', () => {
       !playerContainerEl
     )
       return
-    if (!isActive.value && getShouldRequireMobilePlaybackStart())
-      isAwaitingMobilePlaybackStart.value = true
+    if (!isActive.value && getIsTinyViewport())
+      isAwaitingPlaybackStart.value = true
     currentPlaySong = song
     currentStartAtSeconds = undefined
     try {
@@ -660,7 +685,7 @@ export const usePlayerStore = defineStore('player', () => {
       }
       if (playerState.value === 'paused' && ytPlayer) {
         if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
-        if (isAwaitingMobilePlaybackStart.value) return
+        if (isAwaitingPlaybackStart.value) return
         startLoadingAttempt()
         if (getHasImmediateNetworkConnection()) {
           ytPlayer.playVideo()
@@ -721,28 +746,7 @@ export const usePlayerStore = defineStore('player', () => {
     }
     window.addEventListener('offline', offlineHandler, { once: true })
 
-    const shouldRequireMobilePlaybackStart =
-      !wasActive && getShouldRequireMobilePlaybackStart()
-    if (shouldRequireMobilePlaybackStart) {
-      isAwaitingMobilePlaybackStart.value = true
-      clearLoadingTracking()
-      playerState.value = 'paused'
-      if (ytPlayer && isPlayerReady) {
-        cueCurrentSongInPlayer()
-        return
-      }
-      if (mountPlayerIfPossible()) return
-      void ensurePlayerMounted()
-        .then(() => {
-          if (isAwaitingMobilePlaybackStart.value) cueCurrentSongInPlayer()
-        })
-        .catch(async () => {
-          if (!(await getHasNetworkConnection()))
-            return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-          return failLoadingAttempt(PLAYER_LOAD_FAILED_MESSAGE)
-        })
-      return
-    }
+    if (!wasActive && getIsTinyViewport()) return enterPlaybackStartGate()
 
     if (playerState.value !== 'loading') return
     if (ytPlayer && isPlayerReady) {
@@ -959,7 +963,7 @@ export const usePlayerStore = defineStore('player', () => {
     isActive,
     isMuted,
     hasMountedPlayer,
-    isAwaitingMobilePlaybackStart,
+    isAwaitingPlaybackStart,
     preload,
     primePlayback,
     setPlayerContainer,

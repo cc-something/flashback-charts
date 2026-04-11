@@ -16,8 +16,8 @@ const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
 const playerViewportMountHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
-const isFullscreen = ref(false)
-const isMobileViewport = useMediaQuery('(max-width: 839px)')
+const isDesktopFullscreen = ref(false)
+const isTinyViewport = useMediaQuery('(max-width: 839px)')
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
 
@@ -35,16 +35,19 @@ const shouldShowPlayerDock = computed(
 const shouldShowRestoredPoster = computed(
   () => player.playingSong !== null && !player.hasMountedPlayer,
 )
-const shouldShowMobilePlaybackCta = computed(
-  () => isMobileViewport.value && player.isAwaitingMobilePlaybackStart,
+const shouldUseMaxiPlayer = computed(
+  () => isTinyViewport.value || isDesktopFullscreen.value,
+)
+const shouldShowPlaybackStartCta = computed(
+  () => player.isAwaitingPlaybackStart,
 )
 const playerDockContainerClass = computed(() =>
-  isFullscreen.value
+  shouldUseMaxiPlayer.value
     ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 pt-4 pb-5 sm:px-6 sm:pt-6 sm:pb-6'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockClass = computed(() =>
-  isFullscreen.value
+  shouldUseMaxiPlayer.value
     ? [
         'fixed inset-x-0 bottom-0 z-30 bg-[color:var(--color-player)]',
         shouldShowPlayerDock.value
@@ -59,27 +62,30 @@ const playerDockClass = computed(() =>
       ].join(' '),
 )
 const playerDockStyle = computed(() =>
-  isFullscreen.value ? { top: 'var(--sticky-bar-height)' } : undefined,
+  shouldUseMaxiPlayer.value ? { top: 'var(--sticky-bar-height)' } : undefined,
 )
 const playerFrameClass = computed(() =>
-  isFullscreen.value
+  shouldUseMaxiPlayer.value
     ? 'mx-auto w-full overflow-hidden rounded-[1.4rem] border border-white/10 bg-black shadow-[0_30px_90px_rgb(0_0_0_/_0.32)]'
     : 'overflow-hidden border border-white/10 bg-black shadow-lg',
 )
 const playerViewportClass = computed(() =>
-  isFullscreen.value
+  shouldUseMaxiPlayer.value
     ? 'player-viewport-fullscreen w-full bg-black'
     : 'player-viewport w-full min-h-[200px] bg-black',
 )
 const playerActionRowClass = computed(() =>
-  isFullscreen.value
+  shouldUseMaxiPlayer.value
     ? 'relative mt-4 mb-8 flex items-center justify-center'
     : 'flex items-center gap-1',
 )
 const fullscreenToggleTitle = computed(() =>
-  isFullscreen.value
+  shouldUseMaxiPlayer.value && !isTinyViewport.value
     ? 'Exit full-screen player (F)'
     : 'Open full-screen player (F)',
+)
+const maxiPlayerCloseTitle = computed(() =>
+  isTinyViewport.value ? 'Close player' : 'Exit full-screen player (F)',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -127,22 +133,31 @@ watch(playerViewportMountHost, () => {
 })
 watch(shouldShowPlayerDock, (shouldShow) => {
   if (shouldShow) return
-  isFullscreen.value = false
+  isDesktopFullscreen.value = false
 })
-watch(isFullscreen, (shouldShowFullscreen) => {
+watch(shouldUseMaxiPlayer, (shouldShowMaxiPlayer) => {
   if (typeof document === 'undefined') return
-  document.documentElement.dataset.playerFullscreen = shouldShowFullscreen
+  document.documentElement.dataset.playerFullscreen = shouldShowMaxiPlayer
     ? 'true'
     : 'false'
-  document.body.style.overflow = shouldShowFullscreen ? 'hidden' : ''
+  document.body.style.overflow = shouldShowMaxiPlayer ? 'hidden' : ''
 })
 const handleFullscreenToggle = () => {
-  if (!player.playingSong || shouldShowMobilePlaybackCta.value) return
-  toggleFullscreen()
+  if (
+    !player.playingSong ||
+    shouldShowPlaybackStartCta.value ||
+    isTinyViewport.value
+  )
+    return
+  openMaxiPlayer()
 }
 const closeFullscreen = () => {
-  if (!isFullscreen.value) return
-  isFullscreen.value = false
+  if (isTinyViewport.value) {
+    player.stop()
+    return
+  }
+  if (!isDesktopFullscreen.value) return
+  isDesktopFullscreen.value = false
 }
 onMounted(() =>
   window.addEventListener(
@@ -198,9 +213,17 @@ const openReportModal = () => {
   if (!player.playingSong || player.playingYear === null) return
   isReportModalOpen.value = true
 }
-const toggleFullscreen = () => {
+const openMaxiPlayer = () => {
   if (!player.playingSong) return
-  isFullscreen.value = !isFullscreen.value
+  isDesktopFullscreen.value = true
+}
+const closeMaxiPlayer = () => {
+  if (!player.playingSong) return
+  if (isTinyViewport.value) {
+    player.stop()
+    return
+  }
+  isDesktopFullscreen.value = false
 }
 </script>
 
@@ -216,22 +239,22 @@ const toggleFullscreen = () => {
       title="Stop playback (Esc)"
       aria-label="Stop playback"
       :class="
-        isFullscreen
+        shouldUseMaxiPlayer
           ? 'absolute top-4 right-4 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-surface/90 text-text/70 shadow-[0_12px_28px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
           : 'absolute top-0 right-0 z-30 inline-flex h-6 w-6 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border-1 border-white/25 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
       "
       @click="player.stop"
     >
-      <X :class="isFullscreen ? 'h-4 w-4' : 'h-3.5 w-3.5'" />
+      <X :class="shouldUseMaxiPlayer ? 'h-4 w-4' : 'h-3.5 w-3.5'" />
     </button>
 
     <div :class="playerDockContainerClass">
       <SongRow
         v-if="
-          isFullscreen &&
+          shouldUseMaxiPlayer &&
           player.playingSong &&
           player.playingYear !== null &&
-          !shouldShowMobilePlaybackCta
+          !shouldShowPlaybackStartCta
         "
         class="mb-4"
         :song="player.playingSong"
@@ -241,12 +264,12 @@ const toggleFullscreen = () => {
 
       <div
         :class="
-          isFullscreen
+          shouldUseMaxiPlayer
             ? 'flex flex-1 min-h-0 items-start justify-center'
             : undefined
         "
       >
-        <div :class="isFullscreen ? 'flex w-full flex-col' : undefined">
+        <div :class="shouldUseMaxiPlayer ? 'flex w-full flex-col' : undefined">
           <div :class="playerFrameClass">
             <div :class="playerViewportClass">
               <div
@@ -292,7 +315,9 @@ const toggleFullscreen = () => {
 
           <div
             v-if="
-              player.playingSong && !shouldShowMobilePlaybackCta && isFullscreen
+              player.playingSong &&
+              !shouldShowPlaybackStartCta &&
+              shouldUseMaxiPlayer
             "
             :class="playerActionRowClass"
           >
@@ -378,10 +403,10 @@ const toggleFullscreen = () => {
             <div class="absolute right-0">
               <button
                 type="button"
-                :title="fullscreenToggleTitle"
-                :aria-label="fullscreenToggleTitle"
+                :title="maxiPlayerCloseTitle"
+                :aria-label="maxiPlayerCloseTitle"
                 :class="playerFullscreenButtonClass"
-                @click="toggleFullscreen"
+                @click="closeMaxiPlayer"
               >
                 <Minimize
                   class="h-[clamp(1.125rem,3.6vw,2.25rem)] w-[clamp(1.125rem,3.6vw,2.25rem)]"
@@ -393,7 +418,7 @@ const toggleFullscreen = () => {
       </div>
 
       <p
-        v-if="shouldShowMobilePlaybackCta && player.playingSong"
+        v-if="shouldShowPlaybackStartCta && player.playingSong"
         class="mt-3 px-1 text-sm leading-snug text-text-muted"
       >
         Tap the play button in the video above to start
@@ -402,7 +427,9 @@ const toggleFullscreen = () => {
 
       <div
         v-if="
-          player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
         "
         class="mt-1.5 flex items-start gap-2.5"
       >
@@ -459,7 +486,9 @@ const toggleFullscreen = () => {
 
       <div
         v-if="
-          player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
         "
         class="mt-1.5 flex items-center gap-1"
       >
@@ -549,7 +578,7 @@ const toggleFullscreen = () => {
             :title="fullscreenToggleTitle"
             :aria-label="fullscreenToggleTitle"
             :class="playerButtonClass"
-            @click="toggleFullscreen"
+            @click="openMaxiPlayer"
           >
             <Expand class="h-4.5 w-4.5" />
           </button>
@@ -558,7 +587,9 @@ const toggleFullscreen = () => {
 
       <div
         v-if="
-          player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
         "
         class="mt-0.5 flex justify-end pr-0.5"
       >
@@ -575,7 +606,9 @@ const toggleFullscreen = () => {
 
       <div
         v-if="
-          player.playingSong && !shouldShowMobilePlaybackCta && !isFullscreen
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
         "
         class="relative mt-0.5 -mx-0.5 px-0.5"
       >
