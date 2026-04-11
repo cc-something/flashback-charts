@@ -117,6 +117,10 @@ export const usePlayerStore = defineStore('player', () => {
   let loadingStartedAt = 0
   let clearSongHighlightTimerId: ReturnType<typeof setTimeout> | null = null
   let shouldRestorePlayerOnContainerReady = false
+  let pendingPlayerMountEl: HTMLDivElement | null = null
+  let destroyPlayerOnContainerLossTimerId: ReturnType<
+    typeof setTimeout
+  > | null = null
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -229,6 +233,21 @@ export const usePlayerStore = defineStore('player', () => {
     () => playerState.value !== 'idle' && durationSeconds.value > 0,
   )
   const seekSliderValue = computed(() => [displayedTimeSeconds.value])
+  const clearDestroyPlayerOnContainerLossTimer = () => {
+    if (destroyPlayerOnContainerLossTimerId === null) return
+    clearTimeout(destroyPlayerOnContainerLossTimerId)
+    destroyPlayerOnContainerLossTimerId = null
+  }
+  const syncTransferredPlayerState = () => {
+    shouldRestorePlayerOnContainerReady = false
+    syncPlaybackProgress()
+    if (playerState.value === 'playing' || playerState.value === 'loading')
+      startProgressTimer()
+    else clearProgressTimer()
+    if (playerState.value === 'loading' && !isAwaitingPlaybackStart.value)
+      startPlaybackStallTimer()
+    else clearStallTimer()
+  }
   const getShouldAutoplayOnMount = () =>
     !isAwaitingPlaybackStart.value &&
     (playerState.value === 'playing' || playerState.value === 'loading')
@@ -256,13 +275,41 @@ export const usePlayerStore = defineStore('player', () => {
 
   const setPlayerContainer = (el: HTMLDivElement | null) => {
     if (playerContainerEl === el) return
+    const previousPlayerContainerEl = playerContainerEl
+    clearDestroyPlayerOnContainerLossTimer()
+    const hasTransferredMountedPlayer =
+      !!el && !!pendingPlayerMountEl && !!(ytPlayer || playerInitPromise)
+    if (el && pendingPlayerMountEl) {
+      el.replaceChildren(pendingPlayerMountEl)
+      pendingPlayerMountEl = null
+    }
     playerContainerEl = el
     if (!playerContainerEl) {
+      const orphanedPlayerMountEl = pendingPlayerMountEl
+        ? null
+        : previousPlayerContainerEl?.firstElementChild
+      if (orphanedPlayerMountEl instanceof HTMLDivElement)
+        pendingPlayerMountEl = orphanedPlayerMountEl
       if (playerState.value !== 'idle' && currentPlaySong?.youtubeVideoId) {
         storePlaybackPositionForRemount()
         shouldRestorePlayerOnContainerReady = true
       }
-      destroyPlayer()
+      if (!ytPlayer && !playerInitPromise) {
+        destroyPlayer()
+        return
+      }
+      if (typeof window === 'undefined') {
+        destroyPlayer()
+        return
+      }
+      destroyPlayerOnContainerLossTimerId = window.setTimeout(() => {
+        pendingPlayerMountEl = null
+        destroyPlayer()
+      }, 0)
+      return
+    }
+    if (hasTransferredMountedPlayer) {
+      syncTransferredPlayerState()
       return
     }
     if (shouldRestorePlayerOnContainerReady) {
@@ -431,6 +478,7 @@ export const usePlayerStore = defineStore('player', () => {
     offlineHandler = null
   }
   const clearPlaybackSession = () => {
+    clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
     clearStallTimer()
     currentTimeSeconds.value = 0
@@ -443,8 +491,10 @@ export const usePlayerStore = defineStore('player', () => {
     clearSeekPreview()
     clearOfflineHandler()
     shouldRestorePlayerOnContainerReady = false
+    pendingPlayerMountEl = null
   }
   const destroyPlayer = () => {
+    clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
     clearStallTimer()
     ytPlayer?.destroy()
@@ -452,6 +502,7 @@ export const usePlayerStore = defineStore('player', () => {
     playerInitPromise = null
     isPlayerReady = false
     hasMountedPlayer.value = false
+    pendingPlayerMountEl = null
     playerContainerEl?.replaceChildren()
   }
   const enterPlaybackStartGate = async () => {
