@@ -28,7 +28,7 @@ const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenButtonClass =
-  'inline-flex h-[clamp(2.5rem,8vw,5rem)] w-[clamp(2.5rem,8vw,5rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(3.5rem,10vw,5rem)] w-[clamp(3.5rem,10vw,5rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -508,7 +508,7 @@ const closeMaxiPlayer = () => {
               @click="player.playPrev('player-btn')"
             >
               <svg
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -525,7 +525,7 @@ const closeMaxiPlayer = () => {
             >
               <svg
                 v-if="player.playerState === 'loading'"
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)] animate-spin"
+                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)] animate-spin"
                 viewBox="0 0 24 24"
                 fill="none"
               >
@@ -545,7 +545,7 @@ const closeMaxiPlayer = () => {
               </svg>
               <svg
                 v-else-if="player.playerState === 'playing'"
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -553,7 +553,7 @@ const closeMaxiPlayer = () => {
               </svg>
               <svg
                 v-else
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -569,7 +569,7 @@ const closeMaxiPlayer = () => {
               @click="player.playNext(undefined, undefined, 'player-btn')"
             >
               <svg
-                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                class="h-[clamp(1.75rem,5vw,2.5rem)] w-[clamp(1.75rem,5vw,2.5rem)]"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -587,7 +587,7 @@ const closeMaxiPlayer = () => {
               @click="closeMaxiPlayer"
             >
               <Minimize
-                class="h-[clamp(1.125rem,3.6vw,2.25rem)] w-[clamp(1.125rem,3.6vw,2.25rem)]"
+                class="h-[clamp(1.5rem,4.5vw,2.25rem)] w-[clamp(1.5rem,4.5vw,2.25rem)]"
               />
             </button>
           </div>
