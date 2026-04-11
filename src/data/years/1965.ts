@@ -37,7 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: "Que Sera, Sera / Shakin' All Over",
     artist: 'Normie Rowe',
-    album: 'Frenzy! The 50th Anniversary Collection',
+    album: "Que Sera, Sera / Shakin' All Over",
     youtubeVideoId: 'YrKUfo4oXOw',
     imageSelection: 'album',
     imageSources: {
@@ -102,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: "I'll Never Find Another You",
     artist: 'The Seekers',
-    album: "60's UK Hits",
+    album: "I'll Never Find Another You",
     youtubeVideoId: 'kKySE1Ukupg',
     imageSelection: 'album',
     imageSources: {

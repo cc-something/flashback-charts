@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'Stars On 45',
     artist: 'Stars On 45',
-    album: 'Stars On 45 - Single',
+    album: 'Long Play Album',
     youtubeVideoId: '5bGQ1-Gmoso',
     imageSelection: 'album',
     imageSources: {
@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Antmusic',
     artist: 'Adam & The Ants',
-    album: 'Kings of the Wild Frontier (Deluxe Edition) [Remastered]',
+    album: 'Kings of the Wild Frontier',
     youtubeVideoId: 'Rm9drIwmmU4',
     imageSelection: 'album',
     imageSources: {
@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Jealous Guy',
     artist: 'Roxy Music',
-    album: 'The Best of Roxy Music',
+    album: 'Jealous Guy',
     youtubeVideoId: 'hRzGzRqNj58',
     imageSelection: 'album',
     imageSources: {
@@ -115,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: '9 to 5 (Morning Train)',
     artist: 'Sheena Easton',
-    album: 'The Definitive Singles 1980 - 1987',
+    album: 'Take My Time',
     youtubeVideoId: 'S_3vZYOYNYU',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'Endless Love',
     artist: 'Diana Ross and Lionel Richie',
-    album: 'The Definitive Collection',
+    album: 'Endless Love: Original Motion Picture Soundtrack',
     youtubeVideoId: 'UsqDoz2Co4o',
     imageSelection: 'album',
     imageSources: {

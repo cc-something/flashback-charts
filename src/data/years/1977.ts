@@ -89,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'Living Next Door to Alice',
     artist: 'Smokie',
-    album: 'The Best of Johnny Carver',
+    album: 'Living Next Door to Alice',
     youtubeVideoId: 'Z6qnRS36EgE',
     imageSelection: 'album',
     imageSources: {

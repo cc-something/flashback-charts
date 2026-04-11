@@ -37,7 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: 'Chain Reaction',
     artist: 'Diana Ross',
-    album: 'Eaten Alive (Expanded Edition)',
+    album: 'Eaten Alive',
     youtubeVideoId: 'PcMD2Gs9fwU',
     imageSelection: 'album',
     imageSources: {
@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'When the Going Gets Tough, the Tough Get Going',
     artist: 'Billy Ocean',
-    album: 'The Very Best of Billy Ocean',
+    album: 'Love Zone',
     youtubeVideoId: '-n3sUWR4FV4',
     imageSelection: 'album',
     imageSources: {
@@ -116,7 +116,7 @@ const songs: Song[] = [
     rank: 7,
     title: 'Living Doll',
     artist: 'Cliff Richard and The Young Ones',
-    album: 'Living Doll - Single',
+    album: 'Living Doll',
     youtubeVideoId: 'gGOU0o9K89g',
     imageSelection: 'album',
     imageSources: {

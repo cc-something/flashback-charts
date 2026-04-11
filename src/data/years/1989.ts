@@ -50,7 +50,7 @@ const songs: Song[] = [
     rank: 2,
     title: 'The Look',
     artist: 'Roxette',
-    album: 'Greatest Hits',
+    album: 'Look Sharp!',
     youtubeVideoId: 'LlVI7ZNiFlI',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'You Got It (The Right Stuff)',
     artist: 'New Kids on the Block',
-    album: 'Greatest Hits',
+    album: "Hangin' Tough",
     youtubeVideoId: 'tbIEwIwYz-c',
     imageSelection: 'album',
     imageSources: {
@@ -141,7 +141,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'Kokomo',
     artist: 'The Beach Boys',
-    album: 'The Very Best of The Beach Boys: Sounds of Summer',
+    album: 'Cocktail: Original Motion Picture Soundtrack',
     youtubeVideoId: 'WXB4LspLQE0',
     imageSelection: 'album',
     imageSources: {

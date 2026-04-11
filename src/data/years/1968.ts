@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Love Is Blue',
     artist: 'Paul Mauriat',
-    album: 'Love Is Blue (Anniversary Collection)',
+    album: 'Blooming Hits',
     youtubeVideoId: 'Y_tPE3o5NWk',
     imageSelection: 'album',
     imageSources: {
@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Honey',
     artist: 'Bobby Goldsboro',
-    album: 'The Very Best of Bobby Goldsboro',
+    album: 'Honey',
     youtubeVideoId: 'UKAeeGnAYBo',
     imageSelection: 'album',
     imageSources: {
@@ -89,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'The Unicorn',
     artist: 'The Irish Rovers',
-    album: 'The Best of The Irish Rovers (Remastered)',
+    album: 'The Unicorn',
     youtubeVideoId: 'mN-uA9CiV_w',
     imageSelection: 'album',
     imageSources: {
@@ -102,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: 'Those Were the Days',
     artist: 'Mary Hopkin',
-    album: 'Post Card (Deluxe Edition)',
+    album: 'Post Card',
     youtubeVideoId: 'JnxTT7XXMPA',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'The Orange and the Green / Whiskey on a Sunday',
     artist: 'The Irish Rovers',
-    album: 'The Best of The Irish Rovers (Remastered)',
+    album: 'The Unicorn',
     youtubeVideoId: 'Qqs4EbU02As',
     imageSelection: 'album',
     imageSources: {

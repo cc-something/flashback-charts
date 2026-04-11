@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Are You Lonesome Tonight? / I Gotta Know',
     artist: 'Elvis Presley',
-    album: 'If I Can Dream: The Very Best of Elvis',
+    album: 'Are You Lonesome Tonight? / I Gotta Know',
     youtubeVideoId: '8oK0Wl7_MXk',
     imageSelection: 'album',
     imageSources: {
@@ -102,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: 'Just a Closer Walk with Thee',
     artist: 'Jimmie Rodgers',
-    album: 'Jimmie Rodgers: 20 Greatest Hits',
+    album: 'Just a Closer Walk with Thee',
     youtubeVideoId: 'Kt2wmTCXKxw',
     imageSelection: 'album',
     imageSources: {
@@ -128,7 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'Tie Me Kangaroo Down, Sport',
     artist: 'Rolf Harris',
-    album: 'Tie Me Kangaroo Down, Sport (Remastered) - Single',
+    album: 'Tie Me Kangaroo Down, Sport',
     youtubeVideoId: 'OX8KJJh86YU',
     imageSelection: 'album',
     imageSources: {
@@ -141,8 +141,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'What Do You Want to Make Those Eyes at Me For?',
     artist: 'Emile Ford and The Checkmates',
-    album:
-      'What Do You Want to Make Those Eyes at Me For (Remastered) - Single',
+    album: 'What Do You Want to Make Those Eyes at Me For?',
     youtubeVideoId: 'KbL530kanTU',
     imageSelection: 'album',
     imageSources: {
@@ -155,7 +154,7 @@ const songs: Song[] = [
     rank: 10,
     title: "My Old Man's a Dustman",
     artist: 'Lonnie Donegan',
-    album: 'Skiffle Hits',
+    album: "My Old Man's a Dustman",
     youtubeVideoId: 'Y7GeZ3YmONw',
     imageSelection: 'album',
     imageSources: {

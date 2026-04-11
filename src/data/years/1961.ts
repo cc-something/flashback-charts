@@ -37,7 +37,7 @@ const songs: Song[] = [
     rank: 1,
     title: "I'm Gonna Knock on Your Door",
     artist: 'Eddie Hodges',
-    album: "I'm Gonna Knock On Your Door (Remastered) - Single",
+    album: "I'm Gonna Knock on Your Door",
     youtubeVideoId: 'QRIhld4O68c',
     imageSelection: 'album',
     imageSources: {
@@ -63,7 +63,7 @@ const songs: Song[] = [
     rank: 3,
     title: 'Wooden Heart',
     artist: 'Elvis Presley',
-    album: 'Elv1s: 30 #1 Hits',
+    album: 'G.I. Blues',
     youtubeVideoId: 'X02t8vKLtbw',
     imageSelection: 'album',
     imageSources: {
@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Hello Mary Lou',
     artist: 'Ricky Nelson',
-    album: 'Greatest Hits',
+    album: 'Rick Is 21',
     youtubeVideoId: 'AMVQCHgpYmI',
     imageSelection: 'album',
     imageSources: {
@@ -89,7 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: "My Boomerang Won't Come Back",
     artist: 'Charlie Drake',
-    album: "Lost Hits of the 60's, Vol. 2",
+    album: "My Boomerang Won't Come Back",
     youtubeVideoId: '_prtbj4MtDU',
     imageSelection: 'album',
     imageSources: {

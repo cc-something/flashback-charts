@@ -76,7 +76,7 @@ const songs: Song[] = [
     rank: 4,
     title: 'Careless Whisper',
     artist: 'George Michael',
-    album: 'Ladies & Gentlemen',
+    album: 'Careless Whisper',
     youtubeVideoId: 'izGwDsrQ1eQ',
     imageSelection: 'album',
     imageSources: {
@@ -89,8 +89,7 @@ const songs: Song[] = [
     rank: 5,
     title: 'Wake Me Up Before You Go-Go',
     artist: 'Wham!',
-    album:
-      'Stranger Things: Soundtrack from the Netflix Original Series, Season 3',
+    album: 'Make It Big',
     youtubeVideoId: 'pIgZ7gMze7A',
     imageSelection: 'album',
     imageSources: {
@@ -103,7 +102,7 @@ const songs: Song[] = [
     rank: 6,
     title: 'I Just Called to Say I Love You',
     artist: 'Stevie Wonder',
-    album: 'The Definitive Collection',
+    album: 'The Woman in Red',
     youtubeVideoId: '58RgLQ_0Ars',
     imageSelection: 'album',
     imageSources: {
@@ -116,7 +115,7 @@ const songs: Song[] = [
     rank: 7,
     title: 'Footloose',
     artist: 'Kenny Loggins',
-    album: 'Yesterday, Today, Tomorrow - The Greatest Hits Of Kenny Loggins',
+    album: 'Footloose (Original Soundtrack of the Motion Picture)',
     youtubeVideoId: 'ltrMfT4Qz5Y',
     imageSelection: 'album',
     imageSources: {
@@ -129,8 +128,7 @@ const songs: Song[] = [
     rank: 8,
     title: 'Hello',
     artist: 'Lionel Richie',
-    album:
-      '20th Century Masters - The Millennium Collection: The Best of Lionel Richie',
+    album: "Can't Slow Down",
     youtubeVideoId: 'mHONNcZbwDY',
     imageSelection: 'album',
     imageSources: {
@@ -156,7 +154,7 @@ const songs: Song[] = [
     rank: 10,
     title: 'Islands in the Stream',
     artist: 'Kenny Rogers and Dolly Parton',
-    album: 'Ultimate Dolly Parton',
+    album: 'Eyes That See in the Dark',
     youtubeVideoId: 'UaNGtgYwSsU',
     imageSelection: 'album',
     imageSources: {

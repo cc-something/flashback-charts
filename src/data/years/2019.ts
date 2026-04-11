@@ -74,7 +74,8 @@ const songs: Song[] = [
     rank: 4,
     title: 'Sunflower',
     artist: 'Post Malone and Swae Lee',
-    album: 'Spider-Man: Into the Spider-Verse soundtrack',
+    album:
+      'Spider-Man: Into the Spider-Verse: Original Motion Picture Soundtrack',
     youtubeVideoId: 'ApXoWvfEYVU',
     imageSelection: 'album',
     imageSources: {
@@ -139,7 +140,7 @@ const songs: Song[] = [
     rank: 9,
     title: 'Shallow',
     artist: 'Lady Gaga and Bradley Cooper',
-    album: 'A Star Is Born soundtrack',
+    album: 'A Star Is Born: Original Motion Picture Soundtrack',
     youtubeVideoId: 'bo_efYhYU2A',
     imageSelection: 'album',
     imageSources: {
