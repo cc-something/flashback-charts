@@ -42,46 +42,19 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div
         class="flex flex-col gap-6 text-center text-sm leading-relaxed text-text-muted"
       >
-        <div class="flex flex-col items-center gap-2">
+        <div class="flex flex-col items-center gap-1">
           <p>Source links are on each page. Summary:</p>
-          <p>
-            1940-1949: Australian Chart Book, linked to Wikipedia's 1940s
-            Australia singles overview.
-          </p>
-          <p>
-            1950-1952: Australian Chart Book, linked to Wikipedia's 1950s
-            Australia singles overview.
-          </p>
-          <p>
-            1953-1959: Australian Chart Book, linked to Wikipedia year pages for
-            Australia's top 25 singles.
-          </p>
-          <p>
-            1960-1986: Kent Music Report, linked to Wikipedia year pages for
-            Australia's top 25 singles.
-          </p>
-          <p>
-            1987: Australian Music Report, linked to the matching Wikipedia year
-            page.
-          </p>
-          <p>
-            1988-1989: ARIA Charts, linked to official ARIA year singles pages.
-          </p>
-          <p>
-            1990-1999: ARIA End of Year singles chart, linked to official ARIA
-            year singles pages.
-          </p>
-          <p>
-            2000-2009: ARIA Charts, linked to official ARIA year singles pages.
-          </p>
-          <p>
-            2010-2019: ARIA End of Year Singles Chart, linked to official ARIA
-            year singles pages.
-          </p>
-          <p>
-            2020-2025: ARIA Top 100 Singles, linked to official ARIA year
-            singles pages.
-          </p>
+          <ul class="list-none space-y-1">
+            <li>1940-1949: Australian Chart Book</li>
+            <li>1950-1959: Australian Chart Book</li>
+            <li>1960-1986: Kent Music Report</li>
+            <li>1987: Australian Music Report</li>
+            <li>1988-1989: ARIA Charts</li>
+            <li>1990-1999: ARIA End of Year singles chart</li>
+            <li>2000-2009: ARIA Charts</li>
+            <li>2010-2019: ARIA End of Year Singles Chart</li>
+            <li>2020-2025: ARIA Top 100 Singles</li>
+          </ul>
         </div>
 
         <div class="flex flex-col items-center gap-4">
