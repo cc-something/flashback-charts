@@ -14,8 +14,7 @@ const player = usePlayerStore()
 const route = useRoute()
 const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
-const miniPlayerViewportMountHost = ref<HTMLDivElement | null>(null)
-const maxiPlayerViewportMountHost = ref<HTMLDivElement | null>(null)
+const playerViewportMountHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
 const isTinyViewport = useMediaQuery('(max-width: 839px)')
@@ -41,6 +40,11 @@ const shouldUseMaxiPlayer = computed(
 )
 const shouldShowPlaybackStartCta = computed(
   () => player.isAwaitingPlaybackStart,
+)
+const playerContentClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? 'my-auto mx-auto flex w-full max-w-[1200px] flex-col pb-12 sm:pb-16'
+    : '',
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
@@ -126,28 +130,17 @@ const scrollToPlayingSongRow = async () => {
   })
 }
 const syncPlayerContainer = async () => {
-  const playerViewportMountHost = shouldUseMaxiPlayer.value
-    ? maxiPlayerViewportMountHost.value
-    : miniPlayerViewportMountHost.value
-  if (!playerViewportMountHost) {
+  if (!playerViewportMountHost.value) {
     player.setPlayerContainer(null)
     return
   }
   await nextTick()
-  player.setPlayerContainer(playerViewportMountHost)
+  player.setPlayerContainer(playerViewportMountHost.value)
 }
 watch(() => player.playingYear, updateThemeVars, { immediate: true })
-watch(
-  [
-    miniPlayerViewportMountHost,
-    maxiPlayerViewportMountHost,
-    shouldUseMaxiPlayer,
-  ],
-  () => {
-    void syncPlayerContainer()
-  },
-  { flush: 'post' },
-)
+watch(playerViewportMountHost, () => void syncPlayerContainer(), {
+  flush: 'post',
+})
 watch(shouldShowPlayerDock, (shouldShow) => {
   if (shouldShow) return
   isDesktopFullscreen.value = false
@@ -270,14 +263,10 @@ const closeMaxiPlayer = () => {
 
     <div :class="playerDockContainerClass">
       <div
-        v-if="
-          shouldUseMaxiPlayer &&
-          player.playingSong &&
-          !shouldShowPlaybackStartCta
-        "
-        class="my-auto mx-auto flex w-full max-w-[1200px] flex-col pb-12 sm:pb-16"
+        v-if="player.playingSong && !shouldShowPlaybackStartCta"
+        :class="playerContentClass"
       >
-        <div class="mb-4 w-full">
+        <div v-if="shouldUseMaxiPlayer" class="mb-4 w-full">
           <SongRow
             v-if="player.playingYear !== null"
             :song="player.playingSong"
@@ -286,11 +275,11 @@ const closeMaxiPlayer = () => {
           />
         </div>
 
-        <div class="w-full">
+        <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
           <div :class="playerFrameClass">
             <div :class="playerViewportClass">
               <div
-                ref="maxiPlayerViewportMountHost"
+                ref="playerViewportMountHost"
                 class="absolute inset-0"
                 aria-hidden="true"
               />
@@ -331,7 +320,182 @@ const closeMaxiPlayer = () => {
           </div>
         </div>
 
-        <div :class="playerActionRowClass" class="relative mt-4 w-full">
+        <template v-if="!shouldUseMaxiPlayer">
+          <div class="mt-1.5 flex items-start gap-2.5">
+            <button
+              type="button"
+              title="Go to song (G)"
+              aria-label="Go to song"
+              class="relative h-[4.2rem] w-[4.2rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              @click="goToPlayingSong"
+            >
+              <img
+                :src="player.playingSong.thumbnailPath"
+                :alt="player.playingSong.title"
+                class="block h-full w-full object-cover"
+              />
+            </button>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex items-start gap-1.5">
+                <button
+                  type="button"
+                  title="Go to song (G)"
+                  aria-label="Go to song"
+                  class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                  @click="goToPlayingSong"
+                >
+                  <div class="flex items-center justify-between gap-1.5">
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
+                    >
+                      {{ player.playingYear }} #{{ player.playingSong.rank }}
+                    </p>
+                  </div>
+                  <p
+                    class="break-words text-base font-bold leading-snug text-text"
+                  >
+                    {{ player.playingSong.title }}
+                  </p>
+                  <p class="break-words text-sm leading-snug text-text-muted">
+                    {{ player.playingSong.artist }}
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  title="Report issue"
+                  aria-label="Report issue"
+                  class="mt-[0.1rem] inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                  @click.stop="openReportModal"
+                >
+                  <Flag class="h-3 w-3" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-1.5 flex items-center gap-1">
+            <div class="flex flex-1 items-center gap-1">
+              <button
+                type="button"
+                :title="`Previous song (${mod}+←)`"
+                aria-label="Previous song"
+                :class="playerButtonClass"
+                @click="player.playPrev('player-btn')"
+              >
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                title="Play / pause (Space or K)"
+                aria-label="Toggle playback"
+                :class="playerButtonClass"
+                @click="player.togglePlayback('player-btn')"
+              >
+                <svg
+                  v-if="player.playerState === 'loading'"
+                  class="h-5 w-5 animate-spin"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  />
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
+                </svg>
+                <svg
+                  v-else-if="player.playerState === 'playing'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+                <svg
+                  v-else
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                :title="`Next song (${mod}+→)`"
+                aria-label="Next song"
+                :class="playerButtonClass"
+                @click="player.playNext(undefined, undefined, 'player-btn')"
+              >
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                title="Go to song (G)"
+                aria-label="Go to song"
+                :class="playerButtonClass"
+                @click="goToPlayingSong"
+              >
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 10.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div class="-mr-1 flex items-center justify-end">
+              <button
+                type="button"
+                :title="fullscreenToggleTitle"
+                :aria-label="fullscreenToggleTitle"
+                :class="playerButtonClass"
+                @click="openMaxiPlayer"
+              >
+                <Expand class="h-4.5 w-4.5" />
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-0.5 flex justify-end pr-0.5">
+            <p
+              class="font-mono text-[0.62rem] tabular-nums text-text-muted"
+              :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
+            >
+              <template v-if="player.showSeekBar">
+                {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+              </template>
+              <template v-else>0:00/0:00</template>
+            </p>
+          </div>
+
+          <div class="relative mt-0.5 -mx-0.5 px-0.5">
+            <PlaybackSeekBar
+              :disabled="!player.showSeekBar"
+              root-class="pointer-events-auto h-4 cursor-pointer"
+              track-class="h-1.5"
+            />
+          </div>
+        </template>
+
+        <div v-else :class="playerActionRowClass" class="relative mt-4 w-full">
           <div class="flex items-center justify-center gap-1">
             <button
               type="button"
@@ -434,252 +598,6 @@ const closeMaxiPlayer = () => {
         Tap the play button in the video above to start
         {{ ` ${player.playingSong.title}` }}.
       </p>
-
-      <div
-        v-if="
-          player.playingSong &&
-          !shouldShowPlaybackStartCta &&
-          !shouldUseMaxiPlayer
-        "
-        class="mb-1.5"
-      >
-        <div :class="playerFrameClass">
-          <div :class="playerViewportClass">
-            <div
-              ref="miniPlayerViewportMountHost"
-              class="absolute inset-0"
-              aria-hidden="true"
-            />
-            <button
-              v-if="shouldShowRestoredPoster && player.playingSong"
-              type="button"
-              aria-label="Play playback"
-              class="absolute inset-0 cursor-pointer"
-              @click="resumePlayback"
-            >
-              <img
-                :src="player.playingSong.thumbnailPath"
-                :alt="player.playingSong.title"
-                class="h-full w-full object-cover"
-              />
-              <div
-                class="absolute inset-0"
-                :style="{
-                  background:
-                    'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
-                }"
-              />
-              <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
-                <div
-                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
-                >
-                  <svg
-                    class="h-6 w-6 translate-x-[0.5px] text-white"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div
-        v-if="
-          player.playingSong &&
-          !shouldShowPlaybackStartCta &&
-          !shouldUseMaxiPlayer
-        "
-        class="mt-1.5 flex items-start gap-2.5"
-      >
-        <button
-          type="button"
-          title="Go to song (G)"
-          aria-label="Go to song"
-          class="relative h-[4.2rem] w-[4.2rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-          @click="goToPlayingSong"
-        >
-          <img
-            :src="player.playingSong.thumbnailPath"
-            :alt="player.playingSong.title"
-            class="block h-full w-full object-cover"
-          />
-        </button>
-
-        <div class="min-w-0 flex-1">
-          <div class="flex items-start gap-1.5">
-            <button
-              type="button"
-              title="Go to song (G)"
-              aria-label="Go to song"
-              class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-              @click="goToPlayingSong"
-            >
-              <div class="flex items-center justify-between gap-1.5">
-                <p
-                  class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
-                >
-                  {{ player.playingYear }} #{{ player.playingSong.rank }}
-                </p>
-              </div>
-              <p class="break-words text-base font-bold leading-snug text-text">
-                {{ player.playingSong.title }}
-              </p>
-              <p class="break-words text-sm leading-snug text-text-muted">
-                {{ player.playingSong.artist }}
-              </p>
-            </button>
-
-            <button
-              type="button"
-              title="Report issue"
-              aria-label="Report issue"
-              class="mt-[0.1rem] inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-              @click.stop="openReportModal"
-            >
-              <Flag class="h-3 w-3" aria-hidden="true" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div
-        v-if="
-          player.playingSong &&
-          !shouldShowPlaybackStartCta &&
-          !shouldUseMaxiPlayer
-        "
-        class="mt-1.5 flex items-center gap-1"
-      >
-        <div class="flex flex-1 items-center gap-1">
-          <button
-            type="button"
-            :title="`Previous song (${mod}+←)`"
-            aria-label="Previous song"
-            :class="playerButtonClass"
-            @click="player.playPrev('player-btn')"
-          >
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            title="Play / pause (Space or K)"
-            aria-label="Toggle playback"
-            :class="playerButtonClass"
-            @click="player.togglePlayback('player-btn')"
-          >
-            <svg
-              v-if="player.playerState === 'loading'"
-              class="h-5 w-5 animate-spin"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              />
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            <svg
-              v-else-if="player.playerState === 'playing'"
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-            </svg>
-            <svg v-else class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            :title="`Next song (${mod}+→)`"
-            aria-label="Next song"
-            :class="playerButtonClass"
-            @click="player.playNext(undefined, undefined, 'player-btn')"
-          >
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            title="Go to song (G)"
-            aria-label="Go to song"
-            :class="playerButtonClass"
-            @click="goToPlayingSong"
-          >
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 10.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <div class="-mr-1 flex items-center justify-end">
-          <button
-            type="button"
-            :title="fullscreenToggleTitle"
-            :aria-label="fullscreenToggleTitle"
-            :class="playerButtonClass"
-            @click="openMaxiPlayer"
-          >
-            <Expand class="h-4.5 w-4.5" />
-          </button>
-        </div>
-      </div>
-
-      <div
-        v-if="
-          player.playingSong &&
-          !shouldShowPlaybackStartCta &&
-          !shouldUseMaxiPlayer
-        "
-        class="mt-0.5 flex justify-end pr-0.5"
-      >
-        <p
-          class="font-mono text-[0.62rem] tabular-nums text-text-muted"
-          :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
-        >
-          <template v-if="player.showSeekBar">
-            {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-          </template>
-          <template v-else>0:00/0:00</template>
-        </p>
-      </div>
-
-      <div
-        v-if="
-          player.playingSong &&
-          !shouldShowPlaybackStartCta &&
-          !shouldUseMaxiPlayer
-        "
-        class="relative mt-0.5 -mx-0.5 px-0.5"
-      >
-        <PlaybackSeekBar
-          :disabled="!player.showSeekBar"
-          root-class="pointer-events-auto h-4 cursor-pointer"
-          track-class="h-1.5"
-        />
-      </div>
     </div>
   </aside>
 
