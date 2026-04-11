@@ -231,6 +231,66 @@ describe('checkHttpIntegrityTarget', () => {
     )
   })
 
+  it('classifies browser-blocked urls as warnings by default', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+    const browserProbe = vi.fn(async () => ({
+      finalUrl: 'https://example.com/1940',
+      message: 'Last-resort browser probe resolved with HTTP 403',
+      status: 'warned' as const,
+      statusCode: 403,
+    }))
+
+    await expect(
+      checkHttpIntegrityTarget(
+        {
+          kind: 'year-source',
+          id: 'year-source-1940',
+          url: 'https://example.com/1940',
+          references: [{ label: 'year:1940' }],
+        },
+        { browserProbe, fetchImpl, retryCount: 0 },
+      ),
+    ).resolves.toMatchObject({
+      attempts: 3,
+      reason: 'probe-blocked',
+      status: 'warned',
+      statusCode: 403,
+    })
+  })
+
+  it('promotes browser-blocked urls to failures in strict mode', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+      .mockResolvedValueOnce(new Response('', { status: 403 }))
+    const browserProbe = vi.fn(async () => ({
+      finalUrl: 'https://example.com/1940',
+      message: 'Last-resort browser probe resolved with HTTP 403',
+      status: 'warned' as const,
+      statusCode: 403,
+    }))
+
+    await expect(
+      checkHttpIntegrityTarget(
+        {
+          kind: 'year-source',
+          id: 'year-source-1940',
+          url: 'https://example.com/1940',
+          references: [{ label: 'year:1940' }],
+        },
+        { browserProbe, fetchImpl, retryCount: 0, strict: true },
+      ),
+    ).resolves.toMatchObject({
+      attempts: 3,
+      reason: 'probe-blocked',
+      status: 'failed',
+      statusCode: 403,
+    })
+  })
+
   it('fails on network errors', async () => {
     const fetchImpl = vi.fn(async () => {
       throw new Error('socket hang up')

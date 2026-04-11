@@ -14,6 +14,7 @@ interface UrlIntegritySummary {
   failed: number
   passed: number
   total: number
+  warned: number
 }
 
 const concurrencyLimit = 6
@@ -26,12 +27,18 @@ const formatReferences = (result: UrlIntegrityResult) =>
   result.references.map((reference) => reference.label).join(',')
 
 const formatResultLine = (result: UrlIntegrityResult) =>
-  `${result.status === 'passed' ? 'PASS ' : 'FAIL '} kind=${result.kind} id=${result.id} reason=${result.reason} statusCode=${result.statusCode ?? '-'} url=${result.url} finalUrl=${result.finalUrl ?? '-'} refs=${formatReferences(result)} message=${result.message}`
+  `${result.status === 'passed' ? 'PASS ' : result.status === 'warned' ? 'WARN ' : 'FAIL '} kind=${result.kind} id=${result.id} reason=${result.reason} statusCode=${result.statusCode ?? '-'} url=${result.url} finalUrl=${result.finalUrl ?? '-'} refs=${formatReferences(result)} message=${result.message}`
 
 const createSummary = (results: UrlIntegrityResult[]): UrlIntegritySummary => ({
   failed: results.filter((result) => result.status === 'failed').length,
   passed: results.filter((result) => result.status === 'passed').length,
   total: results.length,
+  warned: results.filter((result) => result.status === 'warned').length,
+})
+
+const getCliOptions = (args: string[]) => ({
+  isStrict: args.includes('--strict'),
+  selectionArgs: args.filter((arg) => arg !== '--strict'),
 })
 
 const runWithConcurrency = async <TItem, TResult>(
@@ -82,7 +89,12 @@ const createBrowserProbe = () => {
       return {
         finalUrl,
         message: `Last-resort browser probe resolved with HTTP ${statusCode ?? 'unknown'}`,
-        status: statusCode !== null && statusCode < 400 ? 'passed' : 'failed',
+        status:
+          statusCode !== null && statusCode < 400
+            ? 'passed'
+            : statusCode === 401 || statusCode === 403
+              ? 'warned'
+              : 'failed',
         statusCode,
       }
     } finally {
@@ -101,7 +113,8 @@ const createBrowserProbe = () => {
 }
 
 const runUrlIntegrity = async () => {
-  const selection = resolveIntegritySelection(process.argv.slice(2))
+  const cliOptions = getCliOptions(process.argv.slice(2))
+  const selection = resolveIntegritySelection(cliOptions.selectionArgs)
   const targets = collectUrlIntegrityTargets(selection)
   const browserProbe = createBrowserProbe()
 
@@ -117,6 +130,7 @@ const runUrlIntegrity = async () => {
       async (target: UrlIntegrityTarget) => {
         const result = await checkUrlIntegrityTarget(target, {
           browserProbe: browserProbe.probe,
+          strict: cliOptions.isStrict,
         })
         console.log(formatResultLine(result))
         return result
@@ -126,7 +140,7 @@ const runUrlIntegrity = async () => {
 
     logDivider()
     console.log(
-      `SUMMARY years=${selection.years.join(',')} total=${summary.total} passed=${summary.passed} failed=${summary.failed}`,
+      `SUMMARY years=${selection.years.join(',')} total=${summary.total} passed=${summary.passed} warned=${summary.warned} failed=${summary.failed} strict=${cliOptions.isStrict}`,
     )
     process.exitCode = summary.failed > 0 ? 1 : 0
   } finally {

@@ -8,6 +8,7 @@ export type UrlIntegrityResultReason =
   | 'http-ok'
   | 'http-error'
   | 'network-error'
+  | 'probe-blocked'
   | 'timeout'
   | 'video-exists'
   | 'video-missing'
@@ -43,7 +44,7 @@ export interface UrlIntegrityResult {
   message: string
   reason: UrlIntegrityResultReason
   references: UrlIntegrityTargetReference[]
-  status: 'passed' | 'failed'
+  status: 'passed' | 'failed' | 'warned'
   statusCode: number | null
   url: string
 }
@@ -52,7 +53,7 @@ export interface BrowserProbeResult {
   finalUrl: string | null
   message: string
   statusCode: number | null
-  status: 'passed' | 'failed'
+  status: 'passed' | 'failed' | 'warned'
 }
 
 interface FetchWithTimeoutOptions {
@@ -67,6 +68,7 @@ interface UrlIntegrityCheckOptions extends FetchWithTimeoutOptions {
     timeoutMs?: number,
   ) => Promise<BrowserProbeResult>
   retryCount?: number
+  strict?: boolean
 }
 
 const youtubeVideoIdPattern = /^[\w-]{11}$/u
@@ -330,6 +332,7 @@ const runBrowserProbe = async (
   browserProbe: NonNullable<UrlIntegrityCheckOptions['browserProbe']>,
   timeoutMs: number | undefined,
   attemptOffset: number,
+  strict: boolean,
 ) => {
   try {
     const browserProbeResult = await browserProbe(target.url, timeoutMs)
@@ -337,8 +340,16 @@ const runBrowserProbe = async (
       attempts: attemptOffset + 1,
       finalUrl: browserProbeResult.finalUrl,
       message: browserProbeResult.message,
-      reason: browserProbeResult.status === 'passed' ? 'http-ok' : 'http-error',
-      status: browserProbeResult.status,
+      reason:
+        browserProbeResult.status === 'warned'
+          ? 'probe-blocked'
+          : browserProbeResult.status === 'passed'
+            ? 'http-ok'
+            : 'http-error',
+      status:
+        browserProbeResult.status === 'warned' && strict
+          ? 'failed'
+          : browserProbeResult.status,
       statusCode: browserProbeResult.statusCode,
     })
   } catch (error) {
@@ -380,6 +391,7 @@ export const checkHttpIntegrityTarget = async (
     options.browserProbe,
     options.timeoutMs,
     fallbackFetchResult.attempts,
+    options.strict ?? false,
   )
 }
 
