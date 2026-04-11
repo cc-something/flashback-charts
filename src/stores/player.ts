@@ -238,8 +238,15 @@ export const usePlayerStore = defineStore('player', () => {
     clearTimeout(destroyPlayerOnContainerLossTimerId)
     destroyPlayerOnContainerLossTimerId = null
   }
+  const updatePlayerIframeFocusability = () => {
+    const playerIframeEl = playerContainerEl?.querySelector('iframe')
+    if (!(playerIframeEl instanceof HTMLIFrameElement)) return
+    playerIframeEl.tabIndex = -1
+    playerIframeEl.setAttribute('tabindex', '-1')
+  }
   const syncTransferredPlayerState = () => {
     shouldRestorePlayerOnContainerReady = false
+    updatePlayerIframeFocusability()
     syncPlaybackProgress()
     if (playerState.value === 'playing' || playerState.value === 'loading')
       startProgressTimer()
@@ -704,6 +711,7 @@ export const usePlayerStore = defineStore('player', () => {
           onReady: (event) => {
             isPlayerReady = true
             playerInitPromise = Promise.resolve(event.target)
+            updatePlayerIframeFocusability()
             if (isMuted.value) event.target.mute()
             resolve(event.target)
             if (currentPlaySong && getShouldAutoplayOnMount()) {
