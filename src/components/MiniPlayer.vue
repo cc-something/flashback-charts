@@ -73,7 +73,7 @@ const playerViewportClass = computed(() =>
 )
 const playerActionRowClass = computed(() =>
   isFullscreen.value
-    ? 'relative mt-4 flex items-center justify-center'
+    ? 'relative mt-4 mb-8 flex items-center justify-center'
     : 'flex items-center gap-1',
 )
 const fullscreenToggleTitle = computed(() =>
