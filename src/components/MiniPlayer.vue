@@ -15,13 +15,9 @@ const route = useRoute()
 const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
 const playerViewportMountHost = ref<HTMLDivElement | null>(null)
-const playerDockContainerHost = ref<HTMLDivElement | null>(null)
-const maxiPlayerHeaderHost = ref<HTMLDivElement | null>(null)
-const maxiPlayerControlsHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
 const isTinyViewport = useMediaQuery('(max-width: 839px)')
-const playerFrameWidth = ref<number | null>(null)
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
 
@@ -83,16 +79,6 @@ const playerViewportClass = computed(() =>
     ? 'player-viewport-fullscreen w-full bg-black'
     : 'player-viewport w-full min-h-[200px] bg-black',
 )
-const playerFrameStyle = computed(() =>
-  shouldUseMaxiPlayer.value && playerFrameWidth.value
-    ? { width: `${playerFrameWidth.value}px` }
-    : undefined,
-)
-const playerMaxiContentStyle = computed(() =>
-  shouldUseMaxiPlayer.value && playerFrameWidth.value
-    ? { width: `${playerFrameWidth.value}px` }
-    : undefined,
-)
 const playerActionRowClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? 'relative mt-4 mb-12 flex items-center justify-center sm:mb-14'
@@ -146,47 +132,10 @@ const syncPlayerContainer = async () => {
   await nextTick()
   player.setPlayerContainer(playerViewportMountHost.value)
 }
-const syncMaxiPlayerFrameWidth = () => {
-  if (
-    !shouldUseMaxiPlayer.value ||
-    !playerDockContainerHost.value ||
-    !maxiPlayerHeaderHost.value ||
-    !maxiPlayerControlsHost.value
-  ) {
-    playerFrameWidth.value = null
-    return
-  }
-  const containerRect = playerDockContainerHost.value.getBoundingClientRect()
-  const headerRect = maxiPlayerHeaderHost.value.getBoundingClientRect()
-  const controlsRect = maxiPlayerControlsHost.value.getBoundingClientRect()
-  const availableHeight = Math.max(controlsRect.top - headerRect.bottom - 16, 0)
-  const nextFrameWidth = Math.min(
-    containerRect.width,
-    1200,
-    availableHeight * (16 / 9),
-  )
-  playerFrameWidth.value = nextFrameWidth > 0 ? nextFrameWidth : null
-}
-const queueMaxiPlayerFrameSync = async () => {
-  await nextTick()
-  requestAnimationFrame(syncMaxiPlayerFrameWidth)
-}
 watch(() => player.playingYear, updateThemeVars, { immediate: true })
 watch(playerViewportMountHost, () => {
   void syncPlayerContainer()
 })
-watch(
-  [
-    shouldUseMaxiPlayer,
-    () => player.playingSong,
-    () => player.playingYear,
-    shouldShowPlaybackStartCta,
-  ],
-  () => {
-    void queueMaxiPlayerFrameSync()
-  },
-  { flush: 'post' },
-)
 watch(shouldShowPlayerDock, (shouldShow) => {
   if (shouldShow) return
   isDesktopFullscreen.value = false
@@ -224,16 +173,12 @@ onMounted(() =>
     handleFullscreenToggle,
   ),
 )
-onMounted(() => window.addEventListener('resize', syncMaxiPlayerFrameWidth))
 onUnmounted(() => player.setPlayerContainer(null))
 onUnmounted(() => {
   if (typeof document === 'undefined') return
   delete document.documentElement.dataset.playerFullscreen
   document.body.style.overflow = ''
 })
-onUnmounted(() =>
-  window.removeEventListener('resize', syncMaxiPlayerFrameWidth),
-)
 onUnmounted(() =>
   window.removeEventListener(
     PLAYER_FULLSCREEN_TOGGLE_EVENT,
@@ -311,7 +256,7 @@ const closeMaxiPlayer = () => {
       <X :class="shouldUseMaxiPlayer ? 'h-4 w-4' : 'h-3.5 w-3.5'" />
     </button>
 
-    <div ref="playerDockContainerHost" :class="playerDockContainerClass">
+    <div :class="playerDockContainerClass">
       <div
         v-if="
           shouldUseMaxiPlayer &&
@@ -319,9 +264,7 @@ const closeMaxiPlayer = () => {
           player.playingYear !== null &&
           !shouldShowPlaybackStartCta
         "
-        ref="maxiPlayerHeaderHost"
-        :style="playerMaxiContentStyle"
-        class="mb-4 mx-auto"
+        class="mx-auto mb-4 w-full max-w-[1200px]"
       >
         <SongRow
           :song="player.playingSong"
@@ -331,7 +274,7 @@ const closeMaxiPlayer = () => {
       </div>
 
       <div v-if="shouldUseMaxiPlayer" class="flex w-full flex-col items-center">
-        <div :class="playerFrameClass" :style="playerFrameStyle">
+        <div :class="playerFrameClass">
           <div :class="playerViewportClass">
             <div
               ref="playerViewportMountHost"
@@ -380,10 +323,8 @@ const closeMaxiPlayer = () => {
             !shouldShowPlaybackStartCta &&
             shouldUseMaxiPlayer
           "
-          ref="maxiPlayerControlsHost"
-          :style="playerMaxiContentStyle"
           :class="playerActionRowClass"
-          class="mx-auto"
+          class="mx-auto w-full max-w-[1200px]"
         >
           <div class="flex items-center justify-center gap-1">
             <button
