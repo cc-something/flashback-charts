@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: "It's a Heartache",
     artist: 'Bonnie Tyler',
     album: 'Natural Force',
-    youtubeVideoId: 'zjloI8jfXJM',
+    youtubeVideoId: '62aHuVz0brQ',
     imageSelection: 'album',
     imageSources: {
       album:
