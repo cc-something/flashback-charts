@@ -16,7 +16,7 @@ const sections = [
       { keyGroups: [['Space'], ['K']], description: 'Play / pause' },
       { keyGroups: [['J']], description: 'Rewind 10s' },
       { keyGroups: [['L']], description: 'Fast-forward 10s' },
-      { keyGroups: [['F']], description: 'Toggle full-screen player' },
+      { keyGroups: [['F']], description: 'Toggle player size / close mobile' },
       {
         keyGroups: [['Esc']],
         description: 'Exit full-screen or stop playback',

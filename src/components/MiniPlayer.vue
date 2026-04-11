@@ -143,12 +143,15 @@ watch(shouldUseMaxiPlayer, (shouldShowMaxiPlayer) => {
   document.body.style.overflow = shouldShowMaxiPlayer ? 'hidden' : ''
 })
 const handleFullscreenToggle = () => {
-  if (
-    !player.playingSong ||
-    shouldShowPlaybackStartCta.value ||
-    isTinyViewport.value
-  )
+  if (!player.playingSong || shouldShowPlaybackStartCta.value) return
+  if (isTinyViewport.value) {
+    closeMaxiPlayer()
     return
+  }
+  if (isDesktopFullscreen.value) {
+    closeMaxiPlayer()
+    return
+  }
   openMaxiPlayer()
 }
 const closeFullscreen = () => {
