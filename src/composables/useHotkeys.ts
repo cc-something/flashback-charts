@@ -20,6 +20,7 @@ const KONAMI = [
 ]
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
+const TINY_VIEWPORT_MEDIA_QUERY = '(max-width: 839px)'
 
 const getIsInputFocused = () => {
   const el = document.activeElement
@@ -38,6 +39,10 @@ const getHasEscapeConsumer = () =>
 const getIsPlayerFullscreen = () =>
   typeof document !== 'undefined' &&
   document.documentElement.dataset.playerFullscreen === 'true'
+const getIsTinyViewport = () =>
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia(TINY_VIEWPORT_MEDIA_QUERY).matches
 
 export const useHotkeys = (
   openSearch: () => void,
@@ -95,6 +100,11 @@ export const useHotkeys = (
   const playTopSong = async () => {
     const topSong = await getTopSong()
     if (topSong) await player.play(topSong, chart.selectedYear, 'hotkey')
+  }
+  const playTopSongAndOpenFullscreen = async () => {
+    await playTopSong()
+    if (getIsTinyViewport() || !player.isActive) return
+    window.dispatchEvent(new Event(PLAYER_FULLSCREEN_TOGGLE_EVENT))
   }
 
   let konamiProgress = 0
@@ -170,6 +180,12 @@ export const useHotkeys = (
     if (e.code === 'KeyF' && !isMod && player.isActive) {
       e.preventDefault()
       window.dispatchEvent(new Event(PLAYER_FULLSCREEN_TOGGLE_EVENT))
+      return
+    }
+
+    if (e.code === 'KeyF' && !isMod && route.name === 'year') {
+      e.preventDefault()
+      void playTopSongAndOpenFullscreen()
       return
     }
 
