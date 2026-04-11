@@ -43,12 +43,12 @@ const shouldShowPlaybackStartCta = computed(
 )
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'my-auto mx-auto flex w-full max-w-[1200px] flex-col pb-12 sm:pb-16'
+    ? 'my-auto mx-auto flex w-full max-w-[1200px] flex-col'
     : '',
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 py-4 sm:px-6 sm:py-6'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 pt-4 pb-20 sm:px-6 sm:pt-6 sm:pb-24'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockClass = computed(() =>
