@@ -66,7 +66,12 @@ const playerDockClass = computed(() =>
       ].join(' '),
 )
 const playerDockStyle = computed(() =>
-  shouldUseMaxiPlayer.value ? { top: 'var(--sticky-bar-height)' } : undefined,
+  shouldUseMaxiPlayer.value
+    ? {
+        top: 'var(--sticky-bar-height)',
+        height: 'calc(100dvh - var(--sticky-bar-height))',
+      }
+    : undefined,
 )
 const playerFrameClass = computed(() =>
   shouldUseMaxiPlayer.value
