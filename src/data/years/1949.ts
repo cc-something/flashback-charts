@@ -6,7 +6,7 @@ export const description =
 
 export const source = {
   label: 'Australian Chart Book',
-  url: 'https://hitsofalldecades.com/chart_hits/index.php?id=933&option=com_content&task=view',
+  url: 'https://en.wikipedia.org/wiki/List_of_number-one_singles_in_Australia_during_the_1940s',
 }
 
 const year = 1949

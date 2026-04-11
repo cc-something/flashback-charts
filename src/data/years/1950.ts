@@ -8,7 +8,7 @@ export const description =
 
 export const source = {
   label: 'Australian Chart Book',
-  url: 'https://hitsofalldecades.com/chart_hits/index.php?Itemid=49&id=1012&option=com_content&task=view',
+  url: 'https://en.wikipedia.org/wiki/List_of_number-one_singles_in_Australia_during_the_1950s',
 }
 
 const getSong = ({
