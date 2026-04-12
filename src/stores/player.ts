@@ -619,11 +619,18 @@ export const usePlayerStore = defineStore('player', () => {
       enterBlockedPlaybackState()
     }, STALL_TIMEOUT_MS)
   }
+  const syncMutedState = (player: YTPlayer | null = ytPlayer) => {
+    if (!player) return
+    if (isMuted.value) {
+      if (typeof player.mute === 'function') player.mute()
+      return
+    }
+    if (typeof player.unMute === 'function') player.unMute()
+  }
   const loadCurrentSongIntoPlayer = () => {
     if (!ytPlayer || !currentPlaySong?.youtubeVideoId) return
     startProgressTimer()
-    if (isMuted.value) ytPlayer.mute()
-    else ytPlayer.unMute()
+    syncMutedState()
     ytPlayer.loadVideoById(
       currentPlaySong.youtubeVideoId,
       currentStartAtSeconds ? Math.floor(currentStartAtSeconds) : undefined,
@@ -635,8 +642,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearStallTimer()
     clearLoadingTracking()
     clearProgressTimer()
-    if (isMuted.value) ytPlayer.mute()
-    else ytPlayer.unMute()
+    syncMutedState()
     ytPlayer.cueVideoById({
       videoId: currentPlaySong.youtubeVideoId,
       startSeconds: currentStartAtSeconds
@@ -741,7 +747,7 @@ export const usePlayerStore = defineStore('player', () => {
             isPlayerReady = true
             playerInitPromise = Promise.resolve(event.target)
             updatePlayerIframeFocusability()
-            if (isMuted.value) event.target.mute()
+            syncMutedState(event.target)
             resolve(event.target)
             if (currentPlaySong && getShouldAutoplayOnMount()) {
               startProgressTimer()
@@ -992,19 +998,16 @@ export const usePlayerStore = defineStore('player', () => {
   const toggleMute = () => {
     if (!ytPlayer) return
     if (isMuted.value) {
-      ytPlayer.unMute()
       isMuted.value = false
     } else {
-      ytPlayer.mute()
       isMuted.value = true
     }
+    syncMutedState()
   }
   const setMuted = (nextMuted: boolean) => {
     if (isMuted.value === nextMuted) return
     isMuted.value = nextMuted
-    if (!ytPlayer) return
-    if (nextMuted) ytPlayer.mute()
-    else ytPlayer.unMute()
+    syncMutedState()
   }
 
   const seekRelative = (deltaSeconds: number) => {
