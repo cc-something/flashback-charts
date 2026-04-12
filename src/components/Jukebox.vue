@@ -50,10 +50,24 @@ const shouldUseMaxiPlayer = computed(
 const shouldShowPlaybackStartCta = computed(
   () => player.isAwaitingPlaybackStart,
 )
-const maxiPlayerYearStyle = computed(() => {
+const jukeboxHeaderStyle = computed(() => {
   const currentPlayingYear = player.playingYear
   if (currentPlayingYear === null) return {}
-  return { fontFamily: getThemeForYear(currentPlayingYear).fontFamily }
+  return { color: getThemeForYear(currentPlayingYear).colors.primary }
+})
+const jukeboxYearStyle = computed(() => {
+  const currentPlayingYear = player.playingYear
+  if (currentPlayingYear === null) return {}
+  const currentTheme = getThemeForYear(currentPlayingYear)
+  return {
+    color: currentTheme.colors.primary,
+    fontFamily: currentTheme.fontFamily,
+  }
+})
+const jukeboxYearLabel = computed(() => {
+  const currentPlayingYear = player.playingYear
+  if (currentPlayingYear === null) return ''
+  return `${currentPlayingYear}s`
 })
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
@@ -280,7 +294,7 @@ const closeMaxiPlayer = () => {
 
 <template>
   <aside
-    aria-label="Music player"
+    aria-label="Jukebox"
     :style="[themeVars, playerDockStyle]"
     :class="playerDockClass"
   >
@@ -299,38 +313,38 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="-translate-y-4 mb-0.5 flex justify-center sm:-translate-y-5 sm:mb-1"
+          class="-translate-y-4 mb-0.5 grid w-full items-start [grid-template-columns:1fr_auto_1fr] sm:-translate-y-5 sm:mb-1"
         >
+          <div />
           <BrandWordmark
+            class="justify-self-center"
             :is-spinning="player.playerState === 'playing'"
             label="Flashback Charts"
             size="home"
           />
+
+          <button
+            type="button"
+            title="Stop playback (Esc)"
+            aria-label="Stop playback"
+            :class="playerFullscreenCloseButtonClass"
+            class="justify-self-end"
+            @click="player.stop"
+          >
+            <X class="h-4 w-4" />
+          </button>
         </div>
 
         <div v-if="shouldUseMaxiPlayer" class="mb-4 w-full">
           <div class="min-w-0">
             <div
               v-if="player.playingYear !== null"
-              class="mb-2 flex items-center justify-between gap-3 text-left text-sm font-medium tracking-[0.12em] text-text-muted"
+              class="mb-2 flex items-center gap-2 text-left text-lg font-medium tracking-[0.12em] sm:text-xl"
+              :style="jukeboxHeaderStyle"
             >
-              <div class="flex min-w-0 items-center gap-2">
-                <Music class="h-4 w-4 shrink-0" />
-                <span>Jukebox:</span>
-                <span :style="maxiPlayerYearStyle">
-                  {{ player.playingYear }}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                title="Stop playback (Esc)"
-                aria-label="Stop playback"
-                :class="playerFullscreenCloseButtonClass"
-                @click="player.stop"
-              >
-                <X class="h-4 w-4" />
-              </button>
+              <Music class="h-5 w-5 shrink-0 sm:h-5.5 sm:w-5.5" />
+              <span>Jukebox:</span>
+              <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
             </div>
             <SongRow
               v-if="player.playingYear !== null"
@@ -342,6 +356,16 @@ const closeMaxiPlayer = () => {
         </div>
 
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
+          <div
+            v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
+            class="mb-1.5 flex items-center gap-1.5 text-left text-[0.98rem] font-medium tracking-[0.12em]"
+            :style="jukeboxHeaderStyle"
+          >
+            <Music class="h-4 w-4 shrink-0" />
+            <span>Jukebox:</span>
+            <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+          </div>
+
           <div :class="playerFrameClass">
             <div :class="playerViewportClass">
               <div
