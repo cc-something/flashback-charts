@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Living Next Door to Alice',
     artist: 'Smokie',
     album: 'Living Next Door to Alice',
-    youtubeVideoId: 'Z6qnRS36EgE',
+    youtubeVideoId: 'fYAEoavUVJY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'I Go To Rio',
     artist: 'Peter Allen',
     album: 'Taught by Experts',
-    youtubeVideoId: 'RL3w1B5GZso',
+    youtubeVideoId: 'FCYxTg6svXg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Torn Between Two Lovers',
     artist: 'Mary McGregor',
     album: 'Torn Between Two Lovers',
-    youtubeVideoId: '0URFfZx9otI',
+    youtubeVideoId: 'EZnZvMx074s',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Walk Right In',
     artist: 'Dr Hook',
     album: 'Walk Right In',
-    youtubeVideoId: 'MiyvzM1iApY',
+    youtubeVideoId: 'YSxigs4iQ4g',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: "You're Moving Out Today",
     artist: 'Carole Bayer Sager',
     album: 'Live at Last',
-    youtubeVideoId: '7z3FS71Tgzw',
+    youtubeVideoId: '9WOGRozdbjA',
     imageSelection: 'album',
     imageSources: {
       album:
