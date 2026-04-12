@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'You Belong to Me',
     artist: 'Jo Stafford',
     album: 'You Belong to Me',
-    youtubeVideoId: 'mJvwzZZkb4M',
+    youtubeVideoId: 'cDQtNSafPHs',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'I Saw Mommy Kissing Santa Claus',
     artist: 'Jimmy Boyd',
     album: 'I Saw Mommy Kissing Santa Claus',
-    youtubeVideoId: 'KA790bGpxaY',
+    youtubeVideoId: 'J1dOKim4EZc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
