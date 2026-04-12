@@ -32,7 +32,7 @@ const playerFullscreenButtonClass =
 const playerFullscreenSubtleButtonClass =
   'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
-  'inline-flex h-[clamp(2.5rem,6.5vw,3rem)] w-[clamp(2.5rem,6.5vw,3rem)] items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(1.5rem,4vw,1.75rem)] w-[clamp(1.5rem,4vw,1.75rem)] items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -74,7 +74,7 @@ const playerDockStyle = computed(() =>
   shouldUseMaxiPlayer.value
     ? {
         top: 'var(--sticky-header-height)',
-        height: 'calc(100dvh - var(--sticky-header-height))',
+        bottom: '1.75rem',
       }
     : undefined,
 )
@@ -94,7 +94,7 @@ const playerActionRowClass = computed(() =>
     : 'flex items-center gap-1',
 )
 const playerBottomSpacerClass = computed(() =>
-  shouldUseMaxiPlayer.value ? 'h-20 shrink-0 sm:h-24' : 'hidden',
+  shouldUseMaxiPlayer.value ? 'h-8 shrink-0 sm:h-10' : 'hidden',
 )
 const fullscreenToggleTitle = computed(() =>
   shouldUseMaxiPlayer.value && !isTinyViewport.value
@@ -291,7 +291,7 @@ const closeMaxiPlayer = () => {
             :class="playerFullscreenCloseButtonClass"
             @click="player.stop"
           >
-            <X class="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+            <X class="h-2.5 w-2.5 sm:h-3 sm:w-3" />
           </button>
         </div>
 
