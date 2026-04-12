@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: "They Say It's Wonderful",
     artist: 'Bing Crosby; Perry Como',
     album: "They Say It's Wonderful",
-    youtubeVideoId: 'avMHoA9kQvw',
+    youtubeVideoId: 'OqyvSR1Nyyw',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: "(There's No Business Like) Show Business",
     artist: 'Dick Haymes & Andrews Sisters; Bing Crosby',
     album: "(There's No Business Like) Show Business",
-    youtubeVideoId: 'rHQfqm3IcI4',
+    youtubeVideoId: 'N1hqOATbbGk',
     imageSelection: 'artist',
     imageSources: {
       album: null,
