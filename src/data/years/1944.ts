@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: "Vic'try Polka",
     artist: 'Bing Crosby & The Andrews Sisters',
     album: "Vic'try Polka",
-    youtubeVideoId: 'zuJVVhM-rGw',
+    youtubeVideoId: 'V0oUat5RaOs',
     imageSelection: 'artist',
     imageSources: {
       album: null,
