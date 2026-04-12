@@ -654,6 +654,10 @@ export const usePlayerStore = defineStore('player', () => {
     if (isEmbedBlockedError(errorCode)) return handleEmbedBlockedPlayback()
     if (!(await getHasNetworkConnection()))
       return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
+    if (isAwaitingPlaybackStart.value || currentTimeSeconds.value < 1) {
+      enterYouTubeSignInRequiredState()
+      return
+    }
     if (!isAwaitingPlaybackStart.value && retryCount >= MAX_RETRIES)
       return enterPlaybackStartGate()
     if (retryCount < MAX_RETRIES) {
@@ -680,6 +684,10 @@ export const usePlayerStore = defineStore('player', () => {
       clearLoadingTracking()
       playerState.value = 'playing'
     } else if (event.data === 2) {
+      if (isAwaitingPlaybackStart.value && playerState.value === 'loading') {
+        enterYouTubeSignInRequiredState()
+        return
+      }
       isAwaitingPlaybackStart.value = false
       clearLoadingTracking()
       playerState.value = 'paused'
