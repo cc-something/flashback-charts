@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Expand, Flag, Minimize, Music, X } from 'lucide-vue-next'
+import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
@@ -34,7 +34,7 @@ const playerFullscreenButtonClass =
 const playerFullscreenSubtleButtonClass =
   'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface/88 text-text-muted shadow-lg shadow-black/10 ring-1 ring-primary/20 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -50,11 +50,6 @@ const shouldUseMaxiPlayer = computed(
 const shouldShowPlaybackStartCta = computed(
   () => player.isAwaitingPlaybackStart,
 )
-const jukeboxHeaderStyle = computed(() => {
-  const currentPlayingYear = player.playingYear
-  if (currentPlayingYear === null) return {}
-  return { color: getThemeForYear(currentPlayingYear).colors.primary }
-})
 const jukeboxYearStyle = computed(() => {
   const currentPlayingYear = player.playingYear
   if (currentPlayingYear === null) return {}
@@ -339,11 +334,8 @@ const closeMaxiPlayer = () => {
           <div class="min-w-0">
             <div
               v-if="player.playingYear !== null"
-              class="mb-2 flex items-center gap-2 text-left text-lg font-medium tracking-[0.12em] sm:text-xl"
-              :style="jukeboxHeaderStyle"
+              class="mb-2 text-left text-lg font-medium tracking-[0.12em] sm:text-xl"
             >
-              <Music class="h-5 w-5 shrink-0 sm:h-5.5 sm:w-5.5" />
-              <span>Jukebox:</span>
               <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
             </div>
             <SongRow
@@ -358,11 +350,8 @@ const closeMaxiPlayer = () => {
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
           <div
             v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
-            class="mb-1.5 flex items-center gap-1.5 text-left text-[0.98rem] font-medium tracking-[0.12em]"
-            :style="jukeboxHeaderStyle"
+            class="mb-1.5 text-center text-[0.98rem] font-medium tracking-[0.12em]"
           >
-            <Music class="h-4 w-4 shrink-0" />
-            <span>Jukebox:</span>
             <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
           </div>
 
