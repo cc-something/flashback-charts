@@ -350,9 +350,16 @@ const closeMaxiPlayer = () => {
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
           <div
             v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
-            class="mb-1.5 text-center text-[0.98rem] font-medium tracking-[0.12em]"
+            class="mb-1.5 flex items-baseline justify-center gap-1 text-center text-[0.98rem] font-medium tracking-[0.12em]"
           >
             <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+            <span
+              v-if="player.playingSong"
+              class="text-[0.75em] font-bold tracking-[0.04em] text-primary/80"
+            >
+              <span class="text-[0.75em] opacity-50">#</span>
+              <span>{{ player.playingSong.rank }}</span>
+            </span>
           </div>
 
           <div :class="playerFrameClass">
@@ -421,18 +428,9 @@ const closeMaxiPlayer = () => {
                   type="button"
                   title="Go to song (G)"
                   aria-label="Go to song"
-                  class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                  class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 pr-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                   @click="goToPlayingSong"
                 >
-                  <div class="flex items-center justify-between gap-1.5">
-                    <p
-                      class="flex items-baseline gap-0.5 text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
-                    >
-                      <span>{{ player.playingYear }}</span>
-                      <span class="text-[0.75em] opacity-50">#</span>
-                      <span>{{ player.playingSong.rank }}</span>
-                    </p>
-                  </div>
                   <p
                     class="break-words text-base font-bold leading-snug text-text"
                   >
