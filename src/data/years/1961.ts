@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Wonderland by Night',
     artist: 'Bert Kaempfert and His Orchestra',
     album: 'Wonderland By Night (Remastered)',
-    youtubeVideoId: 'YCDpJT7pJFk',
+    youtubeVideoId: 'eUxqyHg1YTU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Theme from Exodus',
     artist: 'Ferrante and Teicher',
     album: 'All Time Great Movie Themes',
-    youtubeVideoId: 'c6wq0RB6wTU',
+    youtubeVideoId: 'Vi8WgNE86gA',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Working for the Man / Leah',
     artist: 'Roy Orbison',
     album: 'Oh! Pretty Woman',
-    youtubeVideoId: 'vZjzgX2pPxA',
+    youtubeVideoId: '7YA_lRme-6I',
     imageSelection: 'album',
     imageSources: {
       album:

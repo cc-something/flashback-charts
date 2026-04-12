@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'I Will Follow Him',
     artist: 'Little Peggy March',
     album: 'I Will Follow Him',
-    youtubeVideoId: 'IRk9gAqjLgg',
+    youtubeVideoId: 'V-7vnnuaoog',
     imageSelection: 'album',
     imageSources: {
       album:

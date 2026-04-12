@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'MacArthur Park',
     artist: 'Richard Harris',
     album: 'A Tramp Shining',
-    youtubeVideoId: 'NfXEzWW8CtQ',
+    youtubeVideoId: '9GKqEmAnWMo',
     imageSelection: 'album',
     imageSources: {
       album:
