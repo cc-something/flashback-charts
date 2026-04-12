@@ -66,7 +66,9 @@ export const useHotkeys = (
   const getRandomSongForYears = async (years: number[]) => {
     const { getYearData } = await import('@/data')
     const songs = years.flatMap((year) =>
-      (getYearData(year) ?? []).map((song) => ({ song, year })),
+      (getYearData(year) ?? [])
+        .filter((song) => song.youtubeVideoId)
+        .map((song) => ({ song, year })),
     )
     if (!songs.length) return null
     return songs[Math.floor(Math.random() * songs.length)] ?? null
