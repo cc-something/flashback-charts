@@ -402,10 +402,6 @@ export const usePlayerStore = defineStore('player', () => {
     new Promise<void>((resolve) =>
       window.setTimeout(resolve, SONG_ROW_SCROLL_SETTLE_MS),
     )
-  const revealSongRowHighlight = (year: number, rank: number) => {
-    if (useChartStore().selectedYear !== year) return
-    flashSongHighlight(year, rank)
-  }
   const scrollSongIntoView = async (
     song: Song,
     year: number,
@@ -780,7 +776,6 @@ export const usePlayerStore = defineStore('player', () => {
       playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
       playingYear.value === year
     if (isSameSong && playerState.value !== 'idle') {
-      if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
       if (playerState.value === 'playing') ytPlayer?.pauseVideo()
       return
     }
@@ -833,12 +828,10 @@ export const usePlayerStore = defineStore('player', () => {
       playingYear.value === year
     ) {
       if (playerState.value === 'playing') {
-        if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
         ytPlayer?.pauseVideo()
         return
       }
       if (playerState.value === 'paused' && ytPlayer) {
-        if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
         if (isAwaitingPlaybackStart.value) return
         startLoadingAttempt()
         if (getHasImmediateNetworkConnection()) {
@@ -852,7 +845,6 @@ export const usePlayerStore = defineStore('player', () => {
         return
       }
       if (playerState.value === 'loading') {
-        if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
         stop()
         return
       }
@@ -918,13 +910,6 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const togglePlayback = async (trigger: PlayTrigger = 'direct') => {
-    if (
-      trigger !== 'direct' &&
-      playingSong.value &&
-      playingYear.value !== null &&
-      playerState.value !== 'idle'
-    )
-      revealSongRowHighlight(playingYear.value, playingSong.value.rank)
     if (playerState.value === 'playing') ytPlayer?.pauseVideo()
     else if (playerState.value === 'paused' && ytPlayer) {
       startLoadingAttempt()
