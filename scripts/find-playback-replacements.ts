@@ -133,8 +133,8 @@ const initializeHarness = async (page: Page, serverOrigin: string) => {
   )
 }
 
-const runHarnessAttempt = async (page: Page, year: number, song: Song) =>
-  page.evaluate(
+const runHarnessAttempt = async (page: Page, year: number, song: Song) => {
+  const attemptPromise = page.evaluate(
     ({ currentYear, currentSong, timeoutMs }) =>
       window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
         year: currentYear,
@@ -147,6 +147,12 @@ const runHarnessAttempt = async (page: Page, year: number, song: Song) =>
       timeoutMs: playbackAttemptTimeoutMs,
     },
   )
+  await page.waitForFunction(() =>
+    window.__FLASHBACK_PLAYBACK_INTEGRITY__?.hasQueuedAttempt(),
+  )
+  await page.locator('[data-playback-start]').click({ force: true })
+  return attemptPromise
+}
 
 const resetHarness = async (page: Page) =>
   page.evaluate(() => window.__FLASHBACK_PLAYBACK_INTEGRITY__!.reset())
