@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
+import { Expand, Flag, Minimize, Music, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
@@ -50,6 +50,11 @@ const shouldUseMaxiPlayer = computed(
 const shouldShowPlaybackStartCta = computed(
   () => player.isAwaitingPlaybackStart,
 )
+const maxiPlayerYearStyle = computed(() => {
+  const currentPlayingYear = player.playingYear
+  if (currentPlayingYear === null) return {}
+  return { fontFamily: getThemeForYear(currentPlayingYear).fontFamily }
+})
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? 'mx-auto flex w-full max-w-[1200px] flex-col'
@@ -303,11 +308,30 @@ const closeMaxiPlayer = () => {
           />
         </div>
 
-        <div
-          v-if="shouldUseMaxiPlayer"
-          class="mb-4 flex w-full items-start gap-3 sm:gap-4"
-        >
-          <div class="min-w-0 flex-1">
+        <div v-if="shouldUseMaxiPlayer" class="mb-4 w-full">
+          <div class="min-w-0">
+            <div
+              v-if="player.playingYear !== null"
+              class="mb-2 flex items-center justify-between gap-3 text-left text-sm font-medium tracking-[0.12em] text-text-muted"
+            >
+              <div class="flex min-w-0 items-center gap-2">
+                <Music class="h-4 w-4 shrink-0" />
+                <span>Jukebox:</span>
+                <span :style="maxiPlayerYearStyle">
+                  {{ player.playingYear }}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                title="Stop playback (Esc)"
+                aria-label="Stop playback"
+                :class="playerFullscreenCloseButtonClass"
+                @click="player.stop"
+              >
+                <X class="h-4 w-4" />
+              </button>
+            </div>
             <SongRow
               v-if="player.playingYear !== null"
               :song="player.playingSong"
@@ -315,16 +339,6 @@ const closeMaxiPlayer = () => {
               variant="maxi"
             />
           </div>
-
-          <button
-            type="button"
-            title="Stop playback (Esc)"
-            aria-label="Stop playback"
-            :class="playerFullscreenCloseButtonClass"
-            @click="player.stop"
-          >
-            <X class="h-4 w-4" />
-          </button>
         </div>
 
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
