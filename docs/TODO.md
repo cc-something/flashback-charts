@@ -1,15 +1,5 @@
-- maxiplayer close btn
-- maxiplayer modal/sheet
-- maxiplayer thumbnail pre-play overlay
-- ifram ui is still a lot, can we minimise
-- verify mobile maxiplayer enforcing on viewports
-  - this is still jank
-- verify tap-to-play on mobile devices
-
-- playback does not in fact work on mobile
-- miniplayer on mobile?
 - sticky so the miniplayer doesnt clash w/ the sticky footer?
-- fullscreen mode for the miniplayer
+- landscape mode audit
 
 - spotify "seo"
 - nab AU, UK, US social handles
