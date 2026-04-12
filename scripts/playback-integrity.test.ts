@@ -43,6 +43,15 @@ describe('resolvePlaybackIntegritySelection', () => {
     ])
   })
 
+  it('supports rank filters', () => {
+    expect(
+      resolvePlaybackIntegritySelection(['--year=1940', '--rank=1']),
+    ).toEqual({
+      years: [1940],
+      rank: 1,
+    })
+  })
+
   it('rejects unknown arguments', () => {
     expect(() =>
       resolvePlaybackIntegritySelection(['--year=1940', '--headed']),

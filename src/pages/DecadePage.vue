@@ -22,6 +22,7 @@ import {
 import {
   getAbsoluteUrl,
   getDecadePath,
+  getHomePath,
   getOpenGraphImageMeta,
   getYearPath,
 } from '@/utils/url'
@@ -140,7 +141,7 @@ const breadcrumbJsonLd = computed(() => ({
       '@type': 'ListItem',
       'position': 1,
       'name': 'Flashback Charts Australia',
-      'item': getAbsoluteUrl(siteUrl.value, '/'),
+      'item': getAbsoluteUrl(siteUrl.value, getHomePath()),
     },
     {
       '@type': 'ListItem',

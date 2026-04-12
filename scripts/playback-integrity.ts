@@ -34,8 +34,10 @@ interface PlaybackIntegrityAttemptResult {
 }
 
 const browserLaunchArgs = ['--autoplay-policy=no-user-gesture-required']
+const browserUserAgent =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
 const playbackHarnessPath = '/__integrity/playback'
-const playbackAttemptTimeoutMs = 15_000
+const playbackAttemptTimeoutMs = 20_000
 const defaultServerOrigin = 'http://127.0.0.1:4719'
 
 const formatSongLabel = (year: number, song: Song) =>
@@ -49,6 +51,15 @@ const formatStateSequence = (stateSequence: number[]) =>
 
 const logDivider = () =>
   console.log('------------------------------------------------------------')
+
+const getRankFilter = (args: string[]) => {
+  const rankArg = args.find((arg) => arg.startsWith('--rank='))
+  if (!rankArg) return null
+  const rank = Number(rankArg.slice('--rank='.length))
+  if (!Number.isInteger(rank) || rank <= 0)
+    throw new Error('Expected --rank=1-style input.')
+  return rank
+}
 
 const getSummaryExitCode = (summary: PlaybackIntegritySummary) =>
   summary.failed > 0 ? 1 : 0
@@ -117,7 +128,7 @@ const runHarnessAttempt = async (
       `"${song.title}" by ${song.artist} is missing a YouTube video ID.`,
     )
   try {
-    return await page.evaluate(
+    const attemptPromise = page.evaluate(
       ({ timeoutMs, year, song }) =>
         window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
           song,
@@ -130,6 +141,11 @@ const runHarnessAttempt = async (
         year,
       },
     )
+    await page.waitForFunction(() =>
+      window.__FLASHBACK_PLAYBACK_INTEGRITY__?.hasQueuedAttempt(),
+    )
+    await page.locator('[data-playback-start]').click({ force: true })
+    return await attemptPromise
   } catch (error) {
     return createFailureResult(
       'player-load-failed',
@@ -163,14 +179,19 @@ const logAttemptResult = (
   )
 
 const runPlaybackIntegrity = async () => {
-  const selection = resolvePlaybackIntegritySelection(process.argv.slice(2))
-  const attempts = getAttempts(selection)
+  const cliArgs = process.argv.slice(2)
+  const selection = resolvePlaybackIntegritySelection(cliArgs)
+  const rankFilter = getRankFilter(cliArgs)
+  const attempts = getAttempts(selection).filter((attempt) =>
+    rankFilter === null ? true : attempt.song.rank === rankFilter,
+  )
   const summary: PlaybackIntegritySummary = {
     total: attempts.length,
     passed: 0,
     failed: 0,
   }
   let browser: Browser | null = null
+  let browserContext: import('playwright').BrowserContext | null = null
   let page: Page | null = null
   let viteServer: ViteDevServer | null = null
 
@@ -186,7 +207,11 @@ const runPlaybackIntegrity = async () => {
       headless: true,
       args: browserLaunchArgs,
     })
-    page = await browser.newPage({ viewport: { width: 1440, height: 1024 } })
+    browserContext = await browser.newContext({
+      viewport: { width: 1440, height: 1024 },
+      userAgent: browserUserAgent,
+    })
+    page = await browserContext.newPage()
     await initializeHarness(page, serverSetup.serverOrigin)
 
     let attemptIndex = 0
@@ -197,12 +222,10 @@ const runPlaybackIntegrity = async () => {
       if (result.status === 'passed') summary.passed += 1
       else summary.failed += 1
       logAttemptResult(attempt.year, attempt.song, result)
-      await page.evaluate(() =>
-        window.__FLASHBACK_PLAYBACK_INTEGRITY__!.reset(),
-      )
     }
   } finally {
     await page?.close()
+    await browserContext?.close()
     await browser?.close()
     await closeViteServer(viteServer)
   }

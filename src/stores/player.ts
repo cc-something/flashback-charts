@@ -692,6 +692,7 @@ export const usePlayerStore = defineStore('player', () => {
       ytPlayer = new window.YT!.Player(playerMountEl, {
         width: '100%',
         height: '100%',
+        host: 'https://www.youtube-nocookie.com',
         videoId: currentPlaySong?.youtubeVideoId,
         playerVars: {
           autoplay: getShouldAutoplayOnMount() ? 1 : 0,
@@ -965,6 +966,13 @@ export const usePlayerStore = defineStore('player', () => {
       isMuted.value = true
     }
   }
+  const setMuted = (nextMuted: boolean) => {
+    if (isMuted.value === nextMuted) return
+    isMuted.value = nextMuted
+    if (!ytPlayer) return
+    if (nextMuted) ytPlayer.mute()
+    else ytPlayer.unMute()
+  }
 
   const seekRelative = (deltaSeconds: number) => {
     if (!ytPlayer || playerState.value === 'idle') return
@@ -1110,6 +1118,7 @@ export const usePlayerStore = defineStore('player', () => {
     stop,
     togglePlayback,
     toggleMute,
+    setMuted,
     seekRelative,
     handleSeekInput,
     handleSeekCommit,
@@ -1121,5 +1130,6 @@ export const usePlayerStore = defineStore('player', () => {
     playNext,
     playPrev,
     goToSong,
+    setMuted,
   }
 })

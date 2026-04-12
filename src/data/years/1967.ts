@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'The Last Waltz',
     artist: 'Engelbert Humperdinck',
     album: 'The Last Waltz',
-    youtubeVideoId: 'Wll-a6MOLtY',
+    youtubeVideoId: '8UMZtCag3OU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'This Is My Song',
     artist: 'Petula Clark',
     album: 'These Are My Songs',
-    youtubeVideoId: 'V8XmLuTmKIM',
+    youtubeVideoId: 'C5-k7YRaeU0',
     imageSelection: 'album',
     imageSources: {
       album:
