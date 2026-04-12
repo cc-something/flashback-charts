@@ -29,6 +29,9 @@ type Replacement = {
 const execFileAsync = promisify(execFile)
 const playbackHarnessPath = '/__integrity/playback'
 const playbackAttemptTimeoutMs = 8000
+const playbackHarnessResultTimeoutBufferMs = 10000
+const playbackHarnessResultTimeoutMs =
+  playbackAttemptTimeoutMs + playbackHarnessResultTimeoutBufferMs
 const browserLaunchArgs = ['--autoplay-policy=no-user-gesture-required']
 const browserUserAgent =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
@@ -154,19 +157,48 @@ const initializeHarness = async (page: Page, serverOrigin: string) => {
   )
 }
 
+const withAttemptTimeout = async <Result>(
+  attemptPromise: Promise<Result>,
+  getTimeoutResult: () => Result,
+  timeoutMs: number,
+) =>
+  new Promise<Result>((resolve, reject) => {
+    const timeoutId = setTimeout(() => resolve(getTimeoutResult()), timeoutMs)
+    void attemptPromise
+      .then((result) => {
+        clearTimeout(timeoutId)
+        resolve(result)
+      })
+      .catch((error) => {
+        clearTimeout(timeoutId)
+        reject(error)
+      })
+  })
+
 const runHarnessAttempt = async (page: Page, year: number, song: Song) => {
-  const attemptPromise = page.evaluate(
-    ({ currentYear, currentSong, timeoutMs }) =>
-      window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
-        year: currentYear,
-        song: currentSong,
-        timeoutMs,
-      }),
-    {
-      currentYear: year,
-      currentSong: song,
-      timeoutMs: playbackAttemptTimeoutMs,
-    },
+  const attemptPromise = withAttemptTimeout(
+    page.evaluate(
+      ({ currentYear, currentSong, timeoutMs }) =>
+        window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
+          year: currentYear,
+          song: currentSong,
+          timeoutMs,
+        }),
+      {
+        currentYear: year,
+        currentSong: song,
+        timeoutMs: playbackAttemptTimeoutMs,
+      },
+    ),
+    () => ({
+      status: 'failed',
+      reason: 'timeout',
+      errorCode: null,
+      message: `Playback integrity harness stalled before returning a result for ${year} #${song.rank} "${song.title}" by ${song.artist}.`,
+      durationMs: 0,
+      stateSequence: [],
+    }),
+    playbackHarnessResultTimeoutMs,
   )
   await page.waitForFunction(() =>
     window.__FLASHBACK_PLAYBACK_INTEGRITY__?.hasQueuedAttempt(),

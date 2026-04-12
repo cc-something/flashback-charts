@@ -131,7 +131,7 @@ const songs: Song[] = [
     title: "I'd Love You to Want Me",
     artist: 'Lobo',
     album: 'Of a Simple Man',
-    youtubeVideoId: '1m-AEmKcLyc',
+    youtubeVideoId: 'tqp_wbYLsYQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -144,7 +144,7 @@ const songs: Song[] = [
     title: 'And I Love You So',
     artist: 'Perry Como',
     album: 'And I Love You So',
-    youtubeVideoId: 'GqLMHaEUu68',
+    youtubeVideoId: 'JxzBCknAYn4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -157,7 +157,7 @@ const songs: Song[] = [
     title: 'Daisy a Day',
     artist: 'Jud Strunk',
     album: 'Daisy a Day',
-    youtubeVideoId: 'LJj1CQLJM30',
+    youtubeVideoId: 'BB8G0SFmJ1g',
     imageSelection: 'album',
     imageSources: {
       album:

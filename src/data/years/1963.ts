@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Return to Sender',
     artist: 'Elvis Presley',
     album: 'Girls! Girls! Girls! (Original Soundtrack)',
-    youtubeVideoId: 'LZmUfUBqE-s',
+    youtubeVideoId: 'P4vMNmH7IwA',
     imageSelection: 'album',
     imageSources: {
       album:

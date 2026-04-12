@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: "I'll Be Seeing You",
     artist: 'Bing Crosby; Joe Loss',
     album: "I'll Be Seeing You",
-    youtubeVideoId: '5D4-Jc7MIF4',
+    youtubeVideoId: '9JgDY6B_0po',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Swinging on a Star',
     artist: 'Bing Crosby; Joe Loss',
     album: 'Swinging on a Star',
-    youtubeVideoId: 'rATftJiWdkw',
+    youtubeVideoId: 'ahsIPx62rXA',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Lili Marlene (My Lili of the Lamplight)',
     artist: 'Geraldo; Lale Andersen',
     album: 'Lili Marlene (My Lili of the Lamplight)',
-    youtubeVideoId: 'YjXC4N1HXf0',
+    youtubeVideoId: 'aS9IY8YeAS8',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: "(Too-Ra-Loo-Ra-Loo-Ral) That's an Irish Lullaby",
     artist: 'Bing Crosby',
     album: "(Too-Ra-Loo-Ra-Loo-Ral) That's an Irish Lullaby",
-    youtubeVideoId: 'aw9B49epS_M',
+    youtubeVideoId: '8fYmxrDz7zU',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'There Goes That Song Again',
     artist: 'Kate Smith; George Trevare',
     album: 'There Goes That Song Again',
-    youtubeVideoId: '4DYUe_n5fyI',
+    youtubeVideoId: 'qlfDQpvWe-o',
     imageSelection: 'artist',
     imageSources: {
       album: null,

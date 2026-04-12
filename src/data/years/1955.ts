@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Let Me Go, Lover',
     artist: 'Teresa Brewer',
     album: 'Let Me Go, Lover',
-    youtubeVideoId: 'cExfS_g763s',
+    youtubeVideoId: 'H7uzpfGYqmA',
     imageSelection: 'artist',
     imageSources: {
       album: null,

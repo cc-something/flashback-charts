@@ -1,5 +1,5 @@
 import { chromium } from 'playwright'
-import type { Browser, Page } from 'playwright'
+import type { Browser, BrowserContext, Page } from 'playwright'
 import { createServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import { getYearData } from '@/data'
@@ -38,6 +38,9 @@ const browserUserAgent =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
 const playbackHarnessPath = '/__integrity/playback'
 const playbackAttemptTimeoutMs = 20_000
+const playbackHarnessResultTimeoutBufferMs = 10_000
+const playbackHarnessResultTimeoutMs =
+  playbackAttemptTimeoutMs + playbackHarnessResultTimeoutBufferMs
 const defaultServerOrigin = 'http://127.0.0.1:4719'
 
 const formatSongLabel = (year: number, song: Song) =>
@@ -76,6 +79,24 @@ const createFailureResult = (
   durationMs: 0,
   stateSequence: [],
 })
+
+const withAttemptTimeout = async <Result>(
+  attemptPromise: Promise<Result>,
+  getTimeoutResult: () => Result,
+  timeoutMs: number,
+) =>
+  new Promise<Result>((resolve, reject) => {
+    const timeoutId = setTimeout(() => resolve(getTimeoutResult()), timeoutMs)
+    void attemptPromise
+      .then((result) => {
+        clearTimeout(timeoutId)
+        resolve(result)
+      })
+      .catch((error) => {
+        clearTimeout(timeoutId)
+        reject(error)
+      })
+  })
 
 const getAttempts = ({ years }: PlaybackIntegritySelection) =>
   years.flatMap((year) =>
@@ -117,6 +138,16 @@ const initializeHarness = async (page: Page, serverOrigin: string) => {
   )
 }
 
+const createHarnessPage = async (browser: Browser, serverOrigin: string) => {
+  const browserContext = await browser.newContext({
+    viewport: { width: 1440, height: 1024 },
+    userAgent: browserUserAgent,
+  })
+  const page = await browserContext.newPage()
+  await initializeHarness(page, serverOrigin)
+  return { browserContext, page }
+}
+
 const runHarnessAttempt = async (
   page: Page,
   year: number,
@@ -128,18 +159,26 @@ const runHarnessAttempt = async (
       `"${song.title}" by ${song.artist} is missing a YouTube video ID.`,
     )
   try {
-    const attemptPromise = page.evaluate(
-      ({ timeoutMs, year, song }) =>
-        window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
+    const attemptPromise = withAttemptTimeout(
+      page.evaluate(
+        ({ timeoutMs, year, song }) =>
+          window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
+            song,
+            timeoutMs,
+            year,
+          }),
+        {
           song,
-          timeoutMs,
+          timeoutMs: playbackAttemptTimeoutMs,
           year,
-        }),
-      {
-        song,
-        timeoutMs: playbackAttemptTimeoutMs,
-        year,
-      },
+        },
+      ),
+      () =>
+        createFailureResult(
+          'timeout',
+          `Playback integrity harness stalled before returning a result for ${formatSongLabel(year, song)}.`,
+        ),
+      playbackHarnessResultTimeoutMs,
     )
     await page.waitForFunction(() =>
       window.__FLASHBACK_PLAYBACK_INTEGRITY__?.hasQueuedAttempt(),
@@ -191,7 +230,7 @@ const runPlaybackIntegrity = async () => {
     failed: 0,
   }
   let browser: Browser | null = null
-  let browserContext: import('playwright').BrowserContext | null = null
+  let browserContext: BrowserContext | null = null
   let page: Page | null = null
   let viteServer: ViteDevServer | null = null
 
@@ -207,18 +246,24 @@ const runPlaybackIntegrity = async () => {
       headless: true,
       args: browserLaunchArgs,
     })
-    browserContext = await browser.newContext({
-      viewport: { width: 1440, height: 1024 },
-      userAgent: browserUserAgent,
-    })
-    page = await browserContext.newPage()
-    await initializeHarness(page, serverSetup.serverOrigin)
 
     let attemptIndex = 0
     for (const attempt of attempts) {
+      if (!browser)
+        throw new Error('Playback integrity browser was not created.')
       attemptIndex += 1
+      const attemptHarness = await createHarnessPage(
+        browser,
+        serverSetup.serverOrigin,
+      )
+      browserContext = attemptHarness.browserContext
+      page = attemptHarness.page
       logAttemptStart(attemptIndex, attempts.length, attempt.year, attempt.song)
       const result = await runHarnessAttempt(page, attempt.year, attempt.song)
+      await page.close()
+      await browserContext.close()
+      page = null
+      browserContext = null
       if (result.status === 'passed') summary.passed += 1
       else summary.failed += 1
       logAttemptResult(attempt.year, attempt.song, result)

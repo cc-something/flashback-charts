@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Auf Wiedersehn Sweetheart',
     artist: 'Vera Lynn',
     album: 'Auf Wiedersehn Sweetheart',
-    youtubeVideoId: '36prRdWCqu0',
+    youtubeVideoId: '-DsW49O_8oA',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'A Kiss to Build a Dream On',
     artist: 'Louis Armstrong',
     album: 'A Kiss to Build a Dream On',
-    youtubeVideoId: 'sT49gOujQGI',
+    youtubeVideoId: 'RSHUW7sDivc',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Slow Coach (Slow Poke)',
     artist: 'Pee Wee King',
     album: 'Slow Coach (Slow Poke)',
-    youtubeVideoId: '9g0AeQOFbsI',
+    youtubeVideoId: 'KkWcCJAWKUY',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Cold, Cold Heart',
     artist: 'Tony Bennett',
     album: 'Cold, Cold Heart',
-    youtubeVideoId: 'Vbg7-kVtPKs',
+    youtubeVideoId: 'GERZo2wnaCY',
     imageSelection: 'artist',
     imageSources: {
       album: null,

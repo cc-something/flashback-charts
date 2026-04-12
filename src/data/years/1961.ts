@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Theme from Exodus',
     artist: 'Ferrante and Teicher',
     album: 'All Time Great Movie Themes',
-    youtubeVideoId: 'Vi8WgNE86gA',
+    youtubeVideoId: '11ZURw4Awsw',
     imageSelection: 'album',
     imageSources: {
       album:
