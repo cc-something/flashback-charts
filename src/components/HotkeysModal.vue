@@ -115,7 +115,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
                     <kbd
                       v-for="key in group"
                       :key="key"
-                      class="inline-flex h-8 min-w-8 items-center justify-center rounded-md bg-background px-2.5 font-mono text-sm font-semibold text-text shadow-sm ring-1 ring-primary/20"
+                      class="inline-flex h-8 min-w-8 items-center justify-center rounded-md bg-background px-2 font-mono text-sm font-semibold text-text shadow-sm ring-1 ring-primary/20"
                     >
                       <component
                         :is="getKeyIcon(key)"
@@ -141,7 +141,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
               <kbd
                 v-for="key in konamiKeys"
                 :key="key"
-                class="inline-flex h-8 min-w-8 items-center justify-center rounded-md bg-background px-2.5 font-mono text-sm font-semibold text-text shadow-sm ring-1 ring-primary/20"
+                class="inline-flex h-8 min-w-8 items-center justify-center rounded-md bg-background px-2 font-mono text-sm font-semibold text-text shadow-sm ring-1 ring-primary/20"
               >
                 <component
                   :is="getKeyIcon(key)"
