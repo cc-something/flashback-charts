@@ -312,7 +312,7 @@ const closeMaxiPlayer = () => {
         >
           <div
             v-if="player.playingYear !== null"
-            class="hidden text-left text-lg font-medium tracking-[0.12em] sm:block sm:justify-self-start sm:text-xl"
+            class="hidden text-left text-lg font-medium tracking-[0.12em] sm:block sm:self-end sm:justify-self-start sm:text-xl"
           >
             <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
           </div>
