@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Hello, Goodbye / I Am the Walrus',
     artist: 'The Beatles',
     album: 'Magical Mystery Tour',
-    youtubeVideoId: 'rblYSKz_VnI',
+    youtubeVideoId: 'HdoYM8MaD78',
     imageSelection: 'album',
     imageSources: {
       album:

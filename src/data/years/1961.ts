@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Crying / Candy Man',
     artist: 'Roy Orbison',
     album: 'Crying',
-    youtubeVideoId: '0FTKYtQXbro',
+    youtubeVideoId: 'qQ66Ot2yRA0',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: "I'm a Believer / (I'm Not Your) Steppin' Stone",
     artist: 'The Monkees',
     album: 'More of the Monkees',
-    youtubeVideoId: 'ehWbMmFm6G0',
+    youtubeVideoId: 'i4zDNJiKKbM',
     imageSelection: 'album',
     imageSources: {
       album:

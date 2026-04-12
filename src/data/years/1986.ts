@@ -130,7 +130,7 @@ const songs: Song[] = [
     title: 'A Good Heart',
     artist: 'Feargal Sharkey',
     album: 'Feargal Sharkey',
-    youtubeVideoId: '8Z2qFTbyyOQ',
+    youtubeVideoId: 'cJLCETw8rlA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -143,7 +143,7 @@ const songs: Song[] = [
     title: "Papa Don't Preach",
     artist: 'Madonna',
     album: 'True Blue',
-    youtubeVideoId: 'G333Is7VPOg',
+    youtubeVideoId: 'LgJvO0TdKsQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -156,7 +156,7 @@ const songs: Song[] = [
     title: 'Addicted to Love',
     artist: 'Robert Palmer',
     album: 'Riptide',
-    youtubeVideoId: 'XcATvu5f9vE',
+    youtubeVideoId: 'rPwLjhjJ5xg',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: "Move Baby Move / You'll Never Cherish a Love So True",
     artist: "Johnny O'Keefe",
     album: 'The Wild One',
-    youtubeVideoId: '3nse9mFmG9c',
+    youtubeVideoId: 'Ni47YD6_tQk',
     imageSelection: 'album',
     imageSources: {
       album:

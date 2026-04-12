@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Suspicious Minds',
     artist: 'Elvis Presley',
     album: 'Suspicious Minds',
-    youtubeVideoId: 'WrMGGouem3c',
+    youtubeVideoId: 'qhapHLkID4k',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Part Three into Paper Walls / The Girl That I Love',
     artist: 'Russell Morris',
     album: 'Part Three into Paper Walls / The Girl That I Love',
-    youtubeVideoId: 'zKHzUHb6g4Q',
+    youtubeVideoId: 'KmTRgVQy-z4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Penny Arcade',
     artist: 'Roy Orbison',
     album: 'Big O',
-    youtubeVideoId: 'ovBuo7QyKTQ',
+    youtubeVideoId: 'UthU4zTiMlg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: "Get Back / Don't Let Me Down",
     artist: 'The Beatles',
     album: "Get Back / Don't Let Me Down",
-    youtubeVideoId: 'NCtzkaL2t_Y',
+    youtubeVideoId: 'r9PChq8LyvI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Hair',
     artist: 'The Cowsills',
     album: 'The Cowsills in Concert',
-    youtubeVideoId: 'Qt_yKPNORLM',
+    youtubeVideoId: 'aAk8z2PLOmc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Where Do You Go To (My Lovely)',
     artist: 'Peter Sarstedt',
     album: 'Where Do You Go to (My Lovely)',
-    youtubeVideoId: 'L8XQZYIiNgo',
+    youtubeVideoId: 'WLHf379sq1s',
     imageSelection: 'album',
     imageSources: {
       album:
