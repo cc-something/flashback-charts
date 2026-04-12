@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: "Que Sera, Sera / Shakin' All Over",
     artist: 'Normie Rowe',
     album: 'Frenzy! The 50th Anniversary Collection',
-    youtubeVideoId: 'YrKUfo4oXOw',
+    youtubeVideoId: 'fFqOYIZiEYo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Under the Boardwalk / Walking the Dog',
     artist: 'The Rolling Stones',
     album: 'The Rolling Stones No. 2',
-    youtubeVideoId: 'hXsmcgm7QxU',
+    youtubeVideoId: 'qyHxsso6Bkw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -143,7 +143,7 @@ const songs: Song[] = [
     artist: "Herman's Hermits",
     album:
       "Mrs. Brown, You've Got a Lovely Daughter (Music from the Original Soundtrack)",
-    youtubeVideoId: 'IOfs8U_3NQk',
+    youtubeVideoId: 'Oo9kOrqfxlo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -156,7 +156,7 @@ const songs: Song[] = [
     title: 'Ticket to Ride',
     artist: 'The Beatles',
     album: 'Help!',
-    youtubeVideoId: 'SyNt5zm3U_M',
+    youtubeVideoId: 'ICwIt47toMc',
     imageSelection: 'album',
     imageSources: {
       album:
