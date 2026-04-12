@@ -95,7 +95,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div class="flex flex-col gap-5">
         <div v-for="section in sections" :key="section.label">
           <p
-            class="mb-2 text-sm font-semibold uppercase tracking-wider text-text-muted/70"
+            class="mb-2 text-sm font-bold uppercase tracking-wider text-text-muted/55"
           >
             {{ section.label }}
           </p>
