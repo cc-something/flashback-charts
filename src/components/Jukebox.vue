@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Expand, Flag, Minimize, MousePointerClick, X } from 'lucide-vue-next'
+import {
+  Expand,
+  Flag,
+  Minimize,
+  MousePointerClick,
+  Music4,
+  X,
+} from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
@@ -350,15 +357,23 @@ const closeMaxiPlayer = () => {
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
           <div
             v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
-            class="mb-1.5 flex items-baseline justify-center gap-1 text-center text-[0.98rem] font-medium tracking-[0.12em]"
+            class="mb-1.5 flex items-center justify-between gap-3 px-0.5 text-[0.96rem] font-medium tracking-[0.12em]"
           >
-            <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+            <div class="flex min-w-0 items-center gap-1.5">
+              <Music4
+                class="h-4 w-4 shrink-0"
+                :style="{ color: String(jukeboxYearStyle.color ?? '') }"
+              />
+              <span class="truncate leading-none" :style="jukeboxYearStyle">
+                Jukebox
+              </span>
+            </div>
             <span
               v-if="player.playingSong"
-              class="text-[0.75em] font-bold tracking-[0.04em] text-primary/80"
+              class="shrink-0 text-right text-text"
             >
-              <span class="text-[0.75em] opacity-50">#</span>
-              <span>{{ player.playingSong.rank }}</span>
+              <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+              <span class="ml-1">#{{ player.playingSong.rank }}</span>
             </span>
           </div>
 
