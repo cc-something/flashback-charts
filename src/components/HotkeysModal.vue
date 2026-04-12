@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { Keyboard, X } from 'lucide-vue-next'
+import type { Component } from 'vue'
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Keyboard,
+  X,
+} from 'lucide-vue-next'
 
 const emit = defineEmits<{ close: [] }>()
 
@@ -8,15 +16,23 @@ const isMac =
   typeof navigator !== 'undefined' &&
   navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
+const keyIconByLabel: Record<string, Component> = {
+  '↑': ArrowUp,
+  '↓': ArrowDown,
+  '←': ArrowLeft,
+  '→': ArrowRight,
+}
 
 const sections = [
   {
     label: 'Playback',
     rows: [
       { keyGroups: [['Space'], ['K']], description: 'Play / pause' },
+      { keyGroups: [[mod, '←']], description: 'Previous song' },
+      { keyGroups: [[mod, '→']], description: 'Next song' },
       { keyGroups: [['J']], description: 'Rewind 10s' },
       { keyGroups: [['L']], description: 'Fast-forward 10s' },
-      { keyGroups: [['F']], description: 'Toggle player size / close mobile' },
+      { keyGroups: [['F']], description: 'Toggle player full-screen' },
       {
         keyGroups: [['Esc']],
         description: 'Exit full-screen or stop playback',
@@ -26,8 +42,6 @@ const sections = [
   {
     label: 'Navigation',
     rows: [
-      { keyGroups: [[mod, '←']], description: 'Previous song' },
-      { keyGroups: [[mod, '→']], description: 'Next song' },
       { keyGroups: [[mod, '[']], description: 'Previous year' },
       { keyGroups: [[mod, ']']], description: 'Next year' },
       { keyGroups: [['G']], description: 'Go to playing song' },
@@ -43,6 +57,7 @@ const sections = [
 ]
 
 const konamiKeys = ['↑', '↑', '↓', '↓', '←', '→', '←', '→', 'B', 'A']
+const getKeyIcon = (key: string) => keyIconByLabel[key] ?? null
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') emit('close')
@@ -80,7 +95,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div class="flex flex-col gap-5">
         <div v-for="section in sections" :key="section.label">
           <p
-            class="mb-2 text-xs font-semibold uppercase tracking-wider text-text-muted/60"
+            class="mb-2 text-sm font-semibold uppercase tracking-wider text-text-muted/70"
           >
             {{ section.label }}
           </p>
@@ -100,9 +115,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
                     <kbd
                       v-for="key in group"
                       :key="key"
-                      class="rounded bg-background px-2 py-0.5 font-mono text-xs font-semibold text-text shadow-sm ring-1 ring-primary/20"
+                      class="inline-flex h-8 min-w-8 items-center justify-center rounded-md bg-background px-2.5 font-mono text-sm font-semibold text-text shadow-sm ring-1 ring-primary/20"
                     >
-                      {{ key }}
+                      <component
+                        :is="getKeyIcon(key)"
+                        v-if="getKeyIcon(key)"
+                        class="h-3.5 w-3.5"
+                      />
+                      <template v-else>{{ key }}</template>
                     </kbd>
                   </span>
                 </template>
@@ -121,9 +141,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
               <kbd
                 v-for="key in konamiKeys"
                 :key="key"
-                class="rounded bg-background px-2 py-0.5 font-mono text-xs font-semibold text-text shadow-sm ring-1 ring-primary/20"
+                class="inline-flex h-8 min-w-8 items-center justify-center rounded-md bg-background px-2.5 font-mono text-sm font-semibold text-text shadow-sm ring-1 ring-primary/20"
               >
-                {{ key }}
+                <component
+                  :is="getKeyIcon(key)"
+                  v-if="getKeyIcon(key)"
+                  class="h-3.5 w-3.5"
+                />
+                <template v-else>{{ key }}</template>
               </kbd>
             </span>
           </li>
