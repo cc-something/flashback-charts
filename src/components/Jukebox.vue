@@ -315,7 +315,7 @@ const closeMaxiPlayer = () => {
             class="justify-self-center"
             :is-spinning="player.playerState === 'playing'"
             label="Flashback Charts Australia"
-            size="home"
+            size="jukebox"
           />
 
           <button
@@ -426,9 +426,11 @@ const closeMaxiPlayer = () => {
                 >
                   <div class="flex items-center justify-between gap-1.5">
                     <p
-                      class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
+                      class="flex items-baseline gap-0.5 text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
                     >
-                      {{ player.playingYear }} #{{ player.playingSong.rank }}
+                      <span>{{ player.playingYear }}</span>
+                      <span class="text-[0.75em] opacity-50">#</span>
+                      <span>{{ player.playingSong.rank }}</span>
                     </p>
                   </div>
                   <p

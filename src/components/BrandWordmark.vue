@@ -7,7 +7,7 @@ const props = withDefaults(
     iconStyle?: Record<string, string>
     isSpinning?: boolean
     label: string
-    size?: 'default' | 'home'
+    size?: 'default' | 'home' | 'jukebox'
   }>(),
   {
     iconStyle: () => ({}),
@@ -17,21 +17,45 @@ const props = withDefaults(
 )
 
 const rootClass = computed(() =>
-  props.size === 'home'
+  props.size === 'home' || props.size === 'jukebox'
     ? 'flex items-start gap-[0.25em] font-bold text-primary'
     : 'flex items-center gap-[0.25em] font-bold text-primary',
 )
 const rootStyle = computed(() => ({
   fontFamily: brandFontFamily,
-  fontSize: props.size === 'home' ? 'clamp(1.6rem, 7vw, 3rem)' : '1.25rem',
+  fontSize:
+    props.size === 'home'
+      ? 'clamp(1.6rem, 7vw, 3rem)'
+      : props.size === 'jukebox'
+        ? 'clamp(1.15rem, 4.8vw, 3rem)'
+        : '1.25rem',
   lineHeight:
-    props.size === 'home' ? 'clamp(1.9rem, 7.5vw, 3.25rem)' : '1.75rem',
+    props.size === 'home'
+      ? 'clamp(1.9rem, 7.5vw, 3.25rem)'
+      : props.size === 'jukebox'
+        ? 'clamp(1.4rem, 5.3vw, 3.25rem)'
+        : '1.75rem',
   transition: 'font-size 220ms ease, line-height 220ms ease',
 }))
 const defaultIconStyle = computed(() => ({
-  width: props.size === 'home' ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
-  height: props.size === 'home' ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
-  marginTop: props.size === 'home' ? 'clamp(0.12rem, 0.8vw, 0.32rem)' : '0',
+  width:
+    props.size === 'home'
+      ? 'clamp(1.5rem, 6vw, 2.5rem)'
+      : props.size === 'jukebox'
+        ? 'clamp(1.05rem, 4.2vw, 2.5rem)'
+        : '1.5rem',
+  height:
+    props.size === 'home'
+      ? 'clamp(1.5rem, 6vw, 2.5rem)'
+      : props.size === 'jukebox'
+        ? 'clamp(1.05rem, 4.2vw, 2.5rem)'
+        : '1.5rem',
+  marginTop:
+    props.size === 'home'
+      ? 'clamp(0.12rem, 0.8vw, 0.32rem)'
+      : props.size === 'jukebox'
+        ? 'clamp(0.08rem, 0.5vw, 0.28rem)'
+        : '0',
   transition: 'width 220ms ease, height 220ms ease',
 }))
 const mergedIconStyle = computed(() => ({
