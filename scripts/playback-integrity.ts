@@ -138,13 +138,14 @@ const initializeHarness = async (page: Page, serverOrigin: string) => {
   )
 }
 
-const createHarnessPage = async (
-  browserContext: BrowserContext,
-  serverOrigin: string,
-) => {
+const createHarnessPage = async (browser: Browser, serverOrigin: string) => {
+  const browserContext = await browser.newContext({
+    viewport: { width: 1440, height: 1024 },
+    userAgent: browserUserAgent,
+  })
   const page = await browserContext.newPage()
   await initializeHarness(page, serverOrigin)
-  return page
+  return { browserContext, page }
 }
 
 const runHarnessAttempt = async (
@@ -245,21 +246,24 @@ const runPlaybackIntegrity = async () => {
       headless: true,
       args: browserLaunchArgs,
     })
-    browserContext = await browser.newContext({
-      viewport: { width: 1440, height: 1024 },
-      userAgent: browserUserAgent,
-    })
 
     let attemptIndex = 0
     for (const attempt of attempts) {
-      if (!browserContext)
-        throw new Error('Playback integrity browser context was not created.')
+      if (!browser)
+        throw new Error('Playback integrity browser was not created.')
       attemptIndex += 1
-      page = await createHarnessPage(browserContext, serverSetup.serverOrigin)
+      const attemptHarness = await createHarnessPage(
+        browser,
+        serverSetup.serverOrigin,
+      )
+      browserContext = attemptHarness.browserContext
+      page = attemptHarness.page
       logAttemptStart(attemptIndex, attempts.length, attempt.year, attempt.song)
       const result = await runHarnessAttempt(page, attempt.year, attempt.song)
       await page.close()
+      await browserContext.close()
       page = null
+      browserContext = null
       if (result.status === 'passed') summary.passed += 1
       else summary.failed += 1
       logAttemptResult(attempt.year, attempt.song, result)
