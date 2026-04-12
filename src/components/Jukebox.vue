@@ -318,7 +318,7 @@ const closeMaxiPlayer = () => {
           </div>
 
           <div class="min-w-0 flex-1 sm:hidden">
-            <div class="ml-auto w-fit min-w-0 text-left">
+            <div class="min-w-0 text-left">
               <BrandWordmark
                 class="min-w-0 justify-start"
                 :is-spinning="player.playerState === 'playing'"
