@@ -66,7 +66,7 @@ const jukeboxYearLabel = computed(() => {
 })
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex w-full max-w-[1200px] -translate-y-[10dvh] flex-col sm:translate-y-0'
+    ? 'mx-auto flex w-full max-w-[1200px] flex-col'
     : '',
 )
 const playerDockContainerClass = computed(() =>
@@ -308,7 +308,7 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="-translate-y-4 mb-0.5 flex w-full items-start justify-end gap-3 sm:-translate-y-5 sm:mb-1 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
+          class="-translate-y-4 mb-0.5 flex w-full items-start justify-end gap-3 sm:-translate-y-10 sm:mb-1 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
             v-if="player.playingYear !== null"
@@ -704,7 +704,7 @@ const closeMaxiPlayer = () => {
 
       <p
         v-if="shouldShowPlaybackStartCta && player.playingSong"
-        class="mt-3 flex -translate-y-[10dvh] items-center justify-center gap-1.5 px-1 text-center text-sm leading-snug text-text-muted sm:translate-y-0"
+        class="mt-3 flex items-center justify-center gap-1.5 px-1 text-center text-sm leading-snug text-text-muted"
       >
         <MousePointerClick class="h-4 w-4 shrink-0" />
         <span>Tap the play button above to start listening</span>
