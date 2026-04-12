@@ -341,24 +341,17 @@ const closeMaxiPlayer = () => {
           <div class="min-w-0">
             <div
               v-if="player.playingYear !== null"
-              class="mb-1 flex items-center justify-between gap-3 text-left text-lg font-medium tracking-[0.12em] sm:text-xl"
+              class="mb-1 flex items-center gap-1.5 text-left text-lg font-medium tracking-[0.12em] sm:text-xl"
             >
-              <div class="flex min-w-0 items-center gap-1.5">
-                <Music4
-                  class="h-4.5 w-4.5 shrink-0 sm:h-5 sm:w-5"
-                  :style="{ color: String(jukeboxYearStyle.color ?? '') }"
-                />
-                <span class="truncate leading-none" :style="jukeboxYearStyle">
-                  Jukebox
-                </span>
-              </div>
-              <span
-                v-if="player.playingSong"
-                class="shrink-0 text-right"
-                :style="jukeboxYearStyle"
-              >
-                <span>{{ jukeboxYearLabel }}</span>
-                <span class="ml-1">#{{ player.playingSong.rank }}</span>
+              <Music4
+                class="h-4.5 w-4.5 shrink-0 sm:h-5 sm:w-5"
+                :style="{ color: String(jukeboxYearStyle.color ?? '') }"
+              />
+              <span class="truncate leading-none" :style="jukeboxYearStyle">
+                Jukebox:
+              </span>
+              <span class="shrink-0 leading-none" :style="jukeboxYearStyle">
+                {{ jukeboxYearLabel }}
               </span>
             </div>
             <SongRow
