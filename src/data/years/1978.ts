@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Three Times a Lady',
     artist: 'The Commodores',
     album: 'Natural High',
-    youtubeVideoId: 'h2IHexgN6Ns',
+    youtubeVideoId: 'aWrRY-LnEOY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Baker Street',
     artist: 'Gerry Rafferty',
     album: 'City to City',
-    youtubeVideoId: 'Fo6aKnRnBxM',
+    youtubeVideoId: 'dU6w56epBdc',
     imageSelection: 'album',
     imageSources: {
       album:
