@@ -841,6 +841,18 @@ const getNumericQuery = (query: string) =>
     .toLowerCase()
     .match(/^(\d{4})(s)?$/u)
 
+const getTwoDigitYearQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{2})$/u)
+
+const getTwoDigitDecadeQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{2})s$/u)
+
 const getNumericPrefixQuery = (query: string) =>
   query
     .trim()
@@ -852,6 +864,22 @@ const getYearThumbnailPath = (year: number) =>
 
 const getFirstYearForDecade = (decade: string) =>
   availableYears.find((year) => getDecadeForYear(year) === decade) ?? null
+
+const getYearSearchMatch = (year: number): YearSearchMatch => ({
+  type: 'year',
+  year,
+  path: getYearPath(year),
+  thumbnailPath: getYearThumbnailPath(year),
+})
+
+const getDecadeSearchMatch = (decade: string): DecadeSearchMatch => ({
+  type: 'decade',
+  decade,
+  path: getDecadePath(decade),
+  thumbnailPath: getYearThumbnailPath(
+    getFirstYearForDecade(decade) ?? Number.parseInt(decade, 10),
+  ),
+})
 
 export const searchSongs = (query: string): SongSearchMatch[] => {
   if (!query.trim()) return []
@@ -873,33 +901,38 @@ export const searchSongs = (query: string): SongSearchMatch[] => {
 
 const searchNumericTargets = (query: string): SearchMatch[] => {
   const numericQuery = getNumericQuery(query)
-  if (!numericQuery) return []
-
-  const year = Number(numericQuery[1])
-  const isDecadeOnlyQuery = numericQuery[2] === 's'
-  const isDecadeStartYear = year % 10 === 0
-  const decade = getDecadeForYear(year)
   const results: SearchMatch[] = []
 
-  if (!isDecadeOnlyQuery && availableYearSet.has(year))
-    results.push({
-      type: 'year',
-      year,
-      path: getYearPath(year),
-      thumbnailPath: getYearThumbnailPath(year),
-    })
-  if (
-    (isDecadeOnlyQuery || isDecadeStartYear) &&
-    availableDecadeSet.has(decade)
-  )
-    results.push({
-      type: 'decade',
-      decade,
-      path: getDecadePath(decade),
-      thumbnailPath: getYearThumbnailPath(
-        getFirstYearForDecade(decade) ?? year,
-      ),
-    })
+  if (numericQuery) {
+    const year = Number(numericQuery[1])
+    const isDecadeOnlyQuery = numericQuery[2] === 's'
+    const isDecadeStartYear = year % 10 === 0
+    const decade = getDecadeForYear(year)
+
+    if (!isDecadeOnlyQuery && availableYearSet.has(year))
+      results.push(getYearSearchMatch(year))
+    if (
+      (isDecadeOnlyQuery || isDecadeStartYear) &&
+      availableDecadeSet.has(decade)
+    )
+      results.push(getDecadeSearchMatch(decade))
+  }
+
+  const twoDigitYearQuery = getTwoDigitYearQuery(query)
+  if (twoDigitYearQuery)
+    results.push(
+      ...availableYears
+        .filter((year) => String(year).slice(-2) === twoDigitYearQuery[1])
+        .map(getYearSearchMatch),
+    )
+
+  const twoDigitDecadeQuery = getTwoDigitDecadeQuery(query)
+  if (twoDigitDecadeQuery)
+    results.push(
+      ...availableDecades
+        .filter((decade) => decade.slice(-3, -1) === twoDigitDecadeQuery[1])
+        .map(getDecadeSearchMatch),
+    )
 
   return results
 }
