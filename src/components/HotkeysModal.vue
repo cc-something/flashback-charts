@@ -32,6 +32,7 @@ const sections = [
       { keyGroups: [[mod, '→']], description: 'Next song' },
       { keyGroups: [['J']], description: 'Rewind 10s' },
       { keyGroups: [['L']], description: 'Fast-forward 10s' },
+      { keyGroups: [['M']], description: 'Toggle mute' },
       { keyGroups: [['F']], description: 'Toggle MaxiPlayer' },
     ],
   },
