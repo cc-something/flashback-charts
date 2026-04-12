@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Flag, X } from 'lucide-vue-next'
+import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
+import SongRow from './SongRow.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
 import { getYearPath } from '@/utils/url'
@@ -13,33 +14,87 @@ const player = usePlayerStore()
 const route = useRoute()
 const router = useRouter()
 const themeVars = ref<Record<string, string>>({})
-const playerViewportHost = ref<HTMLDivElement | null>(null)
+const playerViewportMountHost = ref<HTMLDivElement | null>(null)
+const playerDockContainerHost = ref<HTMLDivElement | null>(null)
+const maxiPlayerHeaderHost = ref<HTMLDivElement | null>(null)
+const maxiPlayerControlsHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
-const isMobileViewport = useMediaQuery('(max-width: 839px)')
+const isDesktopFullscreen = ref(false)
+const isTinyViewport = useMediaQuery('(max-width: 839px)')
+const playerFrameWidth = ref<number | null>(null)
+const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
+const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
 
 const isMac =
   typeof navigator !== 'undefined' &&
   navigator.platform.toUpperCase().includes('MAC')
 const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 text-text/70 transition-colors hover:bg-black/10 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const playerFullscreenButtonClass =
+  'inline-flex h-[clamp(2.5rem,8vw,5rem)] w-[clamp(2.5rem,8vw,5rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
 const shouldShowRestoredPoster = computed(
   () => player.playingSong !== null && !player.hasMountedPlayer,
 )
-const shouldShowMobilePlaybackCta = computed(
-  () => isMobileViewport.value && player.isAwaitingMobilePlaybackStart,
+const shouldUseMaxiPlayer = computed(
+  () => isTinyViewport.value || isDesktopFullscreen.value,
 )
-const playerDockContainerClass = computed(() => 'px-3 pt-3 pb-3')
+const shouldShowPlaybackStartCta = computed(
+  () => player.isAwaitingPlaybackStart,
+)
+const playerDockContainerClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-14'
+    : 'px-3 pt-3 pb-3',
+)
 const playerDockClass = computed(() =>
-  [
-    'fixed right-4 bottom-4 z-30 w-[calc(200px*16/9+2px)] rounded-xl border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)] transition-all duration-150',
-    shouldShowPlayerDock.value
-      ? 'pointer-events-auto opacity-100'
-      : 'pointer-events-none opacity-0',
-  ].join(' '),
+  shouldUseMaxiPlayer.value
+    ? [
+        'fixed inset-x-0 bottom-0 z-30 bg-[color:var(--color-player)]',
+        shouldShowPlayerDock.value
+          ? 'pointer-events-auto opacity-100'
+          : 'pointer-events-none opacity-0',
+      ].join(' ')
+    : [
+        'fixed right-4 bottom-4 z-30 w-[calc(200px*16/9+2px)] rounded-xl border border-white/12 bg-[color:var(--color-player)] shadow-[0_12px_40px_rgb(0_0_0_/_0.16)]',
+        shouldShowPlayerDock.value
+          ? 'pointer-events-auto opacity-100'
+          : 'pointer-events-none opacity-0',
+      ].join(' '),
+)
+const playerDockStyle = computed(() =>
+  shouldUseMaxiPlayer.value ? { top: 'var(--sticky-bar-height)' } : undefined,
+)
+const playerFrameClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? 'mx-auto w-full max-w-full overflow-hidden rounded-[1.4rem] border border-white/10 bg-black shadow-[0_30px_90px_rgb(0_0_0_/_0.32)]'
+    : 'overflow-hidden border border-white/10 bg-black shadow-lg',
+)
+const playerViewportClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? 'player-viewport-fullscreen w-full bg-black'
+    : 'player-viewport w-full min-h-[200px] bg-black',
+)
+const playerFrameStyle = computed(() =>
+  shouldUseMaxiPlayer.value && playerFrameWidth.value
+    ? { width: `${playerFrameWidth.value}px` }
+    : undefined,
+)
+const playerActionRowClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? 'relative mt-4 mb-12 flex items-center justify-center sm:mb-14'
+    : 'flex items-center gap-1',
+)
+const fullscreenToggleTitle = computed(() =>
+  shouldUseMaxiPlayer.value && !isTinyViewport.value
+    ? 'Exit full-screen player (F)'
+    : 'Open full-screen player (F)',
+)
+const maxiPlayerCloseTitle = computed(() =>
+  isTinyViewport.value ? 'Close player' : 'Exit full-screen player (F)',
 )
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
@@ -74,18 +129,113 @@ const scrollToPlayingSongRow = async () => {
   })
 }
 const syncPlayerContainer = async () => {
-  if (!playerViewportHost.value) {
+  if (!playerViewportMountHost.value) {
     player.setPlayerContainer(null)
     return
   }
   await nextTick()
-  player.setPlayerContainer(playerViewportHost.value)
+  player.setPlayerContainer(playerViewportMountHost.value)
+}
+const syncMaxiPlayerFrameWidth = () => {
+  if (
+    !shouldUseMaxiPlayer.value ||
+    !playerDockContainerHost.value ||
+    !maxiPlayerHeaderHost.value ||
+    !maxiPlayerControlsHost.value
+  ) {
+    playerFrameWidth.value = null
+    return
+  }
+  const containerRect = playerDockContainerHost.value.getBoundingClientRect()
+  const headerRect = maxiPlayerHeaderHost.value.getBoundingClientRect()
+  const controlsRect = maxiPlayerControlsHost.value.getBoundingClientRect()
+  const availableHeight = Math.max(controlsRect.top - headerRect.bottom - 16, 0)
+  const nextFrameWidth = Math.min(
+    containerRect.width,
+    1200,
+    availableHeight * (16 / 9),
+  )
+  playerFrameWidth.value = nextFrameWidth > 0 ? nextFrameWidth : null
+}
+const queueMaxiPlayerFrameSync = async () => {
+  await nextTick()
+  requestAnimationFrame(syncMaxiPlayerFrameWidth)
 }
 watch(() => player.playingYear, updateThemeVars, { immediate: true })
-watch(playerViewportHost, () => {
+watch(playerViewportMountHost, () => {
   void syncPlayerContainer()
 })
+watch(
+  [
+    shouldUseMaxiPlayer,
+    () => player.playingSong,
+    () => player.playingYear,
+    shouldShowPlaybackStartCta,
+  ],
+  () => {
+    void queueMaxiPlayerFrameSync()
+  },
+  { flush: 'post' },
+)
+watch(shouldShowPlayerDock, (shouldShow) => {
+  if (shouldShow) return
+  isDesktopFullscreen.value = false
+})
+watch(shouldUseMaxiPlayer, (shouldShowMaxiPlayer) => {
+  if (typeof document === 'undefined') return
+  document.documentElement.dataset.playerFullscreen = shouldShowMaxiPlayer
+    ? 'true'
+    : 'false'
+  document.body.style.overflow = shouldShowMaxiPlayer ? 'hidden' : ''
+})
+const handleFullscreenToggle = () => {
+  if (!player.playingSong || shouldShowPlaybackStartCta.value) return
+  if (isTinyViewport.value) {
+    closeMaxiPlayer()
+    return
+  }
+  if (isDesktopFullscreen.value) {
+    closeMaxiPlayer()
+    return
+  }
+  openMaxiPlayer()
+}
+const closeFullscreen = () => {
+  if (isTinyViewport.value) {
+    player.stop()
+    return
+  }
+  if (!isDesktopFullscreen.value) return
+  isDesktopFullscreen.value = false
+}
+onMounted(() =>
+  window.addEventListener(
+    PLAYER_FULLSCREEN_TOGGLE_EVENT,
+    handleFullscreenToggle,
+  ),
+)
+onMounted(() => window.addEventListener('resize', syncMaxiPlayerFrameWidth))
 onUnmounted(() => player.setPlayerContainer(null))
+onUnmounted(() => {
+  if (typeof document === 'undefined') return
+  delete document.documentElement.dataset.playerFullscreen
+  document.body.style.overflow = ''
+})
+onUnmounted(() =>
+  window.removeEventListener('resize', syncMaxiPlayerFrameWidth),
+)
+onUnmounted(() =>
+  window.removeEventListener(
+    PLAYER_FULLSCREEN_TOGGLE_EVENT,
+    handleFullscreenToggle,
+  ),
+)
+onMounted(() =>
+  window.addEventListener(PLAYER_FULLSCREEN_CLOSE_EVENT, closeFullscreen),
+)
+onUnmounted(() =>
+  window.removeEventListener(PLAYER_FULLSCREEN_CLOSE_EVENT, closeFullscreen),
+)
 
 const goToPlayingSong = async () => {
   const year = player.playingYear
@@ -116,65 +266,221 @@ const openReportModal = () => {
   if (!player.playingSong || player.playingYear === null) return
   isReportModalOpen.value = true
 }
+const openMaxiPlayer = () => {
+  if (!player.playingSong) return
+  isDesktopFullscreen.value = true
+}
+const closeMaxiPlayer = () => {
+  if (!player.playingSong) return
+  if (isTinyViewport.value) {
+    player.stop()
+    return
+  }
+  isDesktopFullscreen.value = false
+}
 </script>
 
 <template>
-  <aside aria-label="Music player" :style="themeVars" :class="playerDockClass">
+  <aside
+    aria-label="Music player"
+    :style="[themeVars, playerDockStyle]"
+    :class="playerDockClass"
+  >
     <button
       v-if="player.playingSong"
       type="button"
       title="Stop playback (Esc)"
       aria-label="Stop playback"
-      class="absolute top-0 right-0 z-30 inline-flex h-6 w-6 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border-1 border-white/25 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      :class="
+        shouldUseMaxiPlayer
+          ? 'absolute top-4 right-4 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-surface/90 text-text/70 shadow-[0_12px_28px_rgb(0_0_0_/_0.16)] backdrop-blur-sm transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+          : 'absolute top-0 right-0 z-30 inline-flex h-6 w-6 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border-1 border-white/25 bg-surface text-text/70 shadow-[0_8px_18px_rgb(0_0_0_/_0.16)] ring-1 ring-black/10 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+      "
       @click="player.stop"
     >
-      <X class="h-3.5 w-3.5" />
+      <X :class="shouldUseMaxiPlayer ? 'h-4 w-4' : 'h-3.5 w-3.5'" />
     </button>
 
-    <div :class="playerDockContainerClass">
-      <div class="overflow-hidden border border-white/10 bg-black shadow-lg">
+    <div ref="playerDockContainerHost" :class="playerDockContainerClass">
+      <div
+        v-if="
+          shouldUseMaxiPlayer &&
+          player.playingSong &&
+          player.playingYear !== null &&
+          !shouldShowPlaybackStartCta
+        "
+        ref="maxiPlayerHeaderHost"
+        class="mb-4"
+      >
+        <SongRow
+          :song="player.playingSong"
+          :year="player.playingYear"
+          variant="maxi"
+        />
+      </div>
+
+      <div
+        :class="
+          shouldUseMaxiPlayer ? 'flex min-h-0 flex-1 flex-col' : undefined
+        "
+      >
         <div
-          ref="playerViewportHost"
-          class="player-viewport w-full min-h-[200px] bg-black"
+          :class="
+            shouldUseMaxiPlayer
+              ? 'flex min-h-0 flex-1 items-start justify-center'
+              : undefined
+          "
         >
-          <button
-            v-if="shouldShowRestoredPoster && player.playingSong"
-            type="button"
-            aria-label="Play playback"
-            class="absolute inset-0 cursor-pointer"
-            @click="resumePlayback"
-          >
-            <img
-              :src="player.playingSong.thumbnailPath"
-              :alt="player.playingSong.title"
-              class="h-full w-full object-cover"
-            />
-            <div
-              class="absolute inset-0"
-              :style="{
-                background:
-                  'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
-              }"
-            />
-            <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+          <div :class="playerFrameClass" :style="playerFrameStyle">
+            <div :class="playerViewportClass">
               <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                ref="playerViewportMountHost"
+                class="absolute inset-0"
+                aria-hidden="true"
+              />
+              <button
+                v-if="shouldShowRestoredPoster && player.playingSong"
+                type="button"
+                aria-label="Play playback"
+                class="absolute inset-0 cursor-pointer"
+                @click="resumePlayback"
               >
-                <svg
-                  class="h-6 w-6 translate-x-[0.5px] text-white"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
+                <img
+                  :src="player.playingSong.thumbnailPath"
+                  :alt="player.playingSong.title"
+                  class="h-full w-full object-cover"
+                />
+                <div
+                  class="absolute inset-0"
+                  :style="{
+                    background:
+                      'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
+                  }"
+                />
+                <div class="absolute inset-x-0 bottom-0 flex justify-end p-3.5">
+                  <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                  >
+                    <svg
+                      class="h-6 w-6 translate-x-[0.5px] text-white"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </button>
             </div>
-          </button>
+          </div>
+        </div>
+
+        <div
+          v-if="
+            player.playingSong &&
+            !shouldShowPlaybackStartCta &&
+            shouldUseMaxiPlayer
+          "
+          ref="maxiPlayerControlsHost"
+          :class="playerActionRowClass"
+        >
+          <div class="flex items-center justify-center gap-1">
+            <button
+              type="button"
+              :title="`Previous song (${mod}+←)`"
+              aria-label="Previous song"
+              :class="playerFullscreenButtonClass"
+              @click="player.playPrev('player-btn')"
+            >
+              <svg
+                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              title="Play / pause (Space or K)"
+              aria-label="Toggle playback"
+              :class="playerFullscreenButtonClass"
+              @click="player.togglePlayback('player-btn')"
+            >
+              <svg
+                v-if="player.playerState === 'loading'"
+                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)] animate-spin"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
+              </svg>
+              <svg
+                v-else-if="player.playerState === 'playing'"
+                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+              </svg>
+              <svg
+                v-else
+                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              :title="`Next song (${mod}+→)`"
+              aria-label="Next song"
+              :class="playerFullscreenButtonClass"
+              @click="player.playNext(undefined, undefined, 'player-btn')"
+            >
+              <svg
+                class="h-[clamp(1.25rem,4vw,2.5rem)] w-[clamp(1.25rem,4vw,2.5rem)]"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="absolute right-0">
+            <button
+              type="button"
+              :title="maxiPlayerCloseTitle"
+              :aria-label="maxiPlayerCloseTitle"
+              :class="playerFullscreenButtonClass"
+              @click="closeMaxiPlayer"
+            >
+              <Minimize
+                class="h-[clamp(1.125rem,3.6vw,2.25rem)] w-[clamp(1.125rem,3.6vw,2.25rem)]"
+              />
+            </button>
+          </div>
         </div>
       </div>
 
       <p
-        v-if="shouldShowMobilePlaybackCta && player.playingSong"
+        v-if="shouldShowPlaybackStartCta && player.playingSong"
         class="mt-3 px-1 text-sm leading-snug text-text-muted"
       >
         Tap the play button in the video above to start
@@ -182,7 +488,11 @@ const openReportModal = () => {
       </p>
 
       <div
-        v-if="player.playingSong && !shouldShowMobilePlaybackCta"
+        v-if="
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
+        "
         class="mt-1.5 flex items-start gap-2.5"
       >
         <button
@@ -237,10 +547,14 @@ const openReportModal = () => {
       </div>
 
       <div
-        v-if="player.playingSong && !shouldShowMobilePlaybackCta"
-        class="mt-1 flex items-center justify-between gap-1.5"
+        v-if="
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
+        "
+        class="mt-1.5 flex items-center gap-1"
       >
-        <div class="flex items-center gap-1">
+        <div class="flex flex-1 items-center gap-1">
           <button
             type="button"
             :title="`Previous song (${mod}+←)`"
@@ -320,26 +634,50 @@ const openReportModal = () => {
           </button>
         </div>
 
-        <div class="flex items-center gap-1">
-          <p
-            class="mr-1 font-mono text-[0.72rem] tabular-nums text-text-muted"
-            :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
+        <div class="-mr-1 flex items-center justify-end">
+          <button
+            type="button"
+            :title="fullscreenToggleTitle"
+            :aria-label="fullscreenToggleTitle"
+            :class="playerButtonClass"
+            @click="openMaxiPlayer"
           >
-            <template v-if="player.showSeekBar">
-              {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
-            </template>
-            <template v-else>0:00/0:00</template>
-          </p>
+            <Expand class="h-4.5 w-4.5" />
+          </button>
         </div>
       </div>
 
       <div
-        v-if="player.playingSong && !shouldShowMobilePlaybackCta"
-        class="relative mt-1 h-1.5"
+        v-if="
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
+        "
+        class="mt-0.5 flex justify-end pr-0.5"
+      >
+        <p
+          class="font-mono text-[0.62rem] tabular-nums text-text-muted"
+          :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
+        >
+          <template v-if="player.showSeekBar">
+            {{ player.formattedCurrentTime }}/{{ player.formattedDuration }}
+          </template>
+          <template v-else>0:00/0:00</template>
+        </p>
+      </div>
+
+      <div
+        v-if="
+          player.playingSong &&
+          !shouldShowPlaybackStartCta &&
+          !shouldUseMaxiPlayer
+        "
+        class="relative mt-0.5 -mx-0.5 px-0.5"
       >
         <PlaybackSeekBar
           :disabled="!player.showSeekBar"
-          root-class="pointer-events-auto absolute inset-x-0 bottom-0 h-1.5"
+          root-class="pointer-events-auto h-4 cursor-pointer"
+          track-class="h-1.5"
         />
       </div>
     </div>
@@ -363,7 +701,21 @@ const openReportModal = () => {
   position: relative;
 }
 
+.player-viewport-fullscreen {
+  aspect-ratio: 16 / 9;
+  position: relative;
+  height: auto;
+  max-height: 100%;
+}
+
 .player-viewport :deep(iframe) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.player-viewport-fullscreen :deep(iframe) {
   display: block;
   width: 100%;
   height: 100%;

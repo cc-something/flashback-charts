@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'When You Wish Upon a Star',
     artist: 'Roy Smeck; Kate Smith',
     album: 'When You Wish Upon a Star',
-    youtubeVideoId: 'e4Dh4IU1iFQ',
+    youtubeVideoId: 'irvyavnc3Wo',
     imageSelection: 'artist',
     imageSources: {
       album: null,

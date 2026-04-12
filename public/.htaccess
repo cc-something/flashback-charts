@@ -6,6 +6,9 @@
 Options -MultiViews
 RewriteEngine On
 
+# Temporary homepage redirect until a global chart exists.
+RewriteRule ^$ /au/ [R=302,L]
+
 # Skip rewrite for real files and directories (assets, prerendered HTML, sitemap, etc.).
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d

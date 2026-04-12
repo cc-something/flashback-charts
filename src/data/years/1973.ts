@@ -91,7 +91,7 @@ const songs: Song[] = [
     title: 'Crocodile Rock',
     artist: 'Elton John',
     album: "Don't Shoot Me I'm Only the Piano Player",
-    youtubeVideoId: 'LGB4PZ13ruw',
+    youtubeVideoId: 'D3QQYvqHCIQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -104,7 +104,7 @@ const songs: Song[] = [
     title: 'Delta Dawn',
     artist: 'Helen Reddy',
     album: 'Long Hard Climb',
-    youtubeVideoId: 'n5SOZ_6sHFY',
+    youtubeVideoId: 'mv5OkYcmCWU',
     // Original single cover not on Wikimedia; using US reissue vinyl label image
     imageSelection: 'album',
     imageSources: {
@@ -118,7 +118,7 @@ const songs: Song[] = [
     title: 'Can the Can',
     artist: 'Suzi Quatro',
     album: 'Suzi Quatro',
-    youtubeVideoId: '2ODM3eYnepA',
+    youtubeVideoId: 'NF2kVVwqhuE',
     imageSelection: 'album',
     imageSources: {
       album:

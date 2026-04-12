@@ -118,14 +118,8 @@ const scrollToRickAstleySong = async () => {
   })
 }
 const goToRickAstleySong = async () => {
-  const routeSong = Array.isArray(route.query.song)
-    ? route.query.song[0]
-    : route.query.song
-  if (
-    route.name === 'year' &&
-    Number(route.params.year) === RICK_ASTLEY_YEAR &&
-    Number(routeSong) === RICK_ASTLEY_SONG.rank
-  )
+  if (route.name !== 'year') return
+  if (Number(route.params.year) === RICK_ASTLEY_YEAR)
     return scrollToRickAstleySong()
   player.queueSongHighlight(RICK_ASTLEY_YEAR, RICK_ASTLEY_SONG.rank)
   await router.push({

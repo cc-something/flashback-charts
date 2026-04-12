@@ -7,6 +7,7 @@ import { useToastStore } from '@/stores/toast'
 const playerViewportEl = ref<HTMLDivElement | null>(null)
 const statusMessage = ref('Waiting for initialization')
 const lastAttempt = ref<PlaybackIntegrityAttemptResult | null>(null)
+const previousMutedState = ref<boolean | null>(null)
 const player = usePlayerStore()
 const toast = useToastStore()
 
@@ -14,6 +15,7 @@ let activeAttemptId = 0
 let attemptStartedAt = 0
 let attemptStateSequence: number[] = []
 let attemptTimeoutId: number | null = null
+let queuedAttemptOptions: PlaybackIntegrityAttemptOptions | null = null
 
 const clearAttemptTimeout = () => {
   if (attemptTimeoutId === null) return
@@ -45,6 +47,9 @@ const createAttemptResult = (
 const initialize = async () => {
   await nextTick()
   player.setPlayerContainer(playerViewportEl.value)
+  if (previousMutedState.value === null)
+    previousMutedState.value = player.isMuted
+  player.setMuted(true)
   await player.preload()
   statusMessage.value = 'Playback integrity harness ready'
 }
@@ -54,10 +59,21 @@ const reset = () => {
   clearAttemptTimeout()
   attemptStartedAt = 0
   attemptStateSequence = []
+  queuedAttemptOptions = null
   lastAttempt.value = null
   clearToasts()
   player.stop()
   statusMessage.value = 'Playback integrity harness ready'
+}
+
+const startQueuedAttempt = () => {
+  if (!queuedAttemptOptions) return
+  const options = queuedAttemptOptions
+  queuedAttemptOptions = null
+  player.isMuted = true
+  void player.preload().then(() => {
+    void player.play(options.song, options.year, 'direct')
+  })
 }
 
 const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
@@ -134,9 +150,7 @@ const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
         player.stop()
         resolve(result)
       }, options.timeoutMs)
-      void player.preload().then(() => {
-        void player.play(options.song, options.year, 'direct')
-      })
+      queuedAttemptOptions = options
     })
   } catch (error) {
     const result = createAttemptResult(
@@ -155,12 +169,19 @@ const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
   }
 }
 
+const queueAttempt = (options: PlaybackIntegrityAttemptOptions) => {
+  queuedAttemptOptions = options
+}
+
 onMounted(() => {
   player.setPlayerContainer(playerViewportEl.value)
   window.__FLASHBACK_PLAYBACK_INTEGRITY__ = {
     initialize,
+    queueAttempt,
+    startQueuedAttempt,
     runAttempt,
     reset,
+    hasQueuedAttempt: () => Boolean(queuedAttemptOptions),
     getLastAttempt: () => lastAttempt.value,
   }
 })
@@ -170,7 +191,10 @@ onUnmounted(() => {
   clearAttemptTimeout()
   clearToasts()
   player.stop()
+  if (previousMutedState.value !== null)
+    player.setMuted(previousMutedState.value)
   player.setPlayerContainer(null)
+  queuedAttemptOptions = null
 })
 </script>
 
@@ -192,6 +216,15 @@ onUnmounted(() => {
     <section
       class="rounded-2xl border border-black/10 bg-surface p-5 shadow-sm"
     >
+      <button
+        type="button"
+        data-playback-start
+        data-testid="playback-integrity-start"
+        class="mb-3 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white"
+        @click="startQueuedAttempt"
+      >
+        Start queued attempt
+      </button>
       <div class="overflow-hidden rounded-xl bg-black shadow-lg">
         <div
           ref="playerViewportEl"

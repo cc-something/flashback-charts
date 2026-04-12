@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   getAbsoluteUrl,
   getDecadePath,
+  getGlobalHomePath,
   getHomePath,
   getIsDevHostname,
   getOpenGraphImageMeta,
@@ -10,7 +11,8 @@ import {
 
 describe('url helpers', () => {
   it('builds trailing-slash app paths', () => {
-    expect(getHomePath()).toBe('/')
+    expect(getGlobalHomePath()).toBe('/')
+    expect(getHomePath()).toBe('/au/')
     expect(getDecadePath('1980s')).toBe('/au/1980s/')
     expect(getYearPath(2024)).toBe('/au/2024/')
   })

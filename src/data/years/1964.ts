@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'I Should Have Known Better / If I Fell',
     artist: 'The Beatles',
     album: "A Hard Day's Night",
-    youtubeVideoId: 'FV_PGs0m34U',
+    youtubeVideoId: '75NfMR_RHX0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: "Ain't That Loving You Baby",
     artist: 'Elvis Presley',
     album: "The King of Rock 'n' Roll: The Complete 50's Masters",
-    youtubeVideoId: 'KhTkiZOI2sE',
+    youtubeVideoId: '1klGoSFmgkM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Have I the Right?',
     artist: 'The Honeycombs',
     album: 'Have I the Right - The Very Best of the Honeycombs',
-    youtubeVideoId: '2ZUWHfI6EuE',
+    youtubeVideoId: 'WKvMLXwsbVI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: "You're My World",
     artist: 'Cilla Black',
     album: 'Cilla',
-    youtubeVideoId: 'o6drD2SCwHE',
+    youtubeVideoId: 'cBjceO5PYJY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Oh, Pretty Woman',
     artist: 'Roy Orbison',
     album: 'Oh! Pretty Woman',
-    youtubeVideoId: '3KFvoDDs0XM',
+    youtubeVideoId: 'J8Pnp60DqJ0',
     imageSelection: 'album',
     imageSources: {
       album:
