@@ -68,6 +68,12 @@ describe('searchCatalog', () => {
     })
   })
 
+  it('treats temporal shorthand queries as year and decade intent first', () => {
+    expect(searchCatalog('80s').every((result) => result.type !== 'song')).toBe(
+      true,
+    )
+  })
+
   it('autocompletes numeric prefixes with decades first when song results are empty', () => {
     expect(searchCatalog('194').slice(0, 4)).toEqual([
       {

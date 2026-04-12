@@ -859,6 +859,14 @@ const getNumericPrefixQuery = (query: string) =>
     .toLowerCase()
     .match(/^\d{1,4}$/u)
 
+const getIsTemporalQuery = (query: string) =>
+  Boolean(
+    getNumericQuery(query) ||
+    getTwoDigitYearQuery(query) ||
+    getTwoDigitDecadeQuery(query) ||
+    getNumericPrefixQuery(query),
+  )
+
 const getYearThumbnailPath = (year: number) =>
   getYearData(year)?.[0]?.thumbnailPath ?? null
 
@@ -997,5 +1005,6 @@ export const searchCatalog = (query: string): SearchMatch[] => {
     ...searchNumericTargets(query),
   ])
 
+  if (getIsTemporalQuery(query)) return numericResults
   return [...numericResults, ...songResults]
 }
