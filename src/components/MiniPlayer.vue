@@ -35,6 +35,8 @@ const playerFullscreenSubtleButtonClass =
   'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+const playerPlaybackFallbackLinkClass =
+  'inline-flex items-center justify-center rounded-full border border-black/5 bg-transparent px-4 py-2 text-sm font-medium text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -50,6 +52,11 @@ const shouldUseMaxiPlayer = computed(
 const shouldShowPlaybackStartCta = computed(
   () => player.isAwaitingPlaybackStart,
 )
+const currentSongYouTubeUrl = computed(() => {
+  const currentSongVideoId = player.playingSong?.youtubeVideoId
+  if (!currentSongVideoId) return null
+  return `https://www.youtube.com/watch?v=${currentSongVideoId}`
+})
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? 'mx-auto flex w-full max-w-[1200px] flex-col'
@@ -666,6 +673,21 @@ const closeMaxiPlayer = () => {
         Tap the play button in the video above to start
         {{ ` ${player.playingSong.title}` }}.
       </p>
+
+      <div
+        v-if="shouldShowPlaybackStartCta && currentSongYouTubeUrl"
+        class="mt-3 flex px-1"
+        :class="shouldUseMaxiPlayer ? 'justify-center' : ''"
+      >
+        <a
+          :href="currentSongYouTubeUrl"
+          target="_blank"
+          rel="noreferrer"
+          :class="playerPlaybackFallbackLinkClass"
+        >
+          Open on YouTube
+        </a>
+      </div>
     </div>
   </aside>
 

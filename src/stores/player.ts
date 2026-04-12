@@ -75,6 +75,7 @@ export type PlayTrigger =
 
 const MAX_RETRIES = 2
 const STALL_TIMEOUT_MS = 4_000
+const MAX_CONSECUTIVE_UNPLAYABLE_SONGS = 2
 const EMBED_BLOCKED_ERROR_CODES = new Set([101, 150])
 const isEmbedBlockedError = (errorCode?: number) =>
   errorCode !== undefined && EMBED_BLOCKED_ERROR_CODES.has(errorCode)
@@ -121,6 +122,7 @@ export const usePlayerStore = defineStore('player', () => {
   let destroyPlayerOnContainerLossTimerId: ReturnType<
     typeof setTimeout
   > | null = null
+  let consecutiveUnplayableSongCount = 0
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -480,6 +482,13 @@ export const usePlayerStore = defineStore('player', () => {
       window.removeEventListener('offline', offlineHandler)
     offlineHandler = null
   }
+  const resetConsecutiveUnplayableSongCount = () => {
+    consecutiveUnplayableSongCount = 0
+  }
+  const countUnplayableSong = () => {
+    consecutiveUnplayableSongCount += 1
+    return consecutiveUnplayableSongCount
+  }
   const clearPlaybackSession = () => {
     clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
@@ -597,7 +606,14 @@ export const usePlayerStore = defineStore('player', () => {
       if (!(await getHasNetworkConnection()))
         return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
       if (!isAwaitingPlaybackStart.value) return enterPlaybackStartGate()
-      await failLoadingAttempt('Playback failed, try again later')
+      const failedSong = playingSong.value
+      if (!failedSong)
+        return failLoadingAttempt('Playback failed, try again later')
+      useToastStore().showWarning(
+        `YouTube is blocking playback in the embedded player. Open this on YouTube instead.\n${failedSong.title} by ${failedSong.artist}`,
+        6500,
+      )
+      stop()
     }, STALL_TIMEOUT_MS)
   }
   const loadCurrentSongIntoPlayer = () => {
@@ -629,6 +645,14 @@ export const usePlayerStore = defineStore('player', () => {
     const failedSong = playingSong.value
     const failedYear = playingYear.value
     if (!failedSong || failedYear === null) return
+    if (countUnplayableSong() >= MAX_CONSECUTIVE_UNPLAYABLE_SONGS) {
+      useToastStore().showWarning(
+        `YouTube is blocking playback in the embedded player. Open this on YouTube instead.\n${failedSong.title} by ${failedSong.artist}`,
+        6500,
+      )
+      stop()
+      return
+    }
     useToastStore().showWarning(
       `Unfortunately we can't play:\n${failedSong.title} by ${failedSong.artist}`,
     )
@@ -663,6 +687,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (!playingSong.value || playingYear.value === null) return
     if (event.data === 1 || event.data === 2) clearStallTimer()
     if (event.data === 1) {
+      resetConsecutiveUnplayableSongCount()
       isAwaitingPlaybackStart.value = false
       clearLoadingTracking()
       playerState.value = 'playing'
@@ -670,8 +695,10 @@ export const usePlayerStore = defineStore('player', () => {
       isAwaitingPlaybackStart.value = false
       clearLoadingTracking()
       playerState.value = 'paused'
-    } else if (event.data === 3) playerState.value = 'loading'
-    else if (event.data === 0) {
+    } else if (event.data === 3) {
+      playerState.value = 'loading'
+      startPlaybackStallTimer()
+    } else if (event.data === 0) {
       const endedSong = playingSong.value
       const endedYear = playingYear.value
       if (endedSong && endedYear !== null && onEndedCallback) {
@@ -821,6 +848,7 @@ export const usePlayerStore = defineStore('player', () => {
   ) => {
     if (typeof window === 'undefined') return
     if (!song.youtubeVideoId) return
+    if (trigger !== 'skip') resetConsecutiveUnplayableSongCount()
 
     // Toggle if same song
     if (
