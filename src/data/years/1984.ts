@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Dancing in the Dark',
     artist: 'Bruce Springsteen',
     album: 'Born In the U.S.A.',
-    youtubeVideoId: '129kuDCQtHs',
+    youtubeVideoId: '2qExWoSEyg8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: "It's Just Not Cricket",
     artist: 'The Twelfth Man',
     album: 'Wired World of Sports, Part 2',
-    youtubeVideoId: 'OFVQpmw7Hnw',
+    youtubeVideoId: 'apQUJar3vKU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Ghostbusters',
     artist: 'Ray Parker Jr.',
     album: 'Ghostbusters',
-    youtubeVideoId: 'Y_-lbtXhOJQ',
+    youtubeVideoId: 'TaV1r341wYk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Careless Whisper',
     artist: 'George Michael',
     album: 'Ladies & Gentlemen',
-    youtubeVideoId: 'izGwDsrQ1eQ',
+    youtubeVideoId: '1uoLpAkQ8xw',
     imageSelection: 'album',
     imageSources: {
       album:
