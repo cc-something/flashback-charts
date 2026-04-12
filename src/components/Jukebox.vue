@@ -62,7 +62,7 @@ const jukeboxYearStyle = computed(() => {
 const jukeboxYearLabel = computed(() => {
   const currentPlayingYear = player.playingYear
   if (currentPlayingYear === null) return ''
-  return `${currentPlayingYear}s`
+  return String(currentPlayingYear)
 })
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
@@ -308,7 +308,7 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="-translate-y-4 mb-0.5 grid w-full items-start [grid-template-columns:1fr_auto_1fr] sm:-translate-y-5 sm:mb-1"
+          class="-translate-y-4 mb-0.5 grid w-full items-center [grid-template-columns:1fr_auto_1fr] sm:-translate-y-5 sm:mb-1"
         >
           <div />
           <BrandWordmark
