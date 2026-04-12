@@ -38,6 +38,9 @@ const browserUserAgent =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
 const playbackHarnessPath = '/__integrity/playback'
 const playbackAttemptTimeoutMs = 20_000
+const playbackHarnessResultTimeoutBufferMs = 10_000
+const playbackHarnessResultTimeoutMs =
+  playbackAttemptTimeoutMs + playbackHarnessResultTimeoutBufferMs
 const defaultServerOrigin = 'http://127.0.0.1:4719'
 
 const formatSongLabel = (year: number, song: Song) =>
@@ -76,6 +79,24 @@ const createFailureResult = (
   durationMs: 0,
   stateSequence: [],
 })
+
+const withAttemptTimeout = async <Result>(
+  attemptPromise: Promise<Result>,
+  getTimeoutResult: () => Result,
+  timeoutMs: number,
+) =>
+  new Promise<Result>((resolve, reject) => {
+    const timeoutId = setTimeout(() => resolve(getTimeoutResult()), timeoutMs)
+    void attemptPromise
+      .then((result) => {
+        clearTimeout(timeoutId)
+        resolve(result)
+      })
+      .catch((error) => {
+        clearTimeout(timeoutId)
+        reject(error)
+      })
+  })
 
 const getAttempts = ({ years }: PlaybackIntegritySelection) =>
   years.flatMap((year) =>
@@ -128,18 +149,26 @@ const runHarnessAttempt = async (
       `"${song.title}" by ${song.artist} is missing a YouTube video ID.`,
     )
   try {
-    const attemptPromise = page.evaluate(
-      ({ timeoutMs, year, song }) =>
-        window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
+    const attemptPromise = withAttemptTimeout(
+      page.evaluate(
+        ({ timeoutMs, year, song }) =>
+          window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
+            song,
+            timeoutMs,
+            year,
+          }),
+        {
           song,
-          timeoutMs,
+          timeoutMs: playbackAttemptTimeoutMs,
           year,
-        }),
-      {
-        song,
-        timeoutMs: playbackAttemptTimeoutMs,
-        year,
-      },
+        },
+      ),
+      () =>
+        createFailureResult(
+          'timeout',
+          `Playback integrity harness stalled before returning a result for ${formatSongLabel(year, song)}.`,
+        ),
+      playbackHarnessResultTimeoutMs,
     )
     await page.waitForFunction(() =>
       window.__FLASHBACK_PLAYBACK_INTEGRITY__?.hasQueuedAttempt(),

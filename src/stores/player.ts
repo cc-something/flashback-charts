@@ -1130,6 +1130,5 @@ export const usePlayerStore = defineStore('player', () => {
     playNext,
     playPrev,
     goToSong,
-    setMuted,
   }
 })
