@@ -8,6 +8,7 @@ import ReportIssueModal from './ReportIssueModal.vue'
 import SongRow from './SongRow.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
+import { brandFontFamily } from '@/themes/font'
 import { getYearPath } from '@/utils/url'
 
 const player = usePlayerStore()
@@ -103,6 +104,16 @@ const playerActionRowClass = computed(() =>
 const playerBottomSpacerClass = computed(() =>
   shouldUseMaxiPlayer.value ? 'hidden' : 'hidden',
 )
+const maxiPlayerHeaderStyle = computed(() => ({
+  fontFamily: brandFontFamily,
+  fontSize: 'clamp(1.6rem, 7vw, 3rem)',
+  lineHeight: 'clamp(1.9rem, 7.5vw, 3.25rem)',
+}))
+const maxiPlayerHeaderIconStyle = computed(() => ({
+  fontSize: 'clamp(1.5rem, 6vw, 2.5rem)',
+  lineHeight: 1,
+  marginTop: 'clamp(0.12rem, 0.8vw, 0.32rem)',
+}))
 const fullscreenToggleTitle = computed(() =>
   shouldUseMaxiPlayer.value && !isTinyViewport.value
     ? 'Exit full-screen player (F)'
@@ -278,9 +289,11 @@ const closeMaxiPlayer = () => {
       >
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mb-3 text-center text-sm font-semibold tracking-[0.04em] text-primary/85 sm:mb-4"
+          class="mb-3 flex items-start justify-center gap-[0.25em] font-bold text-primary sm:mb-4"
+          :style="maxiPlayerHeaderStyle"
         >
-          💿 Flashback Charts
+          <span aria-hidden="true" :style="maxiPlayerHeaderIconStyle">💿</span>
+          <span>Flashback Charts</span>
         </div>
 
         <div
