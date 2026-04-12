@@ -70,7 +70,7 @@ const startQueuedAttempt = () => {
   if (!queuedAttemptOptions) return
   const options = queuedAttemptOptions
   queuedAttemptOptions = null
-  player.isMuted = true
+  player.setMuted(true)
   void player.preload().then(() => {
     void player.play(options.song, options.year, 'direct')
   })
@@ -225,6 +225,15 @@ onUnmounted(() => {
         />
       </div>
     </section>
+
+    <button
+      data-testid="playback-integrity-start"
+      class="fixed left-4 top-4 z-50 rounded bg-black px-2 py-1 font-mono text-[10px] text-white shadow-lg"
+      type="button"
+      @click="startQueuedAttempt"
+    >
+      Start playback integrity attempt
+    </button>
 
     <section
       class="rounded-2xl border border-black/10 bg-surface p-5 shadow-sm"

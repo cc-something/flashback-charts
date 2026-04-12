@@ -154,13 +154,8 @@ const songs: Song[] = [
     rank: 10,
     title: "Hard to Say I'm Sorry",
     artist: 'Chicago',
-<<<<<<< HEAD
     album: 'Chicago 16',
-    youtubeVideoId: '1A0MPWseJIE',
-=======
-    album: 'Chicago 16 (Expanded Edition)',
     youtubeVideoId: 'EORSLz0_BRU',
->>>>>>> integrity-80s
     imageSelection: 'album',
     imageSources: {
       album:

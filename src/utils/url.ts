@@ -8,7 +8,9 @@ const ogImageWidth = '1200'
 const ogImageHeight = '630'
 const ogImageType = 'image/jpeg'
 
-export const getHomePath = () => '/'
+export const getGlobalHomePath = () => '/'
+
+export const getHomePath = () => '/au/'
 
 export const getDecadePath = (decade: string) => `/au/${decade}/`
 

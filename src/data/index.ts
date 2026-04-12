@@ -841,17 +841,59 @@ const getNumericQuery = (query: string) =>
     .toLowerCase()
     .match(/^(\d{4})(s)?$/u)
 
+const getTwoDigitYearQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{2})$/u)
+
+const getTwoDigitDecadeQuery = (query: string) =>
+  query
+    .trim()
+    .toLowerCase()
+    .match(/^(\d{2})s$/u)
+
 const getNumericPrefixQuery = (query: string) =>
   query
     .trim()
     .toLowerCase()
     .match(/^\d{1,4}$/u)
 
+const getIsTemporalQuery = (query: string) =>
+  Boolean(
+    getNumericQuery(query) ||
+    getTwoDigitYearQuery(query) ||
+    getTwoDigitDecadeQuery(query) ||
+    getNumericPrefixQuery(query),
+  )
+
 const getYearThumbnailPath = (year: number) =>
   getYearData(year)?.[0]?.thumbnailPath ?? null
 
 const getFirstYearForDecade = (decade: string) =>
   availableYears.find((year) => getDecadeForYear(year) === decade) ?? null
+
+const getYearsForDecade = (decade: string) =>
+  availableYears.filter((year) => getDecadeForYear(year) === decade)
+
+const getYearSearchMatch = (year: number): YearSearchMatch => ({
+  type: 'year',
+  year,
+  path: getYearPath(year),
+  thumbnailPath: getYearThumbnailPath(year),
+})
+
+const getDecadeSearchMatch = (decade: string): DecadeSearchMatch => ({
+  type: 'decade',
+  decade,
+  path: getDecadePath(decade),
+  thumbnailPath: getYearThumbnailPath(
+    getFirstYearForDecade(decade) ?? Number.parseInt(decade, 10),
+  ),
+})
+
+const getYearSearchMatchesForDecade = (decade: string): YearSearchMatch[] =>
+  getYearsForDecade(decade).map(getYearSearchMatch)
 
 export const searchSongs = (query: string): SongSearchMatch[] => {
   if (!query.trim()) return []
@@ -873,33 +915,44 @@ export const searchSongs = (query: string): SongSearchMatch[] => {
 
 const searchNumericTargets = (query: string): SearchMatch[] => {
   const numericQuery = getNumericQuery(query)
-  if (!numericQuery) return []
-
-  const year = Number(numericQuery[1])
-  const isDecadeOnlyQuery = numericQuery[2] === 's'
-  const isDecadeStartYear = year % 10 === 0
-  const decade = getDecadeForYear(year)
   const results: SearchMatch[] = []
 
-  if (!isDecadeOnlyQuery && availableYearSet.has(year))
-    results.push({
-      type: 'year',
-      year,
-      path: getYearPath(year),
-      thumbnailPath: getYearThumbnailPath(year),
-    })
-  if (
-    (isDecadeOnlyQuery || isDecadeStartYear) &&
-    availableDecadeSet.has(decade)
-  )
-    results.push({
-      type: 'decade',
-      decade,
-      path: getDecadePath(decade),
-      thumbnailPath: getYearThumbnailPath(
-        getFirstYearForDecade(decade) ?? year,
-      ),
-    })
+  if (numericQuery) {
+    const year = Number(numericQuery[1])
+    const isDecadeOnlyQuery = numericQuery[2] === 's'
+    const isDecadeStartYear = year % 10 === 0
+    const decade = getDecadeForYear(year)
+
+    if (!isDecadeOnlyQuery && availableYearSet.has(year))
+      results.push(getYearSearchMatch(year))
+    if (
+      (isDecadeOnlyQuery || isDecadeStartYear) &&
+      availableDecadeSet.has(decade)
+    ) {
+      results.push(getDecadeSearchMatch(decade))
+      if (isDecadeOnlyQuery)
+        results.push(...getYearSearchMatchesForDecade(decade))
+    }
+  }
+
+  const twoDigitYearQuery = getTwoDigitYearQuery(query)
+  if (twoDigitYearQuery)
+    results.push(
+      ...availableYears
+        .filter((year) => String(year).slice(-2) === twoDigitYearQuery[1])
+        .map(getYearSearchMatch),
+    )
+
+  const twoDigitDecadeQuery = getTwoDigitDecadeQuery(query)
+  if (twoDigitDecadeQuery)
+    results.push(
+      ...availableDecades
+        .filter((decade) => decade.slice(-3, -1) === twoDigitDecadeQuery[1])
+        .flatMap((decade) => [
+          getDecadeSearchMatch(decade),
+          ...getYearSearchMatchesForDecade(decade),
+        ]),
+    )
 
   return results
 }
@@ -948,9 +1001,10 @@ const dedupeSearchMatches = (results: SearchMatch[]) => {
 export const searchCatalog = (query: string): SearchMatch[] => {
   const songResults = searchSongs(query)
   const numericResults = dedupeSearchMatches([
-    ...(songResults.length ? [] : searchNumericCompletions(query)),
+    ...searchNumericCompletions(query),
     ...searchNumericTargets(query),
   ])
 
+  if (getIsTemporalQuery(query)) return numericResults
   return [...numericResults, ...songResults]
 }
