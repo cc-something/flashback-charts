@@ -14,6 +14,7 @@ let activeAttemptId = 0
 let attemptStartedAt = 0
 let attemptStateSequence: number[] = []
 let attemptTimeoutId: number | null = null
+let queuedAttemptOptions: PlaybackIntegrityAttemptOptions | null = null
 
 const clearAttemptTimeout = () => {
   if (attemptTimeoutId === null) return
@@ -54,10 +55,21 @@ const reset = () => {
   clearAttemptTimeout()
   attemptStartedAt = 0
   attemptStateSequence = []
+  queuedAttemptOptions = null
   lastAttempt.value = null
   clearToasts()
   player.stop()
   statusMessage.value = 'Playback integrity harness ready'
+}
+
+const startQueuedAttempt = () => {
+  if (!queuedAttemptOptions) return
+  const options = queuedAttemptOptions
+  queuedAttemptOptions = null
+  player.isMuted = true
+  void player.preload().then(() => {
+    void player.play(options.song, options.year, 'direct')
+  })
 }
 
 const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
@@ -134,9 +146,7 @@ const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
         player.stop()
         resolve(result)
       }, options.timeoutMs)
-      void player.preload().then(() => {
-        void player.play(options.song, options.year, 'direct')
-      })
+      queuedAttemptOptions = options
     })
   } catch (error) {
     const result = createAttemptResult(
@@ -161,6 +171,8 @@ onMounted(() => {
     initialize,
     runAttempt,
     reset,
+    startQueuedAttempt,
+    hasQueuedAttempt: () => Boolean(queuedAttemptOptions),
     getLastAttempt: () => lastAttempt.value,
   }
 })
@@ -192,6 +204,14 @@ onUnmounted(() => {
     <section
       class="rounded-2xl border border-black/10 bg-surface p-5 shadow-sm"
     >
+      <button
+        type="button"
+        data-playback-start
+        class="mb-3 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white"
+        @click="startQueuedAttempt"
+      >
+        Start queued attempt
+      </button>
       <div class="overflow-hidden rounded-xl bg-black shadow-lg">
         <div
           ref="playerViewportEl"
