@@ -38,7 +38,10 @@ const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
 const shouldShowRestoredPoster = computed(
-  () => player.playingSong !== null && !player.hasMountedPlayer,
+  () =>
+    !shouldUseMaxiPlayer.value &&
+    player.playingSong !== null &&
+    !player.hasMountedPlayer,
 )
 const shouldUseMaxiPlayer = computed(
   () => isTinyViewport.value || isDesktopFullscreen.value,
