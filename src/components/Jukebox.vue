@@ -359,14 +359,12 @@ const closeMaxiPlayer = () => {
             v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
             class="mb-1.5 flex items-center justify-between gap-3 px-0.5 text-[0.96rem] font-medium tracking-[0.12em]"
           >
-            <div class="flex min-w-0 items-center gap-1.5">
-              <Music4
-                class="h-4 w-4 shrink-0"
-                :style="{ color: String(jukeboxYearStyle.color ?? '') }"
-              />
-              <span class="truncate leading-none" :style="jukeboxYearStyle">
-                Jukebox
-              </span>
+            <div
+              class="flex min-w-0 items-center gap-1.5"
+              :style="jukeboxYearStyle"
+            >
+              <Music4 class="h-4 w-4 shrink-0" />
+              <span class="truncate leading-none">Jukebox</span>
             </div>
             <span
               v-if="player.playingSong"
