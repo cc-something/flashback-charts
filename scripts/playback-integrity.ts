@@ -1,5 +1,5 @@
 import { chromium } from 'playwright'
-import type { Browser, Page } from 'playwright'
+import type { Browser, BrowserContext, Page } from 'playwright'
 import { createServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import { getYearData } from '@/data'
@@ -138,6 +138,15 @@ const initializeHarness = async (page: Page, serverOrigin: string) => {
   )
 }
 
+const createHarnessPage = async (
+  browserContext: BrowserContext,
+  serverOrigin: string,
+) => {
+  const page = await browserContext.newPage()
+  await initializeHarness(page, serverOrigin)
+  return page
+}
+
 const runHarnessAttempt = async (
   page: Page,
   year: number,
@@ -220,7 +229,7 @@ const runPlaybackIntegrity = async () => {
     failed: 0,
   }
   let browser: Browser | null = null
-  let browserContext: import('playwright').BrowserContext | null = null
+  let browserContext: BrowserContext | null = null
   let page: Page | null = null
   let viteServer: ViteDevServer | null = null
 
@@ -240,14 +249,17 @@ const runPlaybackIntegrity = async () => {
       viewport: { width: 1440, height: 1024 },
       userAgent: browserUserAgent,
     })
-    page = await browserContext.newPage()
-    await initializeHarness(page, serverSetup.serverOrigin)
 
     let attemptIndex = 0
     for (const attempt of attempts) {
+      if (!browserContext)
+        throw new Error('Playback integrity browser context was not created.')
       attemptIndex += 1
+      page = await createHarnessPage(browserContext, serverSetup.serverOrigin)
       logAttemptStart(attemptIndex, attempts.length, attempt.year, attempt.song)
       const result = await runHarnessAttempt(page, attempt.year, attempt.song)
+      await page.close()
+      page = null
       if (result.status === 'passed') summary.passed += 1
       else summary.failed += 1
       logAttemptResult(attempt.year, attempt.song, result)
