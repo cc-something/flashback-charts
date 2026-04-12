@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
+import { Expand, Flag, Minimize, MousePointerClick, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
@@ -687,10 +687,10 @@ const closeMaxiPlayer = () => {
 
       <p
         v-if="shouldShowPlaybackStartCta && player.playingSong"
-        class="mt-3 px-1 text-center text-sm leading-snug text-text-muted"
+        class="mt-3 flex items-center justify-center gap-1.5 px-1 text-center text-sm leading-snug text-text-muted"
       >
-        Tap the play button in the video above to start
-        {{ ` ${player.playingSong.title}` }}.
+        <MousePointerClick class="h-4 w-4 shrink-0" />
+        <span>Tap the play button above to start listening</span>
       </p>
     </div>
   </aside>
