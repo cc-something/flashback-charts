@@ -169,13 +169,18 @@ const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
   }
 }
 
+const queueAttempt = (options: PlaybackIntegrityAttemptOptions) => {
+  queuedAttemptOptions = options
+}
+
 onMounted(() => {
   player.setPlayerContainer(playerViewportEl.value)
   window.__FLASHBACK_PLAYBACK_INTEGRITY__ = {
     initialize,
+    queueAttempt,
+    startQueuedAttempt,
     runAttempt,
     reset,
-    startQueuedAttempt,
     hasQueuedAttempt: () => Boolean(queuedAttemptOptions),
     getLastAttempt: () => lastAttempt.value,
   }
@@ -189,6 +194,7 @@ onUnmounted(() => {
   if (previousMutedState.value !== null)
     player.setMuted(previousMutedState.value)
   player.setPlayerContainer(null)
+  queuedAttemptOptions = null
 })
 </script>
 
@@ -213,6 +219,7 @@ onUnmounted(() => {
       <button
         type="button"
         data-playback-start
+        data-testid="playback-integrity-start"
         class="mb-3 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white"
         @click="startQueuedAttempt"
       >

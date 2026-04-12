@@ -141,7 +141,7 @@ const jsonLd = {
     {
       '@type': 'WebSite',
       'name': 'Flashback Charts Australia',
-      'url': siteUrl,
+      'url': homeUrl ?? siteUrl,
       'description': description,
       'inLanguage': 'en-AU',
     },
