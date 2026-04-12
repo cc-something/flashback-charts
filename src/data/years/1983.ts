@@ -143,7 +143,7 @@ const songs: Song[] = [
     title: 'Beat It',
     artist: 'Michael Jackson',
     album: 'Thriller',
-    youtubeVideoId: 'oRdxUFDoQe0',
+    youtubeVideoId: 'hlJp0etLDcM',
     imageSelection: 'album',
     imageSources: {
       album:

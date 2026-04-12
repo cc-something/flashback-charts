@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: "It's Just Not Cricket",
     artist: 'The Twelfth Man',
     album: 'Wired World of Sports, Part 2',
-    youtubeVideoId: 'apQUJar3vKU',
+    youtubeVideoId: 'jXPeC1flckE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Ghostbusters',
     artist: 'Ray Parker Jr.',
     album: 'Ghostbusters',
-    youtubeVideoId: 'TaV1r341wYk',
+    youtubeVideoId: 'hck0xBS9OfM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Careless Whisper',
     artist: 'George Michael',
     album: 'Careless Whisper',
-    youtubeVideoId: '1uoLpAkQ8xw',
+    youtubeVideoId: 'JqIHlDVqUTw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Wake Me Up Before You Go-Go',
     artist: 'Wham!',
     album: 'Make It Big',
-    youtubeVideoId: 'pIgZ7gMze7A',
+    youtubeVideoId: 'YfAF92Z3iFw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'I Just Called to Say I Love You',
     artist: 'Stevie Wonder',
     album: 'The Woman in Red',
-    youtubeVideoId: '58RgLQ_0Ars',
+    youtubeVideoId: 'psNE9XUiTjU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Footloose',
     artist: 'Kenny Loggins',
     album: 'Footloose (Original Soundtrack of the Motion Picture)',
-    youtubeVideoId: 'ltrMfT4Qz5Y',
+    youtubeVideoId: 'e-OG0EyJyV8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Hello',
     artist: 'Lionel Richie',
     album: "Can't Slow Down",
-    youtubeVideoId: 'mHONNcZbwDY',
+    youtubeVideoId: 'xXJSmGfw9oI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Girls Just Want to Have Fun',
     artist: 'Cyndi Lauper',
     album: "She's So Unusual",
-    youtubeVideoId: 'PIb6AZdTr-A',
+    youtubeVideoId: 'biw4s8RQNn8',
     imageSelection: 'album',
     imageSources: {
       album:
