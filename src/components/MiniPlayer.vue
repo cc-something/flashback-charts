@@ -53,7 +53,7 @@ const playerContentClass = computed(() =>
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 pt-4 pb-16 sm:px-6 sm:pt-6 sm:pb-20'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 pt-4 pb-24 sm:px-6 sm:pt-6 sm:pb-28'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockContainerStyle = computed(() =>
@@ -109,6 +109,9 @@ const maxiPlayerHeaderStyle = computed(() => ({
   fontSize: 'clamp(1.6rem, 7vw, 3rem)',
   lineHeight: 'clamp(1.9rem, 7.5vw, 3.25rem)',
 }))
+const maxiPlayerHeaderIconClass = computed(() =>
+  player.playerState === 'playing' ? 'maxiplayer-disc-spin' : '',
+)
 const maxiPlayerHeaderIconStyle = computed(() => ({
   fontSize: 'clamp(1.5rem, 6vw, 2.5rem)',
   lineHeight: 1,
@@ -289,10 +292,16 @@ const closeMaxiPlayer = () => {
       >
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mb-3 flex items-start justify-center gap-[0.25em] font-bold text-primary sm:mb-4"
+          class="mb-1 flex items-start justify-center gap-[0.25em] font-bold text-primary sm:mb-2"
           :style="maxiPlayerHeaderStyle"
         >
-          <span aria-hidden="true" :style="maxiPlayerHeaderIconStyle">💿</span>
+          <span
+            aria-hidden="true"
+            :class="maxiPlayerHeaderIconClass"
+            :style="maxiPlayerHeaderIconStyle"
+          >
+            💿
+          </span>
           <span>Flashback Charts</span>
         </div>
 
@@ -318,7 +327,7 @@ const closeMaxiPlayer = () => {
             :class="playerFullscreenCloseButtonClass"
             @click="player.stop"
           >
-            <X class="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+            <X class="h-4 w-4" />
           </button>
         </div>
 
@@ -663,6 +672,20 @@ const closeMaxiPlayer = () => {
 </template>
 
 <style scoped>
+@keyframes maxiplayer-disc-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.maxiplayer-disc-spin {
+  animation: maxiplayer-disc-spin 3s linear infinite;
+}
+
 .player-viewport {
   aspect-ratio: 16 / 9;
   position: relative;
