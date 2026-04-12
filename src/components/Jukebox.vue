@@ -308,11 +308,34 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="-translate-y-4 mb-0.5 flex w-full items-center justify-between gap-3 sm:-translate-y-5 sm:mb-1 sm:grid sm:[grid-template-columns:1fr_auto_1fr]"
+          class="-translate-y-4 mb-0.5 flex w-full items-start justify-end gap-3 sm:-translate-y-5 sm:mb-1 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
-          <div class="hidden sm:block" />
+          <div
+            v-if="player.playingYear !== null"
+            class="hidden text-left text-lg font-medium tracking-[0.12em] sm:block sm:justify-self-start sm:text-xl"
+          >
+            <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+          </div>
+
+          <div class="min-w-0 flex-1 sm:hidden">
+            <div class="min-w-0 text-right">
+              <BrandWordmark
+                class="min-w-0 justify-end"
+                :is-spinning="player.playerState === 'playing'"
+                label="Flashback Charts Australia"
+                size="jukebox"
+              />
+              <div
+                v-if="player.playingYear !== null"
+                class="mt-1 text-base font-medium tracking-[0.12em]"
+              >
+                <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+              </div>
+            </div>
+          </div>
+
           <BrandWordmark
-            class="min-w-0 justify-self-center"
+            class="hidden min-w-0 justify-self-center sm:flex"
             :is-spinning="player.playerState === 'playing'"
             label="Flashback Charts Australia"
             size="jukebox"
@@ -332,12 +355,6 @@ const closeMaxiPlayer = () => {
 
         <div v-if="shouldUseMaxiPlayer" class="mb-4 w-full">
           <div class="min-w-0">
-            <div
-              v-if="player.playingYear !== null"
-              class="mb-1 text-left text-lg font-medium tracking-[0.12em] sm:text-xl"
-            >
-              <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
-            </div>
             <SongRow
               v-if="player.playingYear !== null"
               :song="player.playingSong"
