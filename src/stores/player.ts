@@ -97,7 +97,6 @@ export const usePlayerStore = defineStore('player', () => {
   const isMuted = ref(false)
   const hasMountedPlayer = ref(false)
   const isAwaitingPlaybackStart = ref(false)
-  const requiresYouTubeSignIn = ref(false)
   const highlightedSongKey = ref<string | null>(null)
   const pendingHighlightedSongKey = ref<string | null>(null)
 
@@ -195,7 +194,6 @@ export const usePlayerStore = defineStore('player', () => {
   const startLoadingAttempt = () => {
     loadingAttemptId += 1
     loadingStartedAt = Date.now()
-    requiresYouTubeSignIn.value = false
     playerState.value = 'loading'
     return loadingAttemptId
   }
@@ -489,10 +487,6 @@ export const usePlayerStore = defineStore('player', () => {
     isAwaitingPlaybackStart.value = false
     playerState.value = 'paused'
   }
-  const enterYouTubeSignInRequiredState = () => {
-    requiresYouTubeSignIn.value = true
-    enterBlockedPlaybackState()
-  }
   const clearPlaybackSession = () => {
     clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
@@ -503,7 +497,6 @@ export const usePlayerStore = defineStore('player', () => {
     currentPlaySong = null
     currentStartAtSeconds = undefined
     isAwaitingPlaybackStart.value = false
-    requiresYouTubeSignIn.value = false
     clearLoadingTracking()
     clearSeekPreview()
     clearOfflineHandler()
@@ -612,7 +605,7 @@ export const usePlayerStore = defineStore('player', () => {
       if (!(await getHasNetworkConnection()))
         return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
       if (!isAwaitingPlaybackStart.value) return enterPlaybackStartGate()
-      enterYouTubeSignInRequiredState()
+      enterBlockedPlaybackState()
     }, STALL_TIMEOUT_MS)
   }
   const loadCurrentSongIntoPlayer = () => {
@@ -655,7 +648,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (!(await getHasNetworkConnection()))
       return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
     if (isAwaitingPlaybackStart.value || currentTimeSeconds.value < 1) {
-      enterYouTubeSignInRequiredState()
+      enterBlockedPlaybackState()
       return
     }
     if (!isAwaitingPlaybackStart.value && retryCount >= MAX_RETRIES)
@@ -680,12 +673,11 @@ export const usePlayerStore = defineStore('player', () => {
     if (event.data === 1 || event.data === 2) clearStallTimer()
     if (event.data === 1) {
       isAwaitingPlaybackStart.value = false
-      requiresYouTubeSignIn.value = false
       clearLoadingTracking()
       playerState.value = 'playing'
     } else if (event.data === 2) {
       if (isAwaitingPlaybackStart.value && playerState.value === 'loading') {
-        enterYouTubeSignInRequiredState()
+        enterBlockedPlaybackState()
         return
       }
       isAwaitingPlaybackStart.value = false
@@ -1133,7 +1125,6 @@ export const usePlayerStore = defineStore('player', () => {
     isMuted,
     hasMountedPlayer,
     isAwaitingPlaybackStart,
-    requiresYouTubeSignIn,
     preload,
     primePlayback,
     openSong,

@@ -35,8 +35,6 @@ const playerFullscreenSubtleButtonClass =
   'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
-const playerEmbedErrorMessageClass =
-  'mt-3 px-1 text-center text-sm font-medium leading-snug text-red-300'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -667,14 +665,6 @@ const closeMaxiPlayer = () => {
       >
         Tap the play button in the video above to start
         {{ ` ${player.playingSong.title}` }}.
-      </p>
-
-      <p
-        v-if="player.requiresYouTubeSignIn"
-        :class="playerEmbedErrorMessageClass"
-      >
-        You'll need to sign into YouTube in this browser for the jukebox to keep
-        working!
       </p>
     </div>
   </aside>
