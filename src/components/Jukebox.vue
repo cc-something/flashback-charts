@@ -364,10 +364,7 @@ const closeMaxiPlayer = () => {
                 class="h-4 w-4 shrink-0"
                 :style="{ color: String(jukeboxYearStyle.color ?? '') }"
               />
-              <span
-                class="truncate font-bold leading-none"
-                :style="jukeboxYearStyle"
-              >
+              <span class="truncate leading-none" :style="jukeboxYearStyle">
                 Jukebox
               </span>
             </div>
