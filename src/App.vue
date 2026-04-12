@@ -13,6 +13,7 @@ import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { Info, Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
+import BrandWordmark from '@/components/BrandWordmark.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
 import { useEmailSignup } from '@/composables/useEmailSignup'
@@ -28,7 +29,6 @@ import { usePlayerStore } from '@/stores/player'
 import { useToastStore } from '@/stores/toast'
 import { getHomeTheme, getThemeForYear } from '@/themes'
 import {
-  brandFontFamily,
   brandFontUrl,
   getBrandFontLinks,
   mergeFontLinks,
@@ -85,7 +85,7 @@ const isAboutOpen = ref(false)
 const isContactEmailRevealed = ref(false)
 const hasToasts = computed(() => toast.toasts.length > 0)
 const isHomeRoute = computed(() => route.name === 'home')
-const brandTheme = { fontFamily: brandFontFamily, fontUrl: brandFontUrl }
+const brandTheme = { fontUrl: brandFontUrl }
 const waitForScrollSettle = () =>
   new Promise<void>((resolve) => window.setTimeout(resolve, 450))
 const handleSocialLinkClick = (network: string) =>
@@ -147,17 +147,6 @@ const headerContainerClass = computed(() =>
       ? 'header-container mx-auto flex max-w-[50.4rem] items-center justify-between px-4 py-1.5'
       : 'header-container mx-auto flex max-w-[1300px] items-center justify-between px-4 py-1.5',
 )
-const headerWordmarkClass = computed(() =>
-  isHomeRoute.value
-    ? 'flex items-start gap-[0.25em] font-bold text-primary no-underline'
-    : 'flex items-center gap-[0.25em] font-bold text-primary no-underline',
-)
-const headerWordmarkStyle = computed(() => ({
-  fontFamily: brandTheme.fontFamily,
-  fontSize: isHomeRoute.value ? 'clamp(1.6rem, 7vw, 3rem)' : '1.25rem',
-  lineHeight: isHomeRoute.value ? 'clamp(1.9rem, 7.5vw, 3.25rem)' : '1.75rem',
-  transition: 'font-size 220ms ease, line-height 220ms ease',
-}))
 const headerIconStyle = computed(() => ({
   width: isHomeRoute.value ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
   height: isHomeRoute.value ? 'clamp(1.5rem, 6vw, 2.5rem)' : '1.5rem',
@@ -284,13 +273,12 @@ onUnmounted(() => teardownKonamiListener())
       <div ref="topHeaderChrome">
         <header class="border-b border-primary/15 bg-surface">
           <div :class="headerContainerClass">
-            <router-link
-              :to="getHomePath()"
-              :class="headerWordmarkClass"
-              :style="headerWordmarkStyle"
-            >
-              <img src="/cd.webp" alt="" :style="discStyle" />
-              Flashback Charts Australia
+            <router-link :to="getHomePath()" class="no-underline">
+              <BrandWordmark
+                :icon-style="discStyle"
+                :size="isHomeRoute ? 'home' : 'default'"
+                label="Flashback Charts Australia"
+              />
             </router-link>
             <button
               type="button"

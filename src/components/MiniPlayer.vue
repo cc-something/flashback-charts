@@ -3,12 +3,12 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
+import BrandWordmark from './BrandWordmark.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
 import SongRow from './SongRow.vue'
 import { usePlayerStore } from '@/stores/player'
 import { getThemeForYear } from '@/themes'
-import { brandFontFamily } from '@/themes/font'
 import { getYearPath } from '@/utils/url'
 
 const player = usePlayerStore()
@@ -104,19 +104,6 @@ const playerActionRowClass = computed(() =>
 const playerBottomSpacerClass = computed(() =>
   shouldUseMaxiPlayer.value ? 'hidden' : 'hidden',
 )
-const maxiPlayerHeaderStyle = computed(() => ({
-  fontFamily: brandFontFamily,
-  fontSize: 'clamp(1.6rem, 7vw, 3rem)',
-  lineHeight: 'clamp(1.9rem, 7.5vw, 3.25rem)',
-}))
-const maxiPlayerHeaderIconClass = computed(() =>
-  player.playerState === 'playing' ? 'maxiplayer-disc-spin' : '',
-)
-const maxiPlayerHeaderIconStyle = computed(() => ({
-  fontSize: 'clamp(1.5rem, 6vw, 2.5rem)',
-  lineHeight: 1,
-  marginTop: 'clamp(0.12rem, 0.8vw, 0.32rem)',
-}))
 const fullscreenToggleTitle = computed(() =>
   shouldUseMaxiPlayer.value && !isTinyViewport.value
     ? 'Exit full-screen player (F)'
@@ -292,17 +279,13 @@ const closeMaxiPlayer = () => {
       >
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mb-1 flex items-start justify-center gap-[0.25em] font-bold text-primary sm:mb-2"
-          :style="maxiPlayerHeaderStyle"
+          class="mb-0.5 flex justify-center sm:mb-1"
         >
-          <span
-            aria-hidden="true"
-            :class="maxiPlayerHeaderIconClass"
-            :style="maxiPlayerHeaderIconStyle"
-          >
-            💿
-          </span>
-          <span>Flashback Charts</span>
+          <BrandWordmark
+            :is-spinning="player.playerState === 'playing'"
+            label="Flashback Charts"
+            size="home"
+          />
         </div>
 
         <div
@@ -672,20 +655,6 @@ const closeMaxiPlayer = () => {
 </template>
 
 <style scoped>
-@keyframes maxiplayer-disc-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.maxiplayer-disc-spin {
-  animation: maxiplayer-disc-spin 3s linear infinite;
-}
-
 .player-viewport {
   aspect-ratio: 16 / 9;
   position: relative;
