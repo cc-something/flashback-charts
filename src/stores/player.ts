@@ -279,6 +279,17 @@ export const usePlayerStore = defineStore('player', () => {
     playerState.value = 'loading'
     loadCurrentSongIntoPlayer()
   }
+  const refreshPlayerAfterViewportChange = async () => {
+    if (
+      !playerContainerEl ||
+      !currentPlaySong?.youtubeVideoId ||
+      playerState.value === 'playing'
+    )
+      return
+    storePlaybackPositionForRemount()
+    destroyPlayer()
+    await restorePlayerAfterContainerSwap()
+  }
 
   const setPlayerContainer = (el: HTMLDivElement | null) => {
     if (playerContainerEl === el) return
@@ -1130,6 +1141,7 @@ export const usePlayerStore = defineStore('player', () => {
     openSong,
     setPlayerContainer,
     setOnEnded,
+    refreshPlayerAfterViewportChange,
     play,
     stop,
     togglePlayback,

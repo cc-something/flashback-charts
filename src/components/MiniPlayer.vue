@@ -170,6 +170,8 @@ watch(shouldUseMaxiPlayer, (shouldShowMaxiPlayer) => {
     ? 'true'
     : 'false'
   document.body.style.overflow = shouldShowMaxiPlayer ? 'hidden' : ''
+  if (shouldShowMaxiPlayer) return
+  void nextTick(() => player.refreshPlayerAfterViewportChange())
 })
 const handleFullscreenToggle = () => {
   if (!player.playingSong || shouldShowPlaybackStartCta.value) return
