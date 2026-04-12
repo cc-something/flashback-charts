@@ -371,6 +371,7 @@ const closeMaxiPlayer = () => {
             <span
               v-if="player.playingSong"
               class="shrink-0 text-right text-text"
+              :style="{ color: String(jukeboxYearStyle.color ?? '') }"
             >
               <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
               <span class="ml-1">#{{ player.playingSong.rank }}</span>
