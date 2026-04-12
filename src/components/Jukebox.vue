@@ -66,7 +66,7 @@ const jukeboxYearLabel = computed(() => {
 })
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex w-full max-w-[1200px] flex-col'
+    ? 'mx-auto flex w-full max-w-[1200px] -translate-y-[10dvh] flex-col sm:translate-y-0'
     : '',
 )
 const playerDockContainerClass = computed(() =>
