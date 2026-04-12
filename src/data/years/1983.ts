@@ -156,7 +156,7 @@ const songs: Song[] = [
     title: 'Every Breath You Take',
     artist: 'The Police',
     album: 'Synchronicity',
-    youtubeVideoId: 'OMOGaugKpzs',
+    youtubeVideoId: 'VfEvH4aML-k',
     imageSelection: 'album',
     imageSources: {
       album:

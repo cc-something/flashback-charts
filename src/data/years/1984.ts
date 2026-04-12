@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Islands in the Stream',
     artist: 'Kenny Rogers and Dolly Parton',
     album: 'Eyes That See in the Dark',
-    youtubeVideoId: 'UaNGtgYwSsU',
+    youtubeVideoId: '7ulMJ1crVl4',
     imageSelection: 'album',
     imageSources: {
       album:

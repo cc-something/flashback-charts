@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Jump In My Car',
     artist: 'Ted Mulry',
     album: 'Jump In My Car',
-    youtubeVideoId: 'lPsa8MJU_50',
+    youtubeVideoId: 'Mp9QCP0B4sQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'S-S-S-Single Bed',
     artist: 'Fox',
     album: 'Blue Hotel',
-    youtubeVideoId: 'f98DOYcfIJ4',
+    youtubeVideoId: 'X2_DOLXAwMc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: "Let's Stick Together",
     artist: 'Bryan Ferry',
     album: "Let's Stick Together",
-    youtubeVideoId: 'Z9EbR0ckb40',
+    youtubeVideoId: '8rer40VI9Zc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Convoy',
     artist: 'C. W. McCall',
     album: 'Black Bear Road',
-    youtubeVideoId: 'VBlnTz4fr5k',
+    youtubeVideoId: 'Sd5ZLJWQmss',
     imageSelection: 'album',
     imageSources: {
       album:

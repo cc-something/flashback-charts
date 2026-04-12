@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'If You Leave Me Now',
     artist: 'Chicago',
     album: 'Chicago X',
-    youtubeVideoId: '-9_d-sFhmRM',
+    youtubeVideoId: 'FNbh2VzzhXo',
     imageSelection: 'album',
     imageSources: {
       album:

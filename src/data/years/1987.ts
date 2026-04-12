@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Electric Blue',
     artist: 'Icehouse',
     album: 'Man of Colours',
-    youtubeVideoId: 'zeV_POB16f8',
+    youtubeVideoId: '3f8m4xd81iE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -143,7 +143,7 @@ const songs: Song[] = [
     artist: 'Paul Lekakis',
     album:
       "Boom, Boom (Let's Go Back To My Room) (Re-Recorded / Remastered Version)",
-    youtubeVideoId: 'xXMrDu7374Y',
+    youtubeVideoId: 'undXB-tE_nw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -156,7 +156,7 @@ const songs: Song[] = [
     title: 'The Final Countdown',
     artist: 'Europe',
     album: 'The Final Countdown',
-    youtubeVideoId: '9jK-NcRmVcw',
+    youtubeVideoId: 'cZid3J36wH8',
     imageSelection: 'album',
     imageSources: {
       album:

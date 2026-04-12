@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'She Drives Me Crazy',
     artist: 'Fine Young Cannibals',
     album: 'The Raw & the Cooked',
-    youtubeVideoId: 'UtvmTu4zAMg',
+    youtubeVideoId: 'HgPzyk3_m1U',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Bedroom Eyes',
     artist: 'Kate Ceberano',
     album: 'Brave',
-    youtubeVideoId: 'ZZpl_G1v0BE',
+    youtubeVideoId: 'xlM1k2k1BQs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'You Got It (The Right Stuff)',
     artist: 'New Kids on the Block',
     album: "Hangin' Tough",
-    youtubeVideoId: 'tbIEwIwYz-c',
+    youtubeVideoId: 'ajmbPTSDMcE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Kokomo',
     artist: 'The Beach Boys',
     album: 'Cocktail: Original Motion Picture Soundtrack',
-    youtubeVideoId: 'WXB4LspLQE0',
+    youtubeVideoId: 'h_gFLdo15i8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'The Living Years',
     artist: 'Mike + The Mechanics',
     album: 'Living Years',
-    youtubeVideoId: '5hr64MxYpgk',
+    youtubeVideoId: 'P1eG6tGXRxQ',
     imageSelection: 'album',
     imageSources: {
       album:
