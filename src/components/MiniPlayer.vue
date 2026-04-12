@@ -290,10 +290,7 @@ const closeMaxiPlayer = () => {
     </button>
 
     <div :class="playerDockContainerClass" :style="playerDockContainerStyle">
-      <div
-        v-if="player.playingSong && !shouldShowPlaybackStartCta"
-        :class="playerContentClass"
-      >
+      <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
           class="mb-0.5 flex justify-center sm:mb-1"
@@ -431,7 +428,10 @@ const closeMaxiPlayer = () => {
             </div>
           </div>
 
-          <div class="mt-1.5 flex items-center gap-1">
+          <div
+            v-if="!shouldShowPlaybackStartCta"
+            class="mt-1.5 flex items-center gap-1"
+          >
             <div class="flex flex-1 items-center gap-1">
               <button
                 type="button"
@@ -530,7 +530,10 @@ const closeMaxiPlayer = () => {
             </div>
           </div>
 
-          <div class="mt-0.5 flex justify-end pr-0.5">
+          <div
+            v-if="!shouldShowPlaybackStartCta"
+            class="mt-0.5 flex justify-end pr-0.5"
+          >
             <p
               class="font-mono text-[0.62rem] tabular-nums text-text-muted"
               :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
@@ -542,7 +545,10 @@ const closeMaxiPlayer = () => {
             </p>
           </div>
 
-          <div class="relative mt-0.5 -mx-0.5 px-0.5">
+          <div
+            v-if="!shouldShowPlaybackStartCta"
+            class="relative mt-0.5 -mx-0.5 px-0.5"
+          >
             <PlaybackSeekBar
               :disabled="!player.showSeekBar"
               root-class="pointer-events-auto h-4 cursor-pointer"
@@ -551,7 +557,11 @@ const closeMaxiPlayer = () => {
           </div>
         </template>
 
-        <div v-else :class="playerActionRowClass" class="relative mt-4 w-full">
+        <div
+          v-else-if="!shouldShowPlaybackStartCta"
+          :class="playerActionRowClass"
+          class="relative mt-4 w-full"
+        >
           <div class="flex items-center justify-center gap-1">
             <button
               type="button"
