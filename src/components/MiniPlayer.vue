@@ -293,7 +293,7 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mb-0.5 flex justify-center sm:mb-1"
+          class="-translate-y-1 mb-0.5 flex justify-center sm:mb-1"
         >
           <BrandWordmark
             :is-spinning="player.playerState === 'playing'"
