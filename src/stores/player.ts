@@ -706,6 +706,12 @@ export const usePlayerStore = defineStore('player', () => {
         void onEndedCallback(endedSong, endedYear)
       } else stop()
     }
+    if (playerState.value === 'playing' || playerState.value === 'loading')
+      startProgressTimer()
+    else clearProgressTimer()
+    if (playerState.value === 'loading' && !isAwaitingPlaybackStart.value)
+      startPlaybackStallTimer()
+    else clearStallTimer()
     syncPlaybackProgress()
   }
   const createPlayer = (playerMountEl: HTMLDivElement) => {
