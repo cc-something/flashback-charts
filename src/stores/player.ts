@@ -828,6 +828,13 @@ export const usePlayerStore = defineStore('player', () => {
       isMuted.value = true
     }
   }
+  const setMuted = (nextMuted: boolean) => {
+    if (isMuted.value === nextMuted) return
+    isMuted.value = nextMuted
+    if (!ytPlayer) return
+    if (nextMuted) ytPlayer.mute()
+    else ytPlayer.unMute()
+  }
 
   const seekRelative = (deltaSeconds: number) => {
     if (!ytPlayer || playerState.value === 'idle') return
@@ -983,5 +990,6 @@ export const usePlayerStore = defineStore('player', () => {
     playNext,
     playPrev,
     goToSong,
+    setMuted,
   }
 })
