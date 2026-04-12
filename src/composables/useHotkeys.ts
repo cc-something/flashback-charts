@@ -4,6 +4,7 @@ import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
+import { getDecadeYears } from '@/content/chartContent'
 import { getYearPath } from '@/utils/url'
 
 const KONAMI = [
@@ -18,9 +19,8 @@ const KONAMI = [
   'KeyB',
   'KeyA',
 ]
-const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
+const PLAYER_FULLSCREEN_OPEN_EVENT = 'player-fullscreen-open'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
-const TINY_VIEWPORT_MEDIA_QUERY = '(max-width: 839px)'
 
 const getIsInputFocused = () => {
   const el = document.activeElement
@@ -39,10 +39,6 @@ const getHasEscapeConsumer = () =>
 const getIsPlayerFullscreen = () =>
   typeof document !== 'undefined' &&
   document.documentElement.dataset.playerFullscreen === 'true'
-const getIsTinyViewport = () =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia(TINY_VIEWPORT_MEDIA_QUERY).matches
 
 export const useHotkeys = (
   openSearch: () => void,
@@ -56,12 +52,46 @@ export const useHotkeys = (
   const toast = useToastStore()
   const waitForScrollSettle = () =>
     new Promise<void>((resolve) => window.setTimeout(resolve, 350))
+  const openMaxiPlayer = () =>
+    window.dispatchEvent(new Event(PLAYER_FULLSCREEN_OPEN_EVENT))
   const getTopSong = async (): Promise<Song | null> => {
     if (route.name !== 'year') return null
     const { getYearData } = await import('@/data')
     const songs = getYearData(chart.selectedYear) ?? []
     if (chart.sortOrder === 'desc') return songs[songs.length - 1] ?? null
     return songs[0] ?? null
+  }
+  const getRandomSongForYears = async (years: number[]) => {
+    const { getYearData } = await import('@/data')
+    const songs = years.flatMap((year) =>
+      (getYearData(year) ?? []).map((song) => ({ song, year })),
+    )
+    if (!songs.length) return null
+    return songs[Math.floor(Math.random() * songs.length)] ?? null
+  }
+  const goToSongYearPage = async (year: number, rank: number) => {
+    chart.selectYear(year)
+    player.queueSongHighlight(year, rank)
+    await router.push({
+      path: getYearPath(year),
+      query: { song: String(rank) },
+    })
+    await nextTick()
+  }
+  const openSongInMaxiPlayer = async (
+    song: Song,
+    year: number,
+    shouldAutoplay: boolean,
+  ) => {
+    if (shouldAutoplay) {
+      const playPromise = player.play(song, year, 'hotkey')
+      openMaxiPlayer()
+      await playPromise
+      return
+    }
+    const openPromise = player.openSong(song, year, 'hotkey')
+    openMaxiPlayer()
+    await openPromise
   }
   const scrollToPlayingSongRow = async () => {
     const year = player.playingYear
@@ -101,10 +131,32 @@ export const useHotkeys = (
     const topSong = await getTopSong()
     if (topSong) await player.play(topSong, chart.selectedYear, 'hotkey')
   }
-  const playTopSongAndOpenFullscreen = async () => {
-    await playTopSong()
-    if (getIsTinyViewport() || !player.isActive) return
-    window.dispatchEvent(new Event(PLAYER_FULLSCREEN_TOGGLE_EVENT))
+  const openPlayerFromCurrentRoute = async () => {
+    if (route.name === 'year') {
+      const topSong = await getTopSong()
+      if (!topSong) return
+      await openSongInMaxiPlayer(topSong, chart.selectedYear, true)
+      return
+    }
+
+    if (route.name === 'decade') {
+      const decade = Array.isArray(route.params.decade)
+        ? route.params.decade[0]
+        : route.params.decade
+      if (!decade) return
+      const selection = await getRandomSongForYears(getDecadeYears(decade))
+      if (!selection) return
+      await goToSongYearPage(selection.year, selection.song.rank)
+      await openSongInMaxiPlayer(selection.song, selection.year, false)
+      return
+    }
+
+    if (route.name === 'home') {
+      const selection = await getRandomSongForYears(chart.availableYears)
+      if (!selection) return
+      await goToSongYearPage(selection.year, selection.song.rank)
+      await openSongInMaxiPlayer(selection.song, selection.year, false)
+    }
   }
 
   let konamiProgress = 0
@@ -177,15 +229,13 @@ export const useHotkeys = (
       return
     }
 
-    if (e.code === 'KeyF' && !isMod && player.isActive) {
+    if (e.code === 'KeyF' && !isMod) {
       e.preventDefault()
-      window.dispatchEvent(new Event(PLAYER_FULLSCREEN_TOGGLE_EVENT))
-      return
-    }
-
-    if (e.code === 'KeyF' && !isMod && route.name === 'year') {
-      e.preventDefault()
-      void playTopSongAndOpenFullscreen()
+      if (player.isActive) {
+        openMaxiPlayer()
+        return
+      }
+      void openPlayerFromCurrentRoute()
       return
     }
 

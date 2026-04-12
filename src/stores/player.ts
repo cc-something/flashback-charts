@@ -767,6 +767,41 @@ export const usePlayerStore = defineStore('player', () => {
     }
   }
 
+  const openSong = async (
+    song: Song,
+    year: number,
+    trigger: PlayTrigger = 'direct',
+  ) => {
+    if (typeof window === 'undefined') return
+    if (!song.youtubeVideoId) return
+
+    const isSameSong =
+      playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
+      playingYear.value === year
+    if (isSameSong && playerState.value !== 'idle') {
+      if (trigger !== 'direct') revealSongRowHighlight(year, song.rank)
+      if (playerState.value === 'playing') ytPlayer?.pauseVideo()
+      return
+    }
+
+    const wasActive = isActive.value
+    if (wasActive) clearPlaybackSession()
+
+    const chart = useChartStore()
+    playingSong.value = song
+    playingYear.value = year
+    playerState.value = 'loading'
+    retryCount = 0
+    currentPlaySong = song
+    currentStartAtSeconds = undefined
+
+    if (!wasActive) registerActive(stop)
+    if (chart.selectedYear === year)
+      void scrollSongIntoView(song, year, trigger !== 'direct')
+
+    await enterPlaybackStartGate()
+  }
+
   const play = async (
     song: Song,
     year: number,
@@ -1068,6 +1103,7 @@ export const usePlayerStore = defineStore('player', () => {
     isAwaitingPlaybackStart,
     preload,
     primePlayback,
+    openSong,
     setPlayerContainer,
     setOnEnded,
     play,

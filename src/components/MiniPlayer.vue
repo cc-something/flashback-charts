@@ -20,6 +20,7 @@ const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
 const isTinyViewport = useMediaQuery('(max-width: 839px)')
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
+const PLAYER_FULLSCREEN_OPEN_EVENT = 'player-fullscreen-open'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
 
 const isMac =
@@ -182,6 +183,10 @@ const handleFullscreenToggle = () => {
   }
   openMaxiPlayer()
 }
+const handleFullscreenOpen = () => {
+  if (!player.playingSong || isTinyViewport.value) return
+  isDesktopFullscreen.value = true
+}
 const closeFullscreen = () => {
   if (isTinyViewport.value) {
     player.stop()
@@ -196,6 +201,9 @@ onMounted(() =>
     handleFullscreenToggle,
   ),
 )
+onMounted(() =>
+  window.addEventListener(PLAYER_FULLSCREEN_OPEN_EVENT, handleFullscreenOpen),
+)
 onUnmounted(() => player.setPlayerContainer(null))
 onUnmounted(() => {
   if (typeof document === 'undefined') return
@@ -206,6 +214,12 @@ onUnmounted(() =>
   window.removeEventListener(
     PLAYER_FULLSCREEN_TOGGLE_EVENT,
     handleFullscreenToggle,
+  ),
+)
+onUnmounted(() =>
+  window.removeEventListener(
+    PLAYER_FULLSCREEN_OPEN_EVENT,
+    handleFullscreenOpen,
   ),
 )
 onMounted(() =>
