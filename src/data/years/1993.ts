@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Please Forgive Me',
     artist: 'Bryan Adams',
     album: 'So Far So Good',
-    youtubeVideoId: '9EHAo6rEuas',
+    youtubeVideoId: '9X_ViIPA-Gc',
     imageSelection: 'album',
     imageSources: {
       album:

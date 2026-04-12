@@ -7,6 +7,7 @@ import { useToastStore } from '@/stores/toast'
 const playerViewportEl = ref<HTMLDivElement | null>(null)
 const statusMessage = ref('Waiting for initialization')
 const lastAttempt = ref<PlaybackIntegrityAttemptResult | null>(null)
+const previousMutedState = ref<boolean | null>(null)
 const player = usePlayerStore()
 const toast = useToastStore()
 
@@ -45,6 +46,9 @@ const createAttemptResult = (
 const initialize = async () => {
   await nextTick()
   player.setPlayerContainer(playerViewportEl.value)
+  if (previousMutedState.value === null)
+    previousMutedState.value = player.isMuted
+  player.setMuted(true)
   await player.preload()
   statusMessage.value = 'Playback integrity harness ready'
 }
@@ -170,6 +174,8 @@ onUnmounted(() => {
   clearAttemptTimeout()
   clearToasts()
   player.stop()
+  if (previousMutedState.value !== null)
+    player.setMuted(previousMutedState.value)
   player.setPlayerContainer(null)
 })
 </script>
