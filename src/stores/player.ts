@@ -126,6 +126,15 @@ export const usePlayerStore = defineStore('player', () => {
   const displayedTimeSeconds = computed(
     () => seekPreviewSeconds.value ?? currentTimeSeconds.value,
   )
+  const getReadyYtPlayer = () => {
+    if (!ytPlayer || !isPlayerReady) return null
+    if (
+      typeof ytPlayer.loadVideoById !== 'function' ||
+      typeof ytPlayer.cueVideoById !== 'function'
+    )
+      return null
+    return ytPlayer
+  }
   const showOfflinePlaybackStoppedToast = () =>
     useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
   const getSongHighlightKey = (year: number, rank: number) => `${year}-${rank}`
@@ -628,22 +637,24 @@ export const usePlayerStore = defineStore('player', () => {
     if (typeof player.unMute === 'function') player.unMute()
   }
   const loadCurrentSongIntoPlayer = () => {
-    if (!ytPlayer || !currentPlaySong?.youtubeVideoId) return
+    const readyYtPlayer = getReadyYtPlayer()
+    if (!readyYtPlayer || !currentPlaySong?.youtubeVideoId) return
     startProgressTimer()
     syncMutedState()
-    ytPlayer.loadVideoById(
+    readyYtPlayer.loadVideoById(
       currentPlaySong.youtubeVideoId,
       currentStartAtSeconds ? Math.floor(currentStartAtSeconds) : undefined,
     )
     startPlaybackStallTimer(true)
   }
   const cueCurrentSongInPlayer = () => {
-    if (!ytPlayer || !currentPlaySong?.youtubeVideoId) return
+    const readyYtPlayer = getReadyYtPlayer()
+    if (!readyYtPlayer || !currentPlaySong?.youtubeVideoId) return
     clearStallTimer()
     clearLoadingTracking()
     clearProgressTimer()
     syncMutedState()
-    ytPlayer.cueVideoById({
+    readyYtPlayer.cueVideoById({
       videoId: currentPlaySong.youtubeVideoId,
       startSeconds: currentStartAtSeconds
         ? Math.floor(currentStartAtSeconds)
@@ -744,6 +755,7 @@ export const usePlayerStore = defineStore('player', () => {
         },
         events: {
           onReady: (event) => {
+            ytPlayer = event.target
             isPlayerReady = true
             playerInitPromise = Promise.resolve(event.target)
             updatePlayerIframeFocusability()
@@ -772,7 +784,8 @@ export const usePlayerStore = defineStore('player', () => {
   }
   const ensurePlayerMounted = async () => {
     if (typeof window === 'undefined') return null
-    if (ytPlayer && isPlayerReady) return ytPlayer
+    const readyYtPlayer = getReadyYtPlayer()
+    if (readyYtPlayer) return readyYtPlayer
     if (playerInitPromise) return playerInitPromise
     await ensureLoaded()
     const playerMountEl = await getPlayerMountEl()
