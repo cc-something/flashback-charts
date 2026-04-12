@@ -314,7 +314,7 @@ const closeMaxiPlayer = () => {
           <BrandWordmark
             class="justify-self-center"
             :is-spinning="player.playerState === 'playing'"
-            label="Flashback Charts"
+            label="Flashback Charts Australia"
             size="home"
           />
 
