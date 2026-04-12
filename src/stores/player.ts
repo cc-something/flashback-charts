@@ -791,16 +791,32 @@ export const usePlayerStore = defineStore('player', () => {
     const chart = useChartStore()
     playingSong.value = song
     playingYear.value = year
-    playerState.value = 'loading'
+    playerState.value = 'paused'
     retryCount = 0
     currentPlaySong = song
     currentStartAtSeconds = undefined
+    isAwaitingPlaybackStart.value = false
 
     if (!wasActive) registerActive(stop)
     if (chart.selectedYear === year)
       void scrollSongIntoView(song, year, trigger !== 'direct')
 
-    await enterPlaybackStartGate()
+    if (ytPlayer && isPlayerReady) {
+      cueCurrentSongInPlayer()
+      return
+    }
+    const mountedPlayer = mountPlayerIfPossible()
+    if (mountedPlayer) {
+      await mountedPlayer
+      cueCurrentSongInPlayer()
+      return
+    }
+    try {
+      await ensurePlayerMounted()
+      cueCurrentSongInPlayer()
+    } catch {
+      /* noop */
+    }
   }
 
   const play = async (
