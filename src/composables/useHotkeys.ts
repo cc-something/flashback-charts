@@ -39,6 +39,11 @@ const getHasEscapeConsumer = () =>
 const getIsPlayerFullscreen = () =>
   typeof document !== 'undefined' &&
   document.documentElement.dataset.playerFullscreen === 'true'
+const blurActiveButton = () => {
+  if (typeof document === 'undefined') return
+  const activeElement = document.activeElement
+  if (activeElement instanceof HTMLButtonElement) activeElement.blur()
+}
 
 export const useHotkeys = (
   openSearch: () => void,
@@ -182,6 +187,7 @@ export const useHotkeys = (
 
     if (e.code === 'Space' && !isMod) {
       e.preventDefault()
+      blurActiveButton()
       if (player.isActive) {
         player.togglePlayback('hotkey')
       } else if (route.name === 'year') {
@@ -192,6 +198,7 @@ export const useHotkeys = (
 
     if (e.code === 'KeyK' && !isMod) {
       e.preventDefault()
+      blurActiveButton()
       if (player.isActive) {
         player.togglePlayback('hotkey')
       } else if (route.name === 'year') {
