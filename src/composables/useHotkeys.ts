@@ -54,6 +54,8 @@ export const useHotkeys = (
     new Promise<void>((resolve) => window.setTimeout(resolve, 350))
   const openMaxiPlayer = () =>
     window.dispatchEvent(new Event(PLAYER_FULLSCREEN_OPEN_EVENT))
+  const closeMaxiPlayer = () =>
+    window.dispatchEvent(new Event(PLAYER_FULLSCREEN_CLOSE_EVENT))
   const getTopSong = async (): Promise<Song | null> => {
     if (route.name !== 'year') return null
     const { getYearData } = await import('@/data')
@@ -232,6 +234,10 @@ export const useHotkeys = (
     if (e.code === 'KeyF' && !isMod) {
       e.preventDefault()
       if (player.isActive) {
+        if (getIsPlayerFullscreen()) {
+          closeMaxiPlayer()
+          return
+        }
         openMaxiPlayer()
         return
       }
