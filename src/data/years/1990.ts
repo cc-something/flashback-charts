@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Nothing Compares 2 U',
     artist: "Sinéad O'Connor",
     album: "I Do Not Want What I Haven't Got",
-    youtubeVideoId: '0-EF60neguk',
+    youtubeVideoId: '0TCWs_0uDW8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -52,7 +52,7 @@ const songs: Song[] = [
     title: "U Can't Touch This",
     artist: 'MC Hammer',
     album: "Please Hammer Don't Hurt 'Em",
-    youtubeVideoId: 'otCpCn0l4Wo',
+    youtubeVideoId: 'SS4ixxxinDc',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/d/d0/Hammer_Touch.jpg',
@@ -149,7 +149,7 @@ const songs: Song[] = [
     title: "Girl I'm Gonna Miss You",
     artist: 'Milli Vanilli',
     album: "All or Nothing and Girl You Know It's True",
-    youtubeVideoId: 'Pup-ci8aPew',
+    youtubeVideoId: 'g_jeQKwXzPs',
     imageSelection: 'album',
     imageSources: {
       album:
