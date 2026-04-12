@@ -278,6 +278,13 @@ const closeMaxiPlayer = () => {
       >
         <div
           v-if="shouldUseMaxiPlayer"
+          class="mb-3 text-center text-sm font-semibold tracking-[0.04em] text-primary/85 sm:mb-4"
+        >
+          💿 Flashback Charts
+        </div>
+
+        <div
+          v-if="shouldUseMaxiPlayer"
           class="mb-4 flex w-full items-start gap-3 sm:gap-4"
         >
           <div
