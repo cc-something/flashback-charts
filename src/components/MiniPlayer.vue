@@ -55,6 +55,13 @@ const playerDockContainerClass = computed(() =>
     ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 pt-4 pb-16 sm:px-6 sm:pt-6 sm:pb-20'
     : 'px-3 pt-3 pb-3',
 )
+const playerDockContainerStyle = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? {
+        paddingTop: 'calc(var(--sticky-bar-height) + 1rem)',
+      }
+    : undefined,
+)
 const playerDockClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? [
@@ -73,8 +80,8 @@ const playerDockClass = computed(() =>
 const playerDockStyle = computed(() =>
   shouldUseMaxiPlayer.value
     ? {
-        top: 'calc(var(--sticky-bar-height) + 1rem)',
-        height: 'calc(100dvh - var(--sticky-bar-height) - 1rem)',
+        top: '0',
+        height: '100dvh',
       }
     : undefined,
 )
@@ -264,7 +271,7 @@ const closeMaxiPlayer = () => {
       <X class="h-3.5 w-3.5" />
     </button>
 
-    <div :class="playerDockContainerClass">
+    <div :class="playerDockContainerClass" :style="playerDockContainerStyle">
       <div
         v-if="player.playingSong && !shouldShowPlaybackStartCta"
         :class="playerContentClass"
