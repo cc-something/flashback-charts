@@ -160,11 +160,13 @@ const runHarnessAttemptSafe = async (
   try {
     return await runHarnessAttempt(page, year, song)
   } catch (error) {
-    if (
-      !(error instanceof Error) ||
-      !error.message.includes('Execution context was destroyed')
-    )
-      throw error
+    const isDestroyedContext =
+      error instanceof Error &&
+      error.message.includes('Execution context was destroyed')
+    const isMissingHarness =
+      error instanceof Error &&
+      error.message.includes('Cannot read properties of undefined')
+    if (!isDestroyedContext && !isMissingHarness) throw error
     await initializeHarness(page, serverOrigin)
     return runHarnessAttempt(page, year, song)
   }
@@ -174,11 +176,13 @@ const resetHarnessSafe = async (page: Page, serverOrigin: string) => {
   try {
     await resetHarness(page)
   } catch (error) {
-    if (
-      !(error instanceof Error) ||
-      !error.message.includes('Execution context was destroyed')
-    )
-      throw error
+    const isDestroyedContext =
+      error instanceof Error &&
+      error.message.includes('Execution context was destroyed')
+    const isMissingHarness =
+      error instanceof Error &&
+      error.message.includes('Cannot read properties of undefined')
+    if (!isDestroyedContext && !isMissingHarness) throw error
     await initializeHarness(page, serverOrigin)
   }
 }

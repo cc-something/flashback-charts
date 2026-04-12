@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'The Pushbike Song',
     artist: 'The Mixtures',
     album: 'The Pushbike Song',
-    youtubeVideoId: '3LZ9TGOGt04',
+    youtubeVideoId: 'iokgq4I0OM8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Daddy Cool',
     artist: 'Drummond',
     album: 'Daddy Cool',
-    youtubeVideoId: 't7cAA4vlctM',
+    youtubeVideoId: 'RJVL_5so9uE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'L.A. International Airport',
     artist: 'Susan Raye',
     album: 'Willy Jones',
-    youtubeVideoId: 'Aj8f30Iguw0',
+    youtubeVideoId: 'h2HfqmRISKA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: "I Don't Know How to Love Him",
     artist: 'Helen Reddy',
     album: 'Jesus Christ Superstar',
-    youtubeVideoId: 'i12PWD9EQvE',
+    youtubeVideoId: 'WOCwE5D9Ghk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Knock Three Times',
     artist: 'Tony Orlando & Dawn',
     album: 'Candida',
-    youtubeVideoId: 'iUUv9S3LKII',
+    youtubeVideoId: '4QZb12EVnsE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Rose Garden',
     artist: 'Lynn Anderson',
     album: 'Billy Joe Royal featuring Hush',
-    youtubeVideoId: 'KXHsWBKKNbI',
+    youtubeVideoId: '3-E23cwllgs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Eleanor Rigby',
     artist: 'Zoot',
     album: 'Revolver',
-    youtubeVideoId: 'U5NEGRBsXGw',
+    youtubeVideoId: '-LZ2-N1QxhM',
     imageSelection: 'album',
     imageSources: {
       album:
