@@ -117,7 +117,7 @@ const runHarnessAttempt = async (
       `"${song.title}" by ${song.artist} is missing a YouTube video ID.`,
     )
   try {
-    return await page.evaluate(
+    const attemptPromise = page.evaluate(
       ({ timeoutMs, year, song }) =>
         window.__FLASHBACK_PLAYBACK_INTEGRITY__!.runAttempt({
           song,
@@ -130,6 +130,11 @@ const runHarnessAttempt = async (
         year,
       },
     )
+    await page.waitForFunction(() =>
+      window.__FLASHBACK_PLAYBACK_INTEGRITY__?.hasQueuedAttempt(),
+    )
+    await page.locator('[data-playback-start]').click({ force: true })
+    return await attemptPromise
   } catch (error) {
     return createFailureResult(
       'player-load-failed',
