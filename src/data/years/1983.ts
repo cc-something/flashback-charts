@@ -130,7 +130,7 @@ const songs: Song[] = [
     title: 'Karma Chameleon',
     artist: 'Culture Club',
     album: 'Colour By Numbers',
-    youtubeVideoId: 'JmcA9LIIXWw',
+    youtubeVideoId: 'b3nOs6J6g0k',
     imageSelection: 'album',
     imageSources: {
       album:
