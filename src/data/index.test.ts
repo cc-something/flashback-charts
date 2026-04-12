@@ -60,6 +60,12 @@ describe('searchCatalog', () => {
       path: '/au/1980s/',
       thumbnailPath: expect.any(String),
     })
+    expect(searchCatalog('80s')).toContainEqual({
+      type: 'year',
+      year: 1980,
+      path: '/au/1980/',
+      thumbnailPath: expect.any(String),
+    })
   })
 
   it('autocompletes numeric prefixes with decades first when song results are empty', () => {
