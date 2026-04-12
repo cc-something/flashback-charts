@@ -34,7 +34,7 @@ const playerFullscreenButtonClass =
 const playerFullscreenSubtleButtonClass =
   'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface/88 text-text-muted shadow-lg shadow-black/10 ring-1 ring-primary/20 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface/88 text-text-muted shadow-lg shadow-black/10 ring-1 ring-primary/20 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-10 sm:w-10'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -308,11 +308,11 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="-translate-y-4 mb-0.5 grid w-full items-center [grid-template-columns:1fr_auto_1fr] sm:-translate-y-5 sm:mb-1"
+          class="-translate-y-4 mb-0.5 flex w-full items-center justify-between gap-3 sm:-translate-y-5 sm:mb-1 sm:grid sm:[grid-template-columns:1fr_auto_1fr]"
         >
-          <div />
+          <div class="hidden sm:block" />
           <BrandWordmark
-            class="justify-self-center"
+            class="min-w-0 justify-self-center"
             :is-spinning="player.playerState === 'playing'"
             label="Flashback Charts Australia"
             size="jukebox"
@@ -326,7 +326,7 @@ const closeMaxiPlayer = () => {
             class="justify-self-end"
             @click="player.stop"
           >
-            <X class="h-4 w-4" />
+            <X class="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
         </div>
 
@@ -687,7 +687,7 @@ const closeMaxiPlayer = () => {
 
       <p
         v-if="shouldShowPlaybackStartCta && player.playingSong"
-        class="mt-3 px-1 text-sm leading-snug text-text-muted"
+        class="mt-3 px-1 text-center text-sm leading-snug text-text-muted"
       >
         Tap the play button in the video above to start
         {{ ` ${player.playingSong.title}` }}.
