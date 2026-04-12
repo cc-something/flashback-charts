@@ -599,7 +599,8 @@ export const usePlayerStore = defineStore('player', () => {
     playerContainerHost.appendChild(playerMountEl)
     return playerMountEl
   }
-  const startPlaybackStallTimer = () => {
+  const startPlaybackStallTimer = (shouldRestart = false) => {
+    if (stallTimerId !== null && !shouldRestart) return
     clearStallTimer()
     stallTimerId = setTimeout(async () => {
       if (playerState.value !== 'loading') return
@@ -625,7 +626,7 @@ export const usePlayerStore = defineStore('player', () => {
       currentPlaySong.youtubeVideoId,
       currentStartAtSeconds ? Math.floor(currentStartAtSeconds) : undefined,
     )
-    startPlaybackStallTimer()
+    startPlaybackStallTimer(true)
   }
   const cueCurrentSongInPlayer = () => {
     if (!ytPlayer || !currentPlaySong?.youtubeVideoId) return
@@ -740,7 +741,7 @@ export const usePlayerStore = defineStore('player', () => {
             resolve(event.target)
             if (currentPlaySong && getShouldAutoplayOnMount()) {
               startProgressTimer()
-              startPlaybackStallTimer()
+              startPlaybackStallTimer(true)
             }
           },
           onStateChange: handlePlayerStateChange,
