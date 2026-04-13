@@ -39,7 +39,7 @@ const songs: Song[] = [
     artist: 'Bryan Adams',
     album:
       'Robin Hood: Prince of Thieves (Original Soundtrack) and Waking Up the Neighbours',
-    youtubeVideoId: 'Y0pdQU87dc8',
+    youtubeVideoId: 'OMOG_X51470',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -53,7 +53,7 @@ const songs: Song[] = [
     title: 'Tingles',
     artist: 'Ratcat',
     album: 'Tingles (EP)',
-    youtubeVideoId: 'kZpXABSO_4Q',
+    youtubeVideoId: 'fUZzb_XuORQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -66,7 +66,7 @@ const songs: Song[] = [
     title: 'Grease Mega-Mix',
     artist: 'John Travolta',
     album: 'Grease Mega-Mix',
-    youtubeVideoId: 'BwbDUPQa3eU',
+    youtubeVideoId: 'BspFDItST8A',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -80,7 +80,7 @@ const songs: Song[] = [
     title: 'The Horses',
     artist: 'Daryl Braithwaite',
     album: 'Rise',
-    youtubeVideoId: 'lnigc08J6FI',
+    youtubeVideoId: 'Ass53RLQ-ew',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -94,7 +94,7 @@ const songs: Song[] = [
     title: 'You Could Be Mine',
     artist: "Guns N' Roses",
     album: 'Use Your Illusion II',
-    youtubeVideoId: 'MXx9S2nDouY',
+    youtubeVideoId: 'hYuesalmg1U',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -108,7 +108,7 @@ const songs: Song[] = [
     title: 'Read My Lips',
     artist: 'Melissa',
     album: 'Fresh',
-    youtubeVideoId: 'f_FswLkbHUY',
+    youtubeVideoId: 'wtEqH-bstfw',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/b/b3/ReadMyLips.jpg',
@@ -121,7 +121,7 @@ const songs: Song[] = [
     title: 'More Than Words',
     artist: 'Extreme',
     album: 'Pornograffitti',
-    youtubeVideoId: 'UrIiLvg58SY',
+    youtubeVideoId: 'iqb2zGGvEsI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -135,7 +135,7 @@ const songs: Song[] = [
     title: "I've Been Thinking About You",
     artist: 'Londonbeat',
     album: 'In the Blood',
-    youtubeVideoId: 'bDwI_cJ7Eds',
+    youtubeVideoId: 'e8IVG6Q6spo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -149,7 +149,7 @@ const songs: Song[] = [
     title: 'Joyride',
     artist: 'Roxette',
     album: 'Joyride',
-    youtubeVideoId: 'xCorJG9mubk',
+    youtubeVideoId: 'ogP214jQuxk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -163,7 +163,7 @@ const songs: Song[] = [
     title: "The Shoop Shoop Song (It's in His Kiss)",
     artist: 'Cher',
     album: 'Music From the Original Motion Picture Soundtrack - Mermaids',
-    youtubeVideoId: 'yCpKQjqb8Y4',
+    youtubeVideoId: 'w57kHrXU5SE',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/0/01/EverettShoop.jpg',
