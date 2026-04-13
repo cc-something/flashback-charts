@@ -121,6 +121,7 @@ export const usePlayerStore = defineStore('player', () => {
   let destroyPlayerOnContainerLossTimerId: ReturnType<
     typeof setTimeout
   > | null = null
+  let activePlayerGeneration = 0
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -524,6 +525,7 @@ export const usePlayerStore = defineStore('player', () => {
     pendingPlayerMountEl = null
   }
   const destroyPlayer = () => {
+    activePlayerGeneration += 1
     clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
     clearStallTimer()
@@ -733,6 +735,8 @@ export const usePlayerStore = defineStore('player', () => {
   }
   const createPlayer = (playerMountEl: HTMLDivElement) => {
     hasMountedPlayer.value = true
+    activePlayerGeneration += 1
+    const playerGeneration = activePlayerGeneration
     playerInitPromise = new Promise<YTPlayer | null>((resolve) => {
       ytPlayer = new window.YT!.Player(playerMountEl, {
         width: '100%',
@@ -755,6 +759,11 @@ export const usePlayerStore = defineStore('player', () => {
         },
         events: {
           onReady: (event) => {
+            if (playerGeneration !== activePlayerGeneration) {
+              event.target.destroy?.()
+              resolve(null)
+              return
+            }
             ytPlayer = event.target
             isPlayerReady = true
             playerInitPromise = Promise.resolve(event.target)
@@ -766,9 +775,14 @@ export const usePlayerStore = defineStore('player', () => {
               startPlaybackStallTimer(true)
             }
           },
-          onStateChange: handlePlayerStateChange,
-          onError: (event: YTPlayerEvent) =>
-            void handlePlaybackError(event.data),
+          onStateChange: (event: YTPlayerEvent) => {
+            if (playerGeneration !== activePlayerGeneration) return
+            handlePlayerStateChange(event)
+          },
+          onError: (event: YTPlayerEvent) => {
+            if (playerGeneration !== activePlayerGeneration) return
+            void handlePlaybackError(event.data)
+          },
         },
       })
     })
