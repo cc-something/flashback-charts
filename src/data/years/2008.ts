@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'So What',
     artist: 'Pink',
     album: 'Funhouse',
-    youtubeVideoId: 'FJfFZqTlWrQ',
+    youtubeVideoId: 'RaCbtFXXTaw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Sweet About Me',
     artist: 'Gabriella Cilmi',
     album: 'Lessons to Be Learned',
-    youtubeVideoId: '2kGOPqNaFP0',
+    youtubeVideoId: 'xIoKcsBE7bs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Bleeding Love',
     artist: 'Leona Lewis',
     album: 'Spirit',
-    youtubeVideoId: '7_weSk0BonM',
+    youtubeVideoId: '7GwY-AXWO4E',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Sex on Fire',
     artist: 'Kings of Leon',
     album: 'Only by the Night',
-    youtubeVideoId: 'RF0HhrwIwp0',
+    youtubeVideoId: '1m18xNaY0WU',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/6/6c/SexOnFire.jpg',
@@ -100,7 +100,7 @@ const songs: Song[] = [
     title: 'I Kissed a Girl',
     artist: 'Katy Perry',
     album: 'One of the Boys',
-    youtubeVideoId: 'tAp9BKosZXs',
+    youtubeVideoId: '1NOmLNVlXqs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -113,7 +113,7 @@ const songs: Song[] = [
     title: 'Just Dance',
     artist: "Lady Gaga feat. Colby O'Donis",
     album: 'The Fame',
-    youtubeVideoId: '2Abk1jAONjw',
+    youtubeVideoId: '19g3BqqJTR4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -126,7 +126,7 @@ const songs: Song[] = [
     title: 'No Air',
     artist: 'Jordin Sparks with Chris Brown',
     album: 'Jordin Sparks',
-    youtubeVideoId: 'ixfPx-52_wA',
+    youtubeVideoId: '3g8YHy7bDUA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -139,7 +139,7 @@ const songs: Song[] = [
     title: "I'm Yours",
     artist: 'Jason Mraz',
     album: 'We Sing. We Dance. We Steal Things.',
-    youtubeVideoId: 'EkHTsc9PU2A',
+    youtubeVideoId: 'A81aPPxOPhE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -152,7 +152,7 @@ const songs: Song[] = [
     title: 'All Summer Long',
     artist: 'Kid Rock',
     album: 'Rock n Roll Jesus',
-    youtubeVideoId: 'uwIGZLjugKA',
+    youtubeVideoId: 'ge-qlgj--2Q',
     imageSelection: 'album',
     imageSources: {
       album:
