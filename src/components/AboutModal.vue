@@ -78,8 +78,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             </a>
             for the icons.
           </p>
-
-          <p>© CC Something {{ new Date().getFullYear() }}</p>
         </div>
       </div>
     </div>
