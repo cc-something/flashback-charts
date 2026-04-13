@@ -25,7 +25,7 @@ const iconClass = computed(() =>
 </script>
 
 <template>
-  <span class="group/embed-badge relative inline-flex align-middle">
+  <span class="embed-badge-root relative inline-flex align-middle">
     <span
       :aria-label="tooltipLabel"
       role="img"
@@ -35,9 +35,16 @@ const iconClass = computed(() =>
       <Info :class="iconClass" aria-hidden="true" />
     </span>
     <span
-      class="pointer-events-none absolute left-1/2 top-full z-40 mt-2 w-56 -translate-x-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.68rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover/embed-badge:opacity-100 group-focus-within/embed-badge:opacity-100"
+      class="embed-badge-tooltip pointer-events-none absolute left-1/2 top-full z-40 mt-2 w-56 -translate-x-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.68rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150"
     >
       {{ tooltipLabel }}
     </span>
   </span>
 </template>
+
+<style scoped>
+.embed-badge-root:hover .embed-badge-tooltip,
+.embed-badge-root:focus-within .embed-badge-tooltip {
+  opacity: 1;
+}
+</style>
