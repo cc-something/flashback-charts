@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Umbrella',
     artist: 'Rihanna',
     album: 'Good Girl Gone Bad',
-    youtubeVideoId: 'CvBfHwUxHIk',
+    youtubeVideoId: 'Mk7bblIQwNE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Straight Lines',
     artist: 'Silverchair',
     album: 'Young Modern',
-    youtubeVideoId: '47P3bzefCVI',
+    youtubeVideoId: 'eTwr_UVW_Zo',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/7/7c/Straightlines.gif',
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Lips of an Angel',
     artist: 'Hinder',
     album: 'Extreme Behavior',
-    youtubeVideoId: 'RiSfTyrvJlg',
+    youtubeVideoId: 'eEhW_BtK62I',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/8/82/Lipsofanangel.jpg',
@@ -100,7 +100,7 @@ const songs: Song[] = [
     title: 'Apologize',
     artist: 'Timbaland feat. OneRepublic',
     album: 'Dreaming Out Loud',
-    youtubeVideoId: 'ZSM3w1v-A_M',
+    youtubeVideoId: 'wOtpNFJFADY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -113,7 +113,7 @@ const songs: Song[] = [
     title: 'Grace Kelly',
     artist: 'Mika',
     album: 'Life in Cartoon Motion',
-    youtubeVideoId: '0CGVgAYJyjk',
+    youtubeVideoId: 'ecB8n37QN4g',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -126,7 +126,7 @@ const songs: Song[] = [
     title: 'Candyman',
     artist: 'Christina Aguilera',
     album: 'Back to Basics',
-    youtubeVideoId: 'knJOMOkHCKI',
+    youtubeVideoId: 'GQg5w4NqKdw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -139,7 +139,7 @@ const songs: Song[] = [
     title: 'The Sweet Escape',
     artist: 'Gwen Stefani feat. Akon',
     album: 'The Sweet Escape',
-    youtubeVideoId: 'O0lf_fE3HwA',
+    youtubeVideoId: 'dyx5-9Szv1U',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -152,7 +152,7 @@ const songs: Song[] = [
     title: 'Beautiful Girls',
     artist: 'Sean Kingston',
     album: 'Sean Kingston',
-    youtubeVideoId: 'MrTz5xjmso4',
+    youtubeVideoId: 'c9M2Ylqm1FE',
     imageSelection: 'album',
     imageSources: {
       album:
