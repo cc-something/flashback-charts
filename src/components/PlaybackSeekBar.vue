@@ -32,6 +32,8 @@ const progressPercent = computed(() => {
       rootClass,
       disabled && 'opacity-50 grayscale-[0.5]',
     ]"
+    @pointerdown="player.startSeekDrag"
+    @keydown="player.startSeekDrag"
     @update:model-value="player.handleSeekInput"
     @value-commit="player.handleSeekCommit"
   >
