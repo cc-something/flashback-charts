@@ -25,7 +25,9 @@ const iconClass = computed(() =>
 </script>
 
 <template>
-  <span class="embed-badge-root relative inline-flex align-middle">
+  <span
+    class="embed-badge-root pointer-events-auto relative inline-flex align-middle"
+  >
     <span
       :aria-label="tooltipLabel"
       role="img"
