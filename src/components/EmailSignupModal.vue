@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
-import { X } from 'lucide-vue-next'
+import { Mail, X } from 'lucide-vue-next'
 
 const emit = defineEmits<{
   dismiss: []
@@ -55,9 +55,12 @@ defineExpose({ focusInput })
         </button>
 
         <template v-if="!submitted">
-          <h2 id="email-signup-title" class="text-xl font-bold text-text">
-            Sign up for our Newsletter
-          </h2>
+          <div class="flex items-center gap-2.5">
+            <Mail class="h-5 w-5 text-primary" />
+            <h2 id="email-signup-title" class="text-xl font-bold text-text">
+              Sign up for our Newsletter
+            </h2>
+          </div>
           <p class="mt-2 text-sm text-text-muted">
             Get occasional updates from us, including when new features or
             charts are added.

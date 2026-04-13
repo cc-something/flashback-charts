@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { ExternalLink, Info, X } from 'lucide-vue-next'
+import { ExternalLink, Heart, Info, Music, X } from 'lucide-vue-next'
 
 const emit = defineEmits<{ close: [] }>()
 
@@ -42,8 +42,14 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div
         class="flex flex-col gap-6 text-center text-sm leading-relaxed text-text-muted"
       >
+        <p class="inline-flex items-center justify-center gap-2">
+          <Music class="h-4 w-4 text-primary" />
+          <span>Made by music lovers in Australia</span>
+          <Music class="h-4 w-4 text-primary" />
+        </p>
+
         <div class="flex flex-col items-center">
-          <p><strong>Source links are on each page. Summary:</strong></p>
+          <p>Source links are on each page. Summary:</p>
           <ul class="list-none">
             <li>1940-1949: Australian Chart Book</li>
             <li>1950-1959: Australian Chart Book</li>
@@ -59,7 +65,10 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 
         <div class="flex flex-col items-center gap-4">
           <p>
-            Thanks to Matt &amp; Simon for the inspiration.
+            <span class="inline-flex items-center gap-2">
+              <Heart class="h-4 w-4 text-primary" />
+              <span>Thanks to Matt &amp; Simon for the inspiration!</span>
+            </span>
             <br />
             Credit to
             <a
@@ -73,8 +82,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
             </a>
             for the icons.
           </p>
-
-          <p>© CC Something {{ new Date().getFullYear() }}</p>
         </div>
       </div>
     </div>

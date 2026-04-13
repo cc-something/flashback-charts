@@ -66,7 +66,7 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   /\/$/,
   '',
 )
-const rawDecades = getDecadeSummaries().reverse()
+const rawDecades = getDecadeSummaries()
 const decades = computed(() =>
   isRickRollActive.value
     ? rawDecades.map((group) => ({

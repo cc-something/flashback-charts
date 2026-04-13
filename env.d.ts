@@ -13,6 +13,7 @@ interface YTPlayerEvent {
 }
 
 interface YTPlayer {
+  cueVideoById(options: { videoId: string; startSeconds?: number }): void
   loadVideoById(videoId: string, startSeconds?: number): void
   pauseVideo(): void
   playVideo(): void

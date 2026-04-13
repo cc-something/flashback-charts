@@ -36,7 +36,7 @@ import {
 } from '@/themes/font'
 import { socialLinks } from '@/constants/externalLinks'
 import { getHomePath, getYearPath } from '@/utils/url'
-import MiniPlayer from '@/components/MiniPlayer.vue'
+import Jukebox from '@/components/Jukebox.vue'
 import RickRollDiscoBall from '@/components/RickRollDiscoBall.vue'
 import YearTabs from '@/components/YearTabs.vue'
 const RickRollBanner = defineAsyncComponent(
@@ -302,7 +302,7 @@ onUnmounted(() => teardownKonamiListener())
 
         <YearTabs />
       </div>
-      <MiniPlayer />
+      <Jukebox />
       <RickRollBanner v-if="isRickRollActive" @deactivate="deactivate" />
     </div>
 

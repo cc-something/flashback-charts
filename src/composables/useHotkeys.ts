@@ -39,6 +39,15 @@ const getHasEscapeConsumer = () =>
 const getIsPlayerFullscreen = () =>
   typeof document !== 'undefined' &&
   document.documentElement.dataset.playerFullscreen === 'true'
+export const getMuteHotkeyToastMessage = (
+  isPlaying: boolean,
+  isMuted: boolean,
+) => (!isPlaying ? null : isMuted ? 'Playback muted' : 'Playback unmuted')
+const blurActiveButton = () => {
+  if (typeof document === 'undefined') return
+  const activeElement = document.activeElement
+  if (activeElement instanceof HTMLButtonElement) activeElement.blur()
+}
 
 export const useHotkeys = (
   openSearch: () => void,
@@ -182,6 +191,7 @@ export const useHotkeys = (
 
     if (e.code === 'Space' && !isMod) {
       e.preventDefault()
+      blurActiveButton()
       if (player.isActive) {
         player.togglePlayback('hotkey')
       } else if (route.name === 'year') {
@@ -192,6 +202,7 @@ export const useHotkeys = (
 
     if (e.code === 'KeyK' && !isMod) {
       e.preventDefault()
+      blurActiveButton()
       if (player.isActive) {
         player.togglePlayback('hotkey')
       } else if (route.name === 'year') {
@@ -215,6 +226,18 @@ export const useHotkeys = (
     if (e.code === 'KeyL' && !isMod) {
       e.preventDefault()
       player.seekRelative(10)
+      return
+    }
+
+    if (e.code === 'KeyM' && !isMod) {
+      e.preventDefault()
+      const isPlaying = player.playerState === 'playing'
+      player.toggleMute()
+      const muteHotkeyToastMessage = getMuteHotkeyToastMessage(
+        isPlaying,
+        player.isMuted,
+      )
+      if (muteHotkeyToastMessage) toast.showInfo(muteHotkeyToastMessage)
       return
     }
 

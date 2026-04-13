@@ -105,9 +105,10 @@ const primePlayback = () =>
       @click="handleClick"
     />
     <span
-      class="w-10 flex-shrink-0 text-center text-xl font-bold leading-none text-primary sm:w-11 sm:text-2xl"
+      class="flex w-10 flex-shrink-0 items-baseline justify-center gap-0.5 text-center text-xl font-bold leading-none text-primary sm:w-11 sm:text-2xl"
     >
-      {{ displaySong.rank }}
+      <span class="text-[0.72em] opacity-50">#</span>
+      <span>{{ displaySong.rank }}</span>
     </span>
 
     <button

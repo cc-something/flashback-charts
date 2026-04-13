@@ -14,6 +14,7 @@ const player = usePlayerStore()
 const query = ref('')
 const inputRef = ref<HTMLInputElement | null>(null)
 const activeResultIndex = ref(-1)
+const hasPointerMovedWithinOverlay = ref(false)
 
 const allResults = computed(() => searchCatalog(query.value))
 const results = computed(() => allResults.value.slice(0, 50))
@@ -97,6 +98,13 @@ const focusInput = () => inputRef.value?.focus()
 const setActiveResultIndex = (index: number) => {
   activeResultIndex.value = index
 }
+const handleOverlayPointerMove = () => {
+  hasPointerMovedWithinOverlay.value = true
+}
+const handleResultMouseenter = (index: number) => {
+  if (!hasPointerMovedWithinOverlay.value) return
+  setActiveResultIndex(index)
+}
 
 defineExpose({ focusInput })
 
@@ -120,6 +128,7 @@ watch(
 
 onMounted(() => {
   inputRef.value?.focus()
+  hasPointerMovedWithinOverlay.value = false
 })
 </script>
 
@@ -131,6 +140,7 @@ onMounted(() => {
     class="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
     @click.self="emit('close')"
     @keydown="handleKeydown"
+    @pointermove="handleOverlayPointerMove"
   >
     <div class="mx-auto flex h-full max-w-[900px] flex-col px-4 pt-8">
       <!-- Search bar -->
@@ -216,7 +226,7 @@ onMounted(() => {
             @keydown.enter="goToResult(result)"
             @keydown.space.prevent="goToResult(result)"
             @focus="setActiveResultIndex(i)"
-            @mouseenter="setActiveResultIndex(i)"
+            @mouseenter="handleResultMouseenter(i)"
           >
             <template v-if="result.type === 'song'">
               <!-- Thumbnail / play -->

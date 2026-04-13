@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Expand, Flag, Minimize, X } from 'lucide-vue-next'
+import { Expand, Flag, Minimize, MousePointerClick, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
@@ -34,7 +34,7 @@ const playerFullscreenButtonClass =
 const playerFullscreenSubtleButtonClass =
   'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
-  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/90 bg-white text-black shadow-[0_10px_24px_rgb(0_0_0_/_0.22)] transition-colors hover:bg-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface/88 text-text-muted shadow-lg shadow-black/10 ring-1 ring-primary/20 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-10 sm:w-10'
 const shouldShowPlayerDock = computed(
   () => player.playingSong !== null && player.playerState !== 'idle',
 )
@@ -50,6 +50,20 @@ const shouldUseMaxiPlayer = computed(
 const shouldShowPlaybackStartCta = computed(
   () => player.isAwaitingPlaybackStart,
 )
+const jukeboxYearStyle = computed(() => {
+  const currentPlayingYear = player.playingYear
+  if (currentPlayingYear === null) return {}
+  const currentTheme = getThemeForYear(currentPlayingYear)
+  return {
+    color: currentTheme.colors.primary,
+    fontFamily: currentTheme.fontFamily,
+  }
+})
+const jukeboxYearLabel = computed(() => {
+  const currentPlayingYear = player.playingYear
+  if (currentPlayingYear === null) return ''
+  return String(currentPlayingYear)
+})
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? 'mx-auto flex w-full max-w-[1200px] flex-col'
@@ -170,6 +184,7 @@ watch(shouldUseMaxiPlayer, (shouldShowMaxiPlayer) => {
     ? 'true'
     : 'false'
   document.body.style.overflow = shouldShowMaxiPlayer ? 'hidden' : ''
+  void nextTick(() => player.refreshPlayerAfterViewportChange())
 })
 const handleFullscreenToggle = () => {
   if (!player.playingSong || shouldShowPlaybackStartCta.value) return
@@ -274,7 +289,7 @@ const closeMaxiPlayer = () => {
 
 <template>
   <aside
-    aria-label="Music player"
+    aria-label="Jukebox"
     :style="[themeVars, playerDockStyle]"
     :class="playerDockClass"
   >
@@ -290,28 +305,56 @@ const closeMaxiPlayer = () => {
     </button>
 
     <div :class="playerDockContainerClass" :style="playerDockContainerStyle">
-      <div
-        v-if="player.playingSong && !shouldShowPlaybackStartCta"
-        :class="playerContentClass"
-      >
+      <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mb-0.5 flex justify-center sm:mb-1"
-        >
-          <BrandWordmark
-            :is-spinning="player.playerState === 'playing'"
-            label="Flashback Charts"
-            size="home"
-          />
-        </div>
-
-        <div
-          v-if="shouldUseMaxiPlayer"
-          class="mb-4 flex w-full items-start gap-3 sm:gap-4"
+          class="mt-6 mb-3 flex w-full items-start justify-end gap-3 sm:mt-8 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
-            class="min-w-0 flex-1 rounded-[1.15rem] border border-white/12 px-2 py-1.5 pr-3 sm:px-3 sm:py-2 sm:pr-4"
+            v-if="player.playingYear !== null"
+            class="hidden text-left text-lg font-medium tracking-[0.12em] sm:block sm:self-end sm:justify-self-start sm:text-xl"
           >
+            <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+          </div>
+
+          <div class="min-w-0 flex-1 sm:hidden">
+            <div class="min-w-0 text-left">
+              <BrandWordmark
+                class="min-w-0 justify-start"
+                :is-spinning="player.playerState === 'playing'"
+                label="Flashback Charts Australia"
+                size="jukebox"
+              />
+              <div
+                v-if="player.playingYear !== null"
+                class="mt-1 text-base font-medium tracking-[0.12em]"
+              >
+                <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
+              </div>
+            </div>
+          </div>
+
+          <BrandWordmark
+            class="hidden min-w-0 justify-self-center sm:flex"
+            :is-spinning="player.playerState === 'playing'"
+            label="Flashback Charts Australia"
+            size="jukebox"
+          />
+
+          <button
+            type="button"
+            title="Stop playback (Esc)"
+            aria-label="Stop playback"
+            :class="playerFullscreenCloseButtonClass"
+            class="justify-self-end"
+            @click="player.stop"
+          >
+            <X class="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          </button>
+        </div>
+
+        <div v-if="shouldUseMaxiPlayer" class="mb-4 w-full">
+          <div class="min-w-0">
             <SongRow
               v-if="player.playingYear !== null"
               :song="player.playingSong"
@@ -319,19 +362,23 @@ const closeMaxiPlayer = () => {
               variant="maxi"
             />
           </div>
-
-          <button
-            type="button"
-            title="Stop playback (Esc)"
-            aria-label="Stop playback"
-            :class="playerFullscreenCloseButtonClass"
-            @click="player.stop"
-          >
-            <X class="h-4 w-4" />
-          </button>
         </div>
 
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
+          <div
+            v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
+            class="mb-1.5 px-0.5 text-left text-[0.96rem] font-medium tracking-[0.12em]"
+          >
+            <span
+              v-if="player.playingSong"
+              class="text-text"
+              :style="jukeboxYearStyle"
+            >
+              <span>{{ jukeboxYearLabel }}</span>
+              <span class="ml-1">#{{ player.playingSong.rank }}</span>
+            </span>
+          </div>
+
           <div :class="playerFrameClass">
             <div :class="playerViewportClass">
               <div
@@ -398,16 +445,9 @@ const closeMaxiPlayer = () => {
                   type="button"
                   title="Go to song (G)"
                   aria-label="Go to song"
-                  class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                  class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 pr-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                   @click="goToPlayingSong"
                 >
-                  <div class="flex items-center justify-between gap-1.5">
-                    <p
-                      class="text-xs font-bold uppercase tracking-[0.04em] text-primary/80"
-                    >
-                      {{ player.playingYear }} #{{ player.playingSong.rank }}
-                    </p>
-                  </div>
                   <p
                     class="break-words text-base font-bold leading-snug text-text"
                   >
@@ -431,7 +471,10 @@ const closeMaxiPlayer = () => {
             </div>
           </div>
 
-          <div class="mt-1.5 flex items-center gap-1">
+          <div
+            v-if="!shouldShowPlaybackStartCta"
+            class="mt-1.5 flex items-center gap-1"
+          >
             <div class="flex flex-1 items-center gap-1">
               <button
                 type="button"
@@ -530,7 +573,10 @@ const closeMaxiPlayer = () => {
             </div>
           </div>
 
-          <div class="mt-0.5 flex justify-end pr-0.5">
+          <div
+            v-if="!shouldShowPlaybackStartCta"
+            class="mt-0.5 flex justify-end pr-0.5"
+          >
             <p
               class="font-mono text-[0.62rem] tabular-nums text-text-muted"
               :class="!player.showSeekBar && 'opacity-50 grayscale-[0.5]'"
@@ -542,7 +588,10 @@ const closeMaxiPlayer = () => {
             </p>
           </div>
 
-          <div class="relative mt-0.5 -mx-0.5 px-0.5">
+          <div
+            v-if="!shouldShowPlaybackStartCta"
+            class="relative mt-0.5 -mx-0.5 px-0.5"
+          >
             <PlaybackSeekBar
               :disabled="!player.showSeekBar"
               root-class="pointer-events-auto h-4 cursor-pointer"
@@ -551,7 +600,11 @@ const closeMaxiPlayer = () => {
           </div>
         </template>
 
-        <div v-else :class="playerActionRowClass" class="relative mt-4 w-full">
+        <div
+          v-else-if="!shouldShowPlaybackStartCta"
+          :class="playerActionRowClass"
+          class="relative mt-4 w-full"
+        >
           <div class="flex items-center justify-center gap-1">
             <button
               type="button"
@@ -651,10 +704,10 @@ const closeMaxiPlayer = () => {
 
       <p
         v-if="shouldShowPlaybackStartCta && player.playingSong"
-        class="mt-3 px-1 text-sm leading-snug text-text-muted"
+        class="mt-3 flex items-center justify-center gap-1.5 px-1 text-center text-sm leading-snug text-text-muted"
       >
-        Tap the play button in the video above to start
-        {{ ` ${player.playingSong.title}` }}.
+        <MousePointerClick class="h-4 w-4 shrink-0" />
+        <span>Tap the play button above to start listening</span>
       </p>
     </div>
   </aside>
