@@ -66,7 +66,7 @@ const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(
   /\/$/,
   '',
 )
-const rawDecades = getDecadeSummaries().reverse()
+const rawDecades = getDecadeSummaries()
 const decades = computed(() =>
   isRickRollActive.value
     ? rawDecades.map((group) => ({
@@ -94,13 +94,10 @@ const homeBackgroundTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 const visibleHomeBackgroundRows = computed(() =>
   shouldRenderHomeBackground.value ? homeBackgroundRows.value : [],
 )
-const decadeColumns = computed(() => {
-  const firstColumnSize = Math.ceil(decades.value.length / 2)
-  return [
-    decades.value.slice(0, firstColumnSize),
-    decades.value.slice(firstColumnSize),
-  ]
-})
+const decadeColumns = computed(() => [
+  decades.value.filter((_, index) => index % 2 === 0),
+  decades.value.filter((_, index) => index % 2 === 1),
+])
 const getHomeTileImageAttrs = (
   columnIndex: number,
   groupIndex: number,
