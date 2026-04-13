@@ -149,7 +149,7 @@ const songs: Song[] = [
     title: 'Under the Bridge',
     artist: 'Red Hot Chili Peppers',
     album: 'Blood Sugar Sex Magik',
-    youtubeVideoId: 'GLvohMXgcBo',
+    youtubeVideoId: 'iGYu09HqEEc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -163,7 +163,7 @@ const songs: Song[] = [
     title: 'Hazard',
     artist: 'Richard Marx',
     album: 'Rush Street',
-    youtubeVideoId: 'gdmHHoI9beM',
+    youtubeVideoId: 'fUYQNCJxwW0',
     imageSelection: 'album',
     imageSources: {
       album:
