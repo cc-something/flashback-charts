@@ -324,12 +324,12 @@ const closeMaxiPlayer = () => {
             class="hidden text-left text-lg font-medium tracking-[0.12em] sm:flex sm:items-center sm:gap-2 sm:self-end sm:justify-self-start sm:text-xl"
           >
             <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
-            <div class="group relative inline-flex">
+            <div class="group relative inline-flex align-middle">
               <span
-                :title="embedWarningTooltipLabel"
                 :aria-label="embedWarningTooltipLabel"
+                role="img"
                 tabindex="0"
-                class="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full text-amber-400/95 outline-none transition-colors hover:text-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
+                class="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
               >
                 <AlertTriangle class="h-4 w-4" aria-hidden="true" />
               </span>
@@ -354,12 +354,12 @@ const closeMaxiPlayer = () => {
                 class="mt-1 flex items-center gap-2 text-base font-medium tracking-[0.12em]"
               >
                 <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
-                <div class="group relative inline-flex">
+                <div class="group relative inline-flex align-middle">
                   <span
-                    :title="embedWarningTooltipLabel"
                     :aria-label="embedWarningTooltipLabel"
+                    role="img"
                     tabindex="0"
-                    class="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full text-amber-400/95 outline-none transition-colors hover:text-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
+                    class="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
                   >
                     <AlertTriangle class="h-4 w-4" aria-hidden="true" />
                   </span>
@@ -416,12 +416,12 @@ const closeMaxiPlayer = () => {
               <span>{{ jukeboxYearLabel }}</span>
               <span class="ml-1">#{{ player.playingSong.rank }}</span>
             </span>
-            <div class="group relative inline-flex">
+            <div class="group relative inline-flex align-middle">
               <span
-                :title="embedWarningTooltipLabel"
                 :aria-label="embedWarningTooltipLabel"
+                role="img"
                 tabindex="0"
-                class="inline-flex h-4.5 w-4.5 cursor-help items-center justify-center rounded-full text-amber-400/95 outline-none transition-colors hover:text-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
+                class="inline-flex h-4.5 w-4.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
               >
                 <AlertTriangle class="h-3.5 w-3.5" aria-hidden="true" />
               </span>
