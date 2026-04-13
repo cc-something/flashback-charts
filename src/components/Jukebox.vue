@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import {
-  Expand,
-  Flag,
-  Info,
-  Minimize,
-  MousePointerClick,
-  X,
-} from 'lucide-vue-next'
+import { Expand, Flag, Minimize, MousePointerClick, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
+import EmbedFallbackBadge from './EmbedFallbackBadge.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
 import SongRow from './SongRow.vue'
@@ -134,8 +128,6 @@ const fullscreenToggleTitle = computed(() =>
     ? 'Exit full-screen player (F)'
     : 'Open full-screen player (F)',
 )
-const embedWarningTooltipLabel =
-  'The music video for this song does not support being embedded on other sites, so we used this one instead'
 const maxiPlayerCloseTitle = computed(() =>
   isTinyViewport.value ? 'Close player' : 'Exit full-screen player (F)',
 )
@@ -321,24 +313,9 @@ const closeMaxiPlayer = () => {
         >
           <div
             v-if="player.playingYear !== null"
-            class="hidden text-left text-lg font-medium tracking-[0.12em] sm:flex sm:items-center sm:gap-2 sm:self-end sm:justify-self-start sm:text-xl"
+            class="hidden text-left text-lg font-medium tracking-[0.12em] sm:block sm:self-end sm:justify-self-start sm:text-xl"
           >
             <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
-            <div class="group relative inline-flex align-middle">
-              <span
-                :aria-label="embedWarningTooltipLabel"
-                role="img"
-                tabindex="0"
-                class="inline-flex h-5.5 w-5.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
-              >
-                <Info class="h-3.5 w-3.5" aria-hidden="true" />
-              </span>
-              <div
-                class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 w-56 -translate-y-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.7rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
-              >
-                {{ embedWarningTooltipLabel }}
-              </div>
-            </div>
           </div>
 
           <div class="min-w-0 flex-1 sm:hidden">
@@ -351,24 +328,9 @@ const closeMaxiPlayer = () => {
               />
               <div
                 v-if="player.playingYear !== null"
-                class="mt-1 flex items-center gap-2 text-base font-medium tracking-[0.12em]"
+                class="mt-1 text-base font-medium tracking-[0.12em]"
               >
                 <span :style="jukeboxYearStyle">{{ jukeboxYearLabel }}</span>
-                <div class="group relative inline-flex align-middle">
-                  <span
-                    :aria-label="embedWarningTooltipLabel"
-                    role="img"
-                    tabindex="0"
-                    class="inline-flex h-5.5 w-5.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
-                  >
-                    <Info class="h-3.5 w-3.5" aria-hidden="true" />
-                  </span>
-                  <div
-                    class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 w-56 -translate-y-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.7rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
-                  >
-                    {{ embedWarningTooltipLabel }}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -398,6 +360,7 @@ const closeMaxiPlayer = () => {
               v-if="player.playingYear !== null"
               :song="player.playingSong"
               :year="player.playingYear"
+              :show-embed-warning="true"
               variant="maxi"
             />
           </div>
@@ -406,7 +369,7 @@ const closeMaxiPlayer = () => {
         <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
           <div
             v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
-            class="mb-1.5 flex items-center gap-1.5 px-0.5 text-left text-[0.96rem] font-medium tracking-[0.12em]"
+            class="mb-1.5 px-0.5 text-left text-[0.96rem] font-medium tracking-[0.12em]"
           >
             <span
               v-if="player.playingSong"
@@ -416,21 +379,6 @@ const closeMaxiPlayer = () => {
               <span>{{ jukeboxYearLabel }}</span>
               <span class="ml-1">#{{ player.playingSong.rank }}</span>
             </span>
-            <div class="group relative inline-flex align-middle">
-              <span
-                :aria-label="embedWarningTooltipLabel"
-                role="img"
-                tabindex="0"
-                class="inline-flex h-[1.2rem] w-[1.2rem] cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
-              >
-                <Info class="h-[0.8rem] w-[0.8rem]" aria-hidden="true" />
-              </span>
-              <div
-                class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 w-56 -translate-y-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.68rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
-              >
-                {{ embedWarningTooltipLabel }}
-              </div>
-            </div>
           </div>
 
           <div :class="playerFrameClass">
@@ -505,7 +453,8 @@ const closeMaxiPlayer = () => {
                   <p
                     class="break-words text-base font-bold leading-snug text-text"
                   >
-                    {{ player.playingSong.title }}
+                    <span>{{ player.playingSong.title }}</span>
+                    <EmbedFallbackBadge class="ml-1.5" size="sm" />
                   </p>
                   <p class="break-words text-sm leading-snug text-text-muted">
                     {{ player.playingSong.artist }}
