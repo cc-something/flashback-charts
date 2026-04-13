@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'I Gotta Feeling',
     artist: 'The Black Eyed Peas',
     album: 'The E.N.D.',
-    youtubeVideoId: 'uSD4vsh1zDA',
+    youtubeVideoId: 'K-UxRjL6R6w',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Love Story',
     artist: 'Taylor Swift',
     album: 'Fearless',
-    youtubeVideoId: '8xg3vE8Ie_E',
+    youtubeVideoId: 'q1_VQSYv15A',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Boom Boom Pow',
     artist: 'The Black Eyed Peas',
     album: 'The E.N.D.',
-    youtubeVideoId: '4m48GqaOz90',
+    youtubeVideoId: 'jVmirqBX37c',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Right Round',
     artist: 'Flo Rida feat. Kesha',
     album: 'R.O.O.T.S.',
-    youtubeVideoId: 'CcCw1ggftuQ',
+    youtubeVideoId: '3wde5pyhxVM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Like It Like That',
     artist: 'Guy Sebastian',
     album: 'Like It Like That',
-    youtubeVideoId: 'pQNs_bVGS7Y',
+    youtubeVideoId: 'hw-ZK4PIqe4',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/4/41/Guylikeit.jpg',
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Halo',
     artist: 'Beyoncé',
     album: 'I Am... Sasha Fierce',
-    youtubeVideoId: 'bnVUHWCynig',
+    youtubeVideoId: '1XgTKgsnrbI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Meet Me Halfway',
     artist: 'The Black Eyed Peas',
     album: 'The E.N.D.',
-    youtubeVideoId: 'I7HahVwYpwo',
+    youtubeVideoId: 'DZc5Hk_Qyvk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: 'The Last Day on Earth',
     artist: 'Kate Miller-Heidke',
     album: 'Curiouser',
-    youtubeVideoId: 'ZiRuj2K1XJo',
+    youtubeVideoId: 'rQ32ahX2VGs',
     imageSelection: 'album',
     imageSources: {
       album:
