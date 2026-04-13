@@ -308,7 +308,7 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mb-0.5 flex w-full items-start justify-end gap-3 sm:mb-1 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
+          class="mt-6 mb-0.5 flex w-full items-start justify-end gap-3 sm:mt-8 sm:mb-1 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
             v-if="player.playingYear !== null"
