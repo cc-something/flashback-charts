@@ -2,9 +2,9 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import {
-  AlertTriangle,
   Expand,
   Flag,
+  Info,
   Minimize,
   MousePointerClick,
   X,
@@ -329,9 +329,9 @@ const closeMaxiPlayer = () => {
                 :aria-label="embedWarningTooltipLabel"
                 role="img"
                 tabindex="0"
-                class="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
+                class="inline-flex h-5.5 w-5.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
               >
-                <AlertTriangle class="h-4 w-4" aria-hidden="true" />
+                <Info class="h-3.5 w-3.5" aria-hidden="true" />
               </span>
               <div
                 class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 w-56 -translate-y-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.7rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
@@ -359,9 +359,9 @@ const closeMaxiPlayer = () => {
                     :aria-label="embedWarningTooltipLabel"
                     role="img"
                     tabindex="0"
-                    class="inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
+                    class="inline-flex h-5.5 w-5.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
                   >
-                    <AlertTriangle class="h-4 w-4" aria-hidden="true" />
+                    <Info class="h-3.5 w-3.5" aria-hidden="true" />
                   </span>
                   <div
                     class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 w-56 -translate-y-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.7rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
@@ -421,9 +421,9 @@ const closeMaxiPlayer = () => {
                 :aria-label="embedWarningTooltipLabel"
                 role="img"
                 tabindex="0"
-                class="inline-flex h-4.5 w-4.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
+                class="inline-flex h-[1.2rem] w-[1.2rem] cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70"
               >
-                <AlertTriangle class="h-3.5 w-3.5" aria-hidden="true" />
+                <Info class="h-[0.8rem] w-[0.8rem]" aria-hidden="true" />
               </span>
               <div
                 class="pointer-events-none absolute left-full top-1/2 z-40 ml-2 w-56 -translate-y-1/2 rounded-md bg-black/88 px-2.5 py-2 text-[0.68rem] font-medium leading-snug tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
