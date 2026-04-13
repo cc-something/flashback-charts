@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Angels Brought Me Here',
     artist: 'Guy Sebastian',
     album: 'Just as I Am',
-    youtubeVideoId: 'mMo67Nb-jeA',
+    youtubeVideoId: 'eGaxpwU7dMk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Lose Yourself',
     artist: 'Eminem',
     album: '8 Mile: Music from and Inspired by the Motion Picture',
-    youtubeVideoId: '7YuAzR2XVAM',
+    youtubeVideoId: 'DPJv5u1EcaM',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/d/d6/Lose_Yourself.jpg',
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Where Is the Love?',
     artist: 'The Black Eyed Peas',
     album: 'Elephunk',
-    youtubeVideoId: 'WpYeekQkAdc',
+    youtubeVideoId: 'ntkD_Iumjlo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Born to Try',
     artist: 'Delta Goodrem',
     album: 'Innocent Eyes',
-    youtubeVideoId: 'qTBOJ71ypRw',
+    youtubeVideoId: 'iuBGAYa6xZc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'Bring Me to Life',
     artist: 'Evanescence',
     album: 'Daredevil: The Album Fallen',
-    youtubeVideoId: '3YxaaGgTQYM',
+    youtubeVideoId: 'ZesSG-Gasbg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Lost Without You',
     artist: 'Delta Goodrem',
     album: 'Innocent Eyes',
-    youtubeVideoId: 'YMYUYtsUGgg',
+    youtubeVideoId: 'Zc2xuSkFi5w',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'The Ketchup Song',
     artist: 'Las Ketchup',
     album: 'Hijas del Tomate',
-    youtubeVideoId: '5llcBScGuAE',
+    youtubeVideoId: 'X0FvoHeG9Gs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -140,7 +140,7 @@ const songs: Song[] = [
     title: 'Nu Flow',
     artist: 'Big Brovaz',
     album: 'Nu-Flow',
-    youtubeVideoId: 'mhj0Q8wUlqs',
+    youtubeVideoId: 'hT3QXbJ2MXo',
     imageSelection: 'album',
     imageSources: {
       album:
