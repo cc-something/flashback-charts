@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: "I'm Outta Love",
     artist: 'Anastacia',
     album: 'Not That Kind',
-    youtubeVideoId: 'TnOy6HEf7HU',
+    youtubeVideoId: 'KawZpghPUKg',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/7/77/Imouttalove.jpg',
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'Teenage Dirtbag',
     artist: 'Wheatus',
     album: 'Wheatus',
-    youtubeVideoId: 'FC3y9llDXuM',
+    youtubeVideoId: 'K9EqStdNPT8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Freestyler',
     artist: "Bomfunk MC's",
     album: 'In Stereo',
-    youtubeVideoId: 'ymNFyxvIdaM',
+    youtubeVideoId: 'WK7H4uv-qMA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Music',
     artist: 'Madonna',
     album: 'Music',
-    youtubeVideoId: 'Sdz2oW0NMFk',
+    youtubeVideoId: 'AXA_PXblcow',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Say My Name',
     artist: "Destiny's Child",
     album: "The Writing's on the Wall",
-    youtubeVideoId: 'sQgd6MccwZc',
+    youtubeVideoId: 'JHed3iCPesM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -113,7 +113,7 @@ const songs: Song[] = [
     title: 'Bye Bye Bye',
     artist: '*NSYNC',
     album: 'No Strings Attached',
-    youtubeVideoId: 'Eo-KmOd3i7s',
+    youtubeVideoId: '2ydCvkxuNm4',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/1/14/Bye_Bye_Bye.png',
@@ -138,7 +138,7 @@ const songs: Song[] = [
     title: "Groovejet (If This Ain't Love)",
     artist: 'Spiller feat. Sophie Ellis-Bextor',
     album: 'Read My Lips',
-    youtubeVideoId: 'FI3gn4APNXc',
+    youtubeVideoId: 'npJTeRjRX-8',
     imageSelection: 'album',
     imageSources: {
       album:
