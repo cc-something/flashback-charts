@@ -67,7 +67,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           <p>
             <span class="inline-flex items-center gap-2">
               <Heart class="h-4 w-4 text-primary" />
-              <span>Thanks to Matt &amp; Simon for the inspiration.</span>
+              <span>Thanks to Matt &amp; Simon for the inspiration!</span>
             </span>
             <br />
             Credit to
