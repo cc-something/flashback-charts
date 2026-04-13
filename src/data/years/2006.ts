@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'I Wish I Was a Punk Rocker (With Flowers in My Hair)',
     artist: 'Sandi Thom',
     album: 'Smile... It Confuses People',
-    youtubeVideoId: 'u3ZvO4pcTHs',
+    youtubeVideoId: 'n_TOHtOTX5g',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/b/bf/Punkrocker-1.jpg',
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'Flaunt It',
     artist: 'TV Rock feat. Seany B',
     album: 'Flaunt It',
-    youtubeVideoId: 'rAScl5zvPCo',
+    youtubeVideoId: 'YNnnZuo4j5g',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: "Hips Don't Lie",
     artist: 'Shakira feat. Wyclef Jean',
     album: 'Oral Fixation Vol. 2',
-    youtubeVideoId: 'DUT5rEU6pqM',
+    youtubeVideoId: '2Ndra-1Pwug',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -87,7 +87,7 @@ const songs: Song[] = [
     title: "I Don't Feel Like Dancin'",
     artist: 'Scissor Sisters',
     album: 'Ta-Dah',
-    youtubeVideoId: '4H5I6y1Qvz0',
+    youtubeVideoId: 'UJ84Z5AmaEU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -100,7 +100,7 @@ const songs: Song[] = [
     title: "This Time I Know It's for Real",
     artist: 'Young Divas',
     album: 'Young Divas',
-    youtubeVideoId: 'VuSwDEUkMYI',
+    youtubeVideoId: '26N-YJUa6ug',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -113,7 +113,7 @@ const songs: Song[] = [
     title: 'Forever Young',
     artist: 'Youth Group',
     album: 'Casino Twilight Dogs',
-    youtubeVideoId: '6Wf7CXJV_0E',
+    youtubeVideoId: 'rQi8wEHMm5Y',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -139,7 +139,7 @@ const songs: Song[] = [
     title: 'Who Knew',
     artist: 'Pink',
     album: "I'm Not Dead",
-    youtubeVideoId: 'NJWIbIe0N90',
+    youtubeVideoId: 'fcqcrlO8f1Y',
     imageSelection: 'album',
     imageSources: {
       album:
