@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Call Me Maybe',
     artist: 'Carly Rae Jepsen',
     album: 'Curiosity / Kiss',
-    youtubeVideoId: 'fWNaR-rxAic',
+    youtubeVideoId: 'J80uHQ87N1E',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Gangnam Style',
     artist: 'PSY',
     album: 'Psy 6 (Six Rules), Part 1',
-    youtubeVideoId: '9bZkp7q19f0',
+    youtubeVideoId: 'DzivgKuhNl4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Whistle',
     artist: 'Flo Rida',
     album: 'Wild Ones',
-    youtubeVideoId: 'cSnkWzZ7ZAA',
+    youtubeVideoId: '0qZwFWyPKzQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Wild Ones',
     artist: 'Flo Rida featuring Sia',
     album: 'Wild Ones',
-    youtubeVideoId: 'bpOR_HuHRNs',
+    youtubeVideoId: 'lPwN5pgXhyM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Boom Boom',
     artist: 'Justice Crew',
     album: 'Boom Boom',
-    youtubeVideoId: 'zHK0i3-BWTA',
+    youtubeVideoId: 'omu9Zk2lask',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Skinny Love',
     artist: 'Birdy',
     album: 'Birdy',
-    youtubeVideoId: 'aNzCDt2eidg',
+    youtubeVideoId: 'cX9n2kq4-GA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Thrift Shop',
     artist: 'Macklemore & Ryan Lewis featuring Wanz',
     album: 'The Heist',
-    youtubeVideoId: 'QK8mJJJvaes',
+    youtubeVideoId: 'm7SWl15CusQ',
     imageSelection: 'album',
     imageSources: {
       album:
