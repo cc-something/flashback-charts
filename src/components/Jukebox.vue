@@ -71,13 +71,13 @@ const playerContentClass = computed(() =>
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 pt-4 pb-24 sm:px-6 sm:pt-6 sm:pb-28'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-32'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockContainerStyle = computed(() =>
   shouldUseMaxiPlayer.value
     ? {
-        paddingTop: 'calc(var(--sticky-bar-height) + 1rem)',
+        paddingTop: 'calc(var(--sticky-bar-height) + 0.5rem)',
       }
     : undefined,
 )
@@ -308,7 +308,7 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mt-6 mb-3 flex w-full items-start justify-end gap-3 sm:mt-8 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
+          class="mt-4 mb-3 flex w-full items-start justify-end gap-3 sm:mt-5 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
             v-if="player.playingYear !== null"
