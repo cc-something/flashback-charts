@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'OMG',
     artist: 'Usher featuring will.i.am',
     album: 'Raymond v. Raymond',
-    youtubeVideoId: '1RnPB76mjxI',
+    youtubeVideoId: 'CvQfmbE82e4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Dynamite',
     artist: 'Taio Cruz',
     album: 'Rokstarr',
-    youtubeVideoId: '2JUNnKmZhqA',
+    youtubeVideoId: '9UsKxqPvE-A',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Hey, Soul Sister',
     artist: 'Train',
     album: 'Save Me, San Francisco',
-    youtubeVideoId: 'YcEX_PpeC-k',
+    youtubeVideoId: 'jXpOVnHjfIg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'California Gurls',
     artist: 'Katy Perry featuring Snoop Dogg',
     album: 'Teenage Dream',
-    youtubeVideoId: 'F57P9C4SAW4',
+    youtubeVideoId: 'dIgkAgHffkE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Fireflies',
     artist: 'Owl City',
     album: 'Ocean Eyes',
-    youtubeVideoId: 'qSsAEZa_fb0',
+    youtubeVideoId: 'M94XFqsKGhk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Only Girl (In the World)',
     artist: 'Rihanna',
     album: 'Loud',
-    youtubeVideoId: '-ySWIyJj3I0',
+    youtubeVideoId: 'jKlHzc6ZH74',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Just the Way You Are',
     artist: 'Bruno Mars',
     album: 'Doo-Wops & Hooligans',
-    youtubeVideoId: 'E-UJTGXof6Q',
+    youtubeVideoId: 'sTUwQ3jWJKo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Teenage Dream',
     artist: 'Katy Perry',
     album: 'Teenage Dream',
-    youtubeVideoId: '4-4lclep19A',
+    youtubeVideoId: 'T0B4L8ppg2s',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: "DJ Got Us Fallin' in Love",
     artist: 'Usher featuring Pitbull',
     album: 'Versus',
-    youtubeVideoId: 'C-dvTjK_07c',
+    youtubeVideoId: 'kRFZYAw_D38',
     imageSelection: 'album',
     imageSources: {
       album:
