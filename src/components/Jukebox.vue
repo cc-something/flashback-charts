@@ -31,9 +31,9 @@ const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenButtonClass =
-  'inline-flex h-[clamp(3rem,8.4vw,4.5rem)] w-[clamp(3rem,8.4vw,4.5rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(2.85rem,7.8vw,4.2rem)] w-[clamp(2.85rem,7.8vw,4.2rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenSubtleButtonClass =
-  'inline-flex h-[clamp(3rem,8.4vw,4.5rem)] w-[clamp(3rem,8.4vw,4.5rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(2.85rem,7.8vw,4.2rem)] w-[clamp(2.85rem,7.8vw,4.2rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
   'inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface/88 text-text-muted shadow-lg shadow-black/10 ring-1 ring-primary/20 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-10 sm:w-10'
 const shouldShowPlayerDock = computed(
@@ -608,7 +608,7 @@ const closeMaxiPlayer = () => {
           :class="playerActionRowClass"
           class="relative mt-4 w-full"
         >
-          <div class="flex items-center justify-center gap-2.5">
+          <div class="flex items-center justify-center gap-3.5">
             <button
               type="button"
               :title="`Previous song (${mod}+←)`"
