@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { ExternalLink, Info, X } from 'lucide-vue-next'
+import { ExternalLink, Info, Music, X } from 'lucide-vue-next'
 
 const emit = defineEmits<{ close: [] }>()
 
@@ -42,6 +42,11 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div
         class="flex flex-col gap-6 text-center text-sm leading-relaxed text-text-muted"
       >
+        <p class="inline-flex items-center justify-center gap-2 text-text">
+          <span>Made by music lovers in Australia</span>
+          <Music class="h-4 w-4 text-primary" />
+        </p>
+
         <div class="flex flex-col items-center">
           <p><strong>Source links are on each page. Summary:</strong></p>
           <ul class="list-none">
