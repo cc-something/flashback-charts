@@ -16,8 +16,8 @@ const props = withDefaults(
 
 const badgeClass = computed(() =>
   props.size === 'md'
-    ? 'inline-flex h-5.5 w-5.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 align-middle outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70'
-    : 'inline-flex h-[1.2rem] w-[1.2rem] cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 align-middle outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70',
+    ? 'relative -top-px inline-flex h-5.5 w-5.5 cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 align-middle outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70'
+    : 'relative -top-px inline-flex h-[1.2rem] w-[1.2rem] cursor-help items-center justify-center rounded-full bg-amber-400 text-amber-950 align-middle outline-none transition-colors hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-300/70',
 )
 const iconClass = computed(() =>
   props.size === 'md' ? 'h-3.5 w-3.5' : 'h-[0.8rem] w-[0.8rem]',
