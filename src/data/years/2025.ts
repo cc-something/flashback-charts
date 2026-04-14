@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Ordinary',
     artist: 'Alex Warren',
     album: "You'll Be Alright, Kid (Chapter 1)",
-    youtubeVideoId: 'byxFUKxhT3s',
+    youtubeVideoId: 'P8mx2NVu4OA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Golden',
     artist: 'Rei Ami, KPop Demon Hunters Cast, Huntrx, Ejae, Audrey Nuna',
     album: 'Golden',
-    youtubeVideoId: 'htk6MRjmcnQ',
+    youtubeVideoId: '8y-ViyUk7Dk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'APT.',
     artist: 'Rosé and Bruno Mars',
     album: 'Rosie',
-    youtubeVideoId: '8Ebqe2Dbzls',
+    youtubeVideoId: 'Lwv254J8Ozk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: "That's So True",
     artist: 'Gracie Abrams',
     album: 'The Secret of Us',
-    youtubeVideoId: 'W_YOJWZIjxo',
+    youtubeVideoId: 'cKsAj_-Whws',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Die With A Smile',
     artist: 'Lady Gaga and Bruno Mars',
     album: 'Die With A Smile',
-    youtubeVideoId: 'PfH7jq_uSCM',
+    youtubeVideoId: '5b5gj7NMYv4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Beautiful Things',
     artist: 'Benson Boone',
     album: 'Fireworks & Rollerblades',
-    youtubeVideoId: 'HU08BcK5SUY',
+    youtubeVideoId: 'Z_O58UG2Lmk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Messy',
     artist: 'Lola Young',
     album: "This Wasn't Meant for You Anyway",
-    youtubeVideoId: 'mhTiOYFF0wg',
+    youtubeVideoId: 'Y_g3TYsh8B8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'A Bar Song (Tipsy)',
     artist: 'Shaboozey',
     album: "Where I've Been, Isn't Where I'm Going",
-    youtubeVideoId: 'nZjTtuNR3Og',
+    youtubeVideoId: '5wb76pMt6pU',
     imageSelection: 'album',
     imageSources: {
       album:
