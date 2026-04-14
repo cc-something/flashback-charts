@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Shape of You',
     artist: 'Ed Sheeran',
     album: '÷',
-    youtubeVideoId: 'JGwWNGJdvx8',
+    youtubeVideoId: 'Svtr-p4mrQ8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'Despacito',
     artist: 'Luis Fonsi and Daddy Yankee featuring Justin Bieber',
     album: 'Vida',
-    youtubeVideoId: 'kJQP7kiw5Fk',
+    youtubeVideoId: '4E4NSuDKkqY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Castle on the Hill',
     artist: 'Ed Sheeran',
     album: '÷',
-    youtubeVideoId: 'K0ibBPhiaG0',
+    youtubeVideoId: 'l1EcuzhSOfc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Perfect',
     artist: 'Ed Sheeran',
     album: '÷',
-    youtubeVideoId: '2Vv-BfVoq4g',
+    youtubeVideoId: 'cNGjD0VG4R8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'Thunder',
     artist: 'Imagine Dragons',
     album: 'Evolve',
-    youtubeVideoId: 'fKopy74weus',
+    youtubeVideoId: 'm8sxrxG5VKI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Galway Girl',
     artist: 'Ed Sheeran',
     album: '÷',
-    youtubeVideoId: '87gWaABqGYs',
+    youtubeVideoId: 'xwX54UN790U',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/9/95/EdSheeranGG.jpg',
@@ -139,7 +139,7 @@ const songs: Song[] = [
     title: 'Glorious',
     artist: 'Macklemore featuring Skylar Grey',
     album: 'Gemini',
-    youtubeVideoId: '7OrLroFa0AI',
+    youtubeVideoId: '2eTal_JF_oA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -152,7 +152,7 @@ const songs: Song[] = [
     title: "There's Nothing Holdin' Me Back",
     artist: 'Shawn Mendes',
     album: 'Illuminate',
-    youtubeVideoId: 'dT2owtxkU8k',
+    youtubeVideoId: '-xgc6A37F-Y',
     imageSelection: 'album',
     imageSources: {
       album:
