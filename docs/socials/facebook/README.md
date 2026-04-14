@@ -6,6 +6,8 @@
 - Publish time: `7:30 PM Australia/Melbourne`
 - Goal: traffic first, comments second
 - Tone: warm, memory-led, lightly conversational
+- Target length: `180` to `250` characters before the link
+- Structure: hook first, one proof point, one prompt
 
 ## Week 1
 
@@ -21,7 +23,7 @@ Hook: `1984 still feels absurdly stacked.`
 
 Body Copy:
 
-If you only needed one year to explain why pop felt massive in the `1980s`, `1984` has a strong case. Bruce Springsteen, George Michael, Cyndi Lauper, Lionel Richie, soundtrack hits, pure singalong energy, all in one chart. Dive back into Australia's full `1984` top 10 and tell us which song still owns that year for you.
+If you needed one year to explain why `80s` pop felt huge, `1984` is close to unbeatable. Springsteen, George Michael, Cyndi Lauper, Lionel Richie, all over one Australian top 10. Which song still owns that year for you?
 
 CTA: `Open the 1984 chart and pick the real song of the year.`
 
@@ -39,7 +41,7 @@ Hook: `1997 was sentimental, chaotic, and impossible to ignore.`
 
 Body Copy:
 
-One Australian year-end chart gave us Elton John, Aqua, Chumbawamba, Savage Garden, No Doubt, and The Prodigy all fighting for space. That year was `1997`, and it still reads like a time capsule of late-`90s` pop culture mood swings. Open the chart and tell us which artist instantly puts you back there.
+`1997` gave Australia Elton John, Aqua, Chumbawamba, Savage Garden, No Doubt, and The Prodigy in one top 10. It still reads like a perfect late-`90s` mood swing. Which artist puts you back there first?
 
 CTA: `Browse the 1997 chart and call out the artist that still hits first.`
 
@@ -57,7 +59,7 @@ Hook: `The 1980s chart story is bigger than one song.`
 
 Body Copy:
 
-The `1980s` page is where the whole mood of the decade comes together: polished pop, soundtrack singles, power ballads, synth hooks, and giant choruses everywhere. If your music memory runs through Countdown, cassettes, and songs that still feel built for car stereos, start here. Scroll the decade and see which year pulls you in first.
+The `1980s` archive pulls the whole decade into one place: synth hooks, soundtrack singles, power ballads, and giant choruses everywhere. If your music memory runs through Countdown and cassettes, this is the page to start with. Which year grabs you first?
 
 CTA: `Open the 1980s archive and jump to your first instinct year.`
 
@@ -75,7 +77,7 @@ Hook: `Did 1977 get its real defining song right?`
 
 Body Copy:
 
-Australia's year-end chart for `1977` put `Don't Cry for Me Argentina` at `#1`, but this is exactly the kind of year that invites an argument. Was the biggest song also the song people remember most now, or would you give that title to something else from the chart? Open the page, scan the top 10, and make your case.
+Australia put `Don't Cry for Me Argentina` at `#1` in `1977`, but this feels like a year built for arguments. Was it really the song people remember most, or would you give the top spot to something else?
 
 CTA: `Read the 1977 chart and tell us your alternative #1.`
 
@@ -93,7 +95,7 @@ Hook: `2003's #1 says a lot about Australian pop TV culture.`
 
 Body Copy:
 
-`Angels Brought Me Here` finished as Australia's `#1` song of `2003`, which makes that chart feel like a snapshot of one very specific moment: reality TV breakouts, huge ballads, and songs everybody knew after a week. But the full year also had Eminem, Delta Goodrem, and The Black Eyed Peas in the mix. Revisit the chart and see whether the final order still feels right.
+`Angels Brought Me Here` finished as Australia's `#1` song of `2003`, which instantly dates the year. But the full chart also had Eminem, Delta Goodrem, and The Black Eyed Peas. Does the final order still feel right?
 
 CTA: `Open the 2003 chart and decide if the #1 still holds up.`
 
@@ -111,7 +113,7 @@ Hook: `1964 is one of those charts people forget to revisit.`
 
 Body Copy:
 
-Before the later `60s` got heavier and stranger, `1964` still had that thrilling transition energy: early Beatlemania, clean hooks, radio polish, and the sense that pop was speeding up in real time. Australia's `1964` chart opens with The Beatles and keeps going from there. If you love the era but rarely look past the most famous songs, this is a good one to reopen.
+`1964` still has that thrilling transition energy: early Beatlemania, clean hooks, and radio polish before the later `60s` got stranger. Australia's chart opens with The Beatles and keeps moving. Which track still feels freshest?
 
 CTA: `Browse 1964 and spot the track you had not thought about in years.`
 
@@ -129,7 +131,7 @@ Hook: `If your taste starts in the 1970s, this is the page to keep bookmarked.`
 
 Body Copy:
 
-The `1970s` archive gives you the full sweep: singalong pop, glam, softer rock, disco pressure, and some of the most instantly recognisable chart years Australia ever had. If the week's posts pulled you in but you want the bigger picture, start with the decade page and wander year by year from there. Which `70s` year do you think has the strongest top 10?
+The `1970s` archive gives you the full sweep: singalong pop, glam, softer rock, disco, and some of Australia's most recognisable chart years. If you had to choose one `70s` year with the strongest top 10, which year wins?
 
 CTA: `Open the 1970s archive and pick the best year of the decade.`
 
@@ -149,7 +151,7 @@ Hook: `1991 moved between heartbreak and bounce better than people remember.`
 
 Body Copy:
 
-Australia's `1991` chart is a great example of a year with two moods running at once. It had giant emotional choruses, club-friendly pop, and the first little hints that the `90s` were going to get rougher around the edges. Start with Bryan Adams at `#1`, then look down the chart and see which song still feels most locked to that year.
+Australia's `1991` chart runs on two moods at once: giant emotional choruses and brighter club-pop. Start with Bryan Adams at `#1`, then look down the list. Which song feels most locked to that year now?
 
 CTA: `Open the 1991 chart and pick the song that dates the year instantly.`
 
@@ -167,7 +169,7 @@ Hook: `2011 had zero interest in subtlety.`
 
 Body Copy:
 
-If you want a chart built for maximum energy, `2011` is hard to beat. `Party Rock Anthem` finished at `#1`, and the rest of the year had that same oversized festival-pop confidence. Open the chart and tell us which artist from `2011` still feels impossible to separate from that era.
+If you want a chart built for maximum energy, `2011` is hard to beat. `Party Rock Anthem` finished at `#1`, and the rest of the year is just as oversized. Which artist from `2011` still defines that era for you?
 
 CTA: `Browse the 2011 top 10 and name the artist that defines it for you.`
 
@@ -185,7 +187,7 @@ Hook: `The 1990s archive is where the decade stops being a stereotype and starts
 
 Body Copy:
 
-People flatten the `1990s` into a couple of obvious genres, but the decade page shows how mixed it really was. Ballads, dance-pop, alt-rock, novelty records, local hits, global crossover songs, they all end up shoulder to shoulder. If you want the best entry point into Flashback Charts, the `1990s` page is one of the strongest.
+People flatten the `1990s` into a couple of genres, but the decade page shows how mixed it really was. Ballads, dance-pop, alt-rock, novelty hits, all side by side. If you had to reopen one `90s` year first, which would it be?
 
 CTA: `Open the 1990s archive and jump to the year you replay first.`
 
@@ -203,7 +205,7 @@ Hook: `2024 is recent enough to argue about properly.`
 
 Body Copy:
 
-`Beautiful Things` finished as Australia's `#1` song of `2024`, but the chart also had `Espresso`, `Birds Of A Feather`, `Stick Season`, and `Too Sweet` in the same top 10. That makes it a perfect modern chart battle. Open the page and tell us which song you think should have owned the year.
+`Beautiful Things` finished as Australia's `#1` song of `2024`, but the same top 10 also had `Espresso`, `Birds Of A Feather`, `Stick Season`, and `Too Sweet`. Which song should have owned the year?
 
 CTA: `Read the 2024 chart and post your alternate #1.`
 
@@ -221,7 +223,7 @@ Hook: `1956 feels like another music world entirely.`
 
 Body Copy:
 
-Australia's `1956` year-end chart opens with `Just Walking in the Rain` by Johnnie Ray, and the whole page carries that early chart-era atmosphere: big voices, clean arrangements, and songs that came through radio rather than endless scrolling. If you want to see how far chart culture has shifted, this is one of the best years to compare against the present.
+Australia's `1956` chart opens with `Just Walking in the Rain`, and the whole page carries that early chart-era atmosphere: big voices, clean arrangements, and radio-first songs. Which track still sounds timeless to you?
 
 CTA: `Open the 1956 chart and see which song still sounds timeless.`
 
@@ -239,7 +241,7 @@ Hook: `1988 is bigger, stranger, and more soundtrack-heavy than people remember.
 
 Body Copy:
 
-Most people remember the broad feel of the late `80s`, but fewer remember the exact mix that made `1988` feel so specific. Australia's `#1` was `(I've Had) The Time of My Life`, and the rest of the chart keeps that same dramatic, high-emotion momentum going. Revisit the year and see which track surprises you most.
+Most people remember the broad feel of the late `80s`, but fewer remember what made `1988` so specific. Australia's `#1` was `(I've Had) The Time of My Life`. Which song from that chart still surprises you?
 
 CTA: `Browse 1988 and call out the song you had forgotten was that huge.`
 
@@ -257,7 +259,7 @@ Hook: `The 2000s archive is built for people who miss when charts felt everywher
 
 Body Copy:
 
-Reality-TV winners, rap crossover, giant pop choruses, break-up songs, ringtone-era hooks, the `2000s` page is full of records that once felt absolutely unavoidable. If you came in through one specific year, use the decade page to see how quickly the sound kept shifting. Which `2000s` year still feels most like your year?
+Reality-TV winners, rap crossover, giant choruses, and ringtone-era hooks, the `2000s` archive is full of songs that once felt unavoidable. Which `2000s` year still feels most like your year?
 
 CTA: `Open the 2000s archive and choose the strongest year in the decade.`
 
@@ -277,7 +279,7 @@ Hook: `2000 sounds exactly like a decade turning over.`
 
 Body Copy:
 
-Australia's `2000` chart has that slightly exaggerated, high-drama millennial energy that now feels very specific to the moment. `I'm Outta Love` finished at `#1`, and the rest of the year keeps moving between glossy pop confidence and songs that were made to stick in your head for weeks. Open the page and see which track still wins on replay value.
+Australia's `2000` chart has that high-drama millennial energy that now feels very specific to the moment. `I'm Outta Love` finished at `#1`. Which track from the top 10 still wins on replay value?
 
 CTA: `Browse the 2000 chart and pick the song that still feels biggest.`
 
@@ -295,7 +297,7 @@ Hook: `If The Beatles are your shortcut into the archive, 1970 is the obvious cl
 
 Body Copy:
 
-Australia's `1970` chart put `Let It Be` at `#1`, which is enough on its own to make the page worth opening. But the bigger reason to visit is that the whole year feels like a hinge between the `60s` and what the `70s` were about to become. Start there, scan the rest of the list, and tell us which artist owns the year in hindsight.
+Australia's `1970` chart put `Let It Be` at `#1`, which already makes the page worth opening. But the whole year also feels like a hinge between the `60s` and the `70s`. Which artist owns `1970` in hindsight?
 
 CTA: `Open 1970 and tell us whether The Beatles still own that chart.`
 
@@ -313,7 +315,7 @@ Hook: `The 1960s archive shows how quickly pop changed in one decade.`
 
 Body Copy:
 
-The `1960s` page starts in one musical world and ends in another. Early polished radio hits, mid-decade explosion, and the feeling of charts getting bolder almost year by year, it is one of the most satisfying decade pages to scroll straight through. If you like watching music history speed up, start here.
+The `1960s` archive starts in one musical world and ends in another. Early radio polish, then a mid-decade explosion, then bolder chart years almost one after another. Where do you think the decade really turns?
 
 CTA: `Open the 1960s archive and see where the decade really turns for you.`
 
@@ -331,7 +333,7 @@ Hook: `2019 is one of the easiest modern charts to debate.`
 
 Body Copy:
 
-`Old Town Road` finished as Australia's `#1` song of `2019`, and it still feels like one of those records people either instantly defend or instantly challenge. That makes the full year worth reopening. Scroll the top 10 and tell us whether `2019` got its final order right.
+`Old Town Road` finished as Australia's `#1` song of `2019`, and it still feels like one of those records people either defend instantly or challenge immediately. Did `2019` get its final order right?
 
 CTA: `Open the 2019 chart and post the song you would move to #1.`
 
@@ -349,7 +351,7 @@ Hook: `1947 is pure chart archaeology in the best way.`
 
 Body Copy:
 
-If you want to show somebody how deep Flashback Charts goes, `1947` is the kind of page that makes the point quickly. `Anniversary Song` finished at `#1`, and the whole list feels like a different era of listening, singing, and radio memory. It is less about nostalgia for one exact track and more about stepping into another version of popular music.
+If you want to show somebody how deep Flashback Charts goes, `1947` makes the point fast. `Anniversary Song` finished at `#1`, and the whole list feels like another world of listening and radio memory. Which year this old do you still revisit?
 
 CTA: `Open the 1947 chart and see how different a top 10 used to feel.`
 
@@ -367,7 +369,7 @@ Hook: `The 1950s archive is full of songs people know when they hear them, even 
 
 Body Copy:
 
-This is one of the easiest decade pages to underrate until you actually open it. The `1950s` archive has giant voices, memorable melodies, and the kind of records that still feel familiar the moment they start. If your music memory runs through family radios, early television, or songs your parents played, this is the page to revisit.
+The `1950s` archive is full of songs people often know the moment they hear them. Giant voices, memorable melodies, and early chart history all in one place. Which `50s` song do you think still lands immediately?
 
 CTA: `Browse the 1950s archive and spot the song you know by sound, not title.`
 
@@ -385,7 +387,7 @@ Hook: `The 2020s page lets people zoom out from one viral hit and see the whole 
 
 Body Copy:
 
-Recent music memory usually gets flattened into singles, clips, and headlines. The `2020s` archive is useful because it puts the years back in order and shows which songs actually finished on top in Australia. If you have only checked one recent year so far, use the decade page to compare the mood shifts properly.
+Recent music memory gets flattened into singles and clips. The `2020s` archive puts the years back in order and shows what actually finished on top in Australia. Which year of the decade feels strongest so far?
 
 CTA: `Open the 2020s archive and pick the strongest year so far.`
 
@@ -405,7 +407,7 @@ Hook: `2024 is a great "start here" page for newer visitors.`
 
 Body Copy:
 
-If somebody finds Flashback Charts through a recent pop conversation, `2024` is the easiest year to hand them first. The chart is full of songs people still have in active rotation, which makes the site feel immediately familiar before they start jumping backward through time. Start with the page, then see which older year it makes you curious to compare.
+If somebody finds Flashback Charts through a recent pop conversation, `2024` is the easiest year to send first. The chart feels familiar straight away. Which older year would you compare against it first?
 
 CTA: `Open the 2024 chart and then pick the first older year you want to compare.`
 
@@ -423,7 +425,7 @@ Hook: `1984 might be the easiest chart to turn into an artist argument.`
 
 Body Copy:
 
-Bruce Springsteen finished `1984` at `#1`, but the year also had George Michael, Wham!, Stevie Wonder, Kenny Loggins, Lionel Richie, and Cyndi Lauper packed into the same top 10. So here is the real question: which artist from `1984` still feels biggest to you now? Open the chart, scan the names, and argue for your pick.
+Bruce Springsteen finished `1984` at `#1`, but the same top 10 also had George Michael, Wham!, Stevie Wonder, Lionel Richie, and Cyndi Lauper. Which artist from `1984` still feels biggest now?
 
 CTA: `Browse 1984 and tell us which artist really owns that year.`
 
@@ -441,7 +443,7 @@ Hook: `The 2010s archive is where streaming-era chart memory starts to lock in.`
 
 Body Copy:
 
-The `2010s` page is packed with songs that still feel recent, but it already shows a decade with its own clear shape. Bigger choruses, cleaner production, global crossover pop everywhere, and enough shared radio memory to make people instantly start listing favourites. If you want a decade page that feels modern but already nostalgic, start here.
+The `2010s` archive still feels recent, but it already has a clear shape: bigger choruses, cleaner production, and global crossover pop everywhere. If you had to reopen one `2010s` year first, which would it be?
 
 CTA: `Open the 2010s archive and pick the year you replay first.`
 
@@ -459,7 +461,7 @@ Hook: `Was 2000's official #1 really the song people remember most?`
 
 Body Copy:
 
-`I'm Outta Love` ended up as Australia's `#1` song of `2000`, and it absolutely captures one side of the year. But when you think back on `2000`, is that the song that actually dominates the memory, or would you elevate something else from the chart? Open the top 10 and make the case for your alternate winner.
+`I'm Outta Love` ended up as Australia's `#1` song of `2000`, and it absolutely captures one side of the year. But is it the song that dominates your memory, or would you give `#1` to something else?
 
 CTA: `Read the 2000 chart and nominate your real #1.`
 
@@ -477,7 +479,7 @@ Hook: `Some #1s need no explanation.`
 
 Body Copy:
 
-Australia's `1970` chart opens with `Let It Be`, which is enough to make the page feel instantly essential. The fun part is what happens after the obvious entry point: the rest of the chart shows what else people were actually living with that year. Open the page, hit play on memory, and see which song keeps you there longest.
+Australia's `1970` chart opens with `Let It Be`, which makes the page feel instantly essential. The real fun is what sits around it. Which song from the full top 10 keeps you there longest?
 
 CTA: `Open the 1970 chart and revisit the whole top 10, not just the #1.`
 
@@ -495,7 +497,7 @@ Hook: `1991 has more left-field chart memories than people give it credit for.`
 
 Body Copy:
 
-When people summarise `1991`, they usually jump straight to the biggest global hits. But the full Australian chart has its own local texture too, which is what makes the page fun to revisit. Open it again and see whether the song that surprises you most is one you loved at the time or one you had completely forgotten about.
+When people summarise `1991`, they usually jump to the biggest global hits. But the full Australian chart has its own local texture too. Which song surprises you most when you reopen the page?
 
 CTA: `Browse 1991 and post the track you did not expect to see that high.`
 
@@ -513,7 +515,7 @@ Hook: `One page, every decade, and a direct path into Australian chart history.`
 
 Body Copy:
 
-If you have been following the daily posts, the best next step is the main archive page. From there you can jump into any decade from the `1940s` through to the current chart years and keep following your own taste trail. Bookmark it now and use it the next time somebody asks, "What was big in Australia that year?"
+If you have been following the daily posts, the best next step is the main archive page. From there you can jump into any decade from the `1940s` to `2025`. Which decade do you go to first when someone asks what was big that year?
 
 CTA: `Open the full archive and save your favourite decade page.`
 

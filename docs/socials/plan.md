@@ -44,12 +44,14 @@ The site covers Australian charts from `1940` to `2025`, so the strategy should 
 - Job: pull broad adult audiences into year and decade pages
 - Strength: memory prompts, comments, shares, multi-generational reach
 - Weakness: needs warm, conversational copy rather than short headline copy
+- Copy rule: aim for `180` to `250` characters before the link, put the nostalgia trigger in sentence one, and end on one clear question or action
 
 ### X.com
 
 - Job: keep the brand visible through opinion-led music prompts
 - Strength: compact hooks, reactive tone, easy debate format
 - Weakness: lower reach ceiling than Facebook, so every post needs a sharper angle
+- Copy rule: aim for `90` to `140` characters before the link, lead with the argument, and avoid setup that delays the opinion prompt
 
 ### Spotify
 
@@ -144,6 +146,15 @@ Creative direction:
 - X.com images should be punchier and easier to parse at speed
 - Spotify covers should be square, bold, and readable at thumbnail size
 - Avoid cluttered collage treatments unless the post is a decade roundup
+
+## Pre-Launch Optimisations
+
+- Keep most Facebook posts to one short paragraph. If a post needs a second sentence, make it the prompt.
+- Keep most X.com posts to one thought, one contrast, or one question.
+- Avoid repeating the same CTA verb more than `2` days in a row.
+- Prioritise comment bait on Facebook and opinion bait on X.com.
+- Use decade pages for broad prompts and year pages for specific artist or `#1` hooks.
+- If a post underperforms, test a stronger first `5` words before changing the visual.
 
 ## Measurement Notes
 
