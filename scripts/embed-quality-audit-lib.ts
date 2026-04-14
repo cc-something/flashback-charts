@@ -4,6 +4,7 @@ import type { Song, SongEmbedIntegrity } from '@/types/song'
 
 const execFileAsync = promisify(execFile)
 const ytDlpPath = '/opt/homebrew/bin/yt-dlp'
+const metadataTimeoutMs = 20000
 const compromiseFlagOrder = [
   'lyric',
   'live',
@@ -302,20 +303,30 @@ const getMetadataFromSearchLine = (line: string): VideoMetadata | null => {
 }
 
 const getSearchMetadata = async (query: string) => {
-  const { stdout } = await execFileAsync(ytDlpPath, [
-    '--flat-playlist',
-    `ytsearch5:${query}`,
-    '--print',
-    '%(id)s\t%(title)s\t%(uploader)s\t%(channel)s',
-    '--skip-download',
-    '--no-warnings',
-  ])
-  return stdout
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map(getMetadataFromSearchLine)
-    .filter((entry): entry is VideoMetadata => Boolean(entry))
+  try {
+    const { stdout } = await execFileAsync(
+      ytDlpPath,
+      [
+        '--flat-playlist',
+        `ytsearch5:${query}`,
+        '--print',
+        '%(id)s\t%(title)s\t%(uploader)s\t%(channel)s',
+        '--skip-download',
+        '--no-warnings',
+      ],
+      {
+        timeout: metadataTimeoutMs,
+      },
+    )
+    return stdout
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map(getMetadataFromSearchLine)
+      .filter((entry): entry is VideoMetadata => Boolean(entry))
+  } catch {
+    return []
+  }
 }
 
 export const getVideoMetadata = async (

@@ -73,7 +73,7 @@ const songs: Song[] = [
     },
   }),
   getSong({
-    rank: 3,
+    rank: 4,
     title: 'Daddy',
     artist: 'Sammy Kaye; Andrews Sisters',
     album: 'Daddy',

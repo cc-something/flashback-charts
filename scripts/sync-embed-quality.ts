@@ -29,8 +29,13 @@ const decadeDocNames = [
   '2010s.md',
   '2020s.md',
 ] as const
+const metadataConcurrency = 8
+const progressLogInterval = 25
 
 const getDecadeForYear = (year: number) => `${Math.floor(year / 10) * 10}s`
+const getDecadeStartFromDocName = (docName: (typeof decadeDocNames)[number]) =>
+  Number(docName.replace('s.md', ''))
+const getSongKey = (year: number, rank: number) => `${year}:${rank}`
 
 const groupByDecade = (records: SongAuditRecord[]) => {
   const grouped = new Map<string, SongAuditRecord[]>()
@@ -197,37 +202,68 @@ const getSongRecords = () =>
     (getYearData(year) ?? []).map((song) => ({ year, song })),
   )
 
+const assertUniqueSongKeys = (
+  songRecords: Array<{ year: number; song: Song }>,
+) => {
+  const seenSongKeys = new Set<string>()
+  for (const { year, song } of songRecords) {
+    const songKey = getSongKey(year, song.rank)
+    if (seenSongKeys.has(songKey))
+      throw new Error(`Duplicate song key in catalog: ${songKey}`)
+    seenSongKeys.add(songKey)
+  }
+}
+
 const getAuditRecords = async () => {
   const parsedDocs = new Map<number, ReturnType<typeof parseEmbedQualityDoc>>()
   for (const docName of decadeDocNames) {
     const content = await readFile(path.join(docsDir, docName), 'utf8')
     const parsed = parseEmbedQualityDoc(content)
-    for (const year of [
-      ...new Set(
-        [...parsed.blockers.keys(), ...parsed.replacements.keys()].map((key) =>
-          Number(key.split(':')[0]),
-        ),
-      ),
-    ])
+    const decadeStart = getDecadeStartFromDocName(docName)
+    for (const year of Array.from(
+      { length: 10 },
+      (_, index) => decadeStart + index,
+    ))
       parsedDocs.set(year, parsed)
   }
 
-  const records: SongAuditRecord[] = []
-  for (const { year, song } of getSongRecords()) {
+  const songRecords = getSongRecords()
+  assertUniqueSongKeys(songRecords)
+  const records: SongAuditRecord[] = new Array(songRecords.length)
+  let nextIndex = 0
+  let completedCount = 0
+  const getEmptyParsedDocAudit = () => ({
+    blockers: new Map(),
+    replacements: new Map(),
+    noteFlags: new Map(),
+  })
+  const processNextRecord = async () => {
+    const currentIndex = nextIndex
+    nextIndex += 1
+    if (currentIndex >= songRecords.length) return
+    const { year, song } = songRecords[currentIndex]
     const metadata = await getVideoMetadata(song)
-    records.push(
-      classifySongAudit({
-        year,
-        song,
-        parsedDocAudit: parsedDocs.get(year) ?? {
-          blockers: new Map(),
-          replacements: new Map(),
-          noteFlags: new Map(),
-        },
-        metadata,
-      }),
+    records[currentIndex] = classifySongAudit({
+      year,
+      song,
+      parsedDocAudit: parsedDocs.get(year) ?? getEmptyParsedDocAudit(),
+      metadata,
+    })
+    completedCount += 1
+    if (
+      completedCount % progressLogInterval === 0 ||
+      completedCount === songRecords.length
     )
+      console.log(`embed-quality ${completedCount}/${songRecords.length}`)
+    await processNextRecord()
   }
+
+  await Promise.all(
+    Array.from(
+      { length: Math.min(metadataConcurrency, songRecords.length) },
+      () => processNextRecord(),
+    ),
+  )
   return records.sort(
     (left, right) => left.year - right.year || left.rank - right.rank,
   )

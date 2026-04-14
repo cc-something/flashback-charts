@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { getYearData, searchCatalog, searchSongs } from './index'
+import {
+  getAvailableYears,
+  getYearData,
+  searchCatalog,
+  searchSongs,
+} from './index'
+import { embedIntegrityRegistry } from './embedIntegrityRegistry'
 
 describe('searchCatalog', () => {
   it('returns year and decade targets for decade start years', () => {
@@ -103,8 +109,28 @@ describe('searchCatalog', () => {
     ])
   })
 
-  it('defaults embed integrity to confirmed for legacy song data', () => {
-    expect(getYearData(2002)?.[0].embedIntegrity).toBe('confirmed')
-    expect(searchSongs('without me')[0]?.song.embedIntegrity).toBe('confirmed')
+  it('returns registry-backed embed integrity for legacy song data', () => {
+    expect(getYearData(2002)?.[5].embedIntegrity).toBe('confirmed')
+    expect(searchSongs('a thousand miles')[0]?.song.embedIntegrity).toBe(
+      'confirmed',
+    )
+  })
+
+  it('has an exhaustive embed integrity registry with unique year-rank keys', () => {
+    const seenSongKeys = new Set<string>()
+    for (const year of getAvailableYears()) {
+      const yearSongs = getYearData(year) ?? []
+      expect(Object.keys(embedIntegrityRegistry[year] ?? {})).toHaveLength(
+        yearSongs.length,
+      )
+      for (const song of yearSongs) {
+        const songKey = `${year}:${song.rank}`
+        expect(seenSongKeys.has(songKey)).toBe(false)
+        seenSongKeys.add(songKey)
+        expect(embedIntegrityRegistry[year]?.[song.rank]).toBe(
+          song.embedIntegrity,
+        )
+      }
+    }
   })
 })
