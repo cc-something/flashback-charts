@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Uptown Funk',
     artist: 'Mark Ronson featuring Bruno Mars',
     album: 'Uptown Special',
-    youtubeVideoId: 'OPf0YbXqDm0',
+    youtubeVideoId: 'P-WdrMLLpPg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'Cheerleader (Felix Jaehn Remix)',
     artist: 'Omi',
     album: 'Me 4 U',
-    youtubeVideoId: 'jGflUbPQfos',
+    youtubeVideoId: 'I3JZEXEKzm0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'See You Again',
     artist: 'Wiz Khalifa featuring Charlie Puth',
     album: 'Furious 7: Original Motion Picture Soundtrack',
-    youtubeVideoId: 'RgKAFK5djSk',
+    youtubeVideoId: 'Qog207eDMrY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Take Me to Church',
     artist: 'Hozier',
     album: 'Hozier',
-    youtubeVideoId: 'PVjiKRfKpPI',
+    youtubeVideoId: 'O1wDihZNQyQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Hello',
     artist: 'Adele',
     album: '25',
-    youtubeVideoId: 'YQHsXMglC9A',
+    youtubeVideoId: '-yL7VP4-kP4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'Lean On',
     artist: 'Major Lazer & DJ Snake featuring MØ',
     album: 'Peace Is the Mission',
-    youtubeVideoId: 'YqeW9_5kURI',
+    youtubeVideoId: 'EY98Q6kwoTU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Love Me Like You Do',
     artist: 'Ellie Goulding',
     album: 'Delirium',
-    youtubeVideoId: 'AJtDXIazrMo',
+    youtubeVideoId: '4Q5smpIjPR4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Shut Up and Dance',
     artist: 'Walk the Moon',
     album: 'Talking Is Hard',
-    youtubeVideoId: '6JCLY0Rlx6Q',
+    youtubeVideoId: 'X8HUhFSLnl0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -140,7 +140,7 @@ const songs: Song[] = [
     title: 'What Do You Mean?',
     artist: 'Justin Bieber',
     album: 'Purpose',
-    youtubeVideoId: 'DK_0jXPuIr0',
+    youtubeVideoId: 'zMjUPvHIS0k',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: 'FourFiveSeconds',
     artist: 'Rihanna, Kanye West and Paul McCartney',
     album: 'FourFiveSeconds',
-    youtubeVideoId: 'kt0g4dWxEBo',
+    youtubeVideoId: 'mnqZu5hesOo',
     imageSelection: 'album',
     imageSources: {
       album:
