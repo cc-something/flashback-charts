@@ -445,7 +445,6 @@ const closeMaxiPlayer = () => {
               <div class="flex items-start gap-1.5">
                 <button
                   type="button"
-                  title="Go to song (G)"
                   aria-label="Go to song"
                   class="min-w-0 flex-1 cursor-pointer rounded-xl px-1.5 py-0.5 pr-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                   @click="goToPlayingSong"
