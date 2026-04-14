@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Blinding Lights',
     artist: 'The Weeknd',
     album: 'After Hours',
-    youtubeVideoId: 'XwxLwG2_Sxk',
+    youtubeVideoId: 'a-HPQoNNjsk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Roses (Imanbek Remix)',
     artist: 'SAINt JHN',
     album: 'While the World Was Burning',
-    youtubeVideoId: 'nOmaA7TwzT4',
+    youtubeVideoId: 'ilbXs_QeBw0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Watermelon Sugar',
     artist: 'Harry Styles',
     album: 'Fine Line',
-    youtubeVideoId: 'E07s5ZYygMg',
+    youtubeVideoId: 'Eb0L24QXY4s',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Before You Go',
     artist: 'Lewis Capaldi',
     album: 'Divinely Uninspired to a Hellish Extent',
-    youtubeVideoId: '8CIDLJTlnSo',
+    youtubeVideoId: 'bw02psc6fqY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Intentions',
     artist: 'Justin Bieber Feat. Quavo',
     album: 'Changes',
-    youtubeVideoId: '3AyMjyHu1bA',
+    youtubeVideoId: 'JeJyyWyOnpQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'Say So',
     artist: 'Doja Cat',
     album: 'Hot Pink',
-    youtubeVideoId: 'k3Yk6FrjMkQ',
+    youtubeVideoId: 'b2SIRT76XTQ',
     imageSelection: 'album',
     imageSources: {
       album:
