@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { searchCatalog } from './index'
+import { getYearData, searchCatalog, searchSongs } from './index'
 
 describe('searchCatalog', () => {
   it('returns year and decade targets for decade start years', () => {
@@ -101,5 +101,10 @@ describe('searchCatalog', () => {
         thumbnailPath: expect.any(String),
       },
     ])
+  })
+
+  it('defaults embed integrity to confirmed for legacy song data', () => {
+    expect(getYearData(2002)?.[0].embedIntegrity).toBe('confirmed')
+    expect(searchSongs('without me')[0]?.song.embedIntegrity).toBe('confirmed')
   })
 })

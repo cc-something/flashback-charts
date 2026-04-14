@@ -24,6 +24,7 @@ export const RICK_ASTLEY_SONG: Song = {
   artist: 'Rick Astley',
   album: 'The Best Of Me: Never Edition',
   youtubeVideoId: 'dQw4w9WgXcQ',
+  embedIntegrity: 'confirmed',
   thumbnailPath: getSongThumbnailPath({
     year: 1988,
     rank: 8,

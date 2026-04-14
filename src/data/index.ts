@@ -1,4 +1,4 @@
-import type { Song } from '@/types/song'
+import type { Song, SongEmbedIntegrity } from '@/types/song'
 import { getDecadeForYear } from '@/themes'
 import { getDecadePath, getYearPath } from '@/utils/url'
 import songs1940, {
@@ -351,11 +351,18 @@ export interface YearSource {
   url: string
 }
 
+const defaultEmbedIntegrity: SongEmbedIntegrity = 'confirmed'
+
 interface YearChartData {
   songs: Song[]
   source: YearSource | null
   description?: string
 }
+
+const normalizeSongEmbedIntegrity = (song: Song): Song => ({
+  ...song,
+  embedIntegrity: song.embedIntegrity ?? defaultEmbedIntegrity,
+})
 
 export type SongSearchMatch = {
   type: 'song'
@@ -813,7 +820,7 @@ const yearData: Record<number, YearChartData> = {
 }
 
 export const getYearData = (year: number): Song[] | undefined =>
-  yearData[year]?.songs
+  yearData[year]?.songs.map(normalizeSongEmbedIntegrity)
 
 export const getYearSource = (year: number): YearSource | null =>
   yearData[year]?.source ?? null
@@ -901,7 +908,7 @@ export const searchSongs = (query: string): SongSearchMatch[] => {
   const results: SongSearchMatch[] = []
   for (const [yearStr, data] of Object.entries(yearData)) {
     const year = Number(yearStr)
-    for (const song of data.songs) {
+    for (const song of data.songs.map(normalizeSongEmbedIntegrity)) {
       if (
         song.title.toLowerCase().includes(q) ||
         song.artist.toLowerCase().includes(q) ||

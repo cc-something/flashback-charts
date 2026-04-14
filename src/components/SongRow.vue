@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Disc3, Flag } from 'lucide-vue-next'
+import { AlertTriangle, Disc3, Flag } from 'lucide-vue-next'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
 import type { Song } from '@/types/song'
@@ -33,6 +33,9 @@ const displaySong = computed(
     isRickRollActive.value
       ? { ...RICK_ASTLEY_SONG, rank: props.song.rank }
       : props.song,
+)
+const showSuboptimalEmbedWarning = computed(
+  () => displaySong.value.embedIntegrity === 'suboptimal',
 )
 const isThisSongActive = computed(() =>
   isRickRollActive.value
@@ -197,6 +200,13 @@ const primePlayback = () =>
       >
         {{ displaySong.album }}
       </p>
+      <div
+        v-if="showSuboptimalEmbedWarning"
+        class="mt-1 inline-flex w-fit items-center gap-1 rounded-full border border-amber-500/30 bg-amber-400/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-amber-900"
+      >
+        <AlertTriangle class="h-3.5 w-3.5" aria-hidden="true" />
+        <span>Sub-optimal embed</span>
+      </div>
     </div>
 
     <div :class="reportClass">

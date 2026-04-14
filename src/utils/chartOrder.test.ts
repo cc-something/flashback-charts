@@ -8,6 +8,7 @@ const createSong = (rank: number): Song => ({
   artist: `Artist ${rank}`,
   album: `Album ${rank}`,
   youtubeVideoId: `video-${rank}`,
+  embedIntegrity: 'confirmed',
   thumbnailPath: `/images/${rank}.webp`,
   imageSelection: 'album',
   imageSources: {

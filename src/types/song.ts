@@ -1,4 +1,5 @@
 export type SongImageSelection = 'album' | 'artist'
+export type SongEmbedIntegrity = 'confirmed' | 'suboptimal' | 'unplayable'
 
 export interface SongImageSources {
   album: string | null
@@ -11,6 +12,7 @@ export interface Song {
   artist: string
   album: string
   youtubeVideoId: string | null
+  embedIntegrity?: SongEmbedIntegrity
   thumbnailPath: string
   imageSelection: SongImageSelection
   imageSources: SongImageSources
