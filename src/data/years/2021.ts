@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Heat Waves',
     artist: 'Glass Animals',
     album: 'Dreamland',
-    youtubeVideoId: 'mRD0-GxqHVo',
+    youtubeVideoId: '1GcnrBU4AWg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Drivers License',
     artist: 'Olivia Rodrigo',
     album: 'Sour',
-    youtubeVideoId: 'ZmDBbnmKpqQ',
+    youtubeVideoId: '9YFAEcmegL4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Without You',
     artist: 'The Kid Laroi',
     album: 'F*ck Love',
-    youtubeVideoId: 'LvB4GUTWDcI',
+    youtubeVideoId: 'LhHBBTRJuWg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Levitating',
     artist: 'Dua Lipa',
     album: 'Future Nostalgia',
-    youtubeVideoId: 'TUVcZfQe-Kw',
+    youtubeVideoId: '0i0lYwacN9o',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Good 4 U',
     artist: 'Olivia Rodrigo',
     album: 'Sour',
-    youtubeVideoId: 'gNi_6U5Pm_o',
+    youtubeVideoId: 'jiFDWd8dn1o',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Bad Habits',
     artist: 'Ed Sheeran',
     album: '=',
-    youtubeVideoId: 'orJSJGHjBLI',
+    youtubeVideoId: 'ho1RzYneMtM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Kiss Me More',
     artist: 'Doja Cat Feat. SZA',
     album: 'Planet Her',
-    youtubeVideoId: '0EVVKs6DQLo',
+    youtubeVideoId: 'n7xsHYUXzpU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'The Business',
     artist: 'Tiësto',
     album: 'Drive',
-    youtubeVideoId: 'ewufRwrayTI',
+    youtubeVideoId: 'c4aZ3ROz4C0',
     imageSelection: 'album',
     imageSources: {
       album:
