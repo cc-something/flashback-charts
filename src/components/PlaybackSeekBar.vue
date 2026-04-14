@@ -39,14 +39,14 @@ const progressPercent = computed(() => {
   >
     <SliderTrack
       as="div"
-      :style="{ '--playback-seek-progress': `${progressPercent}%` }"
       :class="[
         'playback-seek-track relative h-1.5 w-full overflow-hidden rounded-full bg-black/20',
         trackClass,
       ]"
     >
       <div
-        class="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
+        class="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-primary"
+        :style="{ width: `${progressPercent}%` }"
       />
     </SliderTrack>
     <SliderThumb
@@ -65,16 +65,6 @@ const progressPercent = computed(() => {
 
 .playback-seek-track[data-orientation='horizontal'] {
   flex: 1;
-}
-
-.playback-seek-track {
-  background: linear-gradient(
-    to right,
-    var(--color-primary) 0%,
-    var(--color-primary) var(--playback-seek-progress),
-    rgb(0 0 0 / 20%) var(--playback-seek-progress),
-    rgb(0 0 0 / 20%) 100%
-  );
 }
 
 .playback-seek-thumb {
