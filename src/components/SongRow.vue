@@ -34,9 +34,12 @@ const displaySong = computed(
       ? { ...RICK_ASTLEY_SONG, rank: props.song.rank }
       : props.song,
 )
-const showSuboptimalEmbedWarning = computed(
-  () => displaySong.value.embedIntegrity === 'suboptimal',
-)
+const embedWarningLabel = computed(() => {
+  if (displaySong.value.embedIntegrity === 'suboptimal')
+    return 'Sub-optimal embed'
+  if (displaySong.value.embedIntegrity === 'unplayable') return 'Cannot play'
+  return null
+})
 const isThisSongActive = computed(() =>
   isRickRollActive.value
     ? player.isSongActive(RICK_ASTLEY_SONG, RICK_ASTLEY_YEAR)
@@ -201,11 +204,11 @@ const primePlayback = () =>
         {{ displaySong.album }}
       </p>
       <div
-        v-if="showSuboptimalEmbedWarning"
+        v-if="embedWarningLabel"
         class="mt-1 inline-flex w-fit items-center gap-1 rounded-full border border-amber-500/30 bg-amber-400/10 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-amber-900"
       >
         <AlertTriangle class="h-3.5 w-3.5" aria-hidden="true" />
-        <span>Sub-optimal embed</span>
+        <span>{{ embedWarningLabel }}</span>
       </div>
     </div>
 
