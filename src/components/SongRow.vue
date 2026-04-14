@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Disc3, Flag } from 'lucide-vue-next'
+import EmbedFallbackBadge from './EmbedFallbackBadge.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
 import type { Song } from '@/types/song'
@@ -15,9 +16,11 @@ const props = withDefaults(
   defineProps<{
     song: Song
     year: number
+    showEmbedWarning?: boolean
     variant?: 'card' | 'maxi'
   }>(),
   {
+    showEmbedWarning: false,
     variant: 'card',
   },
 )
@@ -186,7 +189,13 @@ const primePlayback = () =>
       class="theme-body pointer-events-none relative z-10 flex min-w-0 flex-1 flex-col"
     >
       <h2 class="text-base font-bold leading-snug text-text sm:text-lg">
-        {{ displaySong.title }}
+        <span>{{ displaySong.title }}</span>
+        <EmbedFallbackBadge
+          v-if="showEmbedWarning"
+          :song="displaySong"
+          class="ml-1.5"
+          size="md"
+        />
       </h2>
       <p class="text-sm leading-snug text-text-muted sm:text-base">
         {{ displaySong.artist }}

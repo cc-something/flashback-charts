@@ -4,6 +4,7 @@ import { useMediaQuery } from '@vueuse/core'
 import { Expand, Flag, Minimize, MousePointerClick, X } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
+import EmbedFallbackBadge from './EmbedFallbackBadge.vue'
 import PlaybackSeekBar from './PlaybackSeekBar.vue'
 import ReportIssueModal from './ReportIssueModal.vue'
 import SongRow from './SongRow.vue'
@@ -359,6 +360,7 @@ const closeMaxiPlayer = () => {
               v-if="player.playingYear !== null"
               :song="player.playingSong"
               :year="player.playingYear"
+              :show-embed-warning="true"
               variant="maxi"
             />
           </div>
@@ -451,7 +453,12 @@ const closeMaxiPlayer = () => {
                   <p
                     class="break-words text-base font-bold leading-snug text-text"
                   >
-                    {{ player.playingSong.title }}
+                    <span>{{ player.playingSong.title }}</span>
+                    <EmbedFallbackBadge
+                      :song="player.playingSong"
+                      class="ml-1.5"
+                      size="sm"
+                    />
                   </p>
                   <p class="break-words text-sm leading-snug text-text-muted">
                     {{ player.playingSong.artist }}
