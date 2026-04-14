@@ -31,9 +31,9 @@ const mod = isMac ? '⌘' : 'Ctrl'
 const playerButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenButtonClass =
-  'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(2.85rem,7.8vw,4.2rem)] w-[clamp(2.85rem,7.8vw,4.2rem)] items-center justify-center rounded-full border border-black/5 bg-transparent text-text/70 transition-colors hover:border-white/70 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenSubtleButtonClass =
-  'inline-flex h-[clamp(3.25rem,9vw,4.75rem)] w-[clamp(3.25rem,9vw,4.75rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
+  'inline-flex h-[clamp(2.85rem,7.8vw,4.2rem)] w-[clamp(2.85rem,7.8vw,4.2rem)] items-center justify-center rounded-full bg-transparent text-text/45 transition-colors hover:bg-white/12 hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 const playerFullscreenCloseButtonClass =
   'inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface/88 text-text-muted shadow-lg shadow-black/10 ring-1 ring-primary/20 transition-colors hover:bg-surface hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-10 sm:w-10'
 const shouldShowPlayerDock = computed(
@@ -72,13 +72,13 @@ const playerContentClass = computed(() =>
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 pt-4 pb-24 sm:px-6 sm:pt-6 sm:pb-28'
+    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-center px-4 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-32'
     : 'px-3 pt-3 pb-3',
 )
 const playerDockContainerStyle = computed(() =>
   shouldUseMaxiPlayer.value
     ? {
-        paddingTop: 'calc(var(--sticky-bar-height) + 1rem)',
+        paddingTop: 'calc(var(--sticky-bar-height) + 0.5rem)',
       }
     : undefined,
 )
@@ -309,7 +309,7 @@ const closeMaxiPlayer = () => {
       <div v-if="player.playingSong" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer"
-          class="mt-6 mb-3 flex w-full items-start justify-end gap-3 sm:mt-8 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
+          class="mt-4 mb-3 flex w-full items-start justify-end gap-3 sm:mt-5 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
             v-if="player.playingYear !== null"
@@ -354,7 +354,7 @@ const closeMaxiPlayer = () => {
           </button>
         </div>
 
-        <div v-if="shouldUseMaxiPlayer" class="mb-4 w-full">
+        <div v-if="shouldUseMaxiPlayer" class="mb-3 w-full">
           <div class="min-w-0">
             <SongRow
               v-if="player.playingYear !== null"
@@ -611,7 +611,7 @@ const closeMaxiPlayer = () => {
           :class="playerActionRowClass"
           class="relative mt-4 w-full"
         >
-          <div class="flex items-center justify-center gap-1">
+          <div class="flex items-center justify-center gap-3.5">
             <button
               type="button"
               :title="`Previous song (${mod}+←)`"

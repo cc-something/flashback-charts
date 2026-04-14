@@ -20,6 +20,7 @@ const PLAYER_LOAD_FAILED_MESSAGE =
 const SONG_ROW_HIGHLIGHT_DURATION_MS = 1_000
 const SONG_ROW_LOOKUP_ATTEMPTS = 24
 const SONG_ROW_SCROLL_SETTLE_MS = 350
+const SONG_PLAY_EVENT_DELAY_MS = 5_000
 const TINY_VIEWPORT_MEDIA_QUERY = '(max-width: 839px)'
 
 interface SavedPlayerState {
@@ -121,6 +122,15 @@ export const usePlayerStore = defineStore('player', () => {
   let destroyPlayerOnContainerLossTimerId: ReturnType<
     typeof setTimeout
   > | null = null
+  let activePlayerGeneration = 0
+  let pendingSongPlayEventTimerId: ReturnType<typeof setTimeout> | null = null
+  let pendingSongPlayEventPayload: {
+    artist: string
+    title: string
+    year: string
+    source: PlayTrigger
+  } | null = null
+  let hasTrackedCurrentSongPlayEvent = false
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -246,6 +256,29 @@ export const usePlayerStore = defineStore('player', () => {
     if (destroyPlayerOnContainerLossTimerId === null) return
     clearTimeout(destroyPlayerOnContainerLossTimerId)
     destroyPlayerOnContainerLossTimerId = null
+  }
+  const clearPendingSongPlayEventTimer = () => {
+    if (pendingSongPlayEventTimerId === null) return
+    clearTimeout(pendingSongPlayEventTimerId)
+    pendingSongPlayEventTimerId = null
+  }
+  const scheduleSongPlayEvent = () => {
+    if (
+      hasTrackedCurrentSongPlayEvent ||
+      !pendingSongPlayEventPayload ||
+      pendingSongPlayEventTimerId !== null
+    )
+      return
+    pendingSongPlayEventTimerId = setTimeout(() => {
+      pendingSongPlayEventTimerId = null
+      if (!pendingSongPlayEventPayload || playerState.value !== 'playing')
+        return
+      usePlausibleAnalytics().trackEvent(
+        'Song Play',
+        pendingSongPlayEventPayload,
+      )
+      hasTrackedCurrentSongPlayEvent = true
+    }, SONG_PLAY_EVENT_DELAY_MS)
   }
   const updatePlayerIframeFocusability = () => {
     const playerIframeEl = playerContainerEl?.querySelector('iframe')
@@ -511,6 +544,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
     clearStallTimer()
+    clearPendingSongPlayEventTimer()
     currentTimeSeconds.value = 0
     durationSeconds.value = 0
     retryCount = 0
@@ -522,8 +556,11 @@ export const usePlayerStore = defineStore('player', () => {
     clearOfflineHandler()
     shouldRestorePlayerOnContainerReady = false
     pendingPlayerMountEl = null
+    pendingSongPlayEventPayload = null
+    hasTrackedCurrentSongPlayEvent = false
   }
   const destroyPlayer = () => {
+    activePlayerGeneration += 1
     clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
     clearStallTimer()
@@ -703,7 +740,9 @@ export const usePlayerStore = defineStore('player', () => {
       isAwaitingPlaybackStart.value = false
       clearLoadingTracking()
       playerState.value = 'playing'
+      scheduleSongPlayEvent()
     } else if (event.data === 2) {
+      clearPendingSongPlayEventTimer()
       if (isAwaitingPlaybackStart.value && playerState.value === 'loading') {
         enterBlockedPlaybackState()
         return
@@ -712,9 +751,11 @@ export const usePlayerStore = defineStore('player', () => {
       clearLoadingTracking()
       playerState.value = 'paused'
     } else if (event.data === 3) {
+      clearPendingSongPlayEventTimer()
       playerState.value = 'loading'
       startPlaybackStallTimer()
     } else if (event.data === 0) {
+      clearPendingSongPlayEventTimer()
       const endedSong = playingSong.value
       const endedYear = playingYear.value
       if (endedSong && endedYear !== null && onEndedCallback) {
@@ -733,6 +774,8 @@ export const usePlayerStore = defineStore('player', () => {
   }
   const createPlayer = (playerMountEl: HTMLDivElement) => {
     hasMountedPlayer.value = true
+    activePlayerGeneration += 1
+    const playerGeneration = activePlayerGeneration
     playerInitPromise = new Promise<YTPlayer | null>((resolve) => {
       ytPlayer = new window.YT!.Player(playerMountEl, {
         width: '100%',
@@ -755,6 +798,11 @@ export const usePlayerStore = defineStore('player', () => {
         },
         events: {
           onReady: (event) => {
+            if (playerGeneration !== activePlayerGeneration) {
+              event.target.destroy?.()
+              resolve(null)
+              return
+            }
             ytPlayer = event.target
             isPlayerReady = true
             playerInitPromise = Promise.resolve(event.target)
@@ -766,9 +814,14 @@ export const usePlayerStore = defineStore('player', () => {
               startPlaybackStallTimer(true)
             }
           },
-          onStateChange: handlePlayerStateChange,
-          onError: (event: YTPlayerEvent) =>
-            void handlePlaybackError(event.data),
+          onStateChange: (event: YTPlayerEvent) => {
+            if (playerGeneration !== activePlayerGeneration) return
+            handlePlayerStateChange(event)
+          },
+          onError: (event: YTPlayerEvent) => {
+            if (playerGeneration !== activePlayerGeneration) return
+            void handlePlaybackError(event.data)
+          },
         },
       })
     })
@@ -921,16 +974,18 @@ export const usePlayerStore = defineStore('player', () => {
     retryCount = 0
     currentPlaySong = song
     currentStartAtSeconds = resumeAt
-    if (!getHasImmediateNetworkConnection())
-      return failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE)
-
-    if (!wasActive) registerActive(stop)
-    usePlausibleAnalytics().trackEvent('Song Play', {
+    pendingSongPlayEventPayload = {
       artist: song.artist,
       title: song.title,
       year: String(year),
       source: trigger,
-    })
+    }
+    hasTrackedCurrentSongPlayEvent = false
+    clearPendingSongPlayEventTimer()
+    if (!getHasImmediateNetworkConnection())
+      return failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE)
+
+    if (!wasActive) registerActive(stop)
     if (chart.selectedYear === year)
       void scrollSongIntoView(song, year, trigger !== 'direct')
     offlineHandler = () => {
