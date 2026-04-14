@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Youngblood',
     artist: '5 Seconds of Summer',
     album: 'Youngblood',
-    youtubeVideoId: 'XwBmJnGocvY',
+    youtubeVideoId: 'ZfVjxD6C89o',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Perfect',
     artist: 'Ed Sheeran',
     album: '÷',
-    youtubeVideoId: '2Vv-BfVoq4g',
+    youtubeVideoId: 'cNGjD0VG4R8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Be Alright',
     artist: 'Dean Lewis',
     album: 'A Place We Knew',
-    youtubeVideoId: 'WnqVVgpplVs',
+    youtubeVideoId: 'pelM4QotUr4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Meant to Be',
     artist: 'Bebe Rexha featuring Florida Georgia Line',
     album: 'All Your Fault: Pt. 2',
-    youtubeVideoId: 'zDo0H8Fm7d0',
+    youtubeVideoId: 'o3W_P98hVu0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Psycho',
     artist: 'Post Malone featuring Ty Dolla $ign',
     album: 'Beerbongs & Bentleys',
-    youtubeVideoId: 'au2n7VVGv_c',
+    youtubeVideoId: '_0zOO3UdwTY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Girls Like You',
     artist: 'Maroon 5 featuring Cardi B',
     album: 'Red Pill Blues',
-    youtubeVideoId: 'aJOTlE1K90k',
+    youtubeVideoId: 'yoODn2KGosE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -140,7 +140,7 @@ const songs: Song[] = [
     title: 'Shotgun',
     artist: 'George Ezra',
     album: "Staying at Tamara's",
-    youtubeVideoId: 'v_B3qkp4nO4',
+    youtubeVideoId: 's4FPe5qwTro',
     imageSelection: 'album',
     imageSources: {
       album:
