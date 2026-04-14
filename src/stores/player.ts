@@ -7,6 +7,7 @@ import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
 import { usePlausibleAnalytics } from '@/composables/usePlausibleAnalytics'
 import { getSongsForSortOrder } from '@/utils/chartOrder'
+import { getYearData } from '@/data'
 
 const STORAGE_KEY = 'flashback-miniplayer'
 const SAVE_INTERVAL_MS = 3_000
@@ -79,10 +80,7 @@ const STALL_TIMEOUT_MS = 4_000
 const EMBED_BLOCKED_ERROR_CODES = new Set([101, 150])
 const isEmbedBlockedError = (errorCode?: number) =>
   errorCode !== undefined && EMBED_BLOCKED_ERROR_CODES.has(errorCode)
-const getYearSongs = async (year: number) => {
-  const { getYearData } = await import('@/data')
-  return getYearData(year) ?? null
-}
+const getYearSongs = async (year: number) => getYearData(year) ?? null
 
 export const usePlayerStore = defineStore('player', () => {
   const { ensureLoaded, registerActive, clearActive } = useYouTubeApi()

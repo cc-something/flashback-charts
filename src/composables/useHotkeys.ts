@@ -4,6 +4,7 @@ import type { Song } from '@/types/song'
 import { usePlayerStore } from '@/stores/player'
 import { useChartStore } from '@/stores/chart'
 import { useToastStore } from '@/stores/toast'
+import { getYearData } from '@/data'
 import { getDecadeYears } from '@/content/chartContent'
 import { getYearPath } from '@/utils/url'
 
@@ -67,13 +68,11 @@ export const useHotkeys = (
     window.dispatchEvent(new Event(PLAYER_FULLSCREEN_CLOSE_EVENT))
   const getTopSong = async (): Promise<Song | null> => {
     if (route.name !== 'year') return null
-    const { getYearData } = await import('@/data')
     const songs = getYearData(chart.selectedYear) ?? []
     if (chart.sortOrder === 'desc') return songs[songs.length - 1] ?? null
     return songs[0] ?? null
   }
   const getRandomSongForYears = async (years: number[]) => {
-    const { getYearData } = await import('@/data')
     const songs = years.flatMap((year) =>
       (getYearData(year) ?? [])
         .filter((song) => song.youtubeVideoId)

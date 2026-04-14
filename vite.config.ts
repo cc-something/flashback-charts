@@ -22,6 +22,16 @@ export default defineConfig({
   define: {
     __SOCIAL_IMAGE_VERSION__: JSON.stringify(socialImageVersion),
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('/src/data/')) return 'chart-data'
+          if (id.includes('/node_modules/')) return 'vendor'
+        },
+      },
+    },
+  },
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {
