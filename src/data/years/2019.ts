@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Old Town Road',
     artist: 'Lil Nas X featuring Billy Ray Cyrus',
     album: '7 (EP)',
-    youtubeVideoId: 'w2Ov5jzm3j8',
+    youtubeVideoId: '4GbZGloCM8M',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'Dance Monkey',
     artist: 'Tones and I',
     album: 'The Kids Are Coming (EP)',
-    youtubeVideoId: 'q0hyYWKXF0Q',
+    youtubeVideoId: '1__CAdTJ5JU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Bad Guy',
     artist: 'Billie Eilish',
     album: 'When We All Fall Asleep, Where Do We Go?',
-    youtubeVideoId: 'DyDfgMOUjCI',
+    youtubeVideoId: 'rhl2KO3MljY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Someone You Loved',
     artist: 'Lewis Capaldi',
     album: 'Divinely Uninspired to a Hellish Extent',
-    youtubeVideoId: 'bCuhuePlP8o',
+    youtubeVideoId: '_J6_xSwm-uU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: "I Don't Care",
     artist: 'Ed Sheeran and Justin Bieber',
     album: 'No.6 Collaborations Project',
-    youtubeVideoId: 'y83x7MgzWOA',
+    youtubeVideoId: 'b9xuH41_Tcw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Wow.',
     artist: 'Post Malone',
     album: "Hollywood's Bleeding",
-    youtubeVideoId: '393C3pr2ioY',
+    youtubeVideoId: 'g11_3zbzK00',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Señorita',
     artist: 'Shawn Mendes and Camila Cabello',
     album: 'Shawn Mendes / Romance',
-    youtubeVideoId: 'Pkh8UtuejGw',
+    youtubeVideoId: 'dO4dncwDn6U',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Shallow',
     artist: 'Lady Gaga and Bradley Cooper',
     album: 'A Star Is Born: Original Motion Picture Soundtrack',
-    youtubeVideoId: 'bo_efYhYU2A',
+    youtubeVideoId: 'eWupm_cePX8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: '7 Rings',
     artist: 'Ariana Grande',
     album: 'Thank U, Next',
-    youtubeVideoId: 'QYh6mYIJG2Y',
+    youtubeVideoId: 'UzebZ9zVvSo',
     imageSelection: 'album',
     imageSources: {
       album:
