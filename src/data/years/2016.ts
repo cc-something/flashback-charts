@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: "Don't Let Me Down",
     artist: 'The Chainsmokers featuring Daya',
     album: 'Collage',
-    youtubeVideoId: 'Io0fBr1XBUA',
+    youtubeVideoId: 'kS_d9c7kL7E',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: "Can't Stop the Feeling!",
     artist: 'Justin Timberlake',
     album: 'Trolls: Original Motion Picture Soundtrack',
-    youtubeVideoId: 'ru0K8uYEZWw',
+    youtubeVideoId: 'ERaHdHEl2c0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Cheap Thrills',
     artist: 'Sia',
     album: 'This Is Acting',
-    youtubeVideoId: 'nYh-n-O1nJo',
+    youtubeVideoId: 'mY9fNwGE7YA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -140,7 +140,7 @@ const songs: Song[] = [
     title: 'Stressed Out',
     artist: 'Twenty One Pilots',
     album: 'Blurryface',
-    youtubeVideoId: 'pXRviuL6vMY',
+    youtubeVideoId: 'ZrzO6497LTo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: 'Love Yourself',
     artist: 'Justin Bieber',
     album: 'Purpose',
-    youtubeVideoId: 'oyEuk8j8imI',
+    youtubeVideoId: 'OvyF0NMhnLQ',
     imageSelection: 'album',
     imageSources: {
       album:
