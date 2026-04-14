@@ -2,7 +2,11 @@ import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { getAvailableYears, getYearData } from '@/data'
-import type { Song, SongEmbedIntegrity } from '@/types/song'
+import type {
+  Song,
+  SongEmbedIntegrity,
+  SongEmbedIntegrityReason,
+} from '@/types/song'
 import {
   classifySongAudit,
   getVideoMetadata,
@@ -36,6 +40,8 @@ const getDecadeForYear = (year: number) => `${Math.floor(year / 10) * 10}s`
 const getDecadeStartFromDocName = (docName: (typeof decadeDocNames)[number]) =>
   Number(docName.replace('s.md', ''))
 const getSongKey = (year: number, rank: number) => `${year}:${rank}`
+const getReasonLiteral = (reason: SongEmbedIntegrityReason) =>
+  JSON.stringify(reason)
 
 const groupByDecade = (records: SongAuditRecord[]) => {
   const grouped = new Map<string, SongAuditRecord[]>()
@@ -53,9 +59,14 @@ const getRegistryContent = (records: SongAuditRecord[]) => {
     (left, right) => left - right,
   )
   const lines = [
-    "import type { SongEmbedIntegrity } from '@/types/song'",
+    "import type { SongEmbedIntegrity, SongEmbedIntegrityReason } from '@/types/song'",
     '',
-    'export const embedIntegrityRegistry: Record<number, Record<number, SongEmbedIntegrity>> = {',
+    'export type SongEmbedIntegrityEntry = {',
+    '  embedIntegrity: SongEmbedIntegrity',
+    '  embedIntegrityReason: SongEmbedIntegrityReason',
+    '}',
+    '',
+    'export const embedIntegrityRegistry: Record<number, Record<number, SongEmbedIntegrityEntry>> = {',
   ]
 
   for (const year of years) {
@@ -63,14 +74,16 @@ const getRegistryContent = (records: SongAuditRecord[]) => {
     for (const record of records
       .filter((entry) => entry.year === year)
       .sort((left, right) => left.rank - right.rank))
-      lines.push(`    ${record.rank}: '${record.embedIntegrity}',`)
+      lines.push(
+        `    ${record.rank}: { embedIntegrity: '${record.embedIntegrity}', embedIntegrityReason: ${getReasonLiteral(record.reason)} },`,
+      )
     lines.push('  },')
   }
 
   lines.push('}')
   lines.push('')
   lines.push(
-    'export const getSongEmbedIntegrity = (year: number, rank: number): SongEmbedIntegrity | undefined =>',
+    'export const getSongEmbedIntegrityEntry = (year: number, rank: number): SongEmbedIntegrityEntry | undefined =>',
   )
   lines.push('  embedIntegrityRegistry[year]?.[rank]')
   lines.push('')
@@ -185,7 +198,7 @@ const getReadmeContent = (currentContent: string) => {
   const generatedSection = [
     '## Embed Quality Audit',
     '',
-    '- The app-level `embedIntegrity` classification is now exhaustive across the corpus and lives in `src/data/embedIntegrityRegistry.ts`.',
+    '- The app-level `embedIntegrity` classification and `embedIntegrityReason` provenance are now exhaustive across the corpus and live in `src/data/embedIntegrityRegistry.ts`.',
     '- `confirmed`: current playable embed is a primary-quality upload with no compromise markers.',
     '- `suboptimal`: current embed is playable but compromised, including lyric, live, acoustic, session, cover, remix/edit, or non-official fallback uploads.',
     '- `unplayable`: documented HARD blocker with no practical embed-friendly replacement.',

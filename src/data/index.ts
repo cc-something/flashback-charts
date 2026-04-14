@@ -1,7 +1,7 @@
 import type { Song, SongEmbedIntegrity } from '@/types/song'
 import { getDecadeForYear } from '@/themes'
 import { getDecadePath, getYearPath } from '@/utils/url'
-import { getSongEmbedIntegrity } from './embedIntegrityRegistry'
+import { getSongEmbedIntegrityEntry } from './embedIntegrityRegistry'
 import songs1940, {
   source as source1940,
   description as description1940,
@@ -360,13 +360,18 @@ interface YearChartData {
   description?: string
 }
 
-const normalizeSongEmbedIntegrity = (year: number, song: Song): Song => ({
-  ...song,
-  embedIntegrity:
-    song.embedIntegrity ??
-    getSongEmbedIntegrity(year, song.rank) ??
-    defaultEmbedIntegrity,
-})
+const normalizeSongEmbedIntegrity = (year: number, song: Song): Song => {
+  const embedIntegrityEntry = getSongEmbedIntegrityEntry(year, song.rank)
+  return {
+    ...song,
+    embedIntegrity:
+      song.embedIntegrity ??
+      embedIntegrityEntry?.embedIntegrity ??
+      defaultEmbedIntegrity,
+    embedIntegrityReason:
+      song.embedIntegrityReason ?? embedIntegrityEntry?.embedIntegrityReason,
+  }
+}
 
 export type SongSearchMatch = {
   type: 'song'

@@ -108,7 +108,7 @@ Start now with the first failing year in <DECADE>.
 
 ## Embed Quality Audit
 
-- The app-level `embedIntegrity` classification is now exhaustive across the corpus and lives in `src/data/embedIntegrityRegistry.ts`.
+- The app-level `embedIntegrity` classification and `embedIntegrityReason` provenance are now exhaustive across the corpus and live in `src/data/embedIntegrityRegistry.ts`.
 - `confirmed`: current playable embed is a primary-quality upload with no compromise markers.
 - `suboptimal`: current embed is playable but compromised, including lyric, live, acoustic, session, cover, remix/edit, or non-official fallback uploads.
 - `unplayable`: documented HARD blocker with no practical embed-friendly replacement.

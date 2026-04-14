@@ -111,8 +111,12 @@ describe('searchCatalog', () => {
 
   it('returns registry-backed embed integrity for legacy song data', () => {
     expect(getYearData(2002)?.[5].embedIntegrity).toBe('confirmed')
+    expect(getYearData(2002)?.[5].embedIntegrityReason).toBe('primary embed')
     expect(searchSongs('a thousand miles')[0]?.song.embedIntegrity).toBe(
       'confirmed',
+    )
+    expect(searchSongs('a thousand miles')[0]?.song.embedIntegrityReason).toBe(
+      'primary embed',
     )
   })
 
@@ -127,9 +131,12 @@ describe('searchCatalog', () => {
         const songKey = `${year}:${song.rank}`
         expect(seenSongKeys.has(songKey)).toBe(false)
         seenSongKeys.add(songKey)
-        expect(embedIntegrityRegistry[year]?.[song.rank]).toBe(
+        expect(embedIntegrityRegistry[year]?.[song.rank]?.embedIntegrity).toBe(
           song.embedIntegrity,
         )
+        expect(
+          embedIntegrityRegistry[year]?.[song.rank]?.embedIntegrityReason,
+        ).toBe(song.embedIntegrityReason)
       }
     }
   })
