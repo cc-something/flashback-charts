@@ -12,13 +12,15 @@ Success on Spotify should be measured through:
 - branded search lift for `Flashback Charts` and `flashbackcharts.com`
 - occasional assisted traffic from profile and playlist descriptions
 
+Use [`../SOCIAL_VOICE_GUIDE.md`](../SOCIAL_VOICE_GUIDE.md) for every playlist title, description, and promotional mention.
+
 ## Profile Setup
 
 Profile name: `Flashback Charts Australia`
 
 Short bio copy:
 
-`Australia's chart archive from 1940 to today. Explore year-by-year music history at flashbackcharts.com`
+`Australia's chart archive from 1940 to today. Explore the year-by-year charts at flashbackcharts.com`
 
 Profile image brief:
 
@@ -26,7 +28,7 @@ Use a simple square mark derived from the existing site identity. It should read
 
 Header principle:
 
-Keep decade playlists visually related to the site's decade aesthetics, but simplify them hard for square cover art. Small text and busy collage work will disappear in Spotify search.
+Keep decade playlists visually related to the site's decade aesthetics, but simplify them hard for square cover art. Small text and busy collage disappear in Spotify search.
 
 ## Playlist Naming Rules
 
@@ -40,11 +42,11 @@ Keep decade playlists visually related to the site's decade aesthetics, but simp
 
 Use this structure:
 
-`Public playlist from Flashback Charts Australia. [What this playlist covers in plain language.] Explore the full year-by-year chart archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. [What this playlist covers in plain language.] More year-by-year charts at flashbackcharts.com.`
 
 Example:
 
-`Public playlist from Flashback Charts Australia. The biggest songs Australians heard across the 1980s, pulled from our year-by-year chart archive. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Big songs from Australian charts across the 1980s. More year-by-year charts at flashbackcharts.com.`
 
 ## Publishing Cadence
 
@@ -73,7 +75,7 @@ Search Intent: `1940s songs`, `old Australian chart songs`, `wartime era hits`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. A guided listen through the songs Australians heard across the 1940s, built from our year-by-year chart archive. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Songs Australians heard across the 1940s, pulled from our year-by-year charts. More at flashbackcharts.com.`
 
 Track Selection Rule: start with `3` to `5` songs per available year where Spotify versions exist, biasing to recognisable standards and top-ranked tracks
 
@@ -93,7 +95,7 @@ Search Intent: `1950s hits`, `oldies`, `Australian chart classics`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. The songs that shaped Australian charts in the 1950s, gathered from our year-by-year archive. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Songs that shaped the Australian charts in the 1950s. More year-by-year charts at flashbackcharts.com.`
 
 Track Selection Rule: lean on top `5` songs from the biggest years first, then widen to ranks `6` to `10` where the set needs more variety
 
@@ -113,7 +115,7 @@ Search Intent: `1960s hits`, `Beatles era songs`, `60s chart music`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. Australian chart favourites from the 1960s, from early pop polish to the decade's bigger late-era shifts. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Australian chart favourites from the 1960s, from early pop polish to the later shift in sound. More at flashbackcharts.com.`
 
 Track Selection Rule: spread selections across the decade so the playlist shows the musical change from early to late `60s`
 
@@ -133,7 +135,7 @@ Search Intent: `70s hits`, `classic chart songs`, `Australian 1970s playlist`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. Australian chart favourites from the 1970s, from early singalongs to later disco and softer rock. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Australian chart favourites from the 1970s, from early singalongs to disco and softer rock. More at flashbackcharts.com.`
 
 Track Selection Rule: include obvious anchor tracks first, then round out with one or two less-played chart records from strong years
 
@@ -153,7 +155,7 @@ Search Intent: `80s hits`, `synth pop`, `best 1980s songs Australia`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. Big Australian chart songs from the 1980s, from soundtrack smashes to glossy pop and giant choruses. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Big Australian chart songs from the 1980s, from soundtrack smashes to glossy pop. More at flashbackcharts.com.`
 
 Track Selection Rule: start with songs from the strongest traffic years like `1984`, then expand to one standout cluster from each year
 
@@ -173,7 +175,7 @@ Search Intent: `90s hits`, `90s chart songs`, `Australian 90s playlist`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. Australian chart favourites from the 1990s, from ballads and alt-pop to dance tracks and huge crossover singles. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Australian chart favourites from the 1990s, from ballads and alt-pop to dance tracks and crossover singles. More at flashbackcharts.com.`
 
 Track Selection Rule: include at least `3` high-recognition tracks from each early, mid, and late `90s` phase so the playlist does not collapse into one sound
 
@@ -193,7 +195,7 @@ Search Intent: `2000s hits`, `throwback playlist`, `Australian pop 2000s`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. The songs that dominated Australian charts across the 2000s, from pop TV breakouts to rap crossover and radio staples. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Songs that dominated Australian charts across the 2000s, from pop TV breakouts to rap crossover and radio staples. More at flashbackcharts.com.`
 
 Track Selection Rule: keep the first `20` tracks highly recognisable, then add deeper chart cuts underneath for replay value
 
@@ -213,9 +215,9 @@ Search Intent: `2010s hits`, `party throwbacks`, `best pop songs 2010s`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. Australian chart favourites from the 2010s, with the decade's biggest pop, dance, and crossover songs in one playlist. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Australian chart favourites from the 2010s, with the decade's biggest pop, dance, and crossover songs. More at flashbackcharts.com.`
 
-Track Selection Rule: bias toward instantly recognisable singles and avoid overly niche album cuts that weaken search satisfaction
+Track Selection Rule: bias toward recognisable singles and avoid overly niche album cuts that weaken search satisfaction
 
 Cover Art Brief: clean geometric styling, brighter whites, minimal grid, strong `2010s` label
 
@@ -233,7 +235,7 @@ Search Intent: `current chart songs`, `2020s pop hits`, `Australia hits playlist
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. The biggest songs from Australia's 2020s charts so far, pulled from our year-by-year archive. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. The biggest songs from Australia's 2020s charts so far, pulled from our year-by-year charts. More at flashbackcharts.com.`
 
 Track Selection Rule: refresh with recent chart-dominant tracks first, then keep the list balanced across `2020` onward rather than overloading the current year
 
@@ -253,7 +255,7 @@ Search Intent: `number one songs`, `#1 hits Australia`, `best chart winners`
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. A cross-decade run through Australian year-end #1 songs, built from the Flashback Charts archive. Explore the full year-by-year site at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. A cross-decade run through Australian year-end #1 songs from the Flashback Charts site. More year-by-year charts at flashbackcharts.com.`
 
 Track Selection Rule: one song per year where Spotify has a usable version, prioritising clean availability and recognisable recordings
 
@@ -273,7 +275,7 @@ Search Intent: `forgotten hits`, `old songs you forgot`, `deep nostalgia playlis
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. Songs that charted big in Australia but do not always show up in the first nostalgia conversation. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. Songs that charted big in Australia but do not always show up in the first nostalgia conversation. More at flashbackcharts.com.`
 
 Track Selection Rule: pull mostly from ranks `2` to `10`, favouring tracks that trigger recognition without being the most overplayed choices
 
@@ -293,7 +295,7 @@ Search Intent: `best chart songs`, `best #1 hits`, `greatest Australian chart so
 
 Description Copy:
 
-`Public playlist from Flashback Charts Australia. A tighter set of standout year-end winners from across the archive, chosen to introduce new listeners to the broader site. Explore the full archive at flashbackcharts.com.`
+`Public playlist from Flashback Charts Australia. A tighter set of standout year-end winners chosen to introduce new listeners to the site. More at flashbackcharts.com.`
 
 Track Selection Rule: curated shortlist of the strongest-performing or most conversation-worthy year-end winners across multiple decades
 
@@ -305,11 +307,11 @@ Refresh Cadence: monthly
 
 1. Publish playlists `5`, `6`, `7`, `8`, `9`, and `10` first because they have the strongest search overlap with current nostalgia and streaming behaviour.
 2. Publish playlists `3`, `4`, `11`, and `12` next to widen discovery.
-3. Publish playlists `1` and `2` once the profile already has enough visible activity to feel established.
+3. Publish playlists `1` and `2` once the profile has enough visible activity to feel established.
 
 ## Operational Notes
 
 - Keep every playlist public.
 - Keep descriptions consistent so the brand name repeats naturally.
 - Do not rely on Spotify users clicking out immediately.
-- Treat Spotify as a searchable memory layer that increases the odds people later search for `Flashback Charts` directly.
+- Treat Spotify as a searchable memory layer that makes it more likely people later search for `Flashback Charts` directly.

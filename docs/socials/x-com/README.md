@@ -8,6 +8,7 @@
 - Tone: sharper, lighter, more opinion-led
 - Target length: `90` to `140` characters before the link
 - Structure: argument first, then one question
+- Voice standard: follow [`../SOCIAL_VOICE_GUIDE.md`](../SOCIAL_VOICE_GUIDE.md)
 
 ## Week 1
 
@@ -19,7 +20,7 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1984/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day01_year_spotlight`
 
-Hook: `1984 might be the easiest year in the archive to defend.`
+Hook: `1984 is easy to defend.`
 
 Body Copy:
 
@@ -55,7 +56,7 @@ Objective: decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1980s/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day03_decade_summary`
 
-Hook: `If you need one archive page to sell the site, the 1980s is close to unbeatable.`
+Hook: `If you need one page to sell the site, start with the 1980s.`
 
 Body Copy:
 
@@ -91,11 +92,11 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2003/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day05_number_one_flashback`
 
-Hook: `2003 ending with Guy Sebastian at #1 says a lot about that moment in Australia.`
+Hook: `Guy Sebastian at #1 in 2003 says a lot about that moment in Australia.`
 
 Body Copy:
 
-Reality TV breakout, huge ballad, then Eminem and Delta Goodrem right behind it. Does the `2003` order still work?
+Reality TV breakout, huge ballad, then Eminem and Delta Goodrem right behind it. Does the `2003` order hold up?
 
 CTA: `Browse 2003.`
 
@@ -109,11 +110,11 @@ Objective: curiosity clicks
 
 Landing URL: `https://flashbackcharts.com/au/1964/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day06_forgotten_hit`
 
-Hook: `1964 is a great reminder that early Beatles-era charts still move fast.`
+Hook: `1964 is a reminder that early Beatles-era charts move fast.`
 
 Body Copy:
 
-Australia's `1964` page opens with The Beatles and keeps moving. Worth revisiting if you have not looked past the obvious hits in a while.
+Australia's `1964` page opens with The Beatles and keeps moving. Good one if you have not looked past the obvious hits in a while.
 
 CTA: `Open 1964.`
 
@@ -147,11 +148,11 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1991/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day08_year_spotlight`
 
-Hook: `1991 is stronger than the usual nostalgia summary gives it credit for.`
+Hook: `1991 is stronger than the usual summary gives it credit for.`
 
 Body Copy:
 
-Bryan Adams at `#1`, but the year keeps shifting between heartbreak, bounce, and early `90s` edge. Which song dates `1991` instantly?
+Bryan Adams at `#1`, but the year keeps shifting between heartbreak, bounce, and early `90s` edge. Which song dates `1991` fastest?
 
 CTA: `Read 1991.`
 
@@ -183,7 +184,7 @@ Objective: decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1990s/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day10_decade_summary`
 
-Hook: `The 1990s archive proves the decade was messier than the cliché version.`
+Hook: `The 1990s were messier than the cliché version.`
 
 Body Copy:
 
@@ -219,7 +220,7 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1956/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day12_number_one_flashback`
 
-Hook: `1956 at #1: Johnnie Ray, not rock chaos.`
+Hook: `1956 at #1: Johnnie Ray, not rock and roll chaos.`
 
 Body Copy:
 
@@ -237,7 +238,7 @@ Objective: curiosity clicks
 
 Landing URL: `https://flashbackcharts.com/au/1988/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day13_forgotten_hit`
 
-Hook: `1988 is more dramatic than most people remember.`
+Hook: `1988 is more dramatic than people remember.`
 
 Body Copy:
 
@@ -255,7 +256,7 @@ Objective: decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2000s/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day14_best_of_week`
 
-Hook: `Best 2000s chart year?`
+Hook: `Best 2000s chart year.`
 
 Body Copy:
 
@@ -275,11 +276,11 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2000/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day15_year_spotlight`
 
-Hook: `2000 sounds exactly like a turn-of-the-millennium chart should.`
+Hook: `2000 sounds like a turn-of-the-millennium chart should.`
 
 Body Copy:
 
-`I'm Outta Love` at `#1`. Maximum polished-pop confidence. What still feels biggest on the `2000` chart?
+`I'm Outta Love` at `#1`. Maximum polished-pop confidence. What feels biggest on the `2000` chart now?
 
 CTA: `Read 2000.`
 
@@ -293,7 +294,7 @@ Objective: replies and clicks
 
 Landing URL: `https://flashbackcharts.com/au/1970/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day16_artist_hook`
 
-Hook: `1970 starts with The Beatles at #1. Is that automatically game over?`
+Hook: `1970 starts with The Beatles at #1. Game over?`
 
 Body Copy:
 
@@ -311,7 +312,7 @@ Objective: decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1960s/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day17_decade_summary`
 
-Hook: `The 1960s archive might be the fastest-moving decade on the site.`
+Hook: `The 1960s might be the fastest-moving decade on the site.`
 
 Body Copy:
 
@@ -347,7 +348,7 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1947/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day19_number_one_flashback`
 
-Hook: `1947 is the flex year in the archive.`
+Hook: `1947 is the flex year on the site.`
 
 Body Copy:
 
@@ -365,7 +366,7 @@ Objective: decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1950s/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day20_forgotten_hit`
 
-Hook: `The 1950s archive is full of songs people recognise faster than they can name.`
+Hook: `The 1950s are full of songs people recognise faster than they can name.`
 
 Body Copy:
 
@@ -403,11 +404,11 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2024/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day22_year_spotlight`
 
-Hook: `If someone asks what Flashback Charts is, 2024 is an easy first link.`
+Hook: `If someone asks what Flashback Charts is, send them 2024 first.`
 
 Body Copy:
 
-Recent enough to feel active, structured enough to show the site's value immediately. Open `2024`, then jump backwards.
+Recent enough to feel active, structured enough to show the site's value fast. Open `2024`, then jump backwards.
 
 CTA: `Browse 2024.`
 
@@ -439,7 +440,7 @@ Objective: decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2010s/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day24_decade_summary`
 
-Hook: `The 2010s archive already feels like recent nostalgia.`
+Hook: `The 2010s already feel like recent nostalgia.`
 
 Body Copy:
 
@@ -475,7 +476,7 @@ Objective: year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1970/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day26_number_one_flashback`
 
-Hook: `Some #1s are enough to make you open the whole year.`
+Hook: `Some #1 songs make you open the whole year.`
 
 Body Copy:
 
@@ -493,7 +494,7 @@ Objective: curiosity clicks
 
 Landing URL: `https://flashbackcharts.com/au/1991/?utm_source=xcom&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day27_forgotten_hit`
 
-Hook: `1991 has more weirdly specific chart memories than people remember.`
+Hook: `1991 has more oddly specific chart memories than people remember.`
 
 Body Copy:
 

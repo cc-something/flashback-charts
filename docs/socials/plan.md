@@ -6,6 +6,8 @@ Drive consistent, compounding awareness for `flashbackcharts.com` by turning the
 
 The site covers Australian charts from `1940` to `2025`, so the strategy should segment by memory window rather than talk to every age group in the same voice.
 
+All copy in this directory should follow [`SOCIAL_VOICE_GUIDE.md`](./SOCIAL_VOICE_GUIDE.md).
+
 ## Consumer Research
 
 | Channel  | Research signal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Best-fit audience                                                  | Role in mix                                    |
@@ -21,7 +23,8 @@ The site covers Australian charts from `1940` to `2025`, so the strategy should 
 - Age: `35-64`
 - Channels: Facebook first, X.com second
 - Memory window: `1970s` to `2000s`
-- Best hooks: "Do you remember...", "What was the real song of the year?", "This chart still feels unbeatable"
+- Best hooks: "Do you remember...", "What was the real song of the year?", "This chart still wins"
+- Best hooks: "What was the real song of the year?", "Who owns this year now?", "Which chart year wins?"
 
 ### Segment 2: Legacy nostalgia
 
@@ -29,12 +32,14 @@ The site covers Australian charts from `1940` to `2025`, so the strategy should 
 - Channels: Facebook
 - Memory window: `1950s` to `1970s`
 - Best hooks: chart memories, Beatles-era posts, singalong classics, early TV/radio nostalgia
+- Best hooks: chart memories, Beatles-era posts, singalong classics, early TV and radio nostalgia
 
 ### Segment 3: Discovery and debate
 
 - Age: `25-44`
 - Channels: X.com and Spotify
 - Memory window: `1990s` to `2020s`
+- Best hooks: chart battles, "deserved #1?", pop-culture contrast posts, searchable playlist titles
 - Best hooks: chart battles, "deserved #1?", pop-culture contrast posts, searchable playlist titles
 
 ## Channel Roles
@@ -155,6 +160,7 @@ Creative direction:
 - Prioritise comment bait on Facebook and opinion bait on X.com.
 - Use decade pages for broad prompts and year pages for specific artist or `#1` hooks.
 - If a post underperforms, test a stronger first `5` words before changing the visual.
+- Run every new post against [`SOCIAL_VOICE_GUIDE.md`](./SOCIAL_VOICE_GUIDE.md) before publishing.
 
 ## Measurement Notes
 
@@ -167,3 +173,4 @@ Creative direction:
 - Facebook calendar: [`docs/socials/facebook/README.md`](./facebook/README.md)
 - X.com calendar: [`docs/socials/x-com/README.md`](./x-com/README.md)
 - Spotify discovery plan: [`docs/socials/spotify/README.md`](./spotify/README.md)
+- Voice standard: [`docs/socials/SOCIAL_VOICE_GUIDE.md`](./SOCIAL_VOICE_GUIDE.md)

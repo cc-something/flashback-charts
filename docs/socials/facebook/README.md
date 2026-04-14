@@ -8,6 +8,7 @@
 - Tone: warm, memory-led, lightly conversational
 - Target length: `180` to `250` characters before the link
 - Structure: hook first, one proof point, one prompt
+- Voice standard: follow [`../SOCIAL_VOICE_GUIDE.md`](../SOCIAL_VOICE_GUIDE.md)
 
 ## Week 1
 
@@ -19,11 +20,11 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1984/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day01_year_spotlight`
 
-Hook: `1984 still feels absurdly stacked.`
+Hook: `1984 is loaded.`
 
 Body Copy:
 
-If you needed one year to explain why `80s` pop felt huge, `1984` is close to unbeatable. Springsteen, George Michael, Cyndi Lauper, Lionel Richie, all over one Australian top 10. Which song still owns that year for you?
+If you needed one year to explain why `80s` pop was huge, `1984` makes the case fast. Springsteen, George Michael, Cyndi Lauper, and Lionel Richie all turn up in one Australian top 10. Which song gets your vote?
 
 CTA: `Open the 1984 chart and pick the real song of the year.`
 
@@ -37,11 +38,11 @@ Objective: drive comments and year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1997/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day02_artist_hook`
 
-Hook: `1997 was sentimental, chaotic, and impossible to ignore.`
+Hook: `1997 is a wild chart.`
 
 Body Copy:
 
-`1997` gave Australia Elton John, Aqua, Chumbawamba, Savage Garden, No Doubt, and The Prodigy in one top 10. It still reads like a perfect late-`90s` mood swing. Which artist puts you back there first?
+`1997` gave Australia Elton John, Aqua, Chumbawamba, Savage Garden, No Doubt, and The Prodigy in one top 10. Few charts swing this hard. Which artist takes you straight back?
 
 CTA: `Browse the 1997 chart and call out the artist that still hits first.`
 
@@ -55,11 +56,11 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1980s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day03_decade_summary`
 
-Hook: `The 1980s chart story is bigger than one song.`
+Hook: `The 1980s are better by year than by stereotype.`
 
 Body Copy:
 
-The `1980s` archive pulls the whole decade into one place: synth hooks, soundtrack singles, power ballads, and giant choruses everywhere. If your music memory runs through Countdown and cassettes, this is the page to start with. Which year grabs you first?
+The `1980s` page pulls the decade into one view: synth hooks, soundtrack singles, power ballads, and giant choruses. If your music memory runs through Countdown and cassettes, start here. Which year do you click first?
 
 CTA: `Open the 1980s archive and jump to your first instinct year.`
 
@@ -73,11 +74,11 @@ Objective: drive comments
 
 Landing URL: `https://flashbackcharts.com/au/1977/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day04_chart_battle`
 
-Hook: `Did 1977 get its real defining song right?`
+Hook: `Did 1977 get the right song at #1?`
 
 Body Copy:
 
-Australia put `Don't Cry for Me Argentina` at `#1` in `1977`, but this feels like a year built for arguments. Was it really the song people remember most, or would you give the top spot to something else?
+Australia put `Don't Cry for Me Argentina` at `#1` in `1977`, but this year is made for arguments. Was that the right call, or does another song take it now?
 
 CTA: `Read the 1977 chart and tell us your alternative #1.`
 
@@ -91,11 +92,11 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2003/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day05_number_one_flashback`
 
-Hook: `2003's #1 says a lot about Australian pop TV culture.`
+Hook: `2003 says a lot about Australian pop TV culture.`
 
 Body Copy:
 
-`Angels Brought Me Here` finished as Australia's `#1` song of `2003`, which instantly dates the year. But the full chart also had Eminem, Delta Goodrem, and The Black Eyed Peas. Does the final order still feel right?
+`Angels Brought Me Here` finished as Australia's `#1` song of `2003`, which dates the year straight away. But the chart also had Eminem, Delta Goodrem, and The Black Eyed Peas. Does the order hold up?
 
 CTA: `Open the 2003 chart and decide if the #1 still holds up.`
 
@@ -109,11 +110,11 @@ Objective: drive curiosity clicks
 
 Landing URL: `https://flashbackcharts.com/au/1964/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day06_forgotten_hit`
 
-Hook: `1964 is one of those charts people forget to revisit.`
+Hook: `1964 deserves more revisits.`
 
 Body Copy:
 
-`1964` still has that thrilling transition energy: early Beatlemania, clean hooks, and radio polish before the later `60s` got stranger. Australia's chart opens with The Beatles and keeps moving. Which track still feels freshest?
+`1964` has early Beatlemania, clean hooks, and radio polish before the later `60s` took a different turn. Australia's chart opens with The Beatles and keeps moving. Which track holds up best?
 
 CTA: `Browse 1964 and spot the track you had not thought about in years.`
 
@@ -127,11 +128,11 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1970s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week1&utm_content=day07_best_of_week`
 
-Hook: `If your taste starts in the 1970s, this is the page to keep bookmarked.`
+Hook: `If your taste starts in the 1970s, start here.`
 
 Body Copy:
 
-The `1970s` archive gives you the full sweep: singalong pop, glam, softer rock, disco, and some of Australia's most recognisable chart years. If you had to choose one `70s` year with the strongest top 10, which year wins?
+The `1970s` page gives you the full sweep: singalong pop, glam, softer rock, disco, and some of Australia's most recognisable chart years. If you had to choose one `70s` year with the strongest top 10, which one wins?
 
 CTA: `Open the 1970s archive and pick the best year of the decade.`
 
@@ -147,13 +148,13 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1991/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day08_year_spotlight`
 
-Hook: `1991 moved between heartbreak and bounce better than people remember.`
+Hook: `1991 moves between heartbreak and bounce.`
 
 Body Copy:
 
-Australia's `1991` chart runs on two moods at once: giant emotional choruses and brighter club-pop. Start with Bryan Adams at `#1`, then look down the list. Which song feels most locked to that year now?
+Australia's `1991` chart runs on two moods at once: giant emotional choruses and brighter club-pop. Start with Bryan Adams at `#1`, then scan the list. Which song is most tied to that year for you?
 
-CTA: `Open the 1991 chart and pick the song that dates the year instantly.`
+CTA: `Open the 1991 chart and pick the song that dates the year fastest.`
 
 Image Brief: Use `public/og/au/year-1991.jpg`. Custom option: deep blue and pink palette with one large `1991` headline and soft spotlight gradients.
 
@@ -169,7 +170,7 @@ Hook: `2011 had zero interest in subtlety.`
 
 Body Copy:
 
-If you want a chart built for maximum energy, `2011` is hard to beat. `Party Rock Anthem` finished at `#1`, and the rest of the year is just as oversized. Which artist from `2011` still defines that era for you?
+If you want a chart with maximum energy, `2011` is tough to top. `Party Rock Anthem` finished at `#1`, and the rest of the year is just as oversized. Which artist from `2011` defines that era for you?
 
 CTA: `Browse the 2011 top 10 and name the artist that defines it for you.`
 
@@ -183,11 +184,11 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1990s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day10_decade_summary`
 
-Hook: `The 1990s archive is where the decade stops being a stereotype and starts feeling real again.`
+Hook: `The 1990s look better when you break them down year by year.`
 
 Body Copy:
 
-People flatten the `1990s` into a couple of genres, but the decade page shows how mixed it really was. Ballads, dance-pop, alt-rock, novelty hits, all side by side. If you had to reopen one `90s` year first, which would it be?
+People flatten the `1990s` into a couple of genres, but the decade page shows how mixed it really was. Ballads, dance-pop, alt-rock, novelty hits, all side by side. Which `90s` year would you reopen first?
 
 CTA: `Open the 1990s archive and jump to the year you replay first.`
 
@@ -201,7 +202,7 @@ Objective: drive comments and clicks
 
 Landing URL: `https://flashbackcharts.com/au/2024/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day11_chart_battle`
 
-Hook: `2024 is recent enough to argue about properly.`
+Hook: `2024 is recent enough to argue about.`
 
 Body Copy:
 
@@ -219,11 +220,11 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1956/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day12_number_one_flashback`
 
-Hook: `1956 feels like another music world entirely.`
+Hook: `1956 comes from a very different music world.`
 
 Body Copy:
 
-Australia's `1956` chart opens with `Just Walking in the Rain`, and the whole page carries that early chart-era atmosphere: big voices, clean arrangements, and radio-first songs. Which track still sounds timeless to you?
+Australia's `1956` chart opens with `Just Walking in the Rain`, and the whole page carries that early chart-era atmosphere: big voices, clean arrangements, and radio-first songs. Which track sounds timeless to you?
 
 CTA: `Open the 1956 chart and see which song still sounds timeless.`
 
@@ -237,7 +238,7 @@ Objective: drive curiosity clicks
 
 Landing URL: `https://flashbackcharts.com/au/1988/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day13_forgotten_hit`
 
-Hook: `1988 is bigger, stranger, and more soundtrack-heavy than people remember.`
+Hook: `1988 is bigger and stranger than people remember.`
 
 Body Copy:
 
@@ -255,11 +256,11 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2000s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week2&utm_content=day14_best_of_week`
 
-Hook: `The 2000s archive is built for people who miss when charts felt everywhere.`
+Hook: `The 2000s page is for people who miss when charts were everywhere.`
 
 Body Copy:
 
-Reality-TV winners, rap crossover, giant choruses, and ringtone-era hooks, the `2000s` archive is full of songs that once felt unavoidable. Which `2000s` year still feels most like your year?
+Reality-TV winners, rap crossover, giant choruses, and ringtone-era hooks, the `2000s` page is full of songs that once felt unavoidable. Which `2000s` year feels most like your year?
 
 CTA: `Open the 2000s archive and choose the strongest year in the decade.`
 
@@ -275,13 +276,13 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2000/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day15_year_spotlight`
 
-Hook: `2000 sounds exactly like a decade turning over.`
+Hook: `2000 sounds like a decade turning over.`
 
 Body Copy:
 
-Australia's `2000` chart has that high-drama millennial energy that now feels very specific to the moment. `I'm Outta Love` finished at `#1`. Which track from the top 10 still wins on replay value?
+Australia's `2000` chart has that high-drama millennial energy that now sounds very specific to the moment. `I'm Outta Love` finished at `#1`. Which track from the top 10 wins on replay value?
 
-CTA: `Browse the 2000 chart and pick the song that still feels biggest.`
+CTA: `Browse the 2000 chart and pick the song that feels biggest now.`
 
 Image Brief: Use `public/og/au/year-2000.jpg`. Go with polished silver and electric blue accents, like a millennial-era CD insert.
 
@@ -293,7 +294,7 @@ Objective: drive comments and year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1970/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day16_artist_hook`
 
-Hook: `If The Beatles are your shortcut into the archive, 1970 is the obvious click.`
+Hook: `If The Beatles are your shortcut in, start with 1970.`
 
 Body Copy:
 
@@ -311,11 +312,11 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1960s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day17_decade_summary`
 
-Hook: `The 1960s archive shows how quickly pop changed in one decade.`
+Hook: `The 1960s show how quickly pop changed.`
 
 Body Copy:
 
-The `1960s` archive starts in one musical world and ends in another. Early radio polish, then a mid-decade explosion, then bolder chart years almost one after another. Where do you think the decade really turns?
+The `1960s` start in one musical world and end in another. Early radio polish, then a mid-decade explosion, then bolder chart years one after another. Where does the decade turn for you?
 
 CTA: `Open the 1960s archive and see where the decade really turns for you.`
 
@@ -329,11 +330,11 @@ Objective: drive comments
 
 Landing URL: `https://flashbackcharts.com/au/2019/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day18_chart_battle`
 
-Hook: `2019 is one of the easiest modern charts to debate.`
+Hook: `2019 is easy to debate.`
 
 Body Copy:
 
-`Old Town Road` finished as Australia's `#1` song of `2019`, and it still feels like one of those records people either defend instantly or challenge immediately. Did `2019` get its final order right?
+`Old Town Road` finished as Australia's `#1` song of `2019`, and it is one of those records people either defend right away or challenge right away. Did `2019` get its final order right?
 
 CTA: `Open the 2019 chart and post the song you would move to #1.`
 
@@ -347,11 +348,11 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1947/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day19_number_one_flashback`
 
-Hook: `1947 is pure chart archaeology in the best way.`
+Hook: `1947 is chart archaeology.`
 
 Body Copy:
 
-If you want to show somebody how deep Flashback Charts goes, `1947` makes the point fast. `Anniversary Song` finished at `#1`, and the whole list feels like another world of listening and radio memory. Which year this old do you still revisit?
+If you want to show somebody how deep Flashback Charts goes, `1947` makes the point fast. `Anniversary Song` finished at `#1`, and the whole list comes from another world of listening and radio memory. Which year this old do you still revisit?
 
 CTA: `Open the 1947 chart and see how different a top 10 used to feel.`
 
@@ -365,11 +366,11 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1950s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day20_forgotten_hit`
 
-Hook: `The 1950s archive is full of songs people know when they hear them, even if they forget the titles.`
+Hook: `The 1950s are full of songs people know by sound first.`
 
 Body Copy:
 
-The `1950s` archive is full of songs people often know the moment they hear them. Giant voices, memorable melodies, and early chart history all in one place. Which `50s` song do you think still lands immediately?
+The `1950s` page is full of songs people often know the moment they hear them. Giant voices, memorable melodies, and early chart history all in one place. Which `50s` song still lands right away?
 
 CTA: `Browse the 1950s archive and spot the song you know by sound, not title.`
 
@@ -383,7 +384,7 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2020s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week3&utm_content=day21_best_of_week`
 
-Hook: `The 2020s page lets people zoom out from one viral hit and see the whole decade taking shape.`
+Hook: `The 2020s page lets you zoom out from one viral hit.`
 
 Body Copy:
 
@@ -403,11 +404,11 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2024/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day22_year_spotlight`
 
-Hook: `2024 is a great "start here" page for newer visitors.`
+Hook: `2024 is a good start-here page for new visitors.`
 
 Body Copy:
 
-If somebody finds Flashback Charts through a recent pop conversation, `2024` is the easiest year to send first. The chart feels familiar straight away. Which older year would you compare against it first?
+If somebody finds Flashback Charts through a recent pop conversation, `2024` is the best year to send first. The chart feels familiar straight away. Which older year would you compare it with?
 
 CTA: `Open the 2024 chart and then pick the first older year you want to compare.`
 
@@ -421,11 +422,11 @@ Objective: drive comments and clicks
 
 Landing URL: `https://flashbackcharts.com/au/1984/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day23_artist_hook`
 
-Hook: `1984 might be the easiest chart to turn into an artist argument.`
+Hook: `1984 is an easy chart to turn into an artist argument.`
 
 Body Copy:
 
-Bruce Springsteen finished `1984` at `#1`, but the same top 10 also had George Michael, Wham!, Stevie Wonder, Lionel Richie, and Cyndi Lauper. Which artist from `1984` still feels biggest now?
+Bruce Springsteen finished `1984` at `#1`, but the same top 10 also had George Michael, Wham!, Stevie Wonder, Lionel Richie, and Cyndi Lauper. Which artist from `1984` feels biggest now?
 
 CTA: `Browse 1984 and tell us which artist really owns that year.`
 
@@ -439,11 +440,11 @@ Objective: drive decade-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/2010s/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day24_decade_summary`
 
-Hook: `The 2010s archive is where streaming-era chart memory starts to lock in.`
+Hook: `The 2010s are where streaming-era chart memory starts to lock in.`
 
 Body Copy:
 
-The `2010s` archive still feels recent, but it already has a clear shape: bigger choruses, cleaner production, and global crossover pop everywhere. If you had to reopen one `2010s` year first, which would it be?
+The `2010s` still feel recent, but the decade already has a clear shape: bigger choruses, cleaner production, and global crossover pop everywhere. Which `2010s` year would you reopen first?
 
 CTA: `Open the 2010s archive and pick the year you replay first.`
 
@@ -475,11 +476,11 @@ Objective: drive year-page clicks
 
 Landing URL: `https://flashbackcharts.com/au/1970/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day26_number_one_flashback`
 
-Hook: `Some #1s need no explanation.`
+Hook: `Some #1 songs speak for themselves.`
 
 Body Copy:
 
-Australia's `1970` chart opens with `Let It Be`, which makes the page feel instantly essential. The real fun is what sits around it. Which song from the full top 10 keeps you there longest?
+Australia's `1970` chart opens with `Let It Be`, which makes the page feel essential straight away. The real fun is what sits around it. Which song from the full top 10 keeps you there longest?
 
 CTA: `Open the 1970 chart and revisit the whole top 10, not just the #1.`
 
@@ -493,7 +494,7 @@ Objective: drive curiosity clicks
 
 Landing URL: `https://flashbackcharts.com/au/1991/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day27_forgotten_hit`
 
-Hook: `1991 has more left-field chart memories than people give it credit for.`
+Hook: `1991 has more odd chart memories than people give it credit for.`
 
 Body Copy:
 
@@ -511,7 +512,7 @@ Objective: drive home-page sessions
 
 Landing URL: `https://flashbackcharts.com/au/?utm_source=facebook&utm_medium=social&utm_campaign=social_calendar_week4&utm_content=day28_archive_push`
 
-Hook: `One page, every decade, and a direct path into Australian chart history.`
+Hook: `One page for every decade of Australian chart history.`
 
 Body Copy:
 
