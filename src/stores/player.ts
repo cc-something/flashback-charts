@@ -988,8 +988,10 @@ export const usePlayerStore = defineStore('player', () => {
   const handleSeekInput = (nextValue: number[]) => {
     const v = getSeekValue(nextValue)
     if (v === null) return
-    isSeekDragging.value = true
     seekPreviewSeconds.value = v
+  }
+  const startSeekDrag = () => {
+    isSeekDragging.value = true
   }
 
   const handleSeekCommit = (nextValue: number[]) => {
@@ -1170,6 +1172,7 @@ export const usePlayerStore = defineStore('player', () => {
     toggleMute,
     setMuted,
     seekRelative,
+    startSeekDrag,
     handleSeekInput,
     handleSeekCommit,
     isSongActive,
