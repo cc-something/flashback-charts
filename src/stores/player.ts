@@ -142,6 +142,7 @@ export const usePlayerStore = defineStore('player', () => {
   let connectivityCheckPromise: Promise<boolean> | null = null
   let playerInitPromise: Promise<YTPlayer | null> | null = null
   let isPlayerReady = false
+  let loadedPlayerVideoId: string | null = null
   let loadingAttemptId = 0
   let loadingStartedAt = 0
   let clearSongHighlightTimerId: ReturnType<typeof setTimeout> | null = null
@@ -180,6 +181,7 @@ export const usePlayerStore = defineStore('player', () => {
     currentTimeSeconds: currentTimeSeconds.value,
     durationSeconds: durationSeconds.value,
     isPlayerReady,
+    loadedPlayerVideoId,
     hasYtPlayer: !!ytPlayer,
     hasPlayerInitPromise: !!playerInitPromise,
     hasMountedPlayer: hasMountedPlayer.value,
@@ -215,6 +217,8 @@ export const usePlayerStore = defineStore('player', () => {
       return null
     return ytPlayer
   }
+  const getHasLoadedCurrentSongInPlayer = (song: Song) =>
+    loadedPlayerVideoId === song.youtubeVideoId
   const showOfflinePlaybackStoppedToast = () =>
     useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
   const getSongHighlightKey = (year: number, rank: number) => `${year}-${rank}`
@@ -677,6 +681,7 @@ export const usePlayerStore = defineStore('player', () => {
     ytPlayer = null
     playerInitPromise = null
     isPlayerReady = false
+    loadedPlayerVideoId = null
     hasMountedPlayer.value = false
     pendingPlayerMountEl = null
     playerContainerEl?.replaceChildren()
@@ -824,6 +829,7 @@ export const usePlayerStore = defineStore('player', () => {
   const loadCurrentSongIntoPlayer = () => {
     const readyYtPlayer = getReadyYtPlayer()
     if (!readyYtPlayer || !currentPlaySong?.youtubeVideoId) return
+    loadedPlayerVideoId = currentPlaySong.youtubeVideoId
     logPlayerDebug('playback:load-current-song', {
       requestedVideoId: currentPlaySong.youtubeVideoId,
     })
@@ -838,6 +844,7 @@ export const usePlayerStore = defineStore('player', () => {
   const cueCurrentSongInPlayer = () => {
     const readyYtPlayer = getReadyYtPlayer()
     if (!readyYtPlayer || !currentPlaySong?.youtubeVideoId) return
+    loadedPlayerVideoId = currentPlaySong.youtubeVideoId
     logPlayerDebug('playback:cue-current-song', {
       requestedVideoId: currentPlaySong.youtubeVideoId,
     })
@@ -1250,9 +1257,14 @@ export const usePlayerStore = defineStore('player', () => {
         startLoadingAttempt()
         if (getHasImmediateNetworkConnection()) {
           const readyYtPlayer = getReadyYtPlayer()
-          if (readyYtPlayer) {
+          if (readyYtPlayer && getHasLoadedCurrentSongInPlayer(song)) {
             logPlayerDebug('play:resume-paused:play-video')
             readyYtPlayer.playVideo()
+            return
+          }
+          if (readyYtPlayer) {
+            logPlayerDebug('play:resume-paused:load-current-song')
+            loadCurrentSongIntoPlayer()
             return
           }
           const mountedPlayer = await ensurePlayerMounted()
@@ -1379,8 +1391,16 @@ export const usePlayerStore = defineStore('player', () => {
       startLoadingAttempt()
       if (getHasImmediateNetworkConnection()) {
         const readyYtPlayer = getReadyYtPlayer()
-        if (readyYtPlayer) readyYtPlayer.playVideo()
-        else {
+        if (
+          readyYtPlayer &&
+          playingSong.value &&
+          getHasLoadedCurrentSongInPlayer(playingSong.value)
+        )
+          readyYtPlayer.playVideo()
+        else if (readyYtPlayer) {
+          logPlayerDebug('playback:toggle:load-current-song')
+          loadCurrentSongIntoPlayer()
+        } else {
           const mountedPlayer = await ensurePlayerMounted()
           if (mountedPlayer && playerState.value === 'loading') {
             logPlayerDebug('playback:toggle:load-after-ensure')
