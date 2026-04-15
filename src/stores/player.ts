@@ -10,6 +10,7 @@ import { getSongsForSortOrder } from '@/utils/chartOrder'
 import { getYearData } from '@/data'
 
 const STORAGE_KEY = 'flashback-miniplayer'
+const MUTE_STORAGE_KEY = 'flashback-player-muted'
 const SAVE_INTERVAL_MS = 3_000
 const CONNECTIVITY_CHECK_TIMEOUT_MS = 1_500
 const MIN_ERROR_LOADING_MS = 1_000
@@ -62,6 +63,24 @@ const clearSavedState = () => {
   localStorage.removeItem(STORAGE_KEY)
 }
 
+const loadMutedPreference = () => {
+  if (typeof localStorage === 'undefined') return false
+  try {
+    return localStorage.getItem(MUTE_STORAGE_KEY) === 'true'
+  } catch {
+    return false
+  }
+}
+
+const saveMutedPreference = (nextMuted: boolean) => {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.setItem(MUTE_STORAGE_KEY, String(nextMuted))
+  } catch {
+    /* quota exceeded — ignore */
+  }
+}
+
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
 export type PlayTrigger =
@@ -93,7 +112,7 @@ export const usePlayerStore = defineStore('player', () => {
   const durationSeconds = ref(0)
   const isSeekDragging = ref(false)
   const seekPreviewSeconds = ref<number | null>(null)
-  const isMuted = ref(false)
+  const isMuted = ref(loadMutedPreference())
   const hasMountedPlayer = ref(false)
   const isAwaitingPlaybackStart = ref(false)
   const highlightedSongKey = ref<string | null>(null)
@@ -1064,17 +1083,14 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const toggleMute = () => {
-    if (!ytPlayer) return
-    if (isMuted.value) {
-      isMuted.value = false
-    } else {
-      isMuted.value = true
-    }
+    isMuted.value = !isMuted.value
+    saveMutedPreference(isMuted.value)
     syncMutedState()
   }
   const setMuted = (nextMuted: boolean) => {
     if (isMuted.value === nextMuted) return
     isMuted.value = nextMuted
+    saveMutedPreference(isMuted.value)
     syncMutedState()
   }
 
