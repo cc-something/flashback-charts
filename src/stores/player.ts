@@ -1019,6 +1019,11 @@ export const usePlayerStore = defineStore('player', () => {
       // Restored from storage — fall through to full play
     }
 
+    if (!isActive.value && !getIsTinyViewport()) {
+      await openSong(song, year, trigger)
+      return play(song, year, trigger)
+    }
+
     const isResumingSameSong =
       !ytPlayer &&
       playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
