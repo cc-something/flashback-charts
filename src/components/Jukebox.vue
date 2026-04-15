@@ -740,6 +740,11 @@ const closeMaxiPlayer = () => {
 
         <div :class="playerBottomSpacerClass" aria-hidden="true" />
       </div>
+      <div v-else class="invisible h-[200px] w-full" aria-hidden="true">
+        <div class="relative h-full w-full overflow-hidden bg-black">
+          <div ref="playerViewportMountHost" class="absolute inset-0" />
+        </div>
+      </div>
 
       <p
         v-if="shouldShowPlaybackStartCta && player.playingSong"
