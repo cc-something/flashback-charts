@@ -24,6 +24,9 @@ const SONG_ROW_LOOKUP_ATTEMPTS = 24
 const SONG_ROW_SCROLL_SETTLE_MS = 350
 const SONG_PLAY_EVENT_DELAY_MS = 5_000
 const TINY_VIEWPORT_MEDIA_QUERY = '(max-width: 839px)'
+const MAX_STARTUP_RECOVERY_ATTEMPTS = 1
+const PLAYER_SKIP_FAILED_MESSAGE =
+  'Playback failed to start. Skipping to the next song.'
 
 interface SavedPlayerState {
   year: number
@@ -147,6 +150,7 @@ export const usePlayerStore = defineStore('player', () => {
     source: PlayTrigger
   } | null = null
   let hasTrackedCurrentSongPlayEvent = false
+  let startupRecoveryCount = 0
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -571,6 +575,7 @@ export const usePlayerStore = defineStore('player', () => {
     pendingPlayerMountEl = null
     pendingSongPlayEventPayload = null
     hasTrackedCurrentSongPlayEvent = false
+    startupRecoveryCount = 0
   }
   const destroyPlayer = () => {
     activePlayerGeneration += 1
@@ -674,8 +679,7 @@ export const usePlayerStore = defineStore('player', () => {
       if (playerState.value !== 'loading') return
       if (!(await getHasNetworkConnection()))
         return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-      if (!isAwaitingPlaybackStart.value) return enterPlaybackStartGate()
-      enterBlockedPlaybackState()
+      await recoverPlaybackAfterStartupStall()
     }, STALL_TIMEOUT_MS)
   }
   const syncMutedState = (player: YTPlayer | null = ytPlayer) => {
@@ -712,6 +716,49 @@ export const usePlayerStore = defineStore('player', () => {
         : undefined,
     })
   }
+  const skipCurrentSongAfterFailure = async (
+    message = PLAYER_SKIP_FAILED_MESSAGE,
+  ) => {
+    const skippedSong = playingSong.value
+    const skippedYear = playingYear.value
+    const activeLoadingAttemptId = loadingAttemptId
+    if (!(await waitForMinimumErrorLoading(activeLoadingAttemptId))) return
+    useToastStore().show(message)
+    clearPlaybackSession()
+    if (skippedSong && skippedYear !== null) {
+      playerState.value = 'loading'
+      await playNext(skippedSong, skippedYear, 'skip')
+      return
+    }
+    stop()
+  }
+  const recoverPlaybackAfterStartupStall = async () => {
+    if (!currentPlaySong?.youtubeVideoId) return skipCurrentSongAfterFailure()
+    if (startupRecoveryCount >= MAX_STARTUP_RECOVERY_ATTEMPTS)
+      return skipCurrentSongAfterFailure()
+    startupRecoveryCount += 1
+    clearStallTimer()
+    clearLoadingTracking()
+    clearProgressTimer()
+    clearSeekPreview()
+    if (currentTimeSeconds.value > 0)
+      currentStartAtSeconds = currentTimeSeconds.value
+    playerState.value = 'loading'
+    destroyPlayer()
+    await nextTick()
+    await new Promise<void>((resolve) =>
+      window.requestAnimationFrame(() => resolve()),
+    )
+    try {
+      const mountedPlayer = await ensurePlayerMounted()
+      if (!mountedPlayer) return skipCurrentSongAfterFailure()
+      if (playerState.value !== 'loading' || !currentPlaySong?.youtubeVideoId)
+        return
+      loadCurrentSongIntoPlayer()
+    } catch {
+      await skipCurrentSongAfterFailure()
+    }
+  }
   const handleEmbedBlockedPlayback = async () => {
     const failedSong = playingSong.value
     if (!failedSong) return
@@ -726,12 +773,10 @@ export const usePlayerStore = defineStore('player', () => {
     if (isEmbedBlockedError(errorCode)) return handleEmbedBlockedPlayback()
     if (!(await getHasNetworkConnection()))
       return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-    if (isAwaitingPlaybackStart.value || currentTimeSeconds.value < 1) {
-      enterBlockedPlaybackState()
-      return
-    }
+    if (isAwaitingPlaybackStart.value || currentTimeSeconds.value < 1)
+      return recoverPlaybackAfterStartupStall()
     if (!isAwaitingPlaybackStart.value && retryCount >= MAX_RETRIES)
-      return enterPlaybackStartGate()
+      return recoverPlaybackAfterStartupStall()
     if (retryCount < MAX_RETRIES) {
       retryCount += 1
       playerState.value = 'loading'
@@ -741,16 +786,13 @@ export const usePlayerStore = defineStore('player', () => {
       }, 1000 * retryCount)
       return
     }
-    const skippedSong = playingSong.value
-    const skippedYear = playingYear.value
-    await failLoadingAttempt(`Failed to play "${failedSong.title}". Skipping.`)
-    if (skippedSong && skippedYear !== null)
-      playNext(skippedSong, skippedYear, 'skip')
+    await skipCurrentSongAfterFailure()
   }
   const handlePlayerStateChange = (event: YTPlayerEvent) => {
     if (!playingSong.value || playingYear.value === null) return
     if (event.data === 1 || event.data === 2) clearStallTimer()
     if (event.data === 1) {
+      startupRecoveryCount = 0
       isAwaitingPlaybackStart.value = false
       clearLoadingTracking()
       playerState.value = 'playing'
@@ -906,6 +948,7 @@ export const usePlayerStore = defineStore('player', () => {
     playingYear.value = year
     playerState.value = 'paused'
     retryCount = 0
+    startupRecoveryCount = 0
     currentPlaySong = song
     currentStartAtSeconds = undefined
     isAwaitingPlaybackStart.value = false
@@ -986,6 +1029,7 @@ export const usePlayerStore = defineStore('player', () => {
     playingYear.value = year
     startLoadingAttempt()
     retryCount = 0
+    startupRecoveryCount = 0
     currentPlaySong = song
     currentStartAtSeconds = resumeAt
     pendingSongPlayEventPayload = {
@@ -1151,20 +1195,20 @@ export const usePlayerStore = defineStore('player', () => {
   ) => {
     deactivateRickRollIfNeeded()
     const chart = useChartStore()
-    const stopAutoplayIfNeeded = () => {
-      if (trigger === 'autoplay') stop()
+    const stopPlaybackIfNeeded = () => {
+      if (trigger === 'autoplay' || trigger === 'skip') stop()
     }
     const song = fromSong ?? playingSong.value
     const year = fromYear ?? playingYear.value
     if (!song || year === null || year === undefined)
       return { songs: null, index: -1, year: null }
     const songs = await getSortedYearData(year)
-    if (!songs) return stopAutoplayIfNeeded()
+    if (!songs) return stopPlaybackIfNeeded()
 
     const index = songs.findIndex(
       (s) => s.youtubeVideoId === song.youtubeVideoId,
     )
-    if (index === -1) return stopAutoplayIfNeeded()
+    if (index === -1) return stopPlaybackIfNeeded()
 
     if (index < songs.length - 1) {
       const nextSong = songs[index + 1]
@@ -1174,11 +1218,11 @@ export const usePlayerStore = defineStore('player', () => {
 
     const yearIdx = chart.availableYears.indexOf(year)
     if (yearIdx === -1 || yearIdx >= chart.availableYears.length - 1)
-      return stopAutoplayIfNeeded()
+      return stopPlaybackIfNeeded()
     const nextYear = chart.availableYears[yearIdx + 1]
-    if (nextYear === undefined) return stopAutoplayIfNeeded()
+    if (nextYear === undefined) return stopPlaybackIfNeeded()
     const nextYearSongs = await getSortedYearData(nextYear)
-    if (!nextYearSongs?.length) return stopAutoplayIfNeeded()
+    if (!nextYearSongs?.length) return stopPlaybackIfNeeded()
     chart.selectYear(nextYear)
     await play(nextYearSongs[0], nextYear, trigger)
   }
