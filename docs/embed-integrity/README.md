@@ -1,6 +1,6 @@
 # Embed Integrity Reports
 
-Use this directory to record per-decade playback integrity status while parallel agents work in separate worktrees.
+Use this directory to preserve the playback-integrity investigation history for each decade.
 
 ## File Layout
 
@@ -32,7 +32,7 @@ Each report should include:
 - `## Year Summary`
 - `## Year Details`
 - `## Outstanding Work`
-- `## Fix Log`
+- `## Playback Test Rig Changes`
 - `## Handoff`
 
 ## Recommended Format
@@ -75,16 +75,17 @@ Use these values consistently:
 - Keep the report truthful to the last completed run.
 - If a run stops mid-year, mark that year as partial or interrupted.
 - If a year was only checked via targeted probes or helper scans, say that explicitly in `Notes`.
-- If a failure is fixed, preserve the replaced ideal `youtubeVideoId` as `Original` and the current sourced `youtubeVideoId` as `Current`.
-- If the harness itself changes, mention that in `Fix Log`.
+- If a failure is fixed, preserve the replaced ideal `youtubeVideoId` as `Original` and the historical sourced `youtubeVideoId` as `Current`.
+- If the playback test rig itself changes, mention that in `Playback Test Rig Changes`.
 
 ## Replacement History Format
 
-- `Fix Log` is the canonical machine-read source for replacement history.
-- Add one table with these columns: `Year`, `Rank`, `Original`, `Current`.
-- Keep `Year Details` aligned with the same `Rank`, `Original`, and `Current` values.
-- `Original` means the ideal video that was replaced.
-- `Current` means the currently sourced replacement video in `src/data/years/YYYY.ts`.
+- `Year Details` is the canonical machine-read source for replacement history.
+- Record replacement tables under `- Changes made:`.
+- Use one row per replacement with these columns: `Rank`, `Original`, `Current`.
+- `Original` means the preferred video that was replaced during the embed-integrity work.
+- `Current` means the alternative video that was sourced during that work, even if the live year file has since been restored to `Original`.
+- Keep all rationale notes explaining why alternatives were sourced; this directory is the historical archive.
 
 ## Terminal Prompt
 
@@ -98,26 +99,25 @@ Use this format exactly:
 - Year Summary table with one row per year
 - Year Details section with one subsection per year
 - Outstanding Work section with one bullet per unresolved item
-- Fix Log section with exact file changes
+- Playback Test Rig Changes section with test-runner or probe-script changes only
 - Handoff section with what is verified vs still open
 
 For each year:
 - run pnpm playback-integrity --year=YYYY
 - record total songs, passed, failed, and outstanding items
 - if a song fails, include year, rank, title, artist, current youtubeVideoId, failure reason, and next action
-- if you fix a song, update the year-level replacement table and the canonical `Fix Log` table with exact `Original` and `Current` IDs
+- if you fix a song, update that year’s Changes made table with exact Original and Current IDs
 - if a year is clean, still write a year subsection that says so
 - use the strongest verification label that matches the evidence obtained for that year
 
-Keep the report updated as you work. Do not edit shared registry files unless that is explicitly part of your task. Prefer fixing year data and updating the report. When you finish, leave the report in a state that tells the integrator exactly what is done and what is still outstanding.
+Keep the report updated as you work. Do not treat these docs as live app status. Prefer fixing year data and updating the report. When you finish, leave the report in a state that tells the integrator exactly what is done and what is still outstanding.
 
 Start now with the first failing year in <DECADE>.
 ```
 
-## Embed Quality Audit
+## Live App Status
 
-- The app-level `embedIntegrity` classification and `embedIntegrityReason` provenance are now exhaustive across the corpus and live in `src/data/embedIntegrityRegistry.ts`.
-- `confirmed`: current playable embed is a primary-quality upload with no compromise markers.
-- `suboptimal`: current embed is playable but compromised, including lyric, live, acoustic, session, cover, remix/edit, or non-official fallback uploads.
-- `unplayable`: documented HARD blocker with no practical embed-friendly replacement.
-- Use `pnpm exec tsx --tsconfig tsconfig.node.json scripts/sync-embed-quality.ts` to regenerate the registry and decade quality summaries from the current docs and live YouTube search metadata.
+- The app now uses `best-match` and `alternative` as its only embed-integrity states.
+- The current catalog and `src/data/embedIntegrityRegistry.ts` are intentionally flattened to `best-match`.
+- `scripts/sync-embed-quality.ts` regenerates that flat registry from the current year files only.
+- These decade reports remain for historical audit context and possible future restoration of the archived alternatives.

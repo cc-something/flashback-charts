@@ -30,18 +30,16 @@ describe('parseEmbedQualityDoc', () => {
   | Rank | Title | Artist | Video ID | Evidence | Conclusion |
   | --- | --- | --- | --- | --- | --- |
   | 1 | \`Blocked Song\` | \`Blocked Artist\` | \`blocked123\` | untouched rerun failed | no practical embed-friendly replacement found |
+- Changes made:
+
+| Rank | Original | Current |
+| ---: | --- | --- |
+| 2 | \`old123\` | \`new123\` |
+| 3 | \`older\` | \`newer\` |
+
  - Notes: targeted lyric probes recovered \`Replacement Song\`; targeted live probes recovered \`Another Song\`
 
 ## Outstanding Work
-
-## Fix Log
-
-| Year | Rank | Original | Current |
-| ---: | ---: | --- | --- |
-| 2010 | 2 | \`old123\` | \`new123\` |
-| 2010 | 3 | \`older\` | \`newer\` |
-
-## Handoff
     `)
 
     expect(parsed.blockers.get('2010:1')).toContain('untouched rerun failed')
@@ -77,17 +75,15 @@ describe('classifySongAudit', () => {
     const parsed = parseEmbedQualityDoc(`
 ### 2010
 
+- Changes made:
+
+| Rank | Original | Current |
+| ---: | --- | --- |
+| 1 | \`old123\` | \`abc123\` |
+
 - Notes: targeted lyric probes recovered \`Test Song\`
 
 ## Outstanding Work
-
-## Fix Log
-
-| Year | Rank | Original | Current |
-| ---: | ---: | --- | --- |
-| 2010 | 1 | \`old123\` | \`abc123\` |
-
-## Handoff
     `)
 
     expect(
@@ -109,15 +105,13 @@ describe('classifySongAudit', () => {
     const parsed = parseEmbedQualityDoc(`
 ### 2010
 
+- Changes made:
+
+| Rank | Original | Current |
+| ---: | --- | --- |
+| 1 | \`old123\` | \`abc123\` |
+
 ## Outstanding Work
-
-## Fix Log
-
-| Year | Rank | Original | Current |
-| ---: | ---: | --- | --- |
-| 2010 | 1 | \`old123\` | \`abc123\` |
-
-## Handoff
     `)
 
     expect(

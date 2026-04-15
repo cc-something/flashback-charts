@@ -152,48 +152,33 @@ const getCompromiseFlagsFromText = (value: string) => {
 const getTitlesFromSegment = (segment: string) =>
   [...segment.matchAll(/`([^`]+)`/gmu)].map(([, title]) => title)
 
-const getFixLogSection = (content: string) =>
-  content.split('\n## Fix Log')[1]?.split('\n## Handoff')[0] ?? ''
-
-const getFixLogReplacementRows = (content: string) =>
-  getTableRows(getFixLogSection(content)).flatMap((row) => {
-    const columns = row
-      .split('|')
-      .map((column) => column.trim())
-      .filter(Boolean)
-    const [year, rank, originalVideoId, currentVideoId] = columns
-    if (
-      !Number.isInteger(Number(year)) ||
-      !Number.isInteger(Number(rank)) ||
-      !originalVideoId ||
-      !currentVideoId
-    )
-      return []
-    return [
-      {
-        year: Number(year),
-        rank: Number(rank),
-        chain: [
-          originalVideoId.replace(/`/gu, ''),
-          currentVideoId.replace(/`/gu, ''),
-        ],
-      },
-    ]
-  })
+const getSectionTableRows = ({
+  body,
+  heading,
+}: {
+  body: string
+  heading: string
+}) => {
+  const escapedHeading = heading.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')
+  const match = body.match(
+    new RegExp(
+      `${escapedHeading}:\\s*\\n+([ \\t]*\\|[\\s\\S]*?)(?=\\n- |\\n### |$)`,
+      'u',
+    ),
+  )
+  return getTableRows(match?.[1] ?? '')
+}
 
 export const parseEmbedQualityDoc = (content: string): ParsedDocAudit => {
   const blockers = new Map<string, string>()
   const replacements = new Map<string, string[]>()
   const noteFlags = new Map<string, Set<CompromiseFlag>>()
 
-  for (const replacementRow of getFixLogReplacementRows(content))
-    replacements.set(
-      getSongKey(replacementRow.year, replacementRow.rank),
-      replacementRow.chain,
-    )
-
   for (const { year, body } of getCurrentYearSections(content)) {
-    for (const row of getTableRows(body)) {
+    for (const row of getSectionTableRows({
+      body,
+      heading: '- HARD blockers',
+    })) {
       const columns = row
         .split('|')
         .map((column) => column.trim())
@@ -201,6 +186,25 @@ export const parseEmbedQualityDoc = (content: string): ParsedDocAudit => {
       const rank = Number(columns[0])
       if (!Number.isInteger(rank)) continue
       blockers.set(getSongKey(year, rank), columns[4] ?? '')
+    }
+
+    for (const row of getSectionTableRows({
+      body,
+      heading: '- Changes made',
+    })) {
+      const columns = row
+        .split('|')
+        .map((column) => column.trim())
+        .filter(Boolean)
+      const rank = Number(columns[0])
+      const originalVideoId = columns[1]?.replace(/`/gu, '')
+      const currentVideoId = columns[2]?.replace(/`/gu, '')
+      if (!Number.isInteger(rank) || !originalVideoId || !currentVideoId)
+        continue
+      replacements.set(getSongKey(year, rank), [
+        originalVideoId,
+        currentVideoId,
+      ])
     }
 
     for (const noteLine of body
