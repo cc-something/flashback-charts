@@ -66,9 +66,14 @@ const playSong = (song: SongSearchMatch['song'], year: number) =>
   player.play(song, year, 'search')
 const primePlayback = (song: SongSearchMatch['song'], year: number) =>
   void player.primePlayback(song, year)
+const closeSearchWithKeyboard = (e: KeyboardEvent) => {
+  e.preventDefault()
+  e.stopPropagation()
+  emit('close')
+}
 
 const handleKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') emit('close')
+  if (e.key === 'Escape') closeSearchWithKeyboard(e)
 }
 const handleInputKeydown = (e: KeyboardEvent) => {
   if (e.key === 'ArrowDown') {
@@ -167,7 +172,7 @@ onMounted(() => {
                   placeholder="Search songs, artists, albums, years…"
                   class="flex-1 bg-transparent text-lg text-text placeholder-text-muted/50 outline-none"
                   @keydown="handleInputKeydown"
-                  @keydown.escape="emit('close')"
+                  @keydown.escape="closeSearchWithKeyboard"
                 />
                 <!-- Search icon -->
                 <svg
