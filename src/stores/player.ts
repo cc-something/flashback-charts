@@ -319,9 +319,10 @@ export const usePlayerStore = defineStore('player', () => {
     else clearStallTimer()
   }
   const storePlaybackPositionForRemount = () => {
-    if (!ytPlayer) return
+    const readyYtPlayer = getReadyYtPlayer()
+    if (!readyYtPlayer) return
     syncPlaybackProgress()
-    const nextCurrentTime = ytPlayer.getCurrentTime?.()
+    const nextCurrentTime = readyYtPlayer.getCurrentTime?.()
     if (!Number.isFinite(nextCurrentTime) || !nextCurrentTime) return
     currentTimeSeconds.value = nextCurrentTime
     currentStartAtSeconds = nextCurrentTime
@@ -627,7 +628,9 @@ export const usePlayerStore = defineStore('player', () => {
     clearPlaybackSession()
     clearSongHighlight()
     pendingHighlightedSongKey.value = null
-    if (typeof ytPlayer?.stopVideo === 'function') ytPlayer.stopVideo()
+    const readyYtPlayer = getReadyYtPlayer()
+    if (typeof readyYtPlayer?.stopVideo === 'function')
+      readyYtPlayer.stopVideo()
     playerState.value = 'idle'
     playingSong.value = null
     playingYear.value = null
@@ -1018,14 +1021,26 @@ export const usePlayerStore = defineStore('player', () => {
       playingYear.value === year
     ) {
       if (playerState.value === 'playing') {
-        ytPlayer?.pauseVideo()
+        getReadyYtPlayer()?.pauseVideo()
         return
       }
       if (playerState.value === 'paused' && ytPlayer) {
         if (isAwaitingPlaybackStart.value) return
         startLoadingAttempt()
         if (getHasImmediateNetworkConnection()) {
-          ytPlayer.playVideo()
+          const readyYtPlayer = getReadyYtPlayer()
+          if (readyYtPlayer) {
+            readyYtPlayer.playVideo()
+            return
+          }
+          const mountedPlayer = await ensurePlayerMounted()
+          if (
+            mountedPlayer &&
+            playerState.value === 'loading' &&
+            currentPlaySong?.youtubeVideoId === song.youtubeVideoId &&
+            playingYear.value === year
+          )
+            loadCurrentSongIntoPlayer()
           return
         }
         await failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE, () => {
@@ -1126,11 +1141,18 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const togglePlayback = async (trigger: PlayTrigger = 'direct') => {
-    if (playerState.value === 'playing') ytPlayer?.pauseVideo()
+    if (playerState.value === 'playing') getReadyYtPlayer()?.pauseVideo()
     else if (playerState.value === 'paused' && ytPlayer) {
       startLoadingAttempt()
-      if (getHasImmediateNetworkConnection()) ytPlayer.playVideo()
-      else
+      if (getHasImmediateNetworkConnection()) {
+        const readyYtPlayer = getReadyYtPlayer()
+        if (readyYtPlayer) readyYtPlayer.playVideo()
+        else {
+          const mountedPlayer = await ensurePlayerMounted()
+          if (mountedPlayer && playerState.value === 'loading')
+            loadCurrentSongIntoPlayer()
+        }
+      } else
         await failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE, () => {
           clearLoadingTracking()
           playerState.value = 'paused'
@@ -1160,7 +1182,8 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const handleSeekCommit = (nextValue: number[]) => {
-    if (!ytPlayer) {
+    const readyYtPlayer = getReadyYtPlayer()
+    if (!readyYtPlayer) {
       clearSeekPreview()
       return
     }
@@ -1172,7 +1195,7 @@ export const usePlayerStore = defineStore('player', () => {
     isSeekDragging.value = false
     seekPreviewSeconds.value = v
     playerState.value = 'loading'
-    ytPlayer.seekTo(v, true)
+    readyYtPlayer.seekTo(v, true)
   }
 
   const toggleMute = () => {
@@ -1188,7 +1211,8 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const seekRelative = (deltaSeconds: number) => {
-    if (!ytPlayer || playerState.value === 'idle') return
+    const readyYtPlayer = getReadyYtPlayer()
+    if (!readyYtPlayer || playerState.value === 'idle') return
     const base = seekPreviewSeconds.value ?? currentTimeSeconds.value
     const next = Math.max(
       0,
@@ -1196,7 +1220,7 @@ export const usePlayerStore = defineStore('player', () => {
     )
     seekPreviewSeconds.value = next
     playerState.value = 'loading'
-    ytPlayer.seekTo(next, true)
+    readyYtPlayer.seekTo(next, true)
   }
 
   const isSongActive = (song: Song, year: number) =>
