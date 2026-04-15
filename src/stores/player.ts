@@ -122,7 +122,6 @@ export const usePlayerStore = defineStore('player', () => {
   let progressTimerId: number | null = null
   let saveTimerId: number | null = null
   let playerContainerEl: HTMLDivElement | null = null
-  let onEndedCallback: ((song: Song, year: number) => void) | null = null
   let retryCount = 0
   let currentPlaySong: Song | null = null
   let currentStartAtSeconds: number | undefined
@@ -314,10 +313,6 @@ export const usePlayerStore = defineStore('player', () => {
       startPlaybackStallTimer()
     else clearStallTimer()
   }
-  const getShouldAutoplayOnMount = () =>
-    !isAwaitingPlaybackStart.value &&
-    (playerState.value === 'playing' || playerState.value === 'loading')
-
   const storePlaybackPositionForRemount = () => {
     if (!ytPlayer) return
     syncPlaybackProgress()
@@ -404,10 +399,6 @@ export const usePlayerStore = defineStore('player', () => {
     void restorePlayerAfterContainerSwap()
   }
 
-  const setOnEnded = (cb: ((song: Song, year: number) => void) | null) => {
-    onEndedCallback = cb
-  }
-
   const clearProgressTimer = () => {
     if (progressTimerId === null) return
     clearInterval(progressTimerId)
@@ -488,6 +479,11 @@ export const usePlayerStore = defineStore('player', () => {
   const clearSeekPreview = () => {
     isSeekDragging.value = false
     seekPreviewSeconds.value = null
+  }
+  const resetPlaybackProgress = () => {
+    currentTimeSeconds.value = currentStartAtSeconds ?? 0
+    durationSeconds.value = 0
+    if (!isSeekDragging.value) seekPreviewSeconds.value = null
   }
 
   const syncPlaybackProgress = () => {
@@ -693,7 +689,7 @@ export const usePlayerStore = defineStore('player', () => {
   const loadCurrentSongIntoPlayer = () => {
     const readyYtPlayer = getReadyYtPlayer()
     if (!readyYtPlayer || !currentPlaySong?.youtubeVideoId) return
-    startProgressTimer()
+    resetPlaybackProgress()
     syncMutedState()
     readyYtPlayer.loadVideoById(
       currentPlaySong.youtubeVideoId,
@@ -707,6 +703,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearStallTimer()
     clearLoadingTracking()
     clearProgressTimer()
+    resetPlaybackProgress()
     syncMutedState()
     readyYtPlayer.cueVideoById({
       videoId: currentPlaySong.youtubeVideoId,
@@ -771,15 +768,20 @@ export const usePlayerStore = defineStore('player', () => {
       clearPendingSongPlayEventTimer()
       playerState.value = 'loading'
       startPlaybackStallTimer()
+    } else if (event.data === 5) {
+      clearPendingSongPlayEventTimer()
+      clearStallTimer()
+      clearLoadingTracking()
+      playerState.value = 'paused'
     } else if (event.data === 0) {
       clearPendingSongPlayEventTimer()
       const endedSong = playingSong.value
       const endedYear = playingYear.value
-      if (endedSong && endedYear !== null && onEndedCallback) {
-        clearPlaybackSession()
-        playerState.value = 'loading'
-        void onEndedCallback(endedSong, endedYear)
-      } else stop()
+      if (!endedSong || endedYear === null) return stop()
+      clearPlaybackSession()
+      playerState.value = 'loading'
+      void playNext(endedSong, endedYear, 'autoplay')
+      return
     }
     if (playerState.value === 'playing' || playerState.value === 'loading')
       startProgressTimer()
@@ -798,9 +800,8 @@ export const usePlayerStore = defineStore('player', () => {
         width: '100%',
         height: '100%',
         host: 'https://www.youtube-nocookie.com',
-        videoId: currentPlaySong?.youtubeVideoId,
         playerVars: {
-          autoplay: getShouldAutoplayOnMount() ? 1 : 0,
+          autoplay: 0,
           controls: isAwaitingPlaybackStart.value ? 1 : 0,
           disablekb: 1,
           fs: 0,
@@ -826,10 +827,6 @@ export const usePlayerStore = defineStore('player', () => {
             updatePlayerIframeFocusability()
             syncMutedState(event.target)
             resolve(event.target)
-            if (currentPlaySong && getShouldAutoplayOnMount()) {
-              startProgressTimer()
-              startPlaybackStallTimer(true)
-            }
           },
           onStateChange: (event: YTPlayerEvent) => {
             if (playerGeneration !== activePlayerGeneration) return
@@ -1022,9 +1019,26 @@ export const usePlayerStore = defineStore('player', () => {
       loadCurrentSongIntoPlayer()
       return
     }
-    if (mountPlayerIfPossible()) return
+    const mountedPlayer = mountPlayerIfPossible()
+    if (mountedPlayer) {
+      await mountedPlayer
+      if (
+        playerState.value === 'loading' &&
+        currentPlaySong?.youtubeVideoId === song.youtubeVideoId &&
+        playingYear.value === year
+      )
+        loadCurrentSongIntoPlayer()
+      return
+    }
     void ensurePlayerMounted()
-      .then(() => undefined)
+      .then(() => {
+        if (
+          playerState.value === 'loading' &&
+          currentPlaySong?.youtubeVideoId === song.youtubeVideoId &&
+          playingYear.value === year
+        )
+          loadCurrentSongIntoPlayer()
+      })
       .catch(async () => {
         if (!(await getHasNetworkConnection()))
           return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
@@ -1233,7 +1247,6 @@ export const usePlayerStore = defineStore('player', () => {
     primePlayback,
     openSong,
     setPlayerContainer,
-    setOnEnded,
     refreshPlayerAfterViewportChange,
     play,
     stop,

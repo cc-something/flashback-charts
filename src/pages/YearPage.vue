@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
 import type { YearSource } from '@/data'
@@ -172,9 +172,6 @@ useHead(() => ({
     },
   ],
 }))
-
-player.setOnEnded((song, year) => player.playNext(song, year, 'autoplay'))
-onUnmounted(() => player.setOnEnded(null))
 
 const waitForScrollSettle = () =>
   new Promise<void>((resolve) => window.setTimeout(resolve, 450))
