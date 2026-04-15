@@ -133,20 +133,6 @@ const getCurrentYearSections = (content: string) => {
   })
 }
 
-const getChainSegments = (chain: string) =>
-  chain
-    .split('->')
-    .map((segment) => segment.trim())
-    .filter(Boolean)
-
-const getReplacementMatches = (line: string) =>
-  [...line.matchAll(/rank\s+(\d+)\s+(?:replaced\s+)?`([^`]*->[^`]*)`/gmu)].map(
-    ([, rank, chain]) => ({
-      rank: Number(rank),
-      chain: getChainSegments(chain),
-    }),
-  )
-
 const getTableRows = (body: string) =>
   body
     .split('\n')
@@ -164,10 +150,45 @@ const getCompromiseFlagsFromText = (value: string) => {
 const getTitlesFromSegment = (segment: string) =>
   [...segment.matchAll(/`([^`]+)`/gmu)].map(([, title]) => title)
 
+const getFixLogSection = (content: string) =>
+  content.split('\n## Fix Log')[1]?.split('\n## Handoff')[0] ?? ''
+
+const getFixLogReplacementRows = (content: string) =>
+  getTableRows(getFixLogSection(content)).flatMap((row) => {
+    const columns = row
+      .split('|')
+      .map((column) => column.trim())
+      .filter(Boolean)
+    const [year, rank, originalVideoId, currentVideoId] = columns
+    if (
+      !Number.isInteger(Number(year)) ||
+      !Number.isInteger(Number(rank)) ||
+      !originalVideoId ||
+      !currentVideoId
+    )
+      return []
+    return [
+      {
+        year: Number(year),
+        rank: Number(rank),
+        chain: [
+          originalVideoId.replace(/`/gu, ''),
+          currentVideoId.replace(/`/gu, ''),
+        ],
+      },
+    ]
+  })
+
 export const parseEmbedQualityDoc = (content: string): ParsedDocAudit => {
   const blockers = new Map<string, string>()
   const replacements = new Map<string, string[]>()
   const noteFlags = new Map<string, Set<CompromiseFlag>>()
+
+  for (const replacementRow of getFixLogReplacementRows(content))
+    replacements.set(
+      getSongKey(replacementRow.year, replacementRow.rank),
+      replacementRow.chain,
+    )
 
   for (const { year, body } of getCurrentYearSections(content)) {
     for (const row of getTableRows(body)) {
@@ -179,13 +200,6 @@ export const parseEmbedQualityDoc = (content: string): ParsedDocAudit => {
       if (!Number.isInteger(rank)) continue
       blockers.set(getSongKey(year, rank), columns[4] ?? '')
     }
-
-    for (const line of body.split('\n'))
-      for (const replacementMatch of getReplacementMatches(line))
-        replacements.set(
-          getSongKey(year, replacementMatch.rank),
-          replacementMatch.chain,
-        )
 
     for (const noteLine of body
       .split('\n')

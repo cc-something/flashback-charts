@@ -57,7 +57,7 @@ For each year in `Year Details`:
   - `helper scan only`
   - `partial run`
 - list outstanding items in a small table if anything remains open
-- note exact `youtubeVideoId` replacements when fixes are made
+- when replacements exist, add a compact table with `Rank`, `Original`, and `Current`
 - say explicitly when the year is clean
 
 ## Status Values
@@ -75,8 +75,16 @@ Use these values consistently:
 - Keep the report truthful to the last completed run.
 - If a run stops mid-year, mark that year as partial or interrupted.
 - If a year was only checked via targeted probes or helper scans, say that explicitly in `Notes`.
-- If a failure is fixed, record the old and new video IDs.
+- If a failure is fixed, preserve the replaced ideal `youtubeVideoId` as `Original` and the current sourced `youtubeVideoId` as `Current`.
 - If the harness itself changes, mention that in `Fix Log`.
+
+## Replacement History Format
+
+- `Fix Log` is the canonical machine-read source for replacement history.
+- Add one table with these columns: `Year`, `Rank`, `Original`, `Current`.
+- Keep `Year Details` aligned with the same `Rank`, `Original`, and `Current` values.
+- `Original` means the ideal video that was replaced.
+- `Current` means the currently sourced replacement video in `src/data/years/YYYY.ts`.
 
 ## Terminal Prompt
 
@@ -97,7 +105,7 @@ For each year:
 - run pnpm playback-integrity --year=YYYY
 - record total songs, passed, failed, and outstanding items
 - if a song fails, include year, rank, title, artist, current youtubeVideoId, failure reason, and next action
-- if you fix a song, record the exact old/new ID and the file changed
+- if you fix a song, update the year-level replacement table and the canonical `Fix Log` table with exact `Original` and `Current` IDs
 - if a year is clean, still write a year subsection that says so
 - use the strongest verification label that matches the evidence obtained for that year
 
