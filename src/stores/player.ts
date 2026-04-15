@@ -146,7 +146,7 @@ export const usePlayerStore = defineStore('player', () => {
   let loadingStartedAt = 0
   let clearSongHighlightTimerId: ReturnType<typeof setTimeout> | null = null
   let shouldRestorePlayerOnContainerReady = false
-  let pendingPlayerMountEl: HTMLDivElement | null = null
+  let pendingPlayerMountEl: HTMLElement | null = null
   let destroyPlayerOnContainerLossTimerId: ReturnType<
     typeof setTimeout
   > | null = null
@@ -430,7 +430,7 @@ export const usePlayerStore = defineStore('player', () => {
             : null))
         : null
     const hasTransferredMountedPlayer =
-      !!el && transferableMountedPlayerEl instanceof HTMLDivElement
+      !!el && transferableMountedPlayerEl instanceof HTMLElement
     if (hasTransferredMountedPlayer && transferableMountedPlayerEl) {
       logPlayerDebug('container:transfer-mounted-player', {
         transferredMount: getElementDebug(transferableMountedPlayerEl),
@@ -443,7 +443,7 @@ export const usePlayerStore = defineStore('player', () => {
       const orphanedPlayerMountEl = pendingPlayerMountEl
         ? null
         : previousPlayerContainerEl?.firstElementChild
-      if (orphanedPlayerMountEl instanceof HTMLDivElement)
+      if (orphanedPlayerMountEl instanceof HTMLElement)
         pendingPlayerMountEl = orphanedPlayerMountEl
       logPlayerDebug('container:cleared', {
         orphanedPlayerMount: getElementDebug(orphanedPlayerMountEl),
