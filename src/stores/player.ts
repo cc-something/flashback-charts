@@ -932,6 +932,26 @@ export const usePlayerStore = defineStore('player', () => {
       /* noop */
     }
   }
+  const preparePlaybackShell = (
+    song: Song,
+    year: number,
+    trigger: PlayTrigger = 'direct',
+  ) => {
+    if (typeof window === 'undefined') return
+    const wasActive = isActive.value
+    const chart = useChartStore()
+    playingSong.value = song
+    playingYear.value = year
+    playerState.value = 'paused'
+    retryCount = 0
+    startupRecoveryCount = 0
+    currentPlaySong = song
+    currentStartAtSeconds = undefined
+    isAwaitingPlaybackStart.value = false
+    if (!wasActive) registerActive(stop)
+    if (chart.selectedYear === year)
+      void scrollSongIntoView(song, year, trigger !== 'direct')
+  }
 
   const openSong = async (
     song: Song,
@@ -1023,7 +1043,7 @@ export const usePlayerStore = defineStore('player', () => {
 
     if (!isActive.value && !getIsTinyViewport()) {
       shouldBootstrapPlaybackFromShell.value = true
-      await openSong(song, year, trigger)
+      preparePlaybackShell(song, year, trigger)
       return
     }
 
