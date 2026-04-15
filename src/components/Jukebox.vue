@@ -157,6 +157,8 @@ const updateThemeVars = (year: number | null) => {
 }
 const waitForScrollSettle = () =>
   new Promise<void>((resolve) => window.setTimeout(resolve, 450))
+const waitForNextFrame = () =>
+  new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()))
 const scrollToPlayingSongRow = async () => {
   const year = player.playingYear
   const song = player.playingSong
@@ -182,6 +184,22 @@ watch(() => player.playingYear, updateThemeVars, { immediate: true })
 watch(playerViewportMountHost, () => void syncPlayerContainer(), {
   flush: 'post',
 })
+watch(
+  [
+    () => player.shouldBootstrapPlaybackFromShell,
+    () => player.playingSong?.youtubeVideoId,
+    playerViewportMountHost,
+  ],
+  async ([shouldBootstrapPlaybackFromShell, playingSongVideoId, mountHost]) => {
+    if (!shouldBootstrapPlaybackFromShell || !playingSongVideoId || !mountHost)
+      return
+    await nextTick()
+    await waitForNextFrame()
+    await waitForNextFrame()
+    void player.completeShellPlaybackBootstrap()
+  },
+  { flush: 'post' },
+)
 watch(shouldShowPlayerDock, (shouldShow) => {
   if (shouldShow) return
   isDesktopFullscreen.value = false

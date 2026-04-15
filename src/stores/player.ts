@@ -120,6 +120,7 @@ export const usePlayerStore = defineStore('player', () => {
   const isAwaitingPlaybackStart = ref(false)
   const highlightedSongKey = ref<string | null>(null)
   const pendingHighlightedSongKey = ref<string | null>(null)
+  const shouldBootstrapPlaybackFromShell = ref(false)
 
   let ytPlayer: YTPlayer | null = null
   let progressTimerId: number | null = null
@@ -583,6 +584,7 @@ export const usePlayerStore = defineStore('player', () => {
     pendingSongPlayEventPayload = null
     hasTrackedCurrentSongPlayEvent = false
     startupRecoveryCount = 0
+    shouldBootstrapPlaybackFromShell.value = false
   }
   const destroyPlayer = () => {
     activePlayerGeneration += 1
@@ -1020,8 +1022,9 @@ export const usePlayerStore = defineStore('player', () => {
     }
 
     if (!isActive.value && !getIsTinyViewport()) {
+      shouldBootstrapPlaybackFromShell.value = true
       await openSong(song, year, trigger)
-      return play(song, year, trigger)
+      return
     }
 
     const isResumingSameSong =
@@ -1277,6 +1280,13 @@ export const usePlayerStore = defineStore('player', () => {
 
   void restoreFromStorage()
 
+  const completeShellPlaybackBootstrap = async () => {
+    if (!shouldBootstrapPlaybackFromShell.value) return
+    shouldBootstrapPlaybackFromShell.value = false
+    if (!playingSong.value || playingYear.value === null) return
+    await play(playingSong.value, playingYear.value, 'autoplay')
+  }
+
   const goToSong = () => {
     const chart = useChartStore()
     if (playingYear.value === null || !playingSong.value) return
@@ -1299,6 +1309,7 @@ export const usePlayerStore = defineStore('player', () => {
     isMuted,
     hasMountedPlayer,
     isAwaitingPlaybackStart,
+    shouldBootstrapPlaybackFromShell,
     preload,
     primePlayback,
     openSong,
@@ -1320,6 +1331,7 @@ export const usePlayerStore = defineStore('player', () => {
     revealQueuedSongHighlight,
     playNext,
     playPrev,
+    completeShellPlaybackBootstrap,
     goToSong,
   }
 })
