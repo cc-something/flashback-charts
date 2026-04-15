@@ -369,18 +369,6 @@ export const usePlayerStore = defineStore('player', () => {
     playerIframeEl.tabIndex = -1
     playerIframeEl.setAttribute('tabindex', '-1')
   }
-  const syncTransferredPlayerState = () => {
-    logPlayerDebug('container:transfer-sync')
-    shouldRestorePlayerOnContainerReady = false
-    updatePlayerIframeFocusability()
-    syncPlaybackProgress()
-    if (playerState.value === 'playing' || playerState.value === 'loading')
-      startProgressTimer()
-    else clearProgressTimer()
-    if (playerState.value === 'loading' && !isAwaitingPlaybackStart.value)
-      startPlaybackStallTimer()
-    else clearStallTimer()
-  }
   const storePlaybackPositionForRemount = () => {
     const readyYtPlayer = getReadyYtPlayer()
     if (!readyYtPlayer) return
@@ -421,26 +409,27 @@ export const usePlayerStore = defineStore('player', () => {
   const setPlayerContainer = (el: HTMLDivElement | null) => {
     if (playerContainerEl === el) return
     const previousPlayerContainerEl = playerContainerEl
+    const hasPlayerOnHostChange =
+      !!el &&
+      previousPlayerContainerEl !== el &&
+      !!(ytPlayer || playerInitPromise)
     logPlayerDebug('container:set', {
       previousContainer: getElementDebug(previousPlayerContainerEl),
       nextContainer: getElementDebug(el),
     })
     clearDestroyPlayerOnContainerLossTimer()
-    const transferableMountedPlayerEl =
-      el && (ytPlayer || playerInitPromise)
-        ? (pendingPlayerMountEl ??
-          (previousPlayerContainerEl !== el
-            ? previousPlayerContainerEl?.firstElementChild
-            : null))
-        : null
-    const hasTransferredMountedPlayer =
-      !!el && transferableMountedPlayerEl instanceof HTMLElement
-    if (hasTransferredMountedPlayer && transferableMountedPlayerEl) {
-      logPlayerDebug('container:transfer-mounted-player', {
-        transferredMount: getElementDebug(transferableMountedPlayerEl),
-      })
-      el.replaceChildren(transferableMountedPlayerEl)
-      pendingPlayerMountEl = null
+    if (hasPlayerOnHostChange) {
+      logPlayerDebug('container:remount-for-host-change')
+      if (playerState.value !== 'idle' && currentPlaySong?.youtubeVideoId)
+        storePlaybackPositionForRemount()
+      destroyPlayer()
+      playerContainerEl = el
+      if (playerState.value !== 'idle' && currentPlaySong?.youtubeVideoId) {
+        void restorePlayerAfterContainerSwap()
+        return
+      }
+      void ensurePlayerMounted()
+      return
     }
     playerContainerEl = el
     if (!playerContainerEl) {
@@ -472,10 +461,6 @@ export const usePlayerStore = defineStore('player', () => {
         pendingPlayerMountEl = null
         destroyPlayer()
       }, 0)
-      return
-    }
-    if (hasTransferredMountedPlayer) {
-      syncTransferredPlayerState()
       return
     }
     if (shouldRestorePlayerOnContainerReady) {
