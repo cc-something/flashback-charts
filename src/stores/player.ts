@@ -353,10 +353,17 @@ export const usePlayerStore = defineStore('player', () => {
     if (playerContainerEl === el) return
     const previousPlayerContainerEl = playerContainerEl
     clearDestroyPlayerOnContainerLossTimer()
+    const transferableMountedPlayerEl =
+      el && (ytPlayer || playerInitPromise)
+        ? (pendingPlayerMountEl ??
+          (previousPlayerContainerEl !== el
+            ? previousPlayerContainerEl?.firstElementChild
+            : null))
+        : null
     const hasTransferredMountedPlayer =
-      !!el && !!pendingPlayerMountEl && !!(ytPlayer || playerInitPromise)
-    if (el && pendingPlayerMountEl) {
-      el.replaceChildren(pendingPlayerMountEl)
+      !!el && transferableMountedPlayerEl instanceof HTMLDivElement
+    if (hasTransferredMountedPlayer && transferableMountedPlayerEl) {
+      el.replaceChildren(transferableMountedPlayerEl)
       pendingPlayerMountEl = null
     }
     playerContainerEl = el
