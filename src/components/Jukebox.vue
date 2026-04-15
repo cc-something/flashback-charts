@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Expand, Flag, Minimize, MousePointerClick, X } from 'lucide-vue-next'
+import {
+  Expand,
+  Flag,
+  Minimize,
+  MousePointerClick,
+  VolumeX,
+  X,
+} from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import BrandWordmark from './BrandWordmark.vue'
 import EmbedFallbackBadge from './EmbedFallbackBadge.vue'
@@ -552,6 +559,17 @@ const closeMaxiPlayer = () => {
               </button>
 
               <button
+                v-if="player.isMuted"
+                type="button"
+                title="Unmute"
+                aria-label="Unmute"
+                :class="playerButtonClass"
+                @click="player.setMuted(false)"
+              >
+                <VolumeX class="h-4.5 w-4.5" />
+              </button>
+
+              <button
                 type="button"
                 title="Go to song (G)"
                 aria-label="Go to song"
@@ -691,17 +709,32 @@ const closeMaxiPlayer = () => {
           </div>
 
           <div class="absolute right-0 top-0">
-            <button
-              type="button"
-              :title="maxiPlayerCloseTitle"
-              :aria-label="maxiPlayerCloseTitle"
-              :class="playerFullscreenSubtleButtonClass"
-              @click="closeMaxiPlayer"
-            >
-              <Minimize
-                class="h-[clamp(1.35rem,4vw,2.1rem)] w-[clamp(1.35rem,4vw,2.1rem)]"
-              />
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                v-if="player.isMuted"
+                type="button"
+                title="Unmute"
+                aria-label="Unmute"
+                :class="playerFullscreenSubtleButtonClass"
+                @click="player.setMuted(false)"
+              >
+                <VolumeX
+                  class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
+                />
+              </button>
+
+              <button
+                type="button"
+                :title="maxiPlayerCloseTitle"
+                :aria-label="maxiPlayerCloseTitle"
+                :class="playerFullscreenSubtleButtonClass"
+                @click="closeMaxiPlayer"
+              >
+                <Minimize
+                  class="h-[clamp(1.35rem,4vw,2.1rem)] w-[clamp(1.35rem,4vw,2.1rem)]"
+                />
+              </button>
+            </div>
           </div>
         </div>
 
