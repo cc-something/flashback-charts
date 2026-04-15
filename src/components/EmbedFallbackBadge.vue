@@ -17,7 +17,7 @@ const props = withDefaults(
 )
 
 const shouldShowBadge = computed(
-  () => props.song.embedIntegrity === 'suboptimal',
+  () => props.song.embedIntegrity === 'alternative',
 )
 const badgeClass = computed(() =>
   props.size === 'md'

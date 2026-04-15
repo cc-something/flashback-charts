@@ -11,7 +11,7 @@ const createSong = (overrides: Partial<Song> = {}): Song => ({
   artist: 'Test Artist',
   album: 'Test Album',
   youtubeVideoId: 'abc123',
-  embedIntegrity: 'confirmed',
+  embedIntegrity: 'best-match',
   thumbnailPath: '/test.webp',
   imageSelection: 'album',
   imageSources: {
@@ -51,7 +51,7 @@ describe('parseEmbedQualityDoc', () => {
 })
 
 describe('classifySongAudit', () => {
-  it('marks blockers as unplayable', () => {
+  it('marks blockers as blocked', () => {
     const parsed = parseEmbedQualityDoc(`
 ### 2010
 
@@ -70,10 +70,10 @@ describe('classifySongAudit', () => {
         parsedDocAudit: parsed,
         metadata: null,
       }).embedIntegrity,
-    ).toBe('unplayable')
+    ).toBe('blocked')
   })
 
-  it('marks lyric replacements as suboptimal', () => {
+  it('marks lyric replacements as alternative', () => {
     const parsed = parseEmbedQualityDoc(`
 ### 2010
 
@@ -102,10 +102,10 @@ describe('classifySongAudit', () => {
           channel: 'Lyrics Channel',
         },
       }).embedIntegrity,
-    ).toBe('suboptimal')
+    ).toBe('alternative')
   })
 
-  it('keeps clean official-style uploads confirmed', () => {
+  it('keeps clean official-style uploads best-match', () => {
     const parsed = parseEmbedQualityDoc(`
 ### 2010
 
@@ -132,6 +132,6 @@ describe('classifySongAudit', () => {
           channel: 'Test Artist',
         },
       }).embedIntegrity,
-    ).toBe('confirmed')
+    ).toBe('best-match')
   })
 })

@@ -1,6 +1,6 @@
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import type { Song, SongEmbedIntegrity } from '@/types/song'
+import type { Song } from '@/types/song'
 
 const execFileAsync = promisify(execFile)
 const ytDlpPath = '/opt/homebrew/bin/yt-dlp'
@@ -31,13 +31,15 @@ export type VideoMetadata = {
   channel: string
 }
 
+export type AuditEmbedIntegrity = 'best-match' | 'alternative' | 'blocked'
+
 export type SongAuditRecord = {
   year: number
   rank: number
   title: string
   artist: string
   youtubeVideoId: string | null
-  embedIntegrity: SongEmbedIntegrity
+  embedIntegrity: AuditEmbedIntegrity
   reason: string
   wasReplaced: boolean
   replacementChain: string[]
@@ -277,7 +279,7 @@ export const classifySongAudit = ({
       title: song.title,
       artist: song.artist,
       youtubeVideoId: song.youtubeVideoId,
-      embedIntegrity: 'unplayable',
+      embedIntegrity: 'blocked',
       reason: 'documented HARD blocker',
       wasReplaced,
       replacementChain,
@@ -299,8 +301,8 @@ export const classifySongAudit = ({
     title: song.title,
     artist: song.artist,
     youtubeVideoId: song.youtubeVideoId,
-    embedIntegrity: primaryFlag ? 'suboptimal' : 'confirmed',
-    reason: primaryFlag ? getCompromiseReason(primaryFlag) : 'primary embed',
+    embedIntegrity: primaryFlag ? 'alternative' : 'best-match',
+    reason: primaryFlag ? getCompromiseReason(primaryFlag) : 'best match',
     wasReplaced,
     replacementChain,
     blockerEvidence,

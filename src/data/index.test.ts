@@ -110,13 +110,13 @@ describe('searchCatalog', () => {
   })
 
   it('returns registry-backed embed integrity for legacy song data', () => {
-    expect(getYearData(2002)?.[5].embedIntegrity).toBe('confirmed')
-    expect(getYearData(2002)?.[5].embedIntegrityReason).toBe('primary embed')
+    expect(getYearData(2002)?.[5].embedIntegrity).toBe('best-match')
+    expect(getYearData(2002)?.[5].embedIntegrityReason).toBe('best match')
     expect(searchSongs('a thousand miles')[0]?.song.embedIntegrity).toBe(
-      'confirmed',
+      'best-match',
     )
     expect(searchSongs('a thousand miles')[0]?.song.embedIntegrityReason).toBe(
-      'primary embed',
+      'best match',
     )
   })
 

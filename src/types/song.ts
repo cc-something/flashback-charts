@@ -1,5 +1,5 @@
 export type SongImageSelection = 'album' | 'artist'
-export type SongEmbedIntegrity = 'confirmed' | 'suboptimal' | 'unplayable'
+export type SongEmbedIntegrity = 'best-match' | 'alternative'
 export type SongEmbedIntegrityReason = string
 
 export interface SongImageSources {

@@ -352,7 +352,7 @@ export interface YearSource {
   url: string
 }
 
-const defaultEmbedIntegrity: SongEmbedIntegrity = 'confirmed'
+const defaultEmbedIntegrity: SongEmbedIntegrity = 'best-match'
 
 interface YearChartData {
   songs: Song[]
