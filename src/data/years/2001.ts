@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: "It Wasn't Me",
     artist: 'Shaggy',
     album: 'Hot Shot',
-    youtubeVideoId: 'Z_4ca8jthAs',
+    youtubeVideoId: '2g5Hz17C4is',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: "Can't Get You Out of My Head",
     artist: 'Kylie Minogue',
     album: 'Fever',
-    youtubeVideoId: '8-fWdoAyeHg',
+    youtubeVideoId: 'c18441Eh_WE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Angel',
     artist: 'Shaggy',
     album: 'Hot Shot',
-    youtubeVideoId: 'Qd7YyT6HI34',
+    youtubeVideoId: 'XWJrPzAUzAs',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/0/0f/Shaggy-angel.jpg',
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Hanging by a Moment',
     artist: 'Lifehouse',
     album: 'No Name Face',
-    youtubeVideoId: 'z7wcAgF3B0I',
+    youtubeVideoId: 'tPnK39ax_AM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'Stan',
     artist: 'Eminem feat. Dido',
     album: 'The Marshall Mathers LP',
-    youtubeVideoId: 'Tyr-paHKmc4',
+    youtubeVideoId: 'gOMhN-hfMtY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: "I'm Like a Bird",
     artist: 'Nelly Furtado',
     album: 'Whoa, Nelly!',
-    youtubeVideoId: '56Z8nxHN8vY',
+    youtubeVideoId: 'roPQ_M3yJTA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Smooth Criminal',
     artist: 'Alien Ant Farm',
     album: 'Bad',
-    youtubeVideoId: 'PlJcfsba7J8',
+    youtubeVideoId: 'CDl9ZMfj6aE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: 'Whole Again',
     artist: 'Atomic Kitten',
     album: 'Right Now',
-    youtubeVideoId: '0gQ_MfAID7Q',
+    youtubeVideoId: '1V0xQkk9kbc',
     imageSelection: 'album',
     imageSources: {
       album:

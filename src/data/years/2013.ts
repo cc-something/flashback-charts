@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Roar',
     artist: 'Katy Perry',
     album: 'Prism',
-    youtubeVideoId: 'znuFduBVBGE',
+    youtubeVideoId: 'CevxZvSJLk8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'Blurred Lines',
     artist: 'Robin Thicke featuring T.I. and Pharrell Williams',
     album: 'Blurred Lines',
-    youtubeVideoId: '5rr49oTeTMw',
+    youtubeVideoId: 'yyDUC1LUXSU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Let Her Go',
     artist: 'Passenger',
     album: 'All the Little Lights',
-    youtubeVideoId: '8dBkRh2Kca8',
+    youtubeVideoId: 'RBumgq5yVrA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Royals',
     artist: 'Lorde',
     album: 'Pure Heroine',
-    youtubeVideoId: 'xfJvrH7iQ3c',
+    youtubeVideoId: 'nlcIKh6sBtc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'Just Give Me a Reason',
     artist: 'Pink featuring Nate Ruess',
     album: 'The Truth About Love',
-    youtubeVideoId: 'D1CpWYU3DvA',
+    youtubeVideoId: 'OpQFFLBMEPI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Get Lucky',
     artist: 'Daft Punk featuring Pharrell Williams',
     album: 'Random Access Memories',
-    youtubeVideoId: '5glDAaCaazc',
+    youtubeVideoId: '5NV6Rdv1a3I',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/7/71/Get_Lucky.jpg',
@@ -139,7 +139,7 @@ const songs: Song[] = [
     title: "Can't Hold Us",
     artist: 'Macklemore & Ryan Lewis featuring Ray Dalton',
     album: 'The Heist',
-    youtubeVideoId: 'YFevVhbfecs',
+    youtubeVideoId: '2zNSgSzhBfM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -152,7 +152,7 @@ const songs: Song[] = [
     title: 'Impossible',
     artist: 'James Arthur',
     album: 'James Arthur',
-    youtubeVideoId: 'Lh2oWbaRvQg',
+    youtubeVideoId: 'BRwEM8XEWXA',
     imageSelection: 'album',
     imageSources: {
       album:

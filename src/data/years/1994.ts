@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Love Is All Around',
     artist: 'Wet Wet Wet',
     album: 'Four Weddings and a Funeral: Music from the Motion Picture',
-    youtubeVideoId: 'g8PFZg6MQzM',
+    youtubeVideoId: 'h3gEkwhdXUE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'I Swear',
     artist: 'All-4-One',
     album: 'All-4-One',
-    youtubeVideoId: 'HSVQq8g03CQ',
+    youtubeVideoId: 'cVpvlaKfLQc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Always',
     artist: 'Bon Jovi',
     album: 'Cross Road',
-    youtubeVideoId: 'V7Ia1B1uf7Q',
+    youtubeVideoId: '9BMwcO6_hyA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: "It's Alright",
     artist: 'East 17',
     album: 'Steam',
-    youtubeVideoId: '189kGR5TXs8',
+    youtubeVideoId: 'tP_WRk-xV7I',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'The Power of Love',
     artist: 'Celine Dion',
     album: 'The Colour of My Love',
-    youtubeVideoId: 'KdcLFXvj5ZQ',
+    youtubeVideoId: 'Y8HOfcYWZoo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: "I'll Make Love to You",
     artist: 'Boyz II Men',
     album: 'II',
-    youtubeVideoId: 'e00qK2ZCdns',
+    youtubeVideoId: 'fV8vB1BB2qc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Please Forgive Me',
     artist: 'Bryan Adams',
     album: 'So Far So Good',
-    youtubeVideoId: 'mxVbPEIkfqw',
+    youtubeVideoId: 'Qy4zFJmE-1E',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'All for Love',
     artist: 'Bryan Adams, Rod Stewart & Sting',
     album: 'The Three Musketeers: Original Motion Picture Soundtrack',
-    youtubeVideoId: 'm-i--zZwls4',
+    youtubeVideoId: 'ofA3URC1wyk',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/2/28/All_For_Love.jpg',

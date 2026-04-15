@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Before the Next Teardrop Falls',
     artist: 'Freddy Fender',
     album: 'Before the Next Teardrop Falls',
-    youtubeVideoId: 'ay5ciplY4Pg',
+    youtubeVideoId: 'kT80JX9PqEw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Bony Moronie',
     artist: 'Hush',
     album: "Rough Tough 'n' Ready",
-    youtubeVideoId: 'vOO4zA1i5mA',
+    youtubeVideoId: 'YEq-nkv2uO4',
     imageSelection: 'album',
     imageSources: {
       album:

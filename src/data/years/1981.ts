@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Stars On 45',
     artist: 'Stars On 45',
     album: 'Long Play Album',
-    youtubeVideoId: '7skQvj-aBV8',
+    youtubeVideoId: '5bGQ1-Gmoso',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Antmusic',
     artist: 'Adam & The Ants',
     album: 'Kings of the Wild Frontier',
-    youtubeVideoId: 'j2h-EX1XldE',
+    youtubeVideoId: 'Rm9drIwmmU4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Jealous Guy',
     artist: 'Roxy Music',
     album: 'Jealous Guy',
-    youtubeVideoId: '3QG4oWaNDuE',
+    youtubeVideoId: 'hRzGzRqNj58',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Devo Live (EP)',
     artist: 'Devo',
     album: 'Dev-O Live',
-    youtubeVideoId: 'wRdV2pUHpLU',
+    youtubeVideoId: 'ITmROKQr8NI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Bette Davis Eyes',
     artist: 'Kim Carnes',
     album: 'Mistaken Identity',
-    youtubeVideoId: 'h5eWh6LYHsQ',
+    youtubeVideoId: 'EPOIS5taqA8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: '9 to 5 (Morning Train)',
     artist: 'Sheena Easton',
     album: 'Take My Time',
-    youtubeVideoId: 'tlFV97FvSE4',
+    youtubeVideoId: 'S_3vZYOYNYU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Endless Love',
     artist: 'Diana Ross and Lionel Richie',
     album: 'Endless Love: Original Motion Picture Soundtrack',
-    youtubeVideoId: 'NDNlYho3A2Y',
+    youtubeVideoId: 'UsqDoz2Co4o',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Who Can It Be Now?',
     artist: 'Men At Work',
     album: 'Business As Usual',
-    youtubeVideoId: '_bVyoMT-AvA',
+    youtubeVideoId: 'SECVGN4Bsgg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Kids In America',
     artist: 'Kim Wilde',
     album: 'Kim Wilde',
-    youtubeVideoId: '8BYKpQ_6GbM',
+    youtubeVideoId: '80TfG7C9azA',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Party Rock Anthem',
     artist: 'LMFAO featuring Lauren Bennett and GoonRock',
     album: 'Sorry for Party Rocking',
-    youtubeVideoId: 'hmySMmaHAl4',
+    youtubeVideoId: 'zIh5AHxh-Ok',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Somebody That I Used to Know',
     artist: 'Gotye featuring Kimbra',
     album: 'Making Mirrors',
-    youtubeVideoId: '8UVNT4wvIGY',
+    youtubeVideoId: '2FZZK8gBBOI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Moves Like Jagger',
     artist: 'Maroon 5 featuring Christina Aguilera',
     album: 'Hands All Over',
-    youtubeVideoId: 'PdR1n_Zt8Mo',
+    youtubeVideoId: 'suRsxpoAc5w',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Sexy and I Know It',
     artist: 'LMFAO',
     album: 'Sorry for Party Rocking',
-    youtubeVideoId: 'D-AVfWNMONw',
+    youtubeVideoId: 'wyx6JDQCslE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Born This Way',
     artist: 'Lady Gaga',
     album: 'Born This Way',
-    youtubeVideoId: '2Z8hHgXPgGQ',
+    youtubeVideoId: '3Vzrr64ZrVU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Price Tag',
     artist: 'Jessie J featuring B.o.B',
     album: 'Who You Are',
-    youtubeVideoId: 'I_-MWKy0jCA',
+    youtubeVideoId: 'Nq2n7eeY8V4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'On the Floor',
     artist: 'Jennifer Lopez featuring Pitbull',
     album: 'Love?',
-    youtubeVideoId: 'SaSc39VLucc',
+    youtubeVideoId: '9ujy-YtDgWQ',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/9/91/On_the_Floor.png',
@@ -166,7 +166,7 @@ const songs: Song[] = [
     title: 'S&M',
     artist: 'Rihanna',
     album: 'Loud',
-    youtubeVideoId: 'DBXQMLnakiM',
+    youtubeVideoId: 'Ce2_k0LaE7E',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: "It's Just Not Cricket",
     artist: 'The Twelfth Man',
     album: 'Wired World of Sports, Part 2',
-    youtubeVideoId: 'jXPeC1flckE',
+    youtubeVideoId: 'apQUJar3vKU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Ghostbusters',
     artist: 'Ray Parker Jr.',
     album: 'Ghostbusters',
-    youtubeVideoId: 'hck0xBS9OfM',
+    youtubeVideoId: 'TaV1r341wYk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Careless Whisper',
     artist: 'George Michael',
     album: 'Careless Whisper',
-    youtubeVideoId: 'JqIHlDVqUTw',
+    youtubeVideoId: '1uoLpAkQ8xw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Wake Me Up Before You Go-Go',
     artist: 'Wham!',
     album: 'Make It Big',
-    youtubeVideoId: 'YfAF92Z3iFw',
+    youtubeVideoId: 'pIgZ7gMze7A',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'I Just Called to Say I Love You',
     artist: 'Stevie Wonder',
     album: 'The Woman in Red',
-    youtubeVideoId: 'psNE9XUiTjU',
+    youtubeVideoId: '58RgLQ_0Ars',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Footloose',
     artist: 'Kenny Loggins',
     album: 'Footloose (Original Soundtrack of the Motion Picture)',
-    youtubeVideoId: 'e-OG0EyJyV8',
+    youtubeVideoId: 'ltrMfT4Qz5Y',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Hello',
     artist: 'Lionel Richie',
     album: "Can't Slow Down",
-    youtubeVideoId: 'xXJSmGfw9oI',
+    youtubeVideoId: 'mHONNcZbwDY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Girls Just Want to Have Fun',
     artist: 'Cyndi Lauper',
     album: "She's So Unusual",
-    youtubeVideoId: 'biw4s8RQNn8',
+    youtubeVideoId: 'PIb6AZdTr-A',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Islands in the Stream',
     artist: 'Kenny Rogers and Dolly Parton',
     album: 'Eyes That See in the Dark',
-    youtubeVideoId: '7ulMJ1crVl4',
+    youtubeVideoId: 'UaNGtgYwSsU',
     imageSelection: 'album',
     imageSources: {
       album:

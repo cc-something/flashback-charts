@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: "Gangsta's Paradise",
     artist: 'Coolio',
     album: "Gangsta's Paradise",
-    youtubeVideoId: 'LdMoYYeW9g8',
+    youtubeVideoId: 'fPO76Jlnz6c',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: "Stayin' Alive",
     artist: 'N-Trance',
     album: 'Electronic Pleasure',
-    youtubeVideoId: 'ksJ8dtaxHR0',
+    youtubeVideoId: 'qiKOif0UKRM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Kiss from a Rose',
     artist: 'Seal',
     album: 'Batman Forever: Music from the Motion Picture',
-    youtubeVideoId: 'ahZveGhd5Lk',
+    youtubeVideoId: 'hDd2G_V1rzc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Another Night',
     artist: 'Real McCoy',
     album: 'Another Night',
-    youtubeVideoId: 'Mzw9DrtTxxU',
+    youtubeVideoId: 'Pav2f4b-1ZE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Zombie',
     artist: 'The Cranberries',
     album: 'No Need to Argue',
-    youtubeVideoId: 'Fa0x3c42pXw',
+    youtubeVideoId: '6Ejga4kJUts',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: "Let's Groove",
     artist: 'CDB',
     album: 'Glide with Me',
-    youtubeVideoId: 'k3kfAd59l7k',
+    youtubeVideoId: 'oYCx1WA072U',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -140,7 +140,7 @@ const songs: Song[] = [
     title: 'Back for Good',
     artist: 'Take That',
     album: 'Nobody Else',
-    youtubeVideoId: 'ntW28zdGkSI',
+    youtubeVideoId: 'N2ICtCO8TCw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: 'You Are Not Alone',
     artist: 'Michael Jackson',
     album: 'HIStory: Past, Present and Future, Book I',
-    youtubeVideoId: 's3DEltHafco',
+    youtubeVideoId: 'pAyKJAtDNCw',
     imageSelection: 'album',
     imageSources: {
       album:

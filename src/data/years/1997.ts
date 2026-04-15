@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Candle in the Wind 1997',
     artist: 'Elton John',
     album: 'Candle in the Wind 1997',
-    youtubeVideoId: 'dwhe7BUFsBk',
+    youtubeVideoId: 'EX7FvFexpg8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -65,7 +65,7 @@ const songs: Song[] = [
     title: 'Tubthumping',
     artist: 'Chumbawamba',
     album: 'Tubthumper',
-    youtubeVideoId: 'zmns9tJywqY',
+    youtubeVideoId: '2H5uWRjFsGc',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/3/37/TubthumpingHQ.jpg',
@@ -78,7 +78,7 @@ const songs: Song[] = [
     title: "I'll Be Missing You",
     artist: 'Puff Daddy',
     album: 'No Way Out',
-    youtubeVideoId: 'qSk-74AQ7sE',
+    youtubeVideoId: 'NKMtZm2YuBE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -92,7 +92,7 @@ const songs: Song[] = [
     title: 'MMMBop',
     artist: 'Hanson',
     album: 'Middle of Nowhere',
-    youtubeVideoId: '-GPffhQtfGI',
+    youtubeVideoId: 'NHozn0YXAeE',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/f/f4/Hanson-mmmbop.jpg',
@@ -105,7 +105,7 @@ const songs: Song[] = [
     title: 'Men in Black',
     artist: 'Will Smith',
     album: 'Men in Black: The Album and Big Willie Style',
-    youtubeVideoId: 'qNQCZwol3Ec',
+    youtubeVideoId: 'fiBLgEx6svA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -119,7 +119,7 @@ const songs: Song[] = [
     title: 'Truly, Madly, Deeply',
     artist: 'Savage Garden',
     album: 'Savage Garden',
-    youtubeVideoId: 'RTWReLoEvzE',
+    youtubeVideoId: 'WQnAxOQxQIU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -133,7 +133,7 @@ const songs: Song[] = [
     title: "Don't Speak",
     artist: 'No Doubt',
     album: 'Tragic Kingdom',
-    youtubeVideoId: '46oWyc4P_pw',
+    youtubeVideoId: 'TR3Vdo5etCQ',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/5/5e/Don%27t_Speak.jpg',
@@ -146,7 +146,7 @@ const songs: Song[] = [
     title: 'Breathe',
     artist: 'The Prodigy',
     album: 'The Fat of the Land',
-    youtubeVideoId: '1n6GvSfjE8M',
+    youtubeVideoId: '6_PAHbqq-o4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -160,7 +160,7 @@ const songs: Song[] = [
     title: 'Break My Stride',
     artist: 'Unique II',
     album: 'Level II',
-    youtubeVideoId: 'sxIeReOscrQ',
+    youtubeVideoId: 'vRTcxay_PT4',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: "(I've Had) The Time of My Life",
     artist: 'Bill Medley and Jennifer Warnes',
     album: 'Dirty Dancing (Original Motion Picture Soundtrack)',
-    youtubeVideoId: 'nBJNyE7q-mA',
+    youtubeVideoId: '4BQLE_RrTSU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Simply Irresistible',
     artist: 'Robert Palmer',
     album: 'Heavy Nova',
-    youtubeVideoId: '2v7dD4LNY48',
+    youtubeVideoId: 'UrGw_cOgwa8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'The Flame',
     artist: 'Cheap Trick',
     album: 'The Essential Cheap Trick',
-    youtubeVideoId: '0IMSiZKIdLo',
+    youtubeVideoId: '2u6uXuT9pm4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'I Should Be So Lucky',
     artist: 'Kylie Minogue',
     album: 'I Should Be so Lucky',
-    youtubeVideoId: 'OiZlXOAOLLw',
+    youtubeVideoId: '3_TvpBwSZDM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Perfect',
     artist: 'Fairground Attraction',
     album: 'The First of a Million Kisses',
-    youtubeVideoId: '_gCFSLkJBQw',
+    youtubeVideoId: 'txapREGWHp0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'What a Wonderful World',
     artist: 'Louis Armstrong',
     album: 'What a Wonderful World',
-    youtubeVideoId: 'ddLd0QRf7Vg',
+    youtubeVideoId: 'rBrd_3VMC3c',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Never Gonna Give You Up',
     artist: 'Rick Astley',
     album: 'Whenever You Need Somebody',
-    youtubeVideoId: 'nsCIeklgp1M',
+    youtubeVideoId: 'dQw4w9WgXcQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Better Be Home Soon',
     artist: 'Crowded House',
     album: 'Temple of Low Men (Deluxe)',
-    youtubeVideoId: 'hpc5Tb7QdKU',
+    youtubeVideoId: 'AQOlwMKpmvQ',
     imageSelection: 'album',
     imageSources: {
       album:

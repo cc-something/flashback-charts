@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Macarena',
     artist: 'Los del Rio',
     album: 'A mí me gusta',
-    youtubeVideoId: '2zvd1JQ0EKY',
+    youtubeVideoId: 'zWaymcVmJ-A',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'Killing Me Softly',
     artist: 'Fugees',
     album: 'The Score',
-    youtubeVideoId: 'l5Y7fyeORRE',
+    youtubeVideoId: 'oKOtzIo-uYw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Because You Loved Me',
     artist: 'Celine Dion',
     album: 'Falling into You',
-    youtubeVideoId: 'IlrXHkPvn8I',
+    youtubeVideoId: 'ReUpQWdGEVM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'How Bizarre',
     artist: 'OMC',
     album: 'How Bizarre',
-    youtubeVideoId: 'Y-JHS3hN19I',
+    youtubeVideoId: 'C2cMG33mWVY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Wannabe',
     artist: 'Spice Girls',
     album: 'Spice',
-    youtubeVideoId: 'xlTZKsqP3_E',
+    youtubeVideoId: 'gJLIiF15wjQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'One of Us',
     artist: 'Joan Osborne',
     album: 'Relish',
-    youtubeVideoId: '5atAn5_X1Zo',
+    youtubeVideoId: 'aDdOnl0bHO4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Missing',
     artist: 'Everything but the Girl',
     album: 'Amplified Heart',
-    youtubeVideoId: 'tkO0A3c_3LI',
+    youtubeVideoId: 'U56Ns66Qrb8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Return of the Mack',
     artist: 'Mark Morrison',
     album: 'Return of the Mack',
-    youtubeVideoId: 'hyHB1x6z7Qc',
+    youtubeVideoId: 'uB1D9wWxd2w',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: "You're Makin' Me High",
     artist: 'Toni Braxton',
     album: 'Secrets',
-    youtubeVideoId: 'JaKMegOMa8w',
+    youtubeVideoId: 'wIgOL21S98o',
     imageSelection: 'album',
     imageSources: {
       album:

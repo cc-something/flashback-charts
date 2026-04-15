@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'On a Slow Boat to China',
     artist: 'Kay Kyser',
     album: 'On a Slow Boat to China',
-    youtubeVideoId: '8V-rSr8kAXc',
+    youtubeVideoId: 'QhMVtDI4o8s',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Rambling Rose',
     artist: 'Perry Como; Tony Martin',
     album: 'Rambling Rose',
-    youtubeVideoId: 'tGRIeMyPGMs',
+    youtubeVideoId: 'xxwL-6uKIes',
     imageSelection: 'artist',
     imageSources: {
       album: null,

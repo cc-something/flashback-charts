@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'What About Me',
     artist: 'Shannon Noll',
     album: "That's What I'm Talking About",
-    youtubeVideoId: 'xaYpdAr1Vkk',
+    youtubeVideoId: 'OAZnFnEBCaE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Left Outside Alone',
     artist: 'Anastacia',
     album: 'Anastacia',
-    youtubeVideoId: '7R_kfiwcMNs',
+    youtubeVideoId: 'uzR5jM9UeJA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Black Betty',
     artist: 'Spiderbait',
     album: 'Tonight Alright',
-    youtubeVideoId: '0rqyh7-am5I',
+    youtubeVideoId: 'nU1VfYYKMDk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Milkshake',
     artist: 'Kelis',
     album: 'Tasty',
-    youtubeVideoId: 'bw4FJx3mTvE',
+    youtubeVideoId: 'pGL2rytTraA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: "Fuck It (I Don't Want You Back)",
     artist: 'Eamon',
     album: "I Don't Want You Back",
-    youtubeVideoId: 'JsKtBoQ2Jhg',
+    youtubeVideoId: 'PW7lRsMOgvo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Superstar',
     artist: 'Jamelia',
     album: 'Thank You',
-    youtubeVideoId: 'a97tvArlvpE',
+    youtubeVideoId: '0d3Ib_bHYik',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'My Immortal',
     artist: 'Evanescence',
     album: 'Fallen',
-    youtubeVideoId: 'rQ6oVEPrQDo',
+    youtubeVideoId: '5anLPw0Efmo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'These Kids',
     artist: 'Joel Turner and the Modern Day Poets',
     album: 'Joel Turner and the Modern Day Poets',
-    youtubeVideoId: '8yHOWwoFIs8',
+    youtubeVideoId: 'dMT-JzW8MXs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Shut Up',
     artist: 'The Black Eyed Peas',
     album: 'Elephunk',
-    youtubeVideoId: 'T3vGz5llV8E',
+    youtubeVideoId: 'FArZFCGMwgE',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/a/a1/Elephunk.jpg',
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: 'Suga Suga',
     artist: 'Baby Bash',
     album: "Tha Smokin' Nephew",
-    youtubeVideoId: 'f6bIK_QDsB8',
+    youtubeVideoId: '6rgStv12dwA',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/b/bb/Sugasuga.jpg',

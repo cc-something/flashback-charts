@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Something / Come Together',
     artist: 'The Beatles',
     album: 'Abbey Road',
-    youtubeVideoId: '8JKoFCUaUbY',
+    youtubeVideoId: '45cYwDMibGo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'Honky Tonk Women',
     artist: 'The Rolling Stones',
     album: 'Honky Tonk Women',
-    youtubeVideoId: 'gqtJELaLG5k',
+    youtubeVideoId: 'hqqkGxZ1_8I',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'Suspicious Minds',
     artist: 'Elvis Presley',
     album: 'Suspicious Minds',
-    youtubeVideoId: 'qhapHLkID4k',
+    youtubeVideoId: 'WrMGGouem3c',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Part Three into Paper Walls / The Girl That I Love',
     artist: 'Russell Morris',
     album: 'Part Three into Paper Walls / The Girl That I Love',
-    youtubeVideoId: 'KmTRgVQy-z4',
+    youtubeVideoId: 'zKHzUHb6g4Q',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: 'Penny Arcade',
     artist: 'Roy Orbison',
     album: 'Big O',
-    youtubeVideoId: 'UthU4zTiMlg',
+    youtubeVideoId: 'ovBuo7QyKTQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: "Get Back / Don't Let Me Down",
     artist: 'The Beatles',
     album: "Get Back / Don't Let Me Down",
-    youtubeVideoId: 'r9PChq8LyvI',
+    youtubeVideoId: 'NCtzkaL2t_Y',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Hair',
     artist: 'The Cowsills',
     album: 'The Cowsills in Concert',
-    youtubeVideoId: 'aAk8z2PLOmc',
+    youtubeVideoId: 'Qt_yKPNORLM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Where Do You Go To (My Lovely)',
     artist: 'Peter Sarstedt',
     album: 'Where Do You Go to (My Lovely)',
-    youtubeVideoId: 'WLHf379sq1s',
+    youtubeVideoId: 'L8XQZYIiNgo',
     imageSelection: 'album',
     imageSources: {
       album:

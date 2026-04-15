@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Leave Me Alone (Ruby Red Dress)',
     artist: 'Helen Reddy',
     album: 'Long Hard Climb',
-    youtubeVideoId: 'sKfqHsiHWJU',
+    youtubeVideoId: 'ULKEBJRC0gs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'The Ballroom Blitz',
     artist: 'Sweet',
     album: 'Desolation Boulevard (US version)',
-    youtubeVideoId: 'z_jdiU47bFA',
+    youtubeVideoId: 'r8pYpii2Atg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'I Honestly Love You',
     artist: 'Olivia Newton-John',
     album: 'I Honestly Love You',
-    youtubeVideoId: 'YZJNYJFAw8g',
+    youtubeVideoId: 'bCcKg2asm9k',
     imageSelection: 'album',
     imageSources: {
       album:

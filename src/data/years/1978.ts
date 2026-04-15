@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: "It's a Heartache",
     artist: 'Bonnie Tyler',
     album: 'Natural Force',
-    youtubeVideoId: '62aHuVz0brQ',
+    youtubeVideoId: 'zjloI8jfXJM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Three Times a Lady',
     artist: 'The Commodores',
     album: 'Natural High',
-    youtubeVideoId: 'aWrRY-LnEOY',
+    youtubeVideoId: 'h2IHexgN6Ns',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Baker Street',
     artist: 'Gerry Rafferty',
     album: 'City to City',
-    youtubeVideoId: 'dU6w56epBdc',
+    youtubeVideoId: 'Fo6aKnRnBxM',
     imageSelection: 'album',
     imageSources: {
       album:

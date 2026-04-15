@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'I Will Follow Him',
     artist: 'Little Peggy March',
     album: 'I Will Follow Him',
-    youtubeVideoId: 'V-7vnnuaoog',
+    youtubeVideoId: 'IRk9gAqjLgg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Return to Sender',
     artist: 'Elvis Presley',
     album: 'Girls! Girls! Girls! (Original Soundtrack)',
-    youtubeVideoId: 'P4vMNmH7IwA',
+    youtubeVideoId: 'LZmUfUBqE-s',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: "Move Baby Move / You'll Never Cherish a Love So True",
     artist: "Johnny O'Keefe",
     album: 'The Wild One',
-    youtubeVideoId: 'Ni47YD6_tQk',
+    youtubeVideoId: '3nse9mFmG9c',
     imageSelection: 'album',
     imageSources: {
       album:

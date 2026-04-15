@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Happy',
     artist: 'Pharrell Williams',
     album: 'Girl',
-    youtubeVideoId: 'XQG89cwhmJU',
+    youtubeVideoId: 'ZbZSe6N_BXs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: 'All About That Bass',
     artist: 'Meghan Trainor',
     album: 'Title',
-    youtubeVideoId: 'M6w_4k62uHc',
+    youtubeVideoId: '7PCkvCPvDXk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Shake It Off',
     artist: 'Taylor Swift',
     album: '1989',
-    youtubeVideoId: '7MAo4gm5yNo',
+    youtubeVideoId: 'nfWlot6h_JM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Geronimo',
     artist: 'Sheppard',
     album: 'Bombs Away',
-    youtubeVideoId: 'E-SeaCZE2TM',
+    youtubeVideoId: 'E-SeaCZE4jM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Que Sera',
     artist: 'Justice Crew',
     album: 'Que Sera',
-    youtubeVideoId: 'PHCgSWqB238',
+    youtubeVideoId: 'jJMxwBmQWHA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'Chandelier',
     artist: 'Sia',
     album: '1000 Forms of Fear',
-    youtubeVideoId: 'RJQks-JWOXE',
+    youtubeVideoId: '2vjPBrBU-TM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Stay with Me',
     artist: 'Sam Smith',
     album: 'In the Lonely Hour',
-    youtubeVideoId: 'zvfRCIqmvmo',
+    youtubeVideoId: 'pB-5XG-DbAA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -140,7 +140,7 @@ const songs: Song[] = [
     title: 'Freaks',
     artist: 'Timmy Trumpet and Savage',
     album: 'Freaks',
-    youtubeVideoId: 'r1dquH_KOQc',
+    youtubeVideoId: 'ofmzX1nMzRQ',
     imageSelection: 'album',
     imageSources: {
       album:

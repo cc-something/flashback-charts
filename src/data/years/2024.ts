@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Beautiful Things',
     artist: 'Benson Boone',
     album: 'Fireworks & Rollerblades',
-    youtubeVideoId: 'Z_O58UG2Lmk',
+    youtubeVideoId: 'HU08BcK5SUY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'A Bar Song (Tipsy)',
     artist: 'Shaboozey',
     album: "Where I've Been, Isn't Where I'm Going",
-    youtubeVideoId: '5wb76pMt6pU',
+    youtubeVideoId: 'nZjTtuNR3Og',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Espresso',
     artist: 'Sabrina Carpenter',
     album: "Short n' Sweet",
-    youtubeVideoId: 'fJQsKTbo6j8',
+    youtubeVideoId: '51zjlMhdSTE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Stick Season',
     artist: 'Noah Kahan',
     album: 'Stick Season',
-    youtubeVideoId: 'LjVI9aqE0y0',
+    youtubeVideoId: 'iWG6apzIWAk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Lose Control',
     artist: 'Teddy Swims',
     album: 'Lose Control',
-    youtubeVideoId: '4c4JlVlsyIs',
+    youtubeVideoId: 'FkOpwodhROI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'I Had Some Help',
     artist: 'Post Malone Feat. Morgan Wallen',
     album: 'F-1 Trillion',
-    youtubeVideoId: 'kZu82V5iuoU',
+    youtubeVideoId: 'PCBZOSM8h5U',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Too Sweet',
     artist: 'Hozier',
     album: 'Unreal Unearth',
-    youtubeVideoId: 'Xgq_dZSXyIE',
+    youtubeVideoId: 'aezstCBHOPQ',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Cruel Summer',
     artist: 'Taylor Swift',
     album: 'Lover',
-    youtubeVideoId: 'm6XwKBMsZk0',
+    youtubeVideoId: 'ic8j13piAhQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'Million Dollar Baby',
     artist: 'Tommy Richman',
     album: 'Million Dollar Baby',
-    youtubeVideoId: 'UTPsTLzdOVI',
+    youtubeVideoId: 'zG5YzRxOcsI',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'The Last Waltz',
     artist: 'Engelbert Humperdinck',
     album: 'The Last Waltz',
-    youtubeVideoId: '8UMZtCag3OU',
+    youtubeVideoId: 'qFhLFzMsf_Q',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -51,7 +51,7 @@ const songs: Song[] = [
     title: 'This Is My Song',
     artist: 'Petula Clark',
     album: 'These Are My Songs',
-    youtubeVideoId: 'C5-k7YRaeU0',
+    youtubeVideoId: 'V8XmLuTmKIM',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: "I'm a Believer / (I'm Not Your) Steppin' Stone",
     artist: 'The Monkees',
     album: 'More of the Monkees',
-    youtubeVideoId: 'i4zDNJiKKbM',
+    youtubeVideoId: 'ehWbMmFm6G0',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'Mambo No. 5',
     artist: 'Lou Bega',
     album: 'A Little Bit of Mambo',
-    youtubeVideoId: 'is6AYSCWwKM',
+    youtubeVideoId: 'EK_LN3XEcnw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: '...Baby One More Time',
     artist: 'Britney Spears',
     album: '...Baby One More Time',
-    youtubeVideoId: 'nbmVTIYkbOo',
+    youtubeVideoId: 'C-u5WLJ9Yk4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: 'Last Kiss',
     artist: 'Pearl Jam',
     album: 'No Boundaries: A Benefit for the Kosovar Refugees',
-    youtubeVideoId: 'tbZkNTPLylI',
+    youtubeVideoId: 'uvjTo-hRD5c',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/6/65/PJLastKiss.jpg',
@@ -87,7 +87,7 @@ const songs: Song[] = [
     title: 'Pretty Fly (For a White Guy)',
     artist: 'The Offspring',
     album: 'Americana',
-    youtubeVideoId: 'RxoY3rehsG8',
+    youtubeVideoId: 'QtTR-_Klcq8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -100,7 +100,7 @@ const songs: Song[] = [
     title: 'Believe',
     artist: 'Cher',
     album: 'Believe',
-    youtubeVideoId: '-AWo7GqqzCw',
+    youtubeVideoId: 'nZXRV4MezEw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -126,7 +126,7 @@ const songs: Song[] = [
     title: "That Don't Impress Me Much",
     artist: 'Shania Twain',
     album: 'Come On Over',
-    youtubeVideoId: 'fzzt6zpp0lA',
+    youtubeVideoId: 'mqFLXayD6e8',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -139,7 +139,7 @@ const songs: Song[] = [
     title: "Why Don't You Get a Job",
     artist: 'The Offspring',
     album: 'Americana',
-    youtubeVideoId: 'RbKsHgNmE8o',
+    youtubeVideoId: 'LH-i8IvYIcg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -152,7 +152,7 @@ const songs: Song[] = [
     title: 'Genie in a Bottle',
     artist: 'Christina Aguilera',
     album: 'Christina Aguilera',
-    youtubeVideoId: 'k6H5v9iMQhQ',
+    youtubeVideoId: 'kIDWgqDBNXA',
     imageSelection: 'album',
     imageSources: {
       album:

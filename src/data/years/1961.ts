@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Theme from Exodus',
     artist: 'Ferrante and Teicher',
     album: 'All Time Great Movie Themes',
-    youtubeVideoId: '11ZURw4Awsw',
+    youtubeVideoId: 'Vi8WgNE86gA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Crying / Candy Man',
     artist: 'Roy Orbison',
     album: 'Crying',
-    youtubeVideoId: 'qQ66Ot2yRA0',
+    youtubeVideoId: '0FTKYtQXbro',
     imageSelection: 'album',
     imageSources: {
       album:

@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'Three Coins in the Fountain',
     artist: 'Frank Sinatra',
     album: 'Three Coins in the Fountain',
-    youtubeVideoId: 'yTgadkvfgSs',
+    youtubeVideoId: 'B1FZpyUfM5g',
     imageSelection: 'artist',
     imageSources: {
       album: null,

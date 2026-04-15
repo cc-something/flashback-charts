@@ -143,7 +143,7 @@ const songs: Song[] = [
     title: 'Beat It',
     artist: 'Michael Jackson',
     album: 'Thriller',
-    youtubeVideoId: 'hlJp0etLDcM',
+    youtubeVideoId: 'oRdxUFDoQe0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -156,7 +156,7 @@ const songs: Song[] = [
     title: 'Every Breath You Take',
     artist: 'The Police',
     album: 'Synchronicity',
-    youtubeVideoId: 'VfEvH4aML-k',
+    youtubeVideoId: 'OMOGaugKpzs',
     imageSelection: 'album',
     imageSources: {
       album:

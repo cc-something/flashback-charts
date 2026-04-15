@@ -36,7 +36,7 @@ const songs: Song[] = [
     title: 'La Copa De La Vida (The Cup of Life) / Un, Dos, Tres (María)',
     artist: 'Ricky Martin',
     album: 'Vuelve',
-    youtubeVideoId: 'KwJGfl68Rsg',
+    youtubeVideoId: 'dZDj2CnG5dE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -49,7 +49,7 @@ const songs: Song[] = [
     title: "It's Like That",
     artist: 'Run DMC vs. Jason Nevins',
     album: "It's Like That",
-    youtubeVideoId: '8lPOT7W3OIs',
+    youtubeVideoId: 'TLGWQfK-6DY',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -62,7 +62,7 @@ const songs: Song[] = [
     title: 'Iris',
     artist: 'Goo Goo Dolls',
     album: 'Dizzy Up the Girl',
-    youtubeVideoId: '3j96HsooVnc',
+    youtubeVideoId: 'NdYWuo9OFAw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -75,7 +75,7 @@ const songs: Song[] = [
     title: "I Don't Want to Miss a Thing",
     artist: 'Aerosmith',
     album: 'Armageddon: The Album',
-    youtubeVideoId: 'oES8iN59_nE',
+    youtubeVideoId: 'JkK8g6FMEXE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Never Ever',
     artist: 'All Saints',
     album: 'All Saints',
-    youtubeVideoId: 'I5QFmWR_mjs',
+    youtubeVideoId: 'nPXqkjpXZ_k',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -114,7 +114,7 @@ const songs: Song[] = [
     title: 'Crush',
     artist: 'Jennifer Paige',
     album: 'Jennifer Paige',
-    youtubeVideoId: 'nOefa4Gcrr0',
+    youtubeVideoId: 'EIhSnaqou0I',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -127,7 +127,7 @@ const songs: Song[] = [
     title: 'Good Riddance (Time of Your Life) / Redundant',
     artist: 'Green Day',
     album: 'Nimrod',
-    youtubeVideoId: 'lPl1i8mlppk',
+    youtubeVideoId: 'CnQ8N1KacJc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -140,7 +140,7 @@ const songs: Song[] = [
     title: "You're Still the One",
     artist: 'Shania Twain',
     album: 'Come On Over',
-    youtubeVideoId: '01NExGVZHbc',
+    youtubeVideoId: 'KNZH-emehxA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -153,7 +153,7 @@ const songs: Song[] = [
     title: 'From This Moment On',
     artist: 'Shania Twain',
     album: 'Come On Over',
-    youtubeVideoId: 'WOWIgZ713qE',
+    youtubeVideoId: 'a-Lp2uC_1lg',
     imageSelection: 'album',
     imageSources: {
       album:

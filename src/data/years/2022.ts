@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'As It Was',
     artist: 'Harry Styles',
     album: "Harry's House",
-    youtubeVideoId: 'P3rWbYuTa5E',
+    youtubeVideoId: 'H5v3kku4y6Q',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Heat Waves',
     artist: 'Glass Animals',
     album: 'Dreamland',
-    youtubeVideoId: '1GcnrBU4AWg',
+    youtubeVideoId: 'mRD0-GxqHVo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Bad Habits',
     artist: 'Ed Sheeran',
     album: '=',
-    youtubeVideoId: 'ho1RzYneMtM',
+    youtubeVideoId: 'orJSJGHjBLI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Shivers',
     artist: 'Ed Sheeran',
     album: '=',
-    youtubeVideoId: 'RSdFPWYE_MY',
+    youtubeVideoId: 'Il0S8BoucSA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Where Are You Now',
     artist: 'Lost Frequencies & Calum Scott',
     album: 'All Stand Together',
-    youtubeVideoId: 'qbkme8yv5Yk',
+    youtubeVideoId: 'PoP2Sa7wYNQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'First Class',
     artist: 'Jack Harlow',
     album: 'Come Home the Kids Miss You',
-    youtubeVideoId: 'lE4JBRSkT-o',
+    youtubeVideoId: 'yQBImEeXNZ4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: "I Ain't Worried",
     artist: 'OneRepublic',
     album: 'Top Gun: Maverick (Music from the Motion Picture)',
-    youtubeVideoId: 'bG0HNB1921w',
+    youtubeVideoId: 'mNEUkkoUoIA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'About Damn Time',
     artist: 'Lizzo',
     album: 'Special',
-    youtubeVideoId: 'xHKNTWbNneE',
+    youtubeVideoId: 'IXXxciRUMzE',
     imageSelection: 'album',
     imageSources: {
       album:

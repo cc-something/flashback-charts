@@ -149,7 +149,7 @@ const songs: Song[] = [
     title: "Girl I'm Gonna Miss You",
     artist: 'Milli Vanilli',
     album: "All or Nothing and Girl You Know It's True",
-    youtubeVideoId: 'ZAbbnKiUz0k',
+    youtubeVideoId: 'g_jeQKwXzPs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -163,7 +163,7 @@ const songs: Song[] = [
     title: 'Love Shack',
     artist: "The B-52's",
     album: 'Cosmic Thing',
-    youtubeVideoId: 'diOFiZi0T7c',
+    youtubeVideoId: '9SOryJvTAGs',
     imageSelection: 'album',
     imageSources: {
       album: 'https://upload.wikimedia.org/wikipedia/en/f/f7/Loveshack.jpg',

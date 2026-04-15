@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Whenever, Wherever',
     artist: 'Shakira',
     album: 'Laundry Service',
-    youtubeVideoId: '7gk5IhOXYxU',
+    youtubeVideoId: 'weRHyjj34ZE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'The Ketchup Song',
     artist: 'Las Ketchup',
     album: 'Hijas del Tomate',
-    youtubeVideoId: 'X0FvoHeG9Gs',
+    youtubeVideoId: '5llcBScGuAE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Dilemma',
     artist: 'Nelly feat. Kelly Rowland',
     album: 'Nellyville',
-    youtubeVideoId: 'gWY6QRZZ4Mg',
+    youtubeVideoId: '8WYHDfJDPDc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'A Little Less Conversation',
     artist: 'Elvis Presley vs. JXL',
     album: 'Almost in Love',
-    youtubeVideoId: 'xfaSLoU-5cw',
+    youtubeVideoId: 'rZLQpUxYkas',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'A Thousand Miles',
     artist: 'Vanessa Carlton',
     album: 'Be Not Nobody',
-    youtubeVideoId: 'GLO_57IV6Zc',
+    youtubeVideoId: 'Cwkej79U3ek',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Born to Try',
     artist: 'Delta Goodrem',
     album: 'Innocent Eyes',
-    youtubeVideoId: 'iuBGAYa6xZc',
+    youtubeVideoId: 'qTBOJ71ypRw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Not Pretty Enough',
     artist: 'Kasey Chambers',
     album: 'Barricades & Brickwalls',
-    youtubeVideoId: 'tSMji5yybVY',
+    youtubeVideoId: 'v5rOdF9rUKI',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'Kiss Kiss',
     artist: 'Holly Valance',
     album: 'Tarkan Ölürüm Sana',
-    youtubeVideoId: 'li-vI688rGc',
+    youtubeVideoId: 'o3wS2tdlZtE',
     imageSelection: 'album',
     imageSources: {
       album:

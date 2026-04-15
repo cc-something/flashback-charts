@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Blinding Lights',
     artist: 'The Weeknd',
     album: 'After Hours',
-    youtubeVideoId: 'a-HPQoNNjsk',
+    youtubeVideoId: '4NRXx6U8ABQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: 'Roses (Imanbek Remix)',
     artist: 'SAINt JHN',
     album: 'While the World Was Burning',
-    youtubeVideoId: 'ilbXs_QeBw0',
+    youtubeVideoId: 'jOMHWVv0xX4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: "Don't Start Now",
     artist: 'Dua Lipa',
     album: 'Future Nostalgia',
-    youtubeVideoId: '8CLkVWB_Lj8',
+    youtubeVideoId: 'oygrmJFKYZY',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Dance Monkey',
     artist: 'Tones and I',
     album: 'The Kids Are Coming',
-    youtubeVideoId: '4iQxG8ZjYO8',
+    youtubeVideoId: 'q0hyYWKXF0Q',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Watermelon Sugar',
     artist: 'Harry Styles',
     album: 'Fine Line',
-    youtubeVideoId: 'Eb0L24QXY4s',
+    youtubeVideoId: 'E07s5ZYygMg',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Before You Go',
     artist: 'Lewis Capaldi',
     album: 'Divinely Uninspired to a Hellish Extent',
-    youtubeVideoId: 'bw02psc6fqY',
+    youtubeVideoId: '8CIDLJTlnSo',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Intentions',
     artist: 'Justin Bieber Feat. Quavo',
     album: 'Changes',
-    youtubeVideoId: 'JeJyyWyOnpQ',
+    youtubeVideoId: '3AyMjyHu1bA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -154,7 +154,7 @@ const songs: Song[] = [
     title: 'Say So',
     artist: 'Doja Cat',
     album: 'Hot Pink',
-    youtubeVideoId: 'b2SIRT76XTQ',
+    youtubeVideoId: 'k3Yk6FrjMkQ',
     imageSelection: 'album',
     imageSources: {
       album:

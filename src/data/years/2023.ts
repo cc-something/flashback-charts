@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'Flowers',
     artist: 'Miley Cyrus',
     album: 'Endless Summer Vacation',
-    youtubeVideoId: 'fQemUin8g-I',
+    youtubeVideoId: 'G7KNmW9a75Y',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -63,7 +63,7 @@ const songs: Song[] = [
     title: 'Kill Bill',
     artist: 'SZA',
     album: 'SOS',
-    youtubeVideoId: 'ZQTBSQKai_k',
+    youtubeVideoId: 'MSRcC626prw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -76,7 +76,7 @@ const songs: Song[] = [
     title: 'Cruel Summer',
     artist: 'Taylor Swift',
     album: 'Lover',
-    youtubeVideoId: 'm6XwKBMsZk0',
+    youtubeVideoId: 'ic8j13piAhQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -89,7 +89,7 @@ const songs: Song[] = [
     title: 'Paint the Town Red',
     artist: 'Doja Cat',
     album: 'Scarlet',
-    youtubeVideoId: '-NxStuEDCXs',
+    youtubeVideoId: 'm4_9TFeMfJE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -102,7 +102,7 @@ const songs: Song[] = [
     title: 'Vampire',
     artist: 'Olivia Rodrigo',
     album: 'Guts',
-    youtubeVideoId: 'C1H71IP2zoc',
+    youtubeVideoId: 'RlPNh_PBZb4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -115,7 +115,7 @@ const songs: Song[] = [
     title: 'Greedy',
     artist: 'Tate McRae',
     album: 'Think Later',
-    youtubeVideoId: 'VAjQPEjRi_A',
+    youtubeVideoId: 'To4SWGZkEPk',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -128,7 +128,7 @@ const songs: Song[] = [
     title: 'Fast Car',
     artist: 'Luke Combs',
     album: "Gettin' Old",
-    youtubeVideoId: 'b4Zp75xe6tE',
+    youtubeVideoId: 'PnXzBVJfkRE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -141,7 +141,7 @@ const songs: Song[] = [
     title: 'Sprinter',
     artist: 'Dave & Central Cee',
     album: 'Split Decision',
-    youtubeVideoId: 'EOM4Of0KMMA',
+    youtubeVideoId: 'pSY3i5XHHXo',
     imageSelection: 'album',
     imageSources: {
       album:

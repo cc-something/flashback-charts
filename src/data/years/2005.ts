@@ -37,7 +37,7 @@ const songs: Song[] = [
     title: 'The Prayer',
     artist: 'Anthony Callea',
     album: 'Anthony Callea',
-    youtubeVideoId: 'BPlHxXuBnGc',
+    youtubeVideoId: 'kVYouTFhRiE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -50,7 +50,7 @@ const songs: Song[] = [
     title: "Don't Cha",
     artist: 'The Pussycat Dolls feat. Busta Rhymes',
     album: 'PCD',
-    youtubeVideoId: 'aahAi1kXtDQ',
+    youtubeVideoId: 'YNSxNsr4wmA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -88,7 +88,7 @@ const songs: Song[] = [
     title: 'Over and Over',
     artist: 'Nelly feat. Tim McGraw',
     album: 'Sweat',
-    youtubeVideoId: 'cY_CrpwxxCg',
+    youtubeVideoId: 'n3htOCjafTc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -101,7 +101,7 @@ const songs: Song[] = [
     title: 'Switch',
     artist: 'Will Smith',
     album: 'Lost and Found',
-    youtubeVideoId: 'DfLNicS0JH8',
+    youtubeVideoId: 'uzUozo1uKOc',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -139,7 +139,7 @@ const songs: Song[] = [
     title: 'Feel Good Inc.',
     artist: 'Gorillaz',
     album: 'Demon Days',
-    youtubeVideoId: '7C9EYka6fIU',
+    youtubeVideoId: 'HyHNuVaZJ-k',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -152,7 +152,7 @@ const songs: Song[] = [
     title: "Don't Phunk with My Heart",
     artist: 'The Black Eyed Peas',
     album: 'Monkey Business',
-    youtubeVideoId: '2icP-OuPpQA',
+    youtubeVideoId: 'YsAQnqMWP_o',
     imageSelection: 'album',
     imageSources: {
       album:

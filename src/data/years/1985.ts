@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Crazy for You',
     artist: 'Madonna',
     album: 'Vision Quest',
-    youtubeVideoId: 'vQj11ZDmKKk',
+    youtubeVideoId: 'DHutZXREZ0E',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'Live It Up',
     artist: 'Mental As Anything',
     album: 'Fundamental',
-    youtubeVideoId: 'kFW7zc43xaE',
+    youtubeVideoId: 'kK_eQImKnPA',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'I Want to Know What Love Is',
     artist: 'Foreigner',
     album: 'Agent Provocateur',
-    youtubeVideoId: 'EE-ZsGvUAR4',
+    youtubeVideoId: 'r3Pr1_v7hsw',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Out of Mind, Out of Sight',
     artist: 'Models',
     album: 'Out Of Mind, Out Of Sight',
-    youtubeVideoId: '2UzK_73ddAM',
+    youtubeVideoId: 'k5EZmJoNeYs',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'I Got You Babe',
     artist: 'UB40 with Chrissie Hynde',
     album: 'Baggariddim',
-    youtubeVideoId: 'NkacKswlod0',
+    youtubeVideoId: '2aP4GaAruws',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'I Should Have Known Better',
     artist: 'Jim Diamond',
     album: 'Double Crossed',
-    youtubeVideoId: 'Udz7vddl1lI',
+    youtubeVideoId: 'qWEFNFsFrgE',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Would I Lie to You?',
     artist: 'Eurythmics',
     album: 'Be Yourself Tonight',
-    youtubeVideoId: 'wUIIDRd-EY4',
+    youtubeVideoId: 'Uhpu2N4rQZM',
     imageSelection: 'album',
     imageSources: {
       album:

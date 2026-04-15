@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'MacArthur Park',
     artist: 'Richard Harris',
     album: 'A Tramp Shining',
-    youtubeVideoId: '9GKqEmAnWMo',
+    youtubeVideoId: 'NfXEzWW8CtQ',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'Hello, Goodbye / I Am the Walrus',
     artist: 'The Beatles',
     album: 'Magical Mystery Tour',
-    youtubeVideoId: 'HdoYM8MaD78',
+    youtubeVideoId: 'rblYSKz_VnI',
     imageSelection: 'album',
     imageSources: {
       album:

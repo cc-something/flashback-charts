@@ -38,7 +38,7 @@ const songs: Song[] = [
     title: 'Eye of the Tiger',
     artist: 'Survivor',
     album: 'Eye of the Tiger',
-    youtubeVideoId: 'PuxADhIKd5o',
+    youtubeVideoId: 'btPJPFnesV4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -103,7 +103,7 @@ const songs: Song[] = [
     title: 'Mickey',
     artist: 'Toni Basil',
     album: 'Hey Mickey',
-    youtubeVideoId: 'qXVlpUg2WXg',
+    youtubeVideoId: '3E-Zrg9CB_Q',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -116,7 +116,7 @@ const songs: Song[] = [
     title: "I Love Rock 'n Roll",
     artist: 'Joan Jett & The Blackhearts',
     album: "I Love Rock 'n Roll",
-    youtubeVideoId: 'Lo7XMvF_4vo',
+    youtubeVideoId: 'A4cFIzr85cU',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -129,7 +129,7 @@ const songs: Song[] = [
     title: 'Trouble',
     artist: 'Lindsey Buckingham',
     album: 'Law and Order',
-    youtubeVideoId: 'j_Lvblql4qo',
+    youtubeVideoId: 'Kcm3dbuV8Z4',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -142,7 +142,7 @@ const songs: Song[] = [
     title: 'Believe It or Not',
     artist: 'Joey Scarbury',
     album: "America's Greatest Hero",
-    youtubeVideoId: 'CsX1YcXY-Tk',
+    youtubeVideoId: 'WqF5M7IK7I0',
     imageSelection: 'album',
     imageSources: {
       album:
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: "Hard to Say I'm Sorry",
     artist: 'Chicago',
     album: 'Chicago 16',
-    youtubeVideoId: 'EORSLz0_BRU',
+    youtubeVideoId: '1A0MPWseJIE',
     imageSelection: 'album',
     imageSources: {
       album:
