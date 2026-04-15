@@ -100,6 +100,14 @@ export type PlayTrigger =
 const MAX_RETRIES = 2
 const STALL_TIMEOUT_MS = 4_000
 const EMBED_BLOCKED_ERROR_CODES = new Set([101, 150])
+const YOUTUBE_STATE_LABELS: Record<number, string> = {
+  [-1]: 'unstarted',
+  0: 'ended',
+  1: 'playing',
+  2: 'paused',
+  3: 'buffering',
+  5: 'video-cued',
+}
 const isEmbedBlockedError = (errorCode?: number) =>
   errorCode !== undefined && EMBED_BLOCKED_ERROR_CODES.has(errorCode)
 const getYearSongs = async (year: number) => getYearData(year) ?? null
@@ -152,6 +160,47 @@ export const usePlayerStore = defineStore('player', () => {
   } | null = null
   let hasTrackedCurrentSongPlayEvent = false
   let startupRecoveryCount = 0
+  const getElementDebug = (el: Element | null | undefined) => {
+    if (!(el instanceof Element)) return null
+    return {
+      tagName: el.tagName,
+      className: el.className,
+      childElementCount: el.childElementCount,
+      isConnected: el.isConnected,
+      clientWidth: el instanceof HTMLElement ? el.clientWidth : undefined,
+      clientHeight: el instanceof HTMLElement ? el.clientHeight : undefined,
+    }
+  }
+  const getPlayerDebugSnapshot = () => ({
+    playingVideoId: playingSong.value?.youtubeVideoId ?? null,
+    playingYear: playingYear.value,
+    playerState: playerState.value,
+    currentPlayVideoId: currentPlaySong?.youtubeVideoId ?? null,
+    currentStartAtSeconds,
+    currentTimeSeconds: currentTimeSeconds.value,
+    durationSeconds: durationSeconds.value,
+    isPlayerReady,
+    hasYtPlayer: !!ytPlayer,
+    hasPlayerInitPromise: !!playerInitPromise,
+    hasMountedPlayer: hasMountedPlayer.value,
+    isAwaitingPlaybackStart: isAwaitingPlaybackStart.value,
+    shouldBootstrapPlaybackFromShell: shouldBootstrapPlaybackFromShell.value,
+    shouldRestorePlayerOnContainerReady,
+    hasPendingPlayerMountEl: !!pendingPlayerMountEl,
+    retryCount,
+    startupRecoveryCount,
+    loadingAttemptId,
+    playerContainer: getElementDebug(playerContainerEl),
+    pendingPlayerMount: getElementDebug(pendingPlayerMountEl),
+  })
+  const logPlayerDebug = (
+    eventLabel: string,
+    details: Record<string, unknown> = {},
+  ) =>
+    console.info('[player]', eventLabel, {
+      ...getPlayerDebugSnapshot(),
+      ...details,
+    })
 
   const isActive = computed(() => playerState.value !== 'idle')
   const displayedTimeSeconds = computed(
@@ -210,9 +259,12 @@ export const usePlayerStore = defineStore('player', () => {
 
   const preload = async () => {
     if (typeof window === 'undefined') return
+    logPlayerDebug('preload:start')
     try {
       await ensureLoaded()
+      logPlayerDebug('preload:ready')
     } catch {
+      logPlayerDebug('preload:error')
       /* noop */
     }
   }
@@ -235,6 +287,7 @@ export const usePlayerStore = defineStore('player', () => {
     loadingAttemptId += 1
     loadingStartedAt = Date.now()
     playerState.value = 'loading'
+    logPlayerDebug('loading-attempt:start')
     return loadingAttemptId
   }
   const getErrorLoadingDelay = () =>
@@ -250,7 +303,12 @@ export const usePlayerStore = defineStore('player', () => {
     onFail: () => void = stop,
   ) => {
     const activeLoadingAttemptId = loadingAttemptId
+    logPlayerDebug('loading-attempt:fail-pending', {
+      message,
+      activeLoadingAttemptId,
+    })
     if (!(await waitForMinimumErrorLoading(activeLoadingAttemptId))) return
+    logPlayerDebug('loading-attempt:fail', { message, activeLoadingAttemptId })
     useToastStore().show(message)
     onFail()
   }
@@ -308,6 +366,7 @@ export const usePlayerStore = defineStore('player', () => {
     playerIframeEl.setAttribute('tabindex', '-1')
   }
   const syncTransferredPlayerState = () => {
+    logPlayerDebug('container:transfer-sync')
     shouldRestorePlayerOnContainerReady = false
     updatePlayerIframeFocusability()
     syncPlaybackProgress()
@@ -329,17 +388,21 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const restorePlayerAfterContainerSwap = async () => {
+    logPlayerDebug('container:restore-after-swap:start')
     if (!currentPlaySong?.youtubeVideoId || !playerContainerEl) return
     const mountedPlayer = await ensurePlayerMounted()
     if (!mountedPlayer) return
     if (isAwaitingPlaybackStart.value || playerState.value === 'paused') {
+      logPlayerDebug('container:restore-after-swap:cue')
       cueCurrentSongInPlayer()
       return
     }
     playerState.value = 'loading'
+    logPlayerDebug('container:restore-after-swap:load')
     loadCurrentSongIntoPlayer()
   }
   const refreshPlayerAfterViewportChange = async () => {
+    logPlayerDebug('viewport:refresh-request')
     if (
       !playerContainerEl ||
       !currentPlaySong?.youtubeVideoId ||
@@ -354,6 +417,10 @@ export const usePlayerStore = defineStore('player', () => {
   const setPlayerContainer = (el: HTMLDivElement | null) => {
     if (playerContainerEl === el) return
     const previousPlayerContainerEl = playerContainerEl
+    logPlayerDebug('container:set', {
+      previousContainer: getElementDebug(previousPlayerContainerEl),
+      nextContainer: getElementDebug(el),
+    })
     clearDestroyPlayerOnContainerLossTimer()
     const transferableMountedPlayerEl =
       el && (ytPlayer || playerInitPromise)
@@ -365,6 +432,9 @@ export const usePlayerStore = defineStore('player', () => {
     const hasTransferredMountedPlayer =
       !!el && transferableMountedPlayerEl instanceof HTMLDivElement
     if (hasTransferredMountedPlayer && transferableMountedPlayerEl) {
+      logPlayerDebug('container:transfer-mounted-player', {
+        transferredMount: getElementDebug(transferableMountedPlayerEl),
+      })
       el.replaceChildren(transferableMountedPlayerEl)
       pendingPlayerMountEl = null
     }
@@ -375,19 +445,26 @@ export const usePlayerStore = defineStore('player', () => {
         : previousPlayerContainerEl?.firstElementChild
       if (orphanedPlayerMountEl instanceof HTMLDivElement)
         pendingPlayerMountEl = orphanedPlayerMountEl
+      logPlayerDebug('container:cleared', {
+        orphanedPlayerMount: getElementDebug(orphanedPlayerMountEl),
+      })
       if (playerState.value !== 'idle' && currentPlaySong?.youtubeVideoId) {
         storePlaybackPositionForRemount()
         shouldRestorePlayerOnContainerReady = true
+        logPlayerDebug('container:marked-for-restore')
       }
       if (!ytPlayer && !playerInitPromise) {
+        logPlayerDebug('container:cleared-no-player-destroy')
         destroyPlayer()
         return
       }
       if (typeof window === 'undefined') {
+        logPlayerDebug('container:cleared-no-window-destroy')
         destroyPlayer()
         return
       }
       destroyPlayerOnContainerLossTimerId = window.setTimeout(() => {
+        logPlayerDebug('container:loss-timeout-destroy')
         pendingPlayerMountEl = null
         destroyPlayer()
       }, 0)
@@ -398,15 +475,18 @@ export const usePlayerStore = defineStore('player', () => {
       return
     }
     if (shouldRestorePlayerOnContainerReady) {
+      logPlayerDebug('container:restore-on-ready')
       shouldRestorePlayerOnContainerReady = false
       void restorePlayerAfterContainerSwap()
       return
     }
     if (ytPlayer || playerInitPromise) return
     if (playerState.value !== 'idle' && currentPlaySong?.youtubeVideoId) {
+      logPlayerDebug('container:restore-active-session')
       void restorePlayerAfterContainerSwap()
       return
     }
+    logPlayerDebug('container:eager-mount-request')
     void ensurePlayerMounted()
   }
 
@@ -558,6 +638,7 @@ export const usePlayerStore = defineStore('player', () => {
     offlineHandler = null
   }
   const enterBlockedPlaybackState = () => {
+    logPlayerDebug('playback:enter-blocked-state')
     clearStallTimer()
     clearLoadingTracking()
     clearProgressTimer()
@@ -565,6 +646,7 @@ export const usePlayerStore = defineStore('player', () => {
     playerState.value = 'paused'
   }
   const clearPlaybackSession = () => {
+    logPlayerDebug('session:clear')
     clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
     clearStallTimer()
@@ -586,6 +668,7 @@ export const usePlayerStore = defineStore('player', () => {
     shouldBootstrapPlaybackFromShell.value = false
   }
   const destroyPlayer = () => {
+    logPlayerDebug('player:destroy:start')
     activePlayerGeneration += 1
     clearDestroyPlayerOnContainerLossTimer()
     clearProgressTimer()
@@ -597,8 +680,10 @@ export const usePlayerStore = defineStore('player', () => {
     hasMountedPlayer.value = false
     pendingPlayerMountEl = null
     playerContainerEl?.replaceChildren()
+    logPlayerDebug('player:destroy:done')
   }
   const enterPlaybackStartGate = async () => {
+    logPlayerDebug('playback:start-gate:enter')
     if (!currentPlaySong?.youtubeVideoId) return
     clearStallTimer()
     clearLoadingTracking()
@@ -611,17 +696,23 @@ export const usePlayerStore = defineStore('player', () => {
     const mountedPlayer = mountPlayerIfPossible()
     if (mountedPlayer) {
       await mountedPlayer
+      logPlayerDebug('playback:start-gate:cue-after-immediate-mount')
       cueCurrentSongInPlayer()
       return
     }
     try {
       await ensurePlayerMounted()
-      if (isAwaitingPlaybackStart.value) cueCurrentSongInPlayer()
+      if (isAwaitingPlaybackStart.value) {
+        logPlayerDebug('playback:start-gate:cue-after-ensure')
+        cueCurrentSongInPlayer()
+      }
     } catch {
+      logPlayerDebug('playback:start-gate:error')
       /* noop */
     }
   }
   const stop = () => {
+    logPlayerDebug('playback:stop:start')
     clearSaveTimer()
     clearPlaybackSession()
     clearSongHighlight()
@@ -635,6 +726,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearActive()
     deactivate()
     clearSavedState()
+    logPlayerDebug('playback:stop:done')
   }
   const waitForPlayerContainer = async () => {
     if (typeof window === 'undefined') return null
@@ -643,13 +735,22 @@ export const usePlayerStore = defineStore('player', () => {
         playerContainerEl &&
         playerContainerEl.clientWidth >= 200 &&
         playerContainerEl.clientHeight >= 200
-      )
+      ) {
+        logPlayerDebug('container:wait-ready', { attemptIndex })
         return playerContainerEl
+      }
+      logPlayerDebug('container:wait-pending', {
+        attemptIndex,
+        container: getElementDebug(playerContainerEl),
+      })
       await nextTick()
       await new Promise<void>((resolve) =>
         window.requestAnimationFrame(() => resolve()),
       )
     }
+    logPlayerDebug('container:wait-fell-through', {
+      container: getElementDebug(playerContainerEl),
+    })
     return playerContainerEl
   }
   const getReadyPlayerContainer = () => {
@@ -665,27 +766,47 @@ export const usePlayerStore = defineStore('player', () => {
   const getPlayerMountEl = async () => {
     const playerContainerHost = await waitForPlayerContainer()
     if (!playerContainerHost) return null
-    if (playerContainerHost.childElementCount > 0)
+    if (playerContainerHost.childElementCount > 0) {
+      logPlayerDebug('mount-el:reuse-existing', {
+        container: getElementDebug(playerContainerHost),
+        existingMount: getElementDebug(playerContainerHost.firstElementChild),
+      })
       return playerContainerHost.firstElementChild as HTMLDivElement
+    }
     const playerMountEl = document.createElement('div')
     playerMountEl.className = 'h-full w-full'
     playerContainerHost.appendChild(playerMountEl)
+    logPlayerDebug('mount-el:create', {
+      container: getElementDebug(playerContainerHost),
+      mount: getElementDebug(playerMountEl),
+    })
     return playerMountEl
   }
   const getImmediatePlayerMountEl = () => {
     const playerContainerHost = getReadyPlayerContainer()
     if (!playerContainerHost) return null
-    if (playerContainerHost.childElementCount > 0)
+    if (playerContainerHost.childElementCount > 0) {
+      logPlayerDebug('mount-el:reuse-immediate', {
+        container: getElementDebug(playerContainerHost),
+        existingMount: getElementDebug(playerContainerHost.firstElementChild),
+      })
       return playerContainerHost.firstElementChild as HTMLDivElement
+    }
     const playerMountEl = document.createElement('div')
     playerMountEl.className = 'h-full w-full'
     playerContainerHost.appendChild(playerMountEl)
+    logPlayerDebug('mount-el:create-immediate', {
+      container: getElementDebug(playerContainerHost),
+      mount: getElementDebug(playerMountEl),
+    })
     return playerMountEl
   }
   const startPlaybackStallTimer = (shouldRestart = false) => {
     if (stallTimerId !== null && !shouldRestart) return
     clearStallTimer()
+    logPlayerDebug('stall-timer:start', { shouldRestart })
     stallTimerId = setTimeout(async () => {
+      logPlayerDebug('stall-timer:fired')
       if (playerState.value !== 'loading') return
       if (!(await getHasNetworkConnection()))
         return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
@@ -703,6 +824,9 @@ export const usePlayerStore = defineStore('player', () => {
   const loadCurrentSongIntoPlayer = () => {
     const readyYtPlayer = getReadyYtPlayer()
     if (!readyYtPlayer || !currentPlaySong?.youtubeVideoId) return
+    logPlayerDebug('playback:load-current-song', {
+      requestedVideoId: currentPlaySong.youtubeVideoId,
+    })
     resetPlaybackProgress()
     syncMutedState()
     readyYtPlayer.loadVideoById(
@@ -714,6 +838,9 @@ export const usePlayerStore = defineStore('player', () => {
   const cueCurrentSongInPlayer = () => {
     const readyYtPlayer = getReadyYtPlayer()
     if (!readyYtPlayer || !currentPlaySong?.youtubeVideoId) return
+    logPlayerDebug('playback:cue-current-song', {
+      requestedVideoId: currentPlaySong.youtubeVideoId,
+    })
     clearStallTimer()
     clearLoadingTracking()
     clearProgressTimer()
@@ -732,7 +859,18 @@ export const usePlayerStore = defineStore('player', () => {
     const skippedSong = playingSong.value
     const skippedYear = playingYear.value
     const activeLoadingAttemptId = loadingAttemptId
+    logPlayerDebug('playback:skip-after-failure:pending', {
+      message,
+      skippedVideoId: skippedSong?.youtubeVideoId ?? null,
+      skippedYear,
+      activeLoadingAttemptId,
+    })
     if (!(await waitForMinimumErrorLoading(activeLoadingAttemptId))) return
+    logPlayerDebug('playback:skip-after-failure', {
+      message,
+      skippedVideoId: skippedSong?.youtubeVideoId ?? null,
+      skippedYear,
+    })
     useToastStore().show(message)
     clearPlaybackSession()
     if (skippedSong && skippedYear !== null) {
@@ -743,6 +881,7 @@ export const usePlayerStore = defineStore('player', () => {
     stop()
   }
   const recoverPlaybackAfterStartupStall = async () => {
+    logPlayerDebug('playback:recover-after-stall:start')
     if (!currentPlaySong?.youtubeVideoId) return skipCurrentSongAfterFailure()
     if (startupRecoveryCount >= MAX_STARTUP_RECOVERY_ATTEMPTS)
       return skipCurrentSongAfterFailure()
@@ -764,14 +903,19 @@ export const usePlayerStore = defineStore('player', () => {
       if (!mountedPlayer) return skipCurrentSongAfterFailure()
       if (playerState.value !== 'loading' || !currentPlaySong?.youtubeVideoId)
         return
+      logPlayerDebug('playback:recover-after-stall:reload')
       loadCurrentSongIntoPlayer()
     } catch {
+      logPlayerDebug('playback:recover-after-stall:error')
       await skipCurrentSongAfterFailure()
     }
   }
   const handleEmbedBlockedPlayback = async () => {
     const failedSong = playingSong.value
     if (!failedSong) return
+    logPlayerDebug('playback:error:embed-blocked', {
+      failedVideoId: failedSong.youtubeVideoId,
+    })
     useToastStore().showWarning(
       `Unfortunately we can't play:\n${failedSong.title} by ${failedSong.artist}`,
     )
@@ -780,6 +924,10 @@ export const usePlayerStore = defineStore('player', () => {
   const handlePlaybackError = async (errorCode?: number) => {
     const failedSong = currentPlaySong
     if (!failedSong) return
+    logPlayerDebug('playback:error', {
+      errorCode,
+      failedVideoId: failedSong.youtubeVideoId,
+    })
     if (isEmbedBlockedError(errorCode)) return handleEmbedBlockedPlayback()
     if (!(await getHasNetworkConnection()))
       return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
@@ -800,6 +948,10 @@ export const usePlayerStore = defineStore('player', () => {
   }
   const handlePlayerStateChange = (event: YTPlayerEvent) => {
     if (!playingSong.value || playingYear.value === null) return
+    logPlayerDebug('youtube:state-change', {
+      youtubeState: event.data,
+      youtubeStateLabel: YOUTUBE_STATE_LABELS[event.data] ?? 'unknown',
+    })
     if (event.data === 1 || event.data === 2) clearStallTimer()
     if (event.data === 1) {
       startupRecoveryCount = 0
@@ -844,6 +996,9 @@ export const usePlayerStore = defineStore('player', () => {
     syncPlaybackProgress()
   }
   const createPlayer = (playerMountEl: HTMLDivElement) => {
+    logPlayerDebug('player:create', {
+      mount: getElementDebug(playerMountEl),
+    })
     hasMountedPlayer.value = true
     activePlayerGeneration += 1
     const playerGeneration = activePlayerGeneration
@@ -869,6 +1024,10 @@ export const usePlayerStore = defineStore('player', () => {
         events: {
           onReady: (event) => {
             if (playerGeneration !== activePlayerGeneration) {
+              logPlayerDebug('player:on-ready:stale-generation', {
+                playerGeneration,
+                activePlayerGeneration,
+              })
               event.target.destroy?.()
               resolve(null)
               return
@@ -876,6 +1035,12 @@ export const usePlayerStore = defineStore('player', () => {
             ytPlayer = event.target
             isPlayerReady = true
             playerInitPromise = Promise.resolve(event.target)
+            logPlayerDebug('player:on-ready', {
+              playerGeneration,
+              iframe: getElementDebug(
+                playerContainerEl?.querySelector('iframe'),
+              ),
+            })
             updatePlayerIframeFocusability()
             syncMutedState(event.target)
             resolve(event.target)
@@ -886,6 +1051,10 @@ export const usePlayerStore = defineStore('player', () => {
           },
           onError: (event: YTPlayerEvent) => {
             if (playerGeneration !== activePlayerGeneration) return
+            logPlayerDebug('player:on-error', {
+              playerGeneration,
+              errorCode: event.data,
+            })
             void handlePlaybackError(event.data)
           },
         },
@@ -895,22 +1064,47 @@ export const usePlayerStore = defineStore('player', () => {
   }
   const mountPlayerIfPossible = () => {
     if (typeof window === 'undefined') return null
-    if (!window.YT?.Player || ytPlayer) return null
+    if (!window.YT?.Player || ytPlayer) {
+      logPlayerDebug('player:mount-immediate:skip', {
+        hasPlayerCtor: !!window.YT?.Player,
+        hasYtPlayer: !!ytPlayer,
+      })
+      return null
+    }
     const playerMountEl = getImmediatePlayerMountEl()
-    if (!playerMountEl) return null
+    if (!playerMountEl) {
+      logPlayerDebug('player:mount-immediate:no-mount')
+      return null
+    }
+    logPlayerDebug('player:mount-immediate:start')
     return createPlayer(playerMountEl)
   }
   const ensurePlayerMounted = async () => {
     if (typeof window === 'undefined') return null
     const readyYtPlayer = getReadyYtPlayer()
-    if (readyYtPlayer) return readyYtPlayer
-    if (playerInitPromise) return playerInitPromise
+    if (readyYtPlayer) {
+      logPlayerDebug('player:ensure-mounted:reuse-ready-player')
+      return readyYtPlayer
+    }
+    if (playerInitPromise) {
+      logPlayerDebug('player:ensure-mounted:reuse-init-promise')
+      return playerInitPromise
+    }
+    logPlayerDebug('player:ensure-mounted:start')
     await ensureLoaded()
     const playerMountEl = await getPlayerMountEl()
-    if (!playerMountEl) return null
+    if (!playerMountEl) {
+      logPlayerDebug('player:ensure-mounted:no-mount')
+      return null
+    }
+    logPlayerDebug('player:ensure-mounted:create')
     return createPlayer(playerMountEl)
   }
   const primePlayback = async (song?: Song, year?: number) => {
+    logPlayerDebug('playback:prime:start', {
+      requestedVideoId: song?.youtubeVideoId ?? null,
+      requestedYear: year ?? null,
+    })
     await preload()
     if (
       typeof window === 'undefined' ||
@@ -920,15 +1114,23 @@ export const usePlayerStore = defineStore('player', () => {
       ytPlayer ||
       playerInitPromise ||
       !playerContainerEl
-    )
+    ) {
+      logPlayerDebug('playback:prime:skip', {
+        requestedVideoId: song?.youtubeVideoId ?? null,
+        requestedYear: year ?? null,
+        hasPlayerContainer: !!playerContainerEl,
+      })
       return
+    }
     if (!isActive.value && getIsTinyViewport())
       isAwaitingPlaybackStart.value = true
     currentPlaySong = song
     currentStartAtSeconds = undefined
     try {
       await ensurePlayerMounted()
+      logPlayerDebug('playback:prime:mounted')
     } catch {
+      logPlayerDebug('playback:prime:error')
       /* noop */
     }
   }
@@ -938,6 +1140,11 @@ export const usePlayerStore = defineStore('player', () => {
     trigger: PlayTrigger = 'direct',
   ) => {
     if (typeof window === 'undefined') return
+    logPlayerDebug('shell:prepare', {
+      requestedVideoId: song.youtubeVideoId,
+      requestedYear: year,
+      trigger,
+    })
     const wasActive = isActive.value
     const chart = useChartStore()
     playingSong.value = song
@@ -960,11 +1167,17 @@ export const usePlayerStore = defineStore('player', () => {
   ) => {
     if (typeof window === 'undefined') return
     if (!song.youtubeVideoId) return
+    logPlayerDebug('song:open:start', {
+      requestedVideoId: song.youtubeVideoId,
+      requestedYear: year,
+      trigger,
+    })
 
     const isSameSong =
       playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
       playingYear.value === year
     if (isSameSong && playerState.value !== 'idle') {
+      logPlayerDebug('song:open:same-song', { trigger })
       if (playerState.value === 'playing') ytPlayer?.pauseVideo()
       return
     }
@@ -987,19 +1200,23 @@ export const usePlayerStore = defineStore('player', () => {
       void scrollSongIntoView(song, year, trigger !== 'direct')
 
     if (ytPlayer && isPlayerReady) {
+      logPlayerDebug('song:open:cue-existing-ready-player')
       cueCurrentSongInPlayer()
       return
     }
     const mountedPlayer = mountPlayerIfPossible()
     if (mountedPlayer) {
       await mountedPlayer
+      logPlayerDebug('song:open:cue-after-immediate-mount')
       cueCurrentSongInPlayer()
       return
     }
     try {
       await ensurePlayerMounted()
+      logPlayerDebug('song:open:cue-after-ensure')
       cueCurrentSongInPlayer()
     } catch {
+      logPlayerDebug('song:open:error')
       /* noop */
     }
   }
@@ -1011,22 +1228,30 @@ export const usePlayerStore = defineStore('player', () => {
   ) => {
     if (typeof window === 'undefined') return
     if (!song.youtubeVideoId) return
+    logPlayerDebug('play:start', {
+      requestedVideoId: song.youtubeVideoId,
+      requestedYear: year,
+      trigger,
+    })
 
     // Toggle if same song
     if (
       playingSong.value?.youtubeVideoId === song.youtubeVideoId &&
       playingYear.value === year
     ) {
+      logPlayerDebug('play:same-song-branch', { trigger })
       if (playerState.value === 'playing') {
         getReadyYtPlayer()?.pauseVideo()
         return
       }
       if (playerState.value === 'paused' && ytPlayer) {
+        logPlayerDebug('play:resume-paused-existing-player')
         if (isAwaitingPlaybackStart.value) return
         startLoadingAttempt()
         if (getHasImmediateNetworkConnection()) {
           const readyYtPlayer = getReadyYtPlayer()
           if (readyYtPlayer) {
+            logPlayerDebug('play:resume-paused:play-video')
             readyYtPlayer.playVideo()
             return
           }
@@ -1036,8 +1261,10 @@ export const usePlayerStore = defineStore('player', () => {
             playerState.value === 'loading' &&
             currentPlaySong?.youtubeVideoId === song.youtubeVideoId &&
             playingYear.value === year
-          )
+          ) {
+            logPlayerDebug('play:resume-paused:load-after-ensure')
             loadCurrentSongIntoPlayer()
+          }
           return
         }
         await failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE, () => {
@@ -1047,6 +1274,7 @@ export const usePlayerStore = defineStore('player', () => {
         return
       }
       if (playerState.value === 'loading') {
+        logPlayerDebug('play:same-song-loading-stop')
         stop()
         return
       }
@@ -1054,6 +1282,7 @@ export const usePlayerStore = defineStore('player', () => {
     }
 
     if (!isActive.value && !getIsTinyViewport()) {
+      logPlayerDebug('play:bootstrap-shell-first')
       shouldBootstrapPlaybackFromShell.value = true
       preparePlaybackShell(song, year, trigger)
       return
@@ -1107,6 +1336,7 @@ export const usePlayerStore = defineStore('player', () => {
 
     if (playerState.value !== 'loading') return
     if (ytPlayer && isPlayerReady) {
+      logPlayerDebug('play:load-existing-ready-player')
       loadCurrentSongIntoPlayer()
       return
     }
@@ -1117,8 +1347,10 @@ export const usePlayerStore = defineStore('player', () => {
         playerState.value === 'loading' &&
         currentPlaySong?.youtubeVideoId === song.youtubeVideoId &&
         playingYear.value === year
-      )
+      ) {
+        logPlayerDebug('play:load-after-immediate-mount')
         loadCurrentSongIntoPlayer()
+      }
       return
     }
     void ensurePlayerMounted()
@@ -1127,10 +1359,13 @@ export const usePlayerStore = defineStore('player', () => {
           playerState.value === 'loading' &&
           currentPlaySong?.youtubeVideoId === song.youtubeVideoId &&
           playingYear.value === year
-        )
+        ) {
+          logPlayerDebug('play:load-after-ensure')
           loadCurrentSongIntoPlayer()
+        }
       })
       .catch(async () => {
+        logPlayerDebug('play:ensure-mounted:error')
         if (!(await getHasNetworkConnection()))
           return failLoadingAttempt(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
         return failLoadingAttempt(PLAYER_LOAD_FAILED_MESSAGE)
@@ -1138,6 +1373,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const togglePlayback = async (trigger: PlayTrigger = 'direct') => {
+    logPlayerDebug('playback:toggle', { trigger })
     if (playerState.value === 'playing') getReadyYtPlayer()?.pauseVideo()
     else if (playerState.value === 'paused' && ytPlayer) {
       startLoadingAttempt()
@@ -1146,8 +1382,10 @@ export const usePlayerStore = defineStore('player', () => {
         if (readyYtPlayer) readyYtPlayer.playVideo()
         else {
           const mountedPlayer = await ensurePlayerMounted()
-          if (mountedPlayer && playerState.value === 'loading')
+          if (mountedPlayer && playerState.value === 'loading') {
+            logPlayerDebug('playback:toggle:load-after-ensure')
             loadCurrentSongIntoPlayer()
+          }
         }
       } else
         await failLoadingAttempt(OFFLINE_PLAYBACK_MESSAGE, () => {
@@ -1249,6 +1487,12 @@ export const usePlayerStore = defineStore('player', () => {
     fromYear?: number,
     trigger: PlayTrigger = 'direct',
   ) => {
+    logPlayerDebug('queue:play-next:start', {
+      fromVideoId:
+        fromSong?.youtubeVideoId ?? playingSong.value?.youtubeVideoId,
+      fromYear: fromYear ?? playingYear.value,
+      trigger,
+    })
     deactivateRickRollIfNeeded()
     const chart = useChartStore()
     const stopPlaybackIfNeeded = () => {
@@ -1284,6 +1528,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const playPrev = async (trigger: PlayTrigger = 'direct') => {
+    logPlayerDebug('queue:play-prev:start', { trigger })
     deactivateRickRollIfNeeded()
     const chart = useChartStore()
     const { songs, index, year } = await getCurrentIndex()
@@ -1308,6 +1553,7 @@ export const usePlayerStore = defineStore('player', () => {
   const restoreFromStorage = async () => {
     if (typeof window === 'undefined') return
     const saved = loadSavedState()
+    logPlayerDebug('restore:start', { saved })
     if (!saved) return
     const songs = await getYearSongs(saved.year)
     if (!songs) return
@@ -1317,14 +1563,24 @@ export const usePlayerStore = defineStore('player', () => {
     playingYear.value = saved.year
     currentTimeSeconds.value = saved.timeSeconds
     playerState.value = 'paused'
+    logPlayerDebug('restore:success', {
+      restoredVideoId: song.youtubeVideoId,
+      restoredYear: saved.year,
+      restoredTimeSeconds: saved.timeSeconds,
+    })
   }
 
   void restoreFromStorage()
 
   const completeShellPlaybackBootstrap = async () => {
+    logPlayerDebug('shell:bootstrap:complete-request')
     if (!shouldBootstrapPlaybackFromShell.value) return
     shouldBootstrapPlaybackFromShell.value = false
     if (!playingSong.value || playingYear.value === null) return
+    logPlayerDebug('shell:bootstrap:play', {
+      requestedVideoId: playingSong.value.youtubeVideoId,
+      requestedYear: playingYear.value,
+    })
     await play(playingSong.value, playingYear.value, 'autoplay')
   }
 
