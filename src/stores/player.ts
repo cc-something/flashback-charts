@@ -402,14 +402,12 @@ export const usePlayerStore = defineStore('player', () => {
       void restorePlayerAfterContainerSwap()
       return
     }
-    if (
-      playerState.value === 'idle' ||
-      !currentPlaySong?.youtubeVideoId ||
-      ytPlayer ||
-      playerInitPromise
-    )
+    if (ytPlayer || playerInitPromise) return
+    if (playerState.value !== 'idle' && currentPlaySong?.youtubeVideoId) {
+      void restorePlayerAfterContainerSwap()
       return
-    void restorePlayerAfterContainerSwap()
+    }
+    void ensurePlayerMounted()
   }
 
   const clearProgressTimer = () => {
@@ -897,8 +895,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
   const mountPlayerIfPossible = () => {
     if (typeof window === 'undefined') return null
-    if (!window.YT?.Player || ytPlayer || !currentPlaySong?.youtubeVideoId)
-      return null
+    if (!window.YT?.Player || ytPlayer) return null
     const playerMountEl = getImmediatePlayerMountEl()
     if (!playerMountEl) return null
     return createPlayer(playerMountEl)
@@ -910,7 +907,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (playerInitPromise) return playerInitPromise
     await ensureLoaded()
     const playerMountEl = await getPlayerMountEl()
-    if (!playerMountEl || !currentPlaySong?.youtubeVideoId) return null
+    if (!playerMountEl) return null
     return createPlayer(playerMountEl)
   }
   const primePlayback = async (song?: Song, year?: number) => {
