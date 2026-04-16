@@ -671,11 +671,6 @@ const closeMaxiPlayer = () => {
                   <div
                     class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 flex w-16 -translate-x-1/2 translate-y-1 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-surface/95 px-2 py-3 opacity-0 shadow-[0_18px_45px_rgb(0_0_0_/_0.28)] backdrop-blur-sm transition duration-150 group-hover/volume:pointer-events-auto group-hover/volume:translate-y-0 group-hover/volume:opacity-100 group-focus-within/volume:pointer-events-auto group-focus-within/volume:translate-y-0 group-focus-within/volume:opacity-100"
                   >
-                    <span
-                      class="text-[0.62rem] font-medium tracking-[0.12em] text-text-muted"
-                    >
-                      {{ player.volumePercent }}%
-                    </span>
                     <input
                       :value="player.volumePercent"
                       class="volume-slider accent-[color:var(--color-primary)]"
@@ -857,11 +852,6 @@ const closeMaxiPlayer = () => {
                   <div
                     class="pointer-events-none absolute right-1/2 bottom-full z-20 mb-3 flex w-16 translate-x-1/2 translate-y-1 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-surface/95 px-2 py-3 opacity-0 shadow-[0_18px_45px_rgb(0_0_0_/_0.28)] backdrop-blur-sm transition duration-150 group-hover/volume:pointer-events-auto group-hover/volume:translate-y-0 group-hover/volume:opacity-100 group-focus-within/volume:pointer-events-auto group-focus-within/volume:translate-y-0 group-focus-within/volume:opacity-100"
                   >
-                    <span
-                      class="text-[0.62rem] font-medium tracking-[0.12em] text-text-muted"
-                    >
-                      {{ player.volumePercent }}%
-                    </span>
                     <input
                       :value="player.volumePercent"
                       class="volume-slider accent-[color:var(--color-primary)]"
@@ -971,7 +961,7 @@ const closeMaxiPlayer = () => {
 }
 
 .volume-slider {
-  width: 1.1rem;
+  width: 0.7rem;
   height: 6rem;
   writing-mode: vertical-lr;
   direction: rtl;
