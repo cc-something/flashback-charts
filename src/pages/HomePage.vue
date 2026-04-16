@@ -3,6 +3,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useRouter } from 'vue-router'
 import { ArrowRight, Play } from 'lucide-vue-next'
+import type { Song } from '@/types/song'
 import {
   getDecadePageDescription,
   getDecadePageTitle,
@@ -27,24 +28,45 @@ import {
 import { getYearData } from '@/data'
 import { useChartStore } from '@/stores/chart'
 import { usePlayerStore } from '@/stores/player'
+import { getRandomDecadePlaybackSelection } from '@/utils/playbackSelection'
 
 const router = useRouter()
 const chart = useChartStore()
 const player = usePlayerStore()
-
-const playYear = (year: number) => {
-  const songs = getYearData(year)
-  if (!songs?.length) return
-  const song = chart.sortOrder === 'desc' ? songs[songs.length - 1] : songs[0]
-  chart.selectYear(year)
-  router.push(getYearPath(year))
-  player.play(song, year, 'home-btn')
+type DecadePlaybackSelection = {
+  year: number
+  song: Song
 }
-const primePlayback = (year: number) => {
-  const songs = getYearData(year)
-  if (!songs?.length) return
-  const song = chart.sortOrder === 'desc' ? songs[songs.length - 1] : songs[0]
-  void player.primePlayback(song, year)
+const queuedDecadePlaybackSelections = new Map<
+  string,
+  DecadePlaybackSelection
+>()
+const getDecadePlaybackSelection = (decade: string) =>
+  queuedDecadePlaybackSelections.get(decade) ??
+  getRandomDecadePlaybackSelection(
+    rawDecades
+      .find((group) => group.decade === decade)
+      ?.years.map(({ year }) => year) ?? [],
+    getYearData,
+  )
+const primeDecadePlayback = (decade: string) => {
+  const selection = getRandomDecadePlaybackSelection(
+    rawDecades
+      .find((group) => group.decade === decade)
+      ?.years.map(({ year }) => year) ?? [],
+    getYearData,
+  )
+  if (!selection) return
+  queuedDecadePlaybackSelections.set(decade, selection)
+  void player.primePlayback(selection.song, selection.year)
+}
+const playDecade = (decade: string) => {
+  const selection = getDecadePlaybackSelection(decade)
+  queuedDecadePlaybackSelections.delete(decade)
+  if (!selection) return
+  chart.selectYear(selection.year)
+  router.push(getYearPath(selection.year))
+  player.play(selection.song, selection.year, 'home-btn')
 }
 
 const { isRickRollActive } = useRickRollMode()
@@ -324,8 +346,8 @@ onUnmounted(() => {
                   color: group.theme.colors.background,
                 }"
                 :aria-label="`Play top songs of the ${group.decade}`"
-                @pointerdown="primePlayback(group.years[0].year)"
-                @click="playYear(group.years[0].year)"
+                @pointerdown="primeDecadePlayback(group.decade)"
+                @click="playDecade(group.decade)"
               >
                 <Play
                   class="h-4 w-4"
