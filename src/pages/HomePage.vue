@@ -307,7 +307,83 @@ onUnmounted(() => {
       </div>
 
       <div
-        class="mx-auto grid max-w-[1300px] grid-cols-1 gap-4 px-4 min-[1000px]:grid-cols-2"
+        class="mx-auto flex max-w-[1300px] flex-col gap-4 px-4 min-[1000px]:hidden"
+      >
+        <section
+          v-for="group in decades"
+          :key="group.decade"
+          class="rounded-xl p-4"
+          :style="{
+            backgroundColor: group.theme.colors.background + 'c7',
+            border: `1px solid ${group.theme.colors.primary}33`,
+            boxShadow: '0 24px 48px rgb(0 0 0 / 24%)',
+          }"
+          :aria-labelledby="`decade-mobile-${group.decade}`"
+        >
+          <div class="mb-3 flex items-center gap-3">
+            <h2
+              :id="`decade-mobile-${group.decade}`"
+              class="text-2xl font-bold sm:text-3xl md:text-5xl"
+              :style="{ color: group.theme.colors.primary }"
+            >
+              <router-link
+                :to="getDecadePath(group.decade)"
+                class="transition-opacity duration-150 hover:opacity-80"
+              >
+                {{ group.decade }}
+              </router-link>
+            </h2>
+            <button
+              class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md transition-transform duration-150 hover:scale-110"
+              :style="{
+                backgroundColor: group.theme.colors.primary,
+                color: group.theme.colors.background,
+              }"
+              :aria-label="`Play top songs of the ${group.decade}`"
+              @pointerdown="primeDecadePlayback(group.decade)"
+              @click="playDecade(group.decade)"
+            >
+              <Play
+                class="h-4 w-4"
+                style="margin-left: 1px; fill: currentcolor"
+              />
+            </button>
+          </div>
+          <p
+            v-if="group.theme.description"
+            class="mb-4 text-base leading-relaxed"
+            :style="{ color: group.theme.colors.textMuted }"
+          >
+            {{ group.theme.description }}
+          </p>
+
+          <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <router-link
+              v-for="(tile, tileIndex) in group.years"
+              :key="tile.year"
+              :to="getYearPath(tile.year)"
+              class="group block overflow-hidden rounded-lg border transition-transform duration-150 hover:-translate-y-0.5"
+              :style="{
+                borderColor: group.theme.colors.primary + '40',
+                backgroundColor: group.theme.colors.surface + 'd9',
+              }"
+            >
+              <img
+                :src="tile.thumbnail"
+                :alt="`Top song thumbnail for ${tile.year}`"
+                class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                v-bind="getHomeTileImageAttrs(0, 0, tileIndex)"
+              />
+              <div class="px-2 py-1.5 text-center text-sm font-medium">
+                {{ tile.year }}
+              </div>
+            </router-link>
+          </div>
+        </section>
+      </div>
+
+      <div
+        class="mx-auto hidden max-w-[1300px] gap-4 px-4 min-[1000px]:grid min-[1000px]:grid-cols-2"
       >
         <div
           v-for="(column, columnIndex) in decadeColumns"
