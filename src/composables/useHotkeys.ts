@@ -22,6 +22,7 @@ const KONAMI = [
 ]
 const PLAYER_FULLSCREEN_OPEN_EVENT = 'player-fullscreen-open'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
+export const ESCAPE_CONSUMER_SELECTOR = '[aria-modal="true"], [data-esc-closes]'
 
 const getIsInputFocused = () => {
   const el = document.activeElement
@@ -34,9 +35,13 @@ const getIsInputFocused = () => {
   )
 }
 
-const getHasEscapeConsumer = () =>
-  typeof document !== 'undefined' &&
-  document.querySelector('[data-esc-closes]') !== null
+type EscapeConsumerRoot = Pick<Document, 'querySelector'> | null | undefined
+
+export const getHasEscapeConsumer = (
+  escapeConsumerRoot: EscapeConsumerRoot = typeof document === 'undefined'
+    ? null
+    : document,
+) => Boolean(escapeConsumerRoot?.querySelector(ESCAPE_CONSUMER_SELECTOR))
 const getIsPlayerFullscreen = () =>
   typeof document !== 'undefined' &&
   document.documentElement.dataset.playerFullscreen === 'true'
