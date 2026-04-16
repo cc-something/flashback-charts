@@ -27,6 +27,7 @@ const playerViewportMountHost = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
 const isTinyViewport = useMediaQuery('(max-width: 839px)')
+const isBelowDesktopViewport = useMediaQuery('(max-width: 1199px)')
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 const PLAYER_FULLSCREEN_OPEN_EVENT = 'player-fullscreen-open'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
@@ -117,7 +118,9 @@ const playerMaxiBodyClass = computed(() =>
 const playerDockContainerStyle = computed(() =>
   shouldUseMaxiPlayer.value
     ? {
-        paddingTop: 'calc(var(--sticky-bar-height) + 0.5rem)',
+        paddingTop: isBelowDesktopViewport.value
+          ? '0.5rem'
+          : 'calc(var(--sticky-bar-height) + 0.5rem)',
       }
     : undefined,
 )
