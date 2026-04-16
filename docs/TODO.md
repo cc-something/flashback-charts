@@ -1,3 +1,6 @@
+- maxiplayer mobile put header at the top
+- playback is still buggy :')
+
 - sticky so the miniplayer doesnt clash w/ the sticky footer?
 - landscape mode audit
 
@@ -46,7 +49,3 @@
 
 - global charts
 - us / uk charts
-
-## Known bugs/jank
-
-- when resuming the miniplayer, yt ui flashes up for a ms; jank
