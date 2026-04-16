@@ -299,35 +299,39 @@ watch([yearNumber, selectedSongRank], scrollToSelectedSong, {
       </div>
     </Transition>
 
-    <nav class="mt-4 flex items-center justify-between gap-3">
-      <router-link
-        v-if="previousYear"
-        :to="getYearPath(previousYear)"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-        :style="getYearNavStyle(previousYear)"
-      >
-        <ArrowLeft class="h-3.5 w-3.5" />
-        {{ previousYear }}
-      </router-link>
-      <div v-else />
+    <nav
+      class="mt-4 grid items-center gap-3 [grid-template-columns:minmax(0,1fr)_auto_minmax(0,1fr)]"
+    >
+      <div class="flex min-w-0 justify-start">
+        <router-link
+          v-if="previousYear"
+          :to="getYearPath(previousYear)"
+          class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+          :style="getYearNavStyle(previousYear)"
+        >
+          <ArrowLeft class="h-3.5 w-3.5" />
+          {{ previousYear }}
+        </router-link>
+      </div>
 
       <router-link
         :to="decadePath"
-        class="text-sm text-text-muted underline underline-offset-4 transition-colors duration-150 hover:text-text-muted"
+        class="justify-self-center text-center text-sm text-text-muted underline underline-offset-4 transition-colors duration-150 hover:text-text-muted"
       >
         More {{ decadeString }}
       </router-link>
 
-      <router-link
-        v-if="nextYear"
-        :to="getYearPath(nextYear)"
-        class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
-        :style="getYearNavStyle(nextYear)"
-      >
-        {{ nextYear }}
-        <ArrowRight class="h-3.5 w-3.5" />
-      </router-link>
-      <div v-else />
+      <div class="flex min-w-0 justify-end">
+        <router-link
+          v-if="nextYear"
+          :to="getYearPath(nextYear)"
+          class="year-nav-button inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-150"
+          :style="getYearNavStyle(nextYear)"
+        >
+          {{ nextYear }}
+          <ArrowRight class="h-3.5 w-3.5" />
+        </router-link>
+      </div>
     </nav>
   </main>
 </template>
