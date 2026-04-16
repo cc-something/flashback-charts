@@ -25,6 +25,27 @@ describe('getHasEscapeConsumer', () => {
     expect(getHasEscapeConsumer(null)).toBe(false)
   })
 
+  it('returns true when the escape event path contains a modal consumer', () => {
+    const composedPath = vi.fn(() => [
+      {
+        getAttribute: (attributeName: string) =>
+          attributeName === 'aria-modal' ? 'true' : null,
+      },
+    ])
+    expect(getHasEscapeConsumer(null, { composedPath })).toBe(true)
+  })
+
+  it('returns true when the escape event path contains a legacy consumer', () => {
+    const composedPath = vi.fn(() => [
+      {
+        getAttribute: () => null,
+        hasAttribute: (attributeName: string) =>
+          attributeName === 'data-esc-closes',
+      },
+    ])
+    expect(getHasEscapeConsumer(null, { composedPath })).toBe(true)
+  })
+
   it('returns true when the query root finds an escape consumer', () => {
     const querySelector = vi.fn(() => ({}) as Element)
     expect(getHasEscapeConsumer({ querySelector })).toBe(true)

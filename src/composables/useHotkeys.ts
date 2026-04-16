@@ -36,12 +36,32 @@ const getIsInputFocused = () => {
 }
 
 type EscapeConsumerRoot = Pick<Document, 'querySelector'> | null | undefined
+type EscapeConsumerNode = {
+  getAttribute?: (attributeName: string) => string | null | undefined
+  hasAttribute?: (attributeName: string) => boolean | undefined
+}
+type EscapeConsumerEvent =
+  | Pick<KeyboardEvent, 'composedPath'>
+  | null
+  | undefined
+
+const getIsEscapeConsumerNode = (escapeConsumerNode: EscapeConsumerNode) =>
+  escapeConsumerNode.getAttribute?.('aria-modal') === 'true' ||
+  Boolean(escapeConsumerNode.hasAttribute?.('data-esc-closes'))
 
 export const getHasEscapeConsumer = (
   escapeConsumerRoot: EscapeConsumerRoot = typeof document === 'undefined'
     ? null
     : document,
-) => Boolean(escapeConsumerRoot?.querySelector(ESCAPE_CONSUMER_SELECTOR))
+  escapeConsumerEvent: EscapeConsumerEvent = null,
+) =>
+  Boolean(
+    escapeConsumerEvent
+      ?.composedPath()
+      .some((escapeConsumerNode) =>
+        getIsEscapeConsumerNode(escapeConsumerNode as EscapeConsumerNode),
+      ),
+  ) || Boolean(escapeConsumerRoot?.querySelector(ESCAPE_CONSUMER_SELECTOR))
 const getIsPlayerFullscreen = () =>
   typeof document !== 'undefined' &&
   document.documentElement.dataset.playerFullscreen === 'true'
@@ -275,7 +295,7 @@ export const useHotkeys = (
     }
 
     if (e.code === 'Escape' && !isMod) {
-      if (getHasEscapeConsumer()) return
+      if (getHasEscapeConsumer(undefined, e)) return
       e.preventDefault()
       if (player.isActive && getIsPlayerFullscreen()) {
         window.dispatchEvent(new Event(PLAYER_FULLSCREEN_CLOSE_EVENT))
