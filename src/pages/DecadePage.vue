@@ -335,7 +335,95 @@ watch(
           <div v-else />
         </nav>
 
-        <section class="grid grid-cols-1 gap-4 min-[1000px]:grid-cols-2">
+        <section class="flex flex-col gap-4 min-[1000px]:hidden">
+          <article
+            v-for="year in years"
+            :key="year"
+            class="grid items-start gap-5 rounded-2xl border p-5 backdrop-blur-[6px] md:grid-cols-[168px_1fr]"
+            :style="{
+              backgroundColor: `${theme.colors.surface}e3`,
+              borderColor: `${theme.colors.primary}52`,
+              boxShadow: '0 24px 48px rgb(0 0 0 / 28%)',
+            }"
+          >
+            <router-link
+              :to="getYearPath(year)"
+              :aria-label="`View top 10 songs of ${year}`"
+              class="group relative block aspect-square overflow-hidden rounded-xl"
+              :style="{
+                backgroundColor: theme.colors.surface,
+                border: `1px solid ${theme.colors.primary}44`,
+              }"
+            >
+              <div class="grid h-full grid-cols-2 grid-rows-2">
+                <img
+                  v-for="(thumbnail, index) in getThumbnails(year)"
+                  :key="`${year}-${index}`"
+                  :src="thumbnail"
+                  :alt="`Top song ${index + 1} of ${year}`"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <div
+                class="absolute inset-0"
+                style="
+                  background: linear-gradient(
+                    to top,
+                    rgb(0 0 0 / 95%) 0%,
+                    rgb(0 0 0 / 55%) 36%,
+                    transparent 78%
+                  );
+                "
+              />
+              <div
+                class="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              >
+                <ArrowRight class="h-7 w-7 text-white drop-shadow-lg" />
+              </div>
+            </router-link>
+
+            <div class="flex flex-col">
+              <div class="flex items-start justify-between gap-4">
+                <h2
+                  class="text-2xl sm:text-3xl md:text-4xl font-bold"
+                  :style="{
+                    color: theme.colors.primary,
+                    fontFamily: theme.fontFamily,
+                  }"
+                >
+                  <router-link
+                    :to="getYearPath(year)"
+                    class="text-inherit underline decoration-2 underline-offset-4 transition-opacity duration-150 hover:opacity-80"
+                  >
+                    {{ year }} Top 10
+                  </router-link>
+                </h2>
+                <button
+                  class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md transition-transform duration-150 hover:scale-110"
+                  :style="{
+                    backgroundColor: theme.colors.primary,
+                    color: theme.colors.background,
+                  }"
+                  :aria-label="`Play top songs of ${year}`"
+                  @pointerdown="primePlayback(year)"
+                  @click="playYear(year)"
+                >
+                  <Play
+                    class="h-4 w-4"
+                    style="margin-left: 1px; fill: currentcolor"
+                  />
+                </button>
+              </div>
+              <p class="mt-2 text-base leading-relaxed text-text-muted">
+                {{ getYearSummaryText(year) }}
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <section
+          class="hidden gap-4 min-[1000px]:grid min-[1000px]:grid-cols-2"
+        >
           <div
             v-for="(column, columnIndex) in yearColumns"
             :key="columnIndex"
