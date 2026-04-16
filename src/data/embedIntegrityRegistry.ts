@@ -235,7 +235,10 @@ export const embedIntegrityRegistry: Record<
     7: { embedIntegrity: 'best-match', embedIntegrityReason: 'best match' },
     8: { embedIntegrity: 'best-match', embedIntegrityReason: 'best match' },
     9: { embedIntegrity: 'best-match', embedIntegrityReason: 'best match' },
-    10: { embedIntegrity: 'best-match', embedIntegrityReason: 'best match' },
+    10: {
+      embedIntegrity: 'alternative',
+      embedIntegrityReason: 'lyric upload',
+    },
   },
   1959: {
     1: { embedIntegrity: 'best-match', embedIntegrityReason: 'best match' },

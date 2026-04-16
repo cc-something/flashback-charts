@@ -64,7 +64,7 @@ const songs: Song[] = [
     title: 'Volare (Nel Blu Dipinto Di Blu)',
     artist: 'Dean Martin',
     album: 'Volare (Nel Blu Dipinto Di Blu)',
-    youtubeVideoId: 'I65PxlOlHA4',
+    youtubeVideoId: 'ZPnd2UKrh6c',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -77,7 +77,7 @@ const songs: Song[] = [
     title: 'April Love',
     artist: 'Pat Boone',
     album: 'April Love',
-    youtubeVideoId: 'UGwa2tw7Vws',
+    youtubeVideoId: 'ki2cJli-s5U',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -90,7 +90,7 @@ const songs: Song[] = [
     title: 'The Purple People Eater',
     artist: 'Sheb Wooley',
     album: 'The Purple People Eater',
-    youtubeVideoId: 'cqb3NSiSwoc',
+    youtubeVideoId: 'MfzQMiogl9w',
     imageSelection: 'artist',
     imageSources: {
       album: null,
@@ -155,7 +155,7 @@ const songs: Song[] = [
     title: 'A Pub with No Beer',
     artist: 'Slim Dusty',
     album: 'A Pub with No Beer',
-    youtubeVideoId: 'ki2cJli-s5U',
+    youtubeVideoId: '-7EKMe8cZOk',
     imageSelection: 'artist',
     imageSources: {
       album: null,
