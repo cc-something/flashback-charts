@@ -238,7 +238,7 @@ onMounted(() => {
               <button
                 type="button"
                 :aria-label="`Play ${result.song.title} by ${result.song.artist}`"
-                class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md ring-1 ring-black/10 transition duration-150 group-hover:scale-[1.03] group-hover:shadow-lg group-hover:shadow-black/20 hover:ring-primary/35 touch-manipulation"
+                class="relative h-12 w-12 flex-shrink-0 cursor-pointer overflow-hidden rounded bg-white shadow-md ring-1 ring-black/10 transition duration-150 group-hover:scale-[1.03] group-hover:shadow-lg group-hover:shadow-black/20 hover:ring-primary/35 touch-manipulation"
                 @pointerdown="primePlayback(result.song, result.year)"
                 @click.stop="playSong(result.song, result.year)"
               >

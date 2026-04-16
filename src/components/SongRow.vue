@@ -122,7 +122,7 @@ const primePlayback = () =>
     <button
       type="button"
       :aria-label="`Toggle playback for ${displaySong.title} by ${displaySong.artist}`"
-      class="relative z-10 h-16 w-16 flex-shrink-0 cursor-pointer overflow-hidden rounded shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-20 sm:w-20"
+      class="relative z-10 h-16 w-16 flex-shrink-0 cursor-pointer overflow-hidden rounded bg-white shadow-md touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-20 sm:w-20"
       @pointerdown="primePlayback"
       @click.stop="handleClick"
     >

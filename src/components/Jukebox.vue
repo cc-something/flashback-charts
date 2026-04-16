@@ -495,7 +495,7 @@ const closeMaxiPlayer = () => {
                   v-if="shouldShowRestoredPoster && player.playingSong"
                   type="button"
                   aria-label="Play playback"
-                  class="absolute inset-0 cursor-pointer"
+                  class="absolute inset-0 cursor-pointer bg-white"
                   @click="resumePlayback"
                 >
                   <img
@@ -536,7 +536,7 @@ const closeMaxiPlayer = () => {
                 type="button"
                 title="Go to song (G)"
                 aria-label="Go to song"
-                class="relative h-[4.2rem] w-[4.2rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                class="relative h-[4.2rem] w-[4.2rem] shrink-0 overflow-hidden rounded-xl bg-white ring-1 ring-black/10 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 @click="goToPlayingSong"
               >
                 <img
