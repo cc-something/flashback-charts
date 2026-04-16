@@ -74,6 +74,11 @@ const reportClass = computed(() =>
     ? 'absolute top-1.5 right-1.5 z-20 flex flex-row gap-0.5 opacity-100 transition-opacity duration-150'
     : 'absolute top-1.5 right-1.5 z-20 flex flex-row gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100',
 )
+const textStackClass = computed(() =>
+  showSeekBar.value
+    ? 'theme-body pointer-events-none relative z-10 flex min-w-0 flex-1 flex-col pr-20 sm:pr-24'
+    : 'theme-body pointer-events-none relative z-10 flex min-w-0 flex-1 flex-col pr-12 sm:pr-16',
+)
 
 const handleImageError = (e: Event) => {
   const img = e.target as HTMLImageElement
@@ -185,9 +190,7 @@ const primePlayback = () =>
       </Transition>
     </button>
 
-    <div
-      class="theme-body pointer-events-none relative z-10 flex min-w-0 flex-1 flex-col"
-    >
+    <div :class="textStackClass">
       <h2 class="text-base font-bold leading-snug text-text sm:text-lg">
         <span>{{ displaySong.title }}</span>
         <EmbedFallbackBadge
