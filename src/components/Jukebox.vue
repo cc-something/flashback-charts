@@ -665,7 +665,9 @@ const closeMaxiPlayer = () => {
                   </svg>
                 </button>
 
-                <div class="group/volume relative flex items-center">
+                <div
+                  class="group/volume relative flex items-center before:absolute before:bottom-full before:left-1/2 before:z-10 before:h-3 before:w-16 before:-translate-x-1/2 before:content-['']"
+                >
                   <div
                     class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 flex w-16 -translate-x-1/2 translate-y-1 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-surface/95 px-2 py-3 opacity-0 shadow-[0_18px_45px_rgb(0_0_0_/_0.28)] backdrop-blur-sm transition duration-150 group-hover/volume:pointer-events-auto group-hover/volume:translate-y-0 group-hover/volume:opacity-100 group-focus-within/volume:pointer-events-auto group-focus-within/volume:translate-y-0 group-focus-within/volume:opacity-100"
                   >
@@ -849,7 +851,9 @@ const closeMaxiPlayer = () => {
 
             <div class="absolute right-0 top-0">
               <div class="flex items-center gap-2">
-                <div class="group/volume relative flex items-center">
+                <div
+                  class="group/volume relative flex items-center before:absolute before:bottom-full before:left-1/2 before:z-10 before:h-3 before:w-16 before:-translate-x-1/2 before:content-['']"
+                >
                   <div
                     class="pointer-events-none absolute right-1/2 bottom-full z-20 mb-3 flex w-16 translate-x-1/2 translate-y-1 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-surface/95 px-2 py-3 opacity-0 shadow-[0_18px_45px_rgb(0_0_0_/_0.28)] backdrop-blur-sm transition duration-150 group-hover/volume:pointer-events-auto group-hover/volume:translate-y-0 group-hover/volume:opacity-100 group-focus-within/volume:pointer-events-auto group-focus-within/volume:translate-y-0 group-focus-within/volume:opacity-100"
                   >
