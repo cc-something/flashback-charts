@@ -673,7 +673,12 @@ const closeMaxiPlayer = () => {
                   >
                     <input
                       :value="player.volumePercent"
+                      :disabled="player.isMuted"
                       class="volume-slider accent-[color:var(--color-primary)]"
+                      :class="
+                        player.isMuted &&
+                        'opacity-35 grayscale cursor-not-allowed'
+                      "
                       type="range"
                       min="0"
                       max="100"
@@ -854,7 +859,12 @@ const closeMaxiPlayer = () => {
                   >
                     <input
                       :value="player.volumePercent"
+                      :disabled="player.isMuted"
                       class="volume-slider accent-[color:var(--color-primary)]"
+                      :class="
+                        player.isMuted &&
+                        'opacity-35 grayscale cursor-not-allowed'
+                      "
                       type="range"
                       min="0"
                       max="100"
