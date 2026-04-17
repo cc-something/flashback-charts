@@ -102,18 +102,16 @@ const jukeboxYearLabel = computed(() => {
 })
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full w-full max-w-[1200px] flex-col'
+    ? 'mx-auto flex min-h-full w-full max-w-[1200px] flex-col justify-center'
     : '',
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full max-h-full w-full max-w-[1200px] flex-col justify-start px-4 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-32 min-[1200px]:justify-center'
+    ? 'mx-auto h-full w-full overflow-y-auto px-4 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-32'
     : 'px-3 pt-3 pb-3',
 )
 const playerMaxiBodyClass = computed(() =>
-  shouldUseMaxiPlayer.value
-    ? 'flex flex-1 flex-col justify-center min-[1200px]:flex-initial min-[1200px]:justify-start'
-    : '',
+  shouldUseMaxiPlayer.value ? 'flex flex-col' : '',
 )
 const playerDockContainerStyle = computed(() =>
   shouldUseMaxiPlayer.value
