@@ -269,7 +269,7 @@ const syncMaxiPlayerScale = () => {
   }
   const widthScale = availableWidth / naturalWidth
   const heightScale = availableHeight / naturalHeight
-  maxiPlayerScale.value = Math.min(widthScale, heightScale, 1)
+  maxiPlayerScale.value = Math.min(widthScale, heightScale)
 }
 const scheduleMaxiPlayerScaleSync = () =>
   typeof window === 'undefined'
