@@ -26,9 +26,10 @@ const themeVars = ref<Record<string, string>>({})
 const playerDockContainerElement = ref<HTMLDivElement | null>(null)
 const playerViewportMountHost = ref<HTMLDivElement | null>(null)
 const playerMaxiContentElement = ref<HTMLDivElement | null>(null)
+const playerMaxiFrameWrapElement = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
-const maxiPlayerScale = ref(1)
+const maxiPlayerViewportStyle = ref<Record<string, string>>({})
 const isTinyViewport = useMediaQuery('(max-width: 839px)')
 const isBelowDesktopViewport = useMediaQuery('(max-width: 1199px)')
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
@@ -105,16 +106,21 @@ const jukeboxYearLabel = computed(() => {
 })
 const playerContentClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex w-full max-w-[1200px] flex-col'
+    ? 'mx-auto flex h-full w-full max-w-[1200px] min-h-0 flex-col'
     : '',
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto flex h-full w-full items-center justify-center overflow-hidden px-4 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-32'
+    ? 'mx-auto h-full w-full overflow-hidden px-4 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-32'
     : 'px-3 pt-3 pb-3',
 )
 const playerMaxiBodyClass = computed(() =>
-  shouldUseMaxiPlayer.value ? 'flex flex-col' : '',
+  shouldUseMaxiPlayer.value ? 'flex min-h-0 flex-1 flex-col' : '',
+)
+const playerFrameWrapClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? 'flex min-h-0 flex-1 items-center justify-center'
+    : 'mb-1.5',
 )
 const playerDockContainerStyle = computed(() =>
   shouldUseMaxiPlayer.value
@@ -150,12 +156,12 @@ const playerDockStyle = computed(() =>
 )
 const playerFrameClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto w-full max-w-full overflow-hidden rounded-[1.4rem] border border-white/10 bg-black shadow-[0_30px_90px_rgb(0_0_0_/_0.32)]'
+    ? 'mx-auto overflow-hidden rounded-[1.4rem] border border-white/10 bg-black shadow-[0_30px_90px_rgb(0_0_0_/_0.32)]'
     : 'overflow-hidden border border-white/10 bg-black shadow-lg',
 )
 const playerViewportClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'player-viewport-fullscreen w-full bg-black'
+    ? 'player-viewport-fullscreen bg-black'
     : 'player-viewport w-full min-h-[200px] bg-black',
 )
 const playerActionRowClass = computed(() =>
@@ -166,13 +172,8 @@ const playerActionRowClass = computed(() =>
 const playerBottomSpacerClass = computed(() =>
   shouldUseMaxiPlayer.value ? 'hidden' : 'hidden',
 )
-const playerContentStyle = computed(() =>
-  shouldUseMaxiPlayer.value
-    ? {
-        transform: `scale(${maxiPlayerScale.value})`,
-        transformOrigin: 'center center',
-      }
-    : undefined,
+const playerViewportStyle = computed(() =>
+  shouldUseMaxiPlayer.value ? maxiPlayerViewportStyle.value : undefined,
 )
 const fullscreenToggleTitle = computed(() =>
   shouldUseMaxiPlayer.value && !isTinyViewport.value
@@ -250,42 +251,54 @@ const getShellInnerSize = (element: HTMLDivElement) => {
     height: Math.max(element.clientHeight - paddingY, 0),
   }
 }
-const syncMaxiPlayerScale = () => {
+const syncMaxiPlayerViewport = () => {
   if (typeof window === 'undefined') return
   if (!shouldUseMaxiPlayer.value) {
-    maxiPlayerScale.value = 1
+    maxiPlayerViewportStyle.value = {}
     return
   }
   const containerElement = playerDockContainerElement.value
   const contentElement = playerMaxiContentElement.value
-  if (!containerElement || !contentElement) return
+  const frameWrapElement = playerMaxiFrameWrapElement.value
+  if (!containerElement || !contentElement || !frameWrapElement) return
   const { width: availableWidth, height: availableHeight } =
     getShellInnerSize(containerElement)
-  const naturalWidth = contentElement.offsetWidth
-  const naturalHeight = contentElement.offsetHeight
-  if (!availableWidth || !availableHeight || !naturalWidth || !naturalHeight) {
-    maxiPlayerScale.value = 1
+  const frameWrapWidth = frameWrapElement.clientWidth
+  const chromeHeight =
+    contentElement.offsetHeight - frameWrapElement.offsetHeight
+  const viewportHeight = Math.max(availableHeight - chromeHeight, 0)
+  const viewportWidth = Math.min(availableWidth, frameWrapWidth)
+  if (!viewportWidth || !viewportHeight) {
+    maxiPlayerViewportStyle.value = { width: '0px', height: '0px' }
     return
   }
-  const widthScale = availableWidth / naturalWidth
-  const heightScale = availableHeight / naturalHeight
-  maxiPlayerScale.value = Math.min(widthScale, heightScale)
+  const targetWidth = Math.min(viewportWidth, (viewportHeight * 16) / 9)
+  const targetHeight = targetWidth * (9 / 16)
+  maxiPlayerViewportStyle.value = {
+    width: `${targetWidth}px`,
+    height: `${targetHeight}px`,
+  }
 }
-const scheduleMaxiPlayerScaleSync = () =>
+const scheduleMaxiPlayerViewportSync = () =>
   typeof window === 'undefined'
     ? undefined
-    : window.requestAnimationFrame(() => syncMaxiPlayerScale())
+    : window.requestAnimationFrame(() => syncMaxiPlayerViewport())
 let maxiPlayerResizeObserver: ResizeObserver | null = null
 watch(() => player.playingYear, updateThemeVars, { immediate: true })
 watch(playerDockContainerElement, (nextElement, previousElement) => {
   if (previousElement) maxiPlayerResizeObserver?.unobserve(previousElement)
   if (nextElement) maxiPlayerResizeObserver?.observe(nextElement)
-  void nextTick(() => scheduleMaxiPlayerScaleSync())
+  void nextTick(() => scheduleMaxiPlayerViewportSync())
 })
 watch(playerMaxiContentElement, (nextElement, previousElement) => {
   if (previousElement) maxiPlayerResizeObserver?.unobserve(previousElement)
   if (nextElement) maxiPlayerResizeObserver?.observe(nextElement)
-  void nextTick(() => scheduleMaxiPlayerScaleSync())
+  void nextTick(() => scheduleMaxiPlayerViewportSync())
+})
+watch(playerMaxiFrameWrapElement, (nextElement, previousElement) => {
+  if (previousElement) maxiPlayerResizeObserver?.unobserve(previousElement)
+  if (nextElement) maxiPlayerResizeObserver?.observe(nextElement)
+  void nextTick(() => scheduleMaxiPlayerViewportSync())
 })
 watch(playerViewportMountHost, () => void syncPlayerContainer(), {
   flush: 'post',
@@ -330,7 +343,7 @@ watch(shouldUseMaxiPlayer, (shouldShowMaxiPlayer) => {
     ? 'true'
     : 'false'
   document.body.style.overflow = shouldShowMaxiPlayer ? 'hidden' : ''
-  void nextTick(() => scheduleMaxiPlayerScaleSync())
+  void nextTick(() => scheduleMaxiPlayerViewportSync())
   void nextTick(() => player.refreshPlayerAfterViewportChange())
 })
 watch(
@@ -340,7 +353,7 @@ watch(
     shouldShowPlaybackStartCta,
     isTinyViewport,
   ],
-  () => void nextTick(() => scheduleMaxiPlayerScaleSync()),
+  () => void nextTick(() => scheduleMaxiPlayerViewportSync()),
   { flush: 'post' },
 )
 const handleFullscreenToggle = () => {
@@ -376,16 +389,21 @@ onMounted(() => {
     PLAYER_FULLSCREEN_TOGGLE_EVENT,
     handleFullscreenToggle,
   )
-  window.visualViewport?.addEventListener('resize', scheduleMaxiPlayerScaleSync)
-  window.addEventListener('resize', scheduleMaxiPlayerScaleSync)
+  window.visualViewport?.addEventListener(
+    'resize',
+    scheduleMaxiPlayerViewportSync,
+  )
+  window.addEventListener('resize', scheduleMaxiPlayerViewportSync)
   maxiPlayerResizeObserver = new ResizeObserver(() =>
-    scheduleMaxiPlayerScaleSync(),
+    scheduleMaxiPlayerViewportSync(),
   )
   if (playerDockContainerElement.value)
     maxiPlayerResizeObserver.observe(playerDockContainerElement.value)
   if (playerMaxiContentElement.value)
     maxiPlayerResizeObserver.observe(playerMaxiContentElement.value)
-  void nextTick(() => scheduleMaxiPlayerScaleSync())
+  if (playerMaxiFrameWrapElement.value)
+    maxiPlayerResizeObserver.observe(playerMaxiFrameWrapElement.value)
+  void nextTick(() => scheduleMaxiPlayerViewportSync())
 })
 onMounted(() =>
   window.addEventListener(PLAYER_FULLSCREEN_OPEN_EVENT, handleFullscreenOpen),
@@ -410,11 +428,11 @@ onUnmounted(() =>
 onUnmounted(() =>
   window.visualViewport?.removeEventListener(
     'resize',
-    scheduleMaxiPlayerScaleSync,
+    scheduleMaxiPlayerViewportSync,
   ),
 )
 onUnmounted(() =>
-  window.removeEventListener('resize', scheduleMaxiPlayerScaleSync),
+  window.removeEventListener('resize', scheduleMaxiPlayerViewportSync),
 )
 onUnmounted(() =>
   window.removeEventListener(
@@ -506,7 +524,6 @@ const closeMaxiPlayer = () => {
         v-if="player.playingSong"
         ref="playerMaxiContentElement"
         :class="playerContentClass"
-        :style="playerContentStyle"
       >
         <div
           v-if="shouldUseMaxiPlayer"
@@ -568,7 +585,7 @@ const closeMaxiPlayer = () => {
             </div>
           </div>
 
-          <div :class="shouldUseMaxiPlayer ? 'w-full' : 'mb-1.5'">
+          <div ref="playerMaxiFrameWrapElement" :class="playerFrameWrapClass">
             <div
               v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
               class="mb-1.5 px-0.5 text-left text-[0.96rem] font-medium tracking-[0.12em]"
@@ -584,7 +601,7 @@ const closeMaxiPlayer = () => {
             </div>
 
             <div :class="playerFrameClass">
-              <div :class="playerViewportClass">
+              <div :class="playerViewportClass" :style="playerViewportStyle">
                 <div
                   ref="playerViewportMountHost"
                   class="absolute inset-0"
