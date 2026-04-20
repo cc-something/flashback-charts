@@ -561,6 +561,8 @@ export const usePlayerStore = defineStore('player', () => {
 
   const handlePlayerStateChange = (stateCode: number, generation: number) => {
     if (generation !== activePlayerGeneration) return
+    if (!currentPlaySong || !playingSong.value || playingYear.value === null)
+      return
     lastKnownYoutubeState = stateCode
     if (stateCode === 0) {
       clearPendingSongPlayEventTimer()
