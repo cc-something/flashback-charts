@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import { useHead } from '@unhead/vue'
-import { Home, Search, TriangleAlert } from 'lucide-vue-next'
+import { Home, Search, SearchAlert } from 'lucide-vue-next'
 import { getHomePath } from '@/utils/url'
 
 const openSearch = inject<() => void>('openSearch')
@@ -20,7 +20,7 @@ useHead({
       <h1
         class="flex items-center justify-center gap-3 text-4xl font-bold text-primary sm:text-5xl"
       >
-        <TriangleAlert class="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
+        <SearchAlert class="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
         <span>Page not found</span>
       </h1>
 
