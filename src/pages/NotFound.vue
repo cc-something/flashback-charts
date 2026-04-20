@@ -15,7 +15,7 @@ useHead({
 <template>
   <main class="flex w-full items-center justify-center px-4 py-10">
     <section
-      class="mx-auto flex min-h-[calc(100dvh-var(--sticky-bar-height,0px)-var(--footer-height,0px)-4rem)] max-w-2xl flex-col items-center justify-center text-center"
+      class="mx-auto flex min-h-[calc(100dvh-var(--sticky-bar-height,0px)-var(--footer-height,0px)-4rem)] max-w-2xl flex-col items-center justify-start pt-[clamp(4rem,14vh,8rem)] text-center"
     >
       <div class="flex flex-col items-center justify-center gap-4">
         <SearchAlert class="h-16 w-16 text-primary sm:h-20 sm:w-20" />
