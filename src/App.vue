@@ -76,8 +76,10 @@ const player = usePlayerStore()
 const toast = useToastStore()
 const stickyBar = ref<HTMLDivElement | null>(null)
 const topHeaderChrome = ref<HTMLDivElement | null>(null)
+const footerElement = ref<HTMLElement | null>(null)
 const { height: stickyBarHeight } = useElementSize(stickyBar)
 const { height: topHeaderChromeHeight } = useElementSize(topHeaderChrome)
+const { height: footerHeight } = useElementSize(footerElement)
 const isSearchOpen = ref(false)
 const isHotkeysOpen = ref(false)
 const isContactOpen = ref(false)
@@ -261,6 +263,7 @@ onUnmounted(() => teardownKonamiListener())
   <div
     class="flex min-h-screen flex-col bg-background text-text"
     :style="{
+      '--footer-height': footerHeight + 'px',
       '--sticky-bar-height': stickyBarHeight + 'px',
       '--sticky-header-height': topHeaderChromeHeight + 'px',
     }"
@@ -312,7 +315,10 @@ onUnmounted(() => teardownKonamiListener())
       </router-view>
     </div>
 
-    <footer class="z-20 mt-16 mb-8 border-t border-primary/10 px-4 py-4">
+    <footer
+      ref="footerElement"
+      class="z-20 mt-16 mb-8 border-t border-primary/10 px-4 py-4"
+    >
       <div
         class="flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-x-6"
       >
