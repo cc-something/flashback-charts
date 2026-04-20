@@ -22,6 +22,7 @@ type PlaybackIntegrityAttemptReason =
   | 'timeout'
   | 'api-load-failed'
   | 'player-load-failed'
+  | 'stalled'
   | 'aborted'
 
 interface PlaybackIntegrityAttemptResult {

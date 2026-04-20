@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import ErrorToast from '@/components/ErrorToast.vue'
-import { usePlayerStore } from '@/stores/player'
-import { useToastStore } from '@/stores/toast'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import type { Song } from '@/types/song'
+import {
+  createYouTubePlayerAdapter,
+  getIsEmbedBlockedError,
+} from '@/utils/youtubePlayer'
 
 const playerViewportEl = ref<HTMLDivElement | null>(null)
 const statusMessage = ref('Waiting for initialization')
 const lastAttempt = ref<PlaybackIntegrityAttemptResult | null>(null)
-const previousMutedState = ref<boolean | null>(null)
-const player = usePlayerStore()
-const toast = useToastStore()
 
 let activeAttemptId = 0
 let attemptStartedAt = 0
 let attemptStateSequence: number[] = []
 let attemptTimeoutId: number | null = null
+let attemptPollId: number | null = null
 let queuedAttemptOptions: PlaybackIntegrityAttemptOptions | null = null
+let queuedAttemptResolver:
+  | ((result: PlaybackIntegrityAttemptResult) => void)
+  | null = null
+let queuedAttemptCleanup: (() => void) | null = null
+let localPlayer: ReturnType<typeof createYouTubePlayerAdapter> | null = null
+let lastKnownPlayerState: number | null = null
+let lastObservedTimeSeconds = 0
+let observedProgressTicks = 0
 
 const clearAttemptTimeout = () => {
   if (attemptTimeoutId === null) return
@@ -23,8 +31,22 @@ const clearAttemptTimeout = () => {
   attemptTimeoutId = null
 }
 
-const clearToasts = () => {
-  for (const currentToast of toast.toasts) toast.dismiss(currentToast.id)
+const clearAttemptPoll = () => {
+  if (attemptPollId === null) return
+  clearInterval(attemptPollId)
+  attemptPollId = null
+}
+
+const clearAttemptTracking = () => {
+  clearAttemptTimeout()
+  clearAttemptPoll()
+  queuedAttemptCleanup?.()
+  queuedAttemptCleanup = null
+  queuedAttemptResolver = null
+  queuedAttemptOptions = null
+  lastKnownPlayerState = null
+  lastObservedTimeSeconds = 0
+  observedProgressTicks = 0
 }
 
 const getDurationMs = () =>
@@ -36,164 +58,189 @@ const createAttemptResult = (
   message: string,
   errorCode: number | null = null,
 ): PlaybackIntegrityAttemptResult => ({
-  status,
-  reason,
+  durationMs: getDurationMs(),
   errorCode,
   message,
-  durationMs: getDurationMs(),
+  reason,
   stateSequence: [...attemptStateSequence],
+  status,
 })
+
+const stopLocalPlayer = () => {
+  if (!localPlayer) return
+  void localPlayer.stopVideo()
+}
+
+const finalizeAttempt = (
+  status: PlaybackIntegrityAttemptStatus,
+  reason: PlaybackIntegrityAttemptReason,
+  message: string,
+  errorCode: number | null = null,
+) => {
+  const result = createAttemptResult(status, reason, message, errorCode)
+  lastAttempt.value = result
+  statusMessage.value = result.message
+  stopLocalPlayer()
+  const resolveAttempt = queuedAttemptResolver
+  clearAttemptTracking()
+  resolveAttempt?.(result)
+  return result
+}
+
+const ensureLocalPlayer = async () => {
+  if (typeof window === 'undefined') return null
+  if (localPlayer) return localPlayer
+  const mountHost = playerViewportEl.value
+  if (!mountHost) return null
+  const mountEl = document.createElement('div')
+  mountEl.className = 'h-full w-full'
+  mountHost.replaceChildren(mountEl)
+  localPlayer = createYouTubePlayerAdapter(mountEl, {
+    onError: (errorCode) => {
+      if (!queuedAttemptResolver) return
+      finalizeAttempt(
+        'failed',
+        getIsEmbedBlockedError(errorCode) ? 'embed-blocked' : 'youtube-error',
+        getIsEmbedBlockedError(errorCode)
+          ? "This upload can't play in the embedded player."
+          : 'YouTube returned an error while playback was starting.',
+        errorCode,
+      )
+    },
+    onReady: () => {
+      if (!localPlayer) return
+      void localPlayer.mute()
+      void localPlayer.setVolume(0)
+    },
+    onStateChange: (stateCode) => {
+      if (!queuedAttemptResolver) return
+      lastKnownPlayerState = stateCode
+      attemptStateSequence = [...attemptStateSequence, stateCode]
+    },
+  })
+  await localPlayer.mute()
+  await localPlayer.setVolume(0)
+  return localPlayer
+}
+
+const syncAttemptHealth = async (attemptId: number, song: Song) => {
+  if (attemptId !== activeAttemptId || !localPlayer) return
+  try {
+    const nextCurrentTime = await localPlayer.getCurrentTime()
+    if (attemptId !== activeAttemptId) return
+    if (
+      lastKnownPlayerState === 1 &&
+      nextCurrentTime - lastObservedTimeSeconds >= 0.35
+    )
+      observedProgressTicks += 1
+    lastObservedTimeSeconds = nextCurrentTime
+    if (lastKnownPlayerState === 1 && observedProgressTicks >= 2) {
+      finalizeAttempt('passed', 'playing', 'Playback reached stable progress.')
+      return
+    }
+    if (lastKnownPlayerState === 0)
+      finalizeAttempt(
+        'failed',
+        'stalled',
+        `"${song.title}" by ${song.artist} ended before playback stabilised.`,
+      )
+  } catch {
+    if (attemptId !== activeAttemptId) return
+    finalizeAttempt(
+      'failed',
+      'player-load-failed',
+      'Playback integrity player failed while polling progress.',
+    )
+  }
+}
 
 const initialize = async () => {
   await nextTick()
-  player.setPlayerContainer(playerViewportEl.value)
-  if (previousMutedState.value === null)
-    previousMutedState.value = player.isMuted
-  player.setMuted(true)
-  await player.preload()
+  await ensureLocalPlayer()
   statusMessage.value = 'Playback integrity harness ready'
 }
 
 const reset = () => {
   activeAttemptId += 1
-  clearAttemptTimeout()
+  clearAttemptTracking()
   attemptStartedAt = 0
   attemptStateSequence = []
-  queuedAttemptOptions = null
   lastAttempt.value = null
-  clearToasts()
-  player.stop()
   statusMessage.value = 'Playback integrity harness ready'
+  stopLocalPlayer()
 }
 
-const startQueuedAttempt = () => {
+const startQueuedAttempt = async () => {
   if (!queuedAttemptOptions) return
+  const player = await ensureLocalPlayer()
+  if (!player)
+    return finalizeAttempt(
+      'failed',
+      'player-load-failed',
+      'Playback integrity player failed to initialise.',
+    )
+  const attemptId = activeAttemptId
   const options = queuedAttemptOptions
-  queuedAttemptOptions = null
-  player.setMuted(true)
-  void player.preload().then(() => {
-    void player.play(options.song, options.year, 'direct')
+  statusMessage.value = `Starting "${options.song.title}" by ${options.song.artist}"`
+  clearAttemptTimeout()
+  clearAttemptPoll()
+  await player.loadVideoById({
+    videoId: options.song.youtubeVideoId!,
   })
+  attemptPollId = window.setInterval(
+    () => void syncAttemptHealth(attemptId, options.song),
+    250,
+  )
+  attemptTimeoutId = window.setTimeout(() => {
+    if (attemptId !== activeAttemptId || !queuedAttemptOptions) return
+    finalizeAttempt(
+      'failed',
+      lastKnownPlayerState === 1 ? 'stalled' : 'timeout',
+      lastKnownPlayerState === 1
+        ? `"${options.song.title}" by ${options.song.artist} stalled before playback became stable.`
+        : `"${options.song.title}" by ${options.song.artist} timed out before playback started.`,
+    )
+  }, options.timeoutMs)
 }
 
 const runAttempt = async (options: PlaybackIntegrityAttemptOptions) => {
   reset()
   activeAttemptId += 1
-  const attemptId = activeAttemptId
   attemptStartedAt = Date.now()
   attemptStateSequence = []
-  statusMessage.value = `Testing "${options.song.title}" by ${options.song.artist}`
-  try {
-    return await new Promise<PlaybackIntegrityAttemptResult>((resolve) => {
-      const stopStateWatch = watch(
-        () => player.playerState,
-        (playerState) => {
-          const nextStateCode =
-            playerState === 'playing'
-              ? 1
-              : playerState === 'paused'
-                ? 2
-                : playerState === 'loading'
-                  ? 3
-                  : -1
-          attemptStateSequence = [...attemptStateSequence, nextStateCode]
-          if (playerState !== 'playing') return
-          clearAttemptTimeout()
-          stopStateWatch()
-          stopToastWatch()
-          const result = createAttemptResult(
-            'passed',
-            'playing',
-            'Playback reached playing state.',
-          )
-          lastAttempt.value = result
-          statusMessage.value = result.message
-          player.stop()
-          resolve(result)
-        },
-      )
-      const stopToastWatch = watch(
-        () => [...toast.toasts],
-        (toasts) => {
-          const latestErrorToast = [...toasts]
-            .reverse()
-            .find((currentToast) => currentToast.variant === 'error')
-          if (!latestErrorToast) return
-          clearAttemptTimeout()
-          stopStateWatch()
-          stopToastWatch()
-          const isEmbedBlocked = latestErrorToast.message.includes(
-            "can't play in the embedded player",
-          )
-          const result = createAttemptResult(
-            'failed',
-            isEmbedBlocked ? 'embed-blocked' : 'youtube-error',
-            latestErrorToast.message,
-          )
-          lastAttempt.value = result
-          statusMessage.value = result.message
-          player.stop()
-          resolve(result)
-        },
-      )
-      attemptTimeoutId = window.setTimeout(() => {
-        if (attemptId !== activeAttemptId) return
-        stopStateWatch()
-        stopToastWatch()
-        const result = createAttemptResult(
-          'failed',
-          'timeout',
-          `"${options.song.title}" by ${options.song.artist} timed out before playback started.`,
-        )
-        lastAttempt.value = result
-        statusMessage.value = result.message
-        player.stop()
-        resolve(result)
-      }, options.timeoutMs)
-      queuedAttemptOptions = options
-    })
-  } catch (error) {
-    const result = createAttemptResult(
-      'failed',
-      error instanceof Error &&
-        error.message === 'YouTube API script failed to load'
-        ? 'api-load-failed'
-        : 'player-load-failed',
-      error instanceof Error
-        ? error.message
-        : 'Playback integrity player failed',
-    )
-    lastAttempt.value = result
-    statusMessage.value = result.message
-    return result
-  }
+  statusMessage.value = `Testing "${options.song.title}" by ${options.song.artist}"`
+  return await new Promise<PlaybackIntegrityAttemptResult>((resolve) => {
+    queuedAttemptOptions = options
+    queuedAttemptResolver = resolve
+    queuedAttemptCleanup = () => {
+      queuedAttemptResolver = null
+      queuedAttemptOptions = null
+    }
+  })
 }
 
 const queueAttempt = (options: PlaybackIntegrityAttemptOptions) => {
   queuedAttemptOptions = options
 }
+
 onMounted(() => {
-  player.setPlayerContainer(playerViewportEl.value)
   window.__FLASHBACK_PLAYBACK_INTEGRITY__ = {
+    getLastAttempt: () => lastAttempt.value,
+    hasQueuedAttempt: () => Boolean(queuedAttemptOptions),
     initialize,
     queueAttempt,
-    startQueuedAttempt,
-    runAttempt,
     reset,
-    hasQueuedAttempt: () => Boolean(queuedAttemptOptions),
-    getLastAttempt: () => lastAttempt.value,
+    runAttempt,
+    startQueuedAttempt,
   }
 })
 
 onUnmounted(() => {
   window.__FLASHBACK_PLAYBACK_INTEGRITY__ = undefined
-  clearAttemptTimeout()
-  clearToasts()
-  player.stop()
-  if (previousMutedState.value !== null)
-    player.setMuted(previousMutedState.value)
-  player.setPlayerContainer(null)
-  queuedAttemptOptions = null
+  clearAttemptTracking()
+  stopLocalPlayer()
+  if (localPlayer) void localPlayer.destroy()
+  localPlayer = null
 })
 </script>
 
@@ -241,7 +288,5 @@ onUnmounted(() => {
         >{{ JSON.stringify(lastAttempt, null, 2) }}</pre
       >
     </section>
-
-    <ErrorToast />
   </main>
 </template>

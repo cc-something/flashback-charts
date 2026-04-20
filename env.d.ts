@@ -57,6 +57,7 @@ type PlaybackIntegrityAttemptReason =
   | 'timeout'
   | 'api-load-failed'
   | 'player-load-failed'
+  | 'stalled'
   | 'aborted'
 
 interface PlaybackIntegrityAttemptOptions {
@@ -88,10 +89,13 @@ interface PlaybackIntegrityAttemptResult {
 
 interface PlaybackIntegrityHarnessApi {
   initialize: () => Promise<void>
+  queueAttempt: (options: PlaybackIntegrityAttemptOptions) => void
   runAttempt: (
     options: PlaybackIntegrityAttemptOptions,
   ) => Promise<PlaybackIntegrityAttemptResult>
+  startQueuedAttempt: () => void
   reset: () => void
+  hasQueuedAttempt: () => boolean
   getLastAttempt: () => PlaybackIntegrityAttemptResult | null
 }
 
@@ -104,9 +108,6 @@ interface PlausibleFn {
 
 interface Window {
   YT?: YT
-  __FLASHBACK_YT_API_READY__?: boolean
-  __FLASHBACK_YT_API_NOTIFY__?: () => void
   __FLASHBACK_PLAYBACK_INTEGRITY__?: PlaybackIntegrityHarnessApi
-  onYouTubeIframeAPIReady?: () => void
   plausible?: PlausibleFn
 }
