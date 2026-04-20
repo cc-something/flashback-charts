@@ -445,23 +445,22 @@ export const usePlayerStore = defineStore('player', () => {
         Math.abs(currentTimeSeconds.value - seekPreviewSeconds.value) < 0.75
       )
         seekPreviewSeconds.value = null
-      if (
-        playbackHealth.value !== 'starting' ||
-        lastKnownYoutubeState !== 1 ||
-        !playerHostEl ||
-        !playerHostEl.isConnected ||
-        playerHostEl.clientWidth <= 0 ||
-        playerHostEl.clientHeight <= 0 ||
-        !(playerIframe instanceof HTMLIFrameElement) ||
-        !playerIframe.isConnected
-      )
+      if (playbackHealth.value !== 'starting' || lastKnownYoutubeState !== 1)
         return
+      const hasConnectedPlayerFrame =
+        playerHostEl &&
+        playerHostEl.isConnected &&
+        playerHostEl.clientWidth > 0 &&
+        playerHostEl.clientHeight > 0 &&
+        playerIframe instanceof HTMLIFrameElement &&
+        playerIframe.isConnected
       const timeAdvance = nextCurrentTime - lastObservedTimeSeconds
       if (timeAdvance >= STARTUP_POLL_ADVANCE_SECONDS)
         observedProgressTicks += 1
       lastObservedTimeSeconds = nextCurrentTime
       if (observedProgressTicks >= STARTUP_PROGRESS_TICKS_REQUIRED)
         handleStartupHealthy()
+      if (!hasConnectedPlayerFrame && observedProgressTicks === 0) return
     } catch {
       if (attemptId !== startupAttemptId) return
       setFailure('player-load-failed', PLAYER_LOAD_FAILED_MESSAGE)
