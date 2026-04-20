@@ -647,6 +647,7 @@ export const usePlayerStore = defineStore('player', () => {
       return
     }
     startupAttemptId += 1
+    const attemptId = startupAttemptId
     currentStartupMode = mode
     currentPlaySong = song
     currentStartAtSeconds = startAtSeconds
@@ -659,18 +660,35 @@ export const usePlayerStore = defineStore('player', () => {
     startProgressTimer()
     if (mode === 'cue') {
       playerState.value = 'loading'
-      await player.cueVideoById({
-        startSeconds: startAtSeconds ? Math.floor(startAtSeconds) : undefined,
-        videoId: song.youtubeVideoId!,
-      })
+      try {
+        await player.cueVideoById({
+          startSeconds: startAtSeconds ? Math.floor(startAtSeconds) : undefined,
+          videoId: song.youtubeVideoId!,
+        })
+      } catch {
+        if (attemptId !== startupAttemptId) return
+        await handleStartupFailure(
+          'player-load-failed',
+          PLAYER_LOAD_FAILED_MESSAGE,
+        )
+      }
       return
     }
     playerState.value = 'loading'
-    await player.loadVideoById({
-      startSeconds: startAtSeconds ? Math.floor(startAtSeconds) : undefined,
-      videoId: song.youtubeVideoId!,
-    })
-    startStartupTimeout(startupAttemptId)
+    startStartupTimeout(attemptId)
+    try {
+      await player.loadVideoById({
+        startSeconds: startAtSeconds ? Math.floor(startAtSeconds) : undefined,
+        videoId: song.youtubeVideoId!,
+      })
+    } catch {
+      if (attemptId !== startupAttemptId) return
+      clearStartupTimeout()
+      await handleStartupFailure(
+        'player-load-failed',
+        PLAYER_LOAD_FAILED_MESSAGE,
+      )
+    }
   }
 
   const preparePlaybackSession = (
