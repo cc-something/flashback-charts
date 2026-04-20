@@ -17,12 +17,12 @@ useHead({
     <section
       class="mx-auto flex min-h-[calc(100dvh-var(--sticky-bar-height,0px)-var(--footer-height,0px)-4rem)] max-w-2xl flex-col items-center justify-center text-center"
     >
-      <h1
-        class="flex items-center justify-center gap-3 text-4xl font-bold text-primary sm:text-5xl"
-      >
-        <SearchAlert class="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
-        <span>Page not found</span>
-      </h1>
+      <div class="flex flex-col items-center justify-center gap-4">
+        <SearchAlert class="h-16 w-16 text-primary sm:h-20 sm:w-20" />
+        <h1 class="text-4xl font-bold text-primary sm:text-5xl">
+          Page not found
+        </h1>
+      </div>
 
       <p class="mt-4 max-w-xl text-lg text-text-muted">
         It doesn't exist or has been moved.
