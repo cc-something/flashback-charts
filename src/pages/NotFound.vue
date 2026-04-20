@@ -17,14 +17,11 @@ useHead({
     <section
       class="mx-auto flex min-h-[calc(100dvh-var(--sticky-bar-height,0px)-var(--footer-height,0px)-4rem)] max-w-2xl flex-col items-center justify-center text-center"
     >
-      <div
-        class="mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-primary/15 bg-surface text-primary shadow-[0_18px_45px_rgb(0_0_0_/_0.08)]"
+      <h1
+        class="flex items-center justify-center gap-3 text-4xl font-bold text-primary sm:text-5xl"
       >
-        <TriangleAlert class="h-12 w-12" />
-      </div>
-
-      <h1 class="text-4xl font-bold text-primary sm:text-5xl">
-        Page not found
+        <TriangleAlert class="h-10 w-10 shrink-0 sm:h-12 sm:w-12" />
+        <span>Page not found</span>
       </h1>
 
       <p class="mt-4 max-w-xl text-lg text-text-muted">
@@ -42,7 +39,7 @@ useHead({
 
         <button
           type="button"
-          class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-surface px-5 py-3 text-sm font-semibold text-text transition-colors hover:border-primary/35 hover:bg-tab-inactive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          class="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           @click="openSearch?.()"
         >
           <Search class="h-4 w-4" />
