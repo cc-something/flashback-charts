@@ -6,6 +6,8 @@ import {
   Flag,
   Minimize,
   MousePointerClick,
+  Volume1,
+  Volume2,
   VolumeX,
   X,
 } from 'lucide-vue-next'
@@ -183,6 +185,15 @@ const fullscreenToggleTitle = computed(() =>
 const maxiPlayerCloseTitle = computed(() =>
   isTinyViewport.value ? 'Close player' : 'Exit full-screen player (F)',
 )
+const volumeButtonTitle = computed(() =>
+  player.isMuted ? 'Unmute playback' : 'Mute playback',
+)
+const volumeTooltipLabel = computed(() => `Volume: ${player.volumePercent}%`)
+const handleVolumeInput = (event: Event) => {
+  const nextVolume = Number((event.target as HTMLInputElement).value)
+  if (Number.isNaN(nextVolume)) return
+  player.setVolume(nextVolume)
+}
 const updateThemeVars = (year: number | null) => {
   if (year === null) return
   const theme = getThemeForYear(year)
@@ -772,16 +783,48 @@ const closeMaxiPlayer = () => {
                   </svg>
                 </button>
 
-                <button
-                  v-if="player.isMuted"
-                  type="button"
-                  title="Unmute"
-                  aria-label="Unmute"
-                  :class="playerButtonClass"
-                  @click="player.setMuted(false)"
+                <div
+                  class="group/volume relative flex items-center before:absolute before:bottom-full before:left-1/2 before:z-10 before:h-3 before:w-10 before:-translate-x-1/2 before:content-['']"
                 >
-                  <VolumeX class="h-4.5 w-4.5" />
-                </button>
+                  <div
+                    class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 flex w-10 -translate-x-1/2 translate-y-1 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-surface/95 px-0.5 py-3 opacity-0 shadow-[0_18px_45px_rgb(0_0_0_/_0.28)] backdrop-blur-sm transition duration-150 group-hover/volume:pointer-events-auto group-hover/volume:translate-y-0 group-hover/volume:opacity-100 group-focus-within/volume:pointer-events-auto group-focus-within/volume:translate-y-0 group-focus-within/volume:opacity-100"
+                  >
+                    <input
+                      :value="player.volumePercent"
+                      :disabled="player.isMuted"
+                      class="volume-slider accent-[color:var(--color-primary)]"
+                      :class="
+                        player.isMuted &&
+                        'opacity-35 grayscale cursor-not-allowed'
+                      "
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="1"
+                      aria-label="Volume"
+                      :title="volumeTooltipLabel"
+                      @input="handleVolumeInput"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    :title="volumeButtonTitle"
+                    :aria-label="volumeButtonTitle"
+                    :class="playerButtonClass"
+                    @click="player.toggleMute"
+                  >
+                    <VolumeX
+                      v-if="player.isMuted || player.volumePercent === 0"
+                      class="h-4.5 w-4.5"
+                    />
+                    <Volume1
+                      v-else-if="player.volumePercent < 50"
+                      class="h-4.5 w-4.5"
+                    />
+                    <Volume2 v-else class="h-4.5 w-4.5" />
+                  </button>
+                </div>
 
                 <button
                   type="button"
@@ -926,18 +969,51 @@ const closeMaxiPlayer = () => {
 
             <div class="absolute right-0 top-0">
               <div class="flex items-center gap-2">
-                <button
-                  v-if="player.isMuted"
-                  type="button"
-                  title="Unmute"
-                  aria-label="Unmute"
-                  :class="playerFullscreenSubtleButtonClass"
-                  @click="player.setMuted(false)"
+                <div
+                  class="group/volume relative flex items-center before:absolute before:bottom-full before:left-1/2 before:z-10 before:h-3 before:w-10 before:-translate-x-1/2 before:content-['']"
                 >
-                  <VolumeX
-                    class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
-                  />
-                </button>
+                  <div
+                    class="pointer-events-none absolute right-1/2 bottom-full z-20 mb-3 flex w-10 translate-x-1/2 translate-y-1 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-surface/95 px-0.5 py-3 opacity-0 shadow-[0_18px_45px_rgb(0_0_0_/_0.28)] backdrop-blur-sm transition duration-150 group-hover/volume:pointer-events-auto group-hover/volume:translate-y-0 group-hover/volume:opacity-100 group-focus-within/volume:pointer-events-auto group-focus-within/volume:translate-y-0 group-focus-within/volume:opacity-100"
+                  >
+                    <input
+                      :value="player.volumePercent"
+                      :disabled="player.isMuted"
+                      class="volume-slider accent-[color:var(--color-primary)]"
+                      :class="
+                        player.isMuted &&
+                        'opacity-35 grayscale cursor-not-allowed'
+                      "
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="1"
+                      aria-label="Volume"
+                      :title="volumeTooltipLabel"
+                      @input="handleVolumeInput"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    :title="volumeButtonTitle"
+                    :aria-label="volumeButtonTitle"
+                    :class="playerFullscreenSubtleButtonClass"
+                    @click="player.toggleMute"
+                  >
+                    <VolumeX
+                      v-if="player.isMuted || player.volumePercent === 0"
+                      class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
+                    />
+                    <Volume1
+                      v-else-if="player.volumePercent < 50"
+                      class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
+                    />
+                    <Volume2
+                      v-else
+                      class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
+                    />
+                  </button>
+                </div>
 
                 <button
                   type="button"
@@ -1010,5 +1086,12 @@ const closeMaxiPlayer = () => {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.volume-slider {
+  width: 0.7rem;
+  height: 6rem;
+  writing-mode: vertical-lr;
+  direction: rtl;
 }
 </style>

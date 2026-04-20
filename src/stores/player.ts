@@ -11,6 +11,7 @@ import { getYearData } from '@/data'
 
 const STORAGE_KEY = 'flashback-miniplayer'
 const MUTE_STORAGE_KEY = 'flashback-player-muted'
+const VOLUME_STORAGE_KEY = 'flashback-player-volume'
 const SAVE_INTERVAL_MS = 3_000
 const CONNECTIVITY_CHECK_TIMEOUT_MS = 1_500
 const MIN_ERROR_LOADING_MS = 1_000
@@ -84,6 +85,26 @@ const saveMutedPreference = (nextMuted: boolean) => {
   }
 }
 
+const loadVolumePreference = () => {
+  if (typeof localStorage === 'undefined') return 100
+  try {
+    const savedVolume = Number(localStorage.getItem(VOLUME_STORAGE_KEY))
+    if (Number.isNaN(savedVolume)) return 100
+    return Math.min(100, Math.max(0, Math.round(savedVolume)))
+  } catch {
+    return 100
+  }
+}
+
+const saveVolumePreference = (nextVolume: number) => {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.setItem(VOLUME_STORAGE_KEY, String(nextVolume))
+  } catch {
+    /* quota exceeded â€” ignore */
+  }
+}
+
 type PlayerState = 'idle' | 'loading' | 'playing' | 'paused'
 
 export type PlayTrigger =
@@ -124,6 +145,7 @@ export const usePlayerStore = defineStore('player', () => {
   const isSeekDragging = ref(false)
   const seekPreviewSeconds = ref<number | null>(null)
   const isMuted = ref(loadMutedPreference())
+  const volumePercent = ref(loadVolumePreference())
   const hasMountedPlayer = ref(false)
   const isAwaitingPlaybackStart = ref(false)
   const highlightedSongKey = ref<string | null>(null)
@@ -803,8 +825,13 @@ export const usePlayerStore = defineStore('player', () => {
       await recoverPlaybackAfterStartupStall()
     }, STALL_TIMEOUT_MS)
   }
+  const syncVolumeState = (player: YTPlayer | null = ytPlayer) => {
+    if (!player || typeof player.setVolume !== 'function') return
+    player.setVolume(volumePercent.value)
+  }
   const syncMutedState = (player: YTPlayer | null = ytPlayer) => {
     if (!player) return
+    syncVolumeState(player)
     if (isMuted.value) {
       if (typeof player.mute === 'function') player.mute()
       return
@@ -1449,6 +1476,21 @@ export const usePlayerStore = defineStore('player', () => {
     saveMutedPreference(isMuted.value)
     syncMutedState()
   }
+  const setVolume = (nextVolume: number) => {
+    const clampedVolume = Math.min(100, Math.max(0, Math.round(nextVolume)))
+    if (volumePercent.value === clampedVolume) return
+    volumePercent.value = clampedVolume
+    saveVolumePreference(clampedVolume)
+    if (clampedVolume === 0 && !isMuted.value) {
+      isMuted.value = true
+      saveMutedPreference(true)
+    }
+    if (clampedVolume > 0 && isMuted.value) {
+      isMuted.value = false
+      saveMutedPreference(false)
+    }
+    syncMutedState()
+  }
 
   const seekRelative = (deltaSeconds: number) => {
     const readyYtPlayer = getReadyYtPlayer()
@@ -1609,6 +1651,7 @@ export const usePlayerStore = defineStore('player', () => {
     seekSliderValue,
     isActive,
     isMuted,
+    volumePercent,
     hasMountedPlayer,
     isAwaitingPlaybackStart,
     shouldBootstrapPlaybackFromShell,
@@ -1622,6 +1665,7 @@ export const usePlayerStore = defineStore('player', () => {
     togglePlayback,
     toggleMute,
     setMuted,
+    setVolume,
     seekRelative,
     startSeekDrag,
     handleSeekInput,
