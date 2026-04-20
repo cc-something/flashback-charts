@@ -531,13 +531,9 @@ const closeMaxiPlayer = () => {
       :class="playerDockContainerClass"
       :style="playerDockContainerStyle"
     >
-      <div
-        v-if="player.playingSong"
-        ref="playerMaxiContentElement"
-        :class="playerContentClass"
-      >
+      <div ref="playerMaxiContentElement" :class="playerContentClass">
         <div
-          v-if="shouldUseMaxiPlayer"
+          v-if="shouldUseMaxiPlayer && player.playingSong"
           class="mt-4 mb-3 flex w-full items-start justify-end gap-3 sm:mt-5 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
@@ -584,7 +580,10 @@ const closeMaxiPlayer = () => {
         </div>
 
         <div :class="playerMaxiBodyClass">
-          <div v-if="shouldUseMaxiPlayer" class="mb-3 w-full">
+          <div
+            v-if="shouldUseMaxiPlayer && player.playingSong"
+            class="mb-3 w-full"
+          >
             <div class="min-w-0">
               <SongRow
                 v-if="player.playingYear !== null"
@@ -598,16 +597,16 @@ const closeMaxiPlayer = () => {
 
           <div ref="playerMaxiFrameWrapElement" :class="playerFrameWrapClass">
             <div
-              v-if="!shouldUseMaxiPlayer && player.playingYear !== null"
+              v-if="
+                !shouldUseMaxiPlayer &&
+                player.playingSong &&
+                player.playingYear !== null
+              "
               class="mb-1.5 px-0.5 text-left text-[0.96rem] font-medium tracking-[0.12em]"
             >
-              <span
-                v-if="player.playingSong"
-                class="text-text"
-                :style="jukeboxYearStyle"
-              >
+              <span class="text-text" :style="jukeboxYearStyle">
                 <span>{{ jukeboxYearLabel }}</span>
-                <span class="ml-1">#{{ player.playingSong.rank }}</span>
+                <span class="ml-1">#{{ player.playingSong?.rank }}</span>
               </span>
             </div>
 
@@ -658,7 +657,10 @@ const closeMaxiPlayer = () => {
           </div>
 
           <template v-if="!shouldUseMaxiPlayer">
-            <div class="mt-1.5 flex items-start gap-2.5">
+            <div
+              v-if="player.playingSong"
+              class="mt-1.5 flex items-start gap-2.5"
+            >
               <button
                 type="button"
                 title="Go to song (G)"
@@ -667,8 +669,8 @@ const closeMaxiPlayer = () => {
                 @click="goToPlayingSong"
               >
                 <img
-                  :src="player.playingSong.thumbnailPath"
-                  :alt="player.playingSong.title"
+                  :src="player.playingSong?.thumbnailPath"
+                  :alt="player.playingSong?.title"
                   class="block h-full w-full object-cover"
                 />
               </button>
@@ -684,7 +686,7 @@ const closeMaxiPlayer = () => {
                     <p
                       class="break-words text-base font-bold leading-snug text-text"
                     >
-                      <span>{{ player.playingSong.title }}</span>
+                      <span>{{ player.playingSong?.title }}</span>
                       <EmbedFallbackBadge
                         :song="player.playingSong"
                         class="ml-1.5"
@@ -692,7 +694,7 @@ const closeMaxiPlayer = () => {
                       />
                     </p>
                     <p class="break-words text-sm leading-snug text-text-muted">
-                      {{ player.playingSong.artist }}
+                      {{ player.playingSong?.artist }}
                     </p>
                   </button>
 
@@ -710,7 +712,7 @@ const closeMaxiPlayer = () => {
             </div>
 
             <div
-              v-if="!shouldShowPlaybackStartCta"
+              v-if="player.playingSong && !shouldShowPlaybackStartCta"
               class="mt-1.5 flex items-center gap-1"
             >
               <div class="flex flex-1 items-center gap-1">
@@ -855,7 +857,7 @@ const closeMaxiPlayer = () => {
             </div>
 
             <div
-              v-if="!shouldShowPlaybackStartCta"
+              v-if="player.playingSong && !shouldShowPlaybackStartCta"
               class="mt-0.5 flex justify-end pr-0.5"
             >
               <p
@@ -872,7 +874,7 @@ const closeMaxiPlayer = () => {
             </div>
 
             <div
-              v-if="!shouldShowPlaybackStartCta"
+              v-if="player.playingSong && !shouldShowPlaybackStartCta"
               class="relative mt-0.5 -mx-0.5 px-0.5"
             >
               <PlaybackSeekBar
@@ -884,7 +886,7 @@ const closeMaxiPlayer = () => {
           </template>
 
           <div
-            v-else-if="!shouldShowPlaybackStartCta"
+            v-else-if="player.playingSong && !shouldShowPlaybackStartCta"
             :class="playerActionRowClass"
             class="relative mt-4 w-full"
           >
@@ -1032,11 +1034,6 @@ const closeMaxiPlayer = () => {
         </div>
 
         <div :class="playerBottomSpacerClass" aria-hidden="true" />
-      </div>
-      <div v-else class="invisible h-[200px] w-full" aria-hidden="true">
-        <div class="relative h-full w-full overflow-hidden bg-black">
-          <div ref="playerViewportMountHost" class="absolute inset-0" />
-        </div>
       </div>
 
       <p
