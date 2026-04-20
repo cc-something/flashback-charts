@@ -189,6 +189,10 @@ const volumeButtonTitle = computed(() =>
   player.isMuted ? 'Unmute playback' : 'Mute playback',
 )
 const volumeTooltipLabel = computed(() => `Volume: ${player.volumePercent}%`)
+const handleVolumeInteraction = () => {
+  if (!player.isMuted) return
+  player.setMuted(false)
+}
 const handleVolumeInput = (event: Event) => {
   const nextVolume = Number((event.target as HTMLInputElement).value)
   if (Number.isNaN(nextVolume)) return
@@ -793,18 +797,16 @@ const closeMaxiPlayer = () => {
                   >
                     <input
                       :value="player.volumePercent"
-                      :disabled="player.isMuted"
                       class="volume-slider accent-[color:var(--color-primary)]"
-                      :class="
-                        player.isMuted &&
-                        'opacity-35 grayscale cursor-not-allowed'
-                      "
+                      :class="player.isMuted && 'opacity-60'"
                       type="range"
                       min="0"
                       max="100"
                       step="1"
                       aria-label="Volume"
                       :title="volumeTooltipLabel"
+                      @keydown="handleVolumeInteraction"
+                      @pointerdown="handleVolumeInteraction"
                       @input="handleVolumeInput"
                     />
                   </div>
@@ -979,18 +981,16 @@ const closeMaxiPlayer = () => {
                   >
                     <input
                       :value="player.volumePercent"
-                      :disabled="player.isMuted"
                       class="volume-slider accent-[color:var(--color-primary)]"
-                      :class="
-                        player.isMuted &&
-                        'opacity-35 grayscale cursor-not-allowed'
-                      "
+                      :class="player.isMuted && 'opacity-60'"
                       type="range"
                       min="0"
                       max="100"
                       step="1"
                       aria-label="Volume"
                       :title="volumeTooltipLabel"
+                      @keydown="handleVolumeInteraction"
+                      @pointerdown="handleVolumeInteraction"
                       @input="handleVolumeInput"
                     />
                   </div>

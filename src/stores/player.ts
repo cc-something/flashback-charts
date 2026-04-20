@@ -865,14 +865,15 @@ export const usePlayerStore = defineStore('player', () => {
 
   const setVolume = (nextVolume: number) => {
     const clampedVolume = Math.min(100, Math.max(0, Math.round(nextVolume)))
-    if (volumePercent.value === clampedVolume) return
+    const shouldUnmute = isMuted.value
+    if (volumePercent.value === clampedVolume && !shouldUnmute) return
     volumePercent.value = clampedVolume
     saveVolumePreference(clampedVolume)
-    if (clampedVolume === 0 && !isMuted.value) {
+    if (clampedVolume === 0 && !shouldUnmute && !isMuted.value) {
       isMuted.value = true
       saveMutedPreference(true)
     }
-    if (clampedVolume > 0 && isMuted.value) {
+    if (shouldUnmute || (clampedVolume > 0 && isMuted.value)) {
       isMuted.value = false
       saveMutedPreference(false)
     }
