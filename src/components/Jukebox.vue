@@ -630,23 +630,23 @@ const closeMaxiPlayer = () => {
                     <img
                       :src="player.playingSong.thumbnailPath"
                       :alt="player.playingSong.title"
-                      class="h-full w-full object-cover object-top"
+                      class="h-full w-full scale-[1.03] object-cover object-top blur-md"
                     />
                     <div
                       class="absolute inset-0"
                       :style="{
                         background:
-                          'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
+                          'linear-gradient(to bottom, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.14) 40%, rgba(0, 0, 0, 0.72) 100%)',
                       }"
                     />
                     <div
-                      class="absolute inset-x-0 bottom-0 flex justify-end p-3.5"
+                      class="absolute inset-0 flex items-center justify-center"
                     >
                       <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                        class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-black/40 shadow-[0_12px_36px_rgb(0_0_0_/_0.35)] ring-2 ring-white/30 backdrop-blur-sm sm:h-20 sm:w-20"
                       >
                         <svg
-                          class="h-6 w-6 translate-x-[0.5px] text-white"
+                          class="h-8 w-8 translate-x-[1px] text-white sm:h-10 sm:w-10"
                           viewBox="0 0 24 24"
                           fill="currentColor"
                         >
