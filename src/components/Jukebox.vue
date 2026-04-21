@@ -1091,7 +1091,7 @@ const closeMaxiPlayer = () => {
 }
 
 .player-poster-image {
-  filter: blur(clamp(10px, 0.9vw, 16px));
+  filter: blur(12px);
   transform: scale(1.04);
   transform-origin: center;
 }
