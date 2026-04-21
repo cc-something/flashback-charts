@@ -33,7 +33,6 @@ const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
 const maxiPlayerViewportStyle = ref<Record<string, string>>({})
 const isTinyViewport = useMediaQuery('(max-width: 839px)')
-const isBelowDesktopViewport = useMediaQuery('(max-width: 1199px)')
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 const PLAYER_FULLSCREEN_OPEN_EVENT = 'player-fullscreen-open'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
@@ -89,6 +88,9 @@ const shouldShowRestoredPoster = computed(
 const shouldUseMaxiPlayer = computed(
   () => isTinyViewport.value || isDesktopFullscreen.value,
 )
+const shouldUseDesktopFullscreenLayout = computed(
+  () => shouldUseMaxiPlayer.value && !isTinyViewport.value,
+)
 const shouldShowPlaybackStartCta = computed(
   () => player.isAwaitingPlaybackStart,
 )
@@ -113,7 +115,9 @@ const playerContentClass = computed(() =>
 )
 const playerDockContainerClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'mx-auto h-full w-full overflow-hidden px-4 pt-4 pb-28 sm:px-6 sm:pt-6 sm:pb-32'
+    ? shouldUseDesktopFullscreenLayout.value
+      ? 'mx-auto h-full w-full overflow-hidden px-6 pt-3 pb-4 xl:px-8 xl:pt-4 xl:pb-5'
+      : 'mx-auto h-full w-full overflow-hidden px-4 pt-4 pb-24 sm:px-6 sm:pt-6 sm:pb-28'
     : 'px-3 pt-3 pb-3',
 )
 const playerMaxiBodyClass = computed(() =>
@@ -121,17 +125,13 @@ const playerMaxiBodyClass = computed(() =>
 )
 const playerFrameWrapClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'flex min-h-0 flex-1 items-center justify-center'
+    ? shouldUseDesktopFullscreenLayout.value
+      ? 'mx-auto flex min-h-0 w-full max-w-[1300px] flex-1 items-center justify-center'
+      : 'flex min-h-0 flex-1 items-center justify-center'
     : 'mb-1.5',
 )
 const playerDockContainerStyle = computed(() =>
-  shouldUseMaxiPlayer.value
-    ? {
-        paddingTop: isBelowDesktopViewport.value
-          ? '0.5rem'
-          : 'calc(var(--sticky-bar-height) + 0.5rem)',
-      }
-    : undefined,
+  shouldUseMaxiPlayer.value ? { paddingTop: '0.5rem' } : undefined,
 )
 const playerDockClass = computed(() =>
   shouldUseMaxiPlayer.value
@@ -168,7 +168,9 @@ const playerViewportClass = computed(() =>
 )
 const playerActionRowClass = computed(() =>
   shouldUseMaxiPlayer.value
-    ? 'relative mt-4 flex items-center justify-center'
+    ? shouldUseDesktopFullscreenLayout.value
+      ? 'relative mt-2.5 flex items-center justify-center'
+      : 'relative mt-4 flex items-center justify-center'
     : 'flex items-center gap-1',
 )
 const playerBottomSpacerClass = computed(() =>
@@ -519,7 +521,7 @@ const closeMaxiPlayer = () => {
       <div ref="playerMaxiContentElement" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer && player.playingSong"
-          class="mx-auto mt-4 mb-3 flex w-full max-w-[1300px] items-start justify-end gap-3 sm:mt-5 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
+          class="mx-auto mt-2 mb-2 flex w-full max-w-[1300px] items-start justify-end gap-3 sm:mt-3 sm:mb-3 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
             v-if="player.playingYear !== null"
@@ -567,7 +569,7 @@ const closeMaxiPlayer = () => {
         <div :class="playerMaxiBodyClass">
           <div
             v-if="shouldUseMaxiPlayer && player.playingSong"
-            class="mb-3 w-full"
+            class="mb-2 w-full"
           >
             <div class="mx-auto min-w-0 max-w-[1300px]">
               <SongRow
