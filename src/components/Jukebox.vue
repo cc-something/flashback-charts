@@ -630,7 +630,7 @@ const closeMaxiPlayer = () => {
                     <img
                       :src="player.playingSong.thumbnailPath"
                       :alt="player.playingSong.title"
-                      class="h-full w-full scale-[1.03] object-cover object-top blur-md"
+                      class="player-poster-image h-full w-full object-cover object-top"
                     />
                     <div
                       class="absolute inset-0"
@@ -1088,6 +1088,12 @@ const closeMaxiPlayer = () => {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.player-poster-image {
+  filter: blur(clamp(10px, 0.9vw, 16px));
+  transform: scale(1.04);
+  transform-origin: center;
 }
 
 .volume-slider {
