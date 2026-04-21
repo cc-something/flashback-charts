@@ -128,7 +128,7 @@ const playerMaxiMediaStackClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? shouldUseDesktopFullscreenLayout.value
       ? 'mx-auto flex min-h-0 w-full max-w-[1300px] flex-1 flex-col justify-center'
-      : 'mx-auto flex min-h-0 w-full flex-1 flex-col'
+      : 'mx-auto flex min-h-0 w-full flex-1 flex-col justify-center'
     : '',
 )
 const playerFrameWrapClass = computed(() =>
