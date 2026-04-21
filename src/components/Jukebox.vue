@@ -28,7 +28,8 @@ const themeVars = ref<Record<string, string>>({})
 const playerDockContainerElement = ref<HTMLDivElement | null>(null)
 const playerViewportMountHost = ref<HTMLDivElement | null>(null)
 const playerMaxiContentElement = ref<HTMLDivElement | null>(null)
-const playerMaxiFrameWrapElement = ref<HTMLDivElement | null>(null)
+const playerMaxiMediaStackElement = ref<HTMLDivElement | null>(null)
+const playerMaxiActionRowElement = ref<HTMLDivElement | null>(null)
 const isReportModalOpen = ref(false)
 const isDesktopFullscreen = ref(false)
 const maxiPlayerViewportStyle = ref<Record<string, string>>({})
@@ -123,11 +124,18 @@ const playerDockContainerClass = computed(() =>
 const playerMaxiBodyClass = computed(() =>
   shouldUseMaxiPlayer.value ? 'flex min-h-0 flex-1 flex-col' : '',
 )
+const playerMaxiMediaStackClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? shouldUseDesktopFullscreenLayout.value
+      ? 'mx-auto flex min-h-0 w-full max-w-[1300px] flex-1 flex-col justify-center'
+      : 'mx-auto flex min-h-0 w-full flex-1 flex-col'
+    : '',
+)
 const playerFrameWrapClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? shouldUseDesktopFullscreenLayout.value
-      ? 'mx-auto flex min-h-0 w-full max-w-[1300px] flex-1 items-center justify-center'
-      : 'flex min-h-0 flex-1 items-center justify-center'
+      ? 'flex min-h-0 flex-1 items-center justify-center'
+      : 'flex items-center justify-center'
     : 'mb-1.5',
 )
 const playerDockContainerStyle = computed(() =>
@@ -261,11 +269,15 @@ const syncMaxiPlayerViewport = () => {
     maxiPlayerViewportStyle.value = {}
     return
   }
-  const frameWrapElement = playerMaxiFrameWrapElement.value
-  if (!frameWrapElement) return
-  const frameWrapRect = frameWrapElement.getBoundingClientRect()
-  const viewportWidth = Math.max(frameWrapRect.width, 0)
-  const viewportHeight = Math.max(frameWrapRect.height, 0)
+  const mediaStackElement = playerMaxiMediaStackElement.value
+  if (!mediaStackElement) return
+  const mediaStackRect = mediaStackElement.getBoundingClientRect()
+  const actionRowHeight = Math.max(
+    playerMaxiActionRowElement.value?.getBoundingClientRect().height ?? 0,
+    0,
+  )
+  const viewportWidth = Math.max(mediaStackRect.width, 0)
+  const viewportHeight = Math.max(mediaStackRect.height - actionRowHeight, 0)
   if (!viewportWidth || !viewportHeight) {
     maxiPlayerViewportStyle.value = { width: '0px', height: '0px' }
     return
@@ -293,7 +305,12 @@ watch(playerMaxiContentElement, (nextElement, previousElement) => {
   if (nextElement) maxiPlayerResizeObserver?.observe(nextElement)
   void nextTick(() => scheduleMaxiPlayerViewportSync())
 })
-watch(playerMaxiFrameWrapElement, (nextElement, previousElement) => {
+watch(playerMaxiMediaStackElement, (nextElement, previousElement) => {
+  if (previousElement) maxiPlayerResizeObserver?.unobserve(previousElement)
+  if (nextElement) maxiPlayerResizeObserver?.observe(nextElement)
+  void nextTick(() => scheduleMaxiPlayerViewportSync())
+})
+watch(playerMaxiActionRowElement, (nextElement, previousElement) => {
   if (previousElement) maxiPlayerResizeObserver?.unobserve(previousElement)
   if (nextElement) maxiPlayerResizeObserver?.observe(nextElement)
   void nextTick(() => scheduleMaxiPlayerViewportSync())
@@ -399,8 +416,10 @@ onMounted(() => {
     maxiPlayerResizeObserver.observe(playerDockContainerElement.value)
   if (playerMaxiContentElement.value)
     maxiPlayerResizeObserver.observe(playerMaxiContentElement.value)
-  if (playerMaxiFrameWrapElement.value)
-    maxiPlayerResizeObserver.observe(playerMaxiFrameWrapElement.value)
+  if (playerMaxiMediaStackElement.value)
+    maxiPlayerResizeObserver.observe(playerMaxiMediaStackElement.value)
+  if (playerMaxiActionRowElement.value)
+    maxiPlayerResizeObserver.observe(playerMaxiActionRowElement.value)
   void nextTick(() => scheduleMaxiPlayerViewportSync())
 })
 onMounted(() =>
@@ -582,63 +601,218 @@ const closeMaxiPlayer = () => {
             </div>
           </div>
 
-          <div ref="playerMaxiFrameWrapElement" :class="playerFrameWrapClass">
-            <div
-              v-if="
-                !shouldUseMaxiPlayer &&
-                player.playingSong &&
-                player.playingYear !== null
-              "
-              class="mb-1.5 px-0.5 text-left text-[0.96rem] font-medium tracking-[0.12em]"
-            >
-              <span class="text-text" :style="jukeboxYearStyle">
-                <span>{{ jukeboxYearLabel }}</span>
-                <span class="ml-1">#{{ player.playingSong?.rank }}</span>
-              </span>
+          <div
+            ref="playerMaxiMediaStackElement"
+            :class="playerMaxiMediaStackClass"
+          >
+            <div :class="playerFrameWrapClass">
+              <div
+                v-if="
+                  !shouldUseMaxiPlayer &&
+                  player.playingSong &&
+                  player.playingYear !== null
+                "
+                class="mb-1.5 px-0.5 text-left text-[0.96rem] font-medium tracking-[0.12em]"
+              >
+                <span class="text-text" :style="jukeboxYearStyle">
+                  <span>{{ jukeboxYearLabel }}</span>
+                  <span class="ml-1">#{{ player.playingSong?.rank }}</span>
+                </span>
+              </div>
+
+              <div :class="playerFrameClass">
+                <div :class="playerViewportClass" :style="playerViewportStyle">
+                  <div
+                    ref="playerViewportMountHost"
+                    class="absolute inset-0"
+                    aria-hidden="true"
+                  />
+                  <button
+                    v-if="shouldShowRestoredPoster && player.playingSong"
+                    type="button"
+                    aria-label="Play playback"
+                    class="absolute inset-0 cursor-pointer bg-white"
+                    @click="resumePlayback"
+                  >
+                    <img
+                      :src="player.playingSong.thumbnailPath"
+                      :alt="player.playingSong.title"
+                      class="h-full w-full object-cover"
+                    />
+                    <div
+                      class="absolute inset-0"
+                      :style="{
+                        background:
+                          'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
+                      }"
+                    />
+                    <div
+                      class="absolute inset-x-0 bottom-0 flex justify-end p-3.5"
+                    >
+                      <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                      >
+                        <svg
+                          class="h-6 w-6 translate-x-[0.5px] text-white"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div :class="playerFrameClass">
-              <div :class="playerViewportClass" :style="playerViewportStyle">
-                <div
-                  ref="playerViewportMountHost"
-                  class="absolute inset-0"
-                  aria-hidden="true"
-                />
+            <div
+              v-if="
+                shouldUseMaxiPlayer &&
+                player.playingSong &&
+                !shouldShowPlaybackStartCta
+              "
+              ref="playerMaxiActionRowElement"
+              :class="playerActionRowClass"
+              class="relative mx-auto mt-4 w-full max-w-[1300px]"
+            >
+              <div class="flex items-center justify-center gap-3.5">
                 <button
-                  v-if="shouldShowRestoredPoster && player.playingSong"
                   type="button"
-                  aria-label="Play playback"
-                  class="absolute inset-0 cursor-pointer bg-white"
-                  @click="resumePlayback"
+                  :title="`Previous song (${mod}+←)`"
+                  aria-label="Previous song"
+                  :class="playerFullscreenButtonClass"
+                  @click="player.playPrev('player-btn')"
                 >
-                  <img
-                    :src="player.playingSong.thumbnailPath"
-                    :alt="player.playingSong.title"
-                    class="h-full w-full object-cover"
-                  />
+                  <svg
+                    class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  title="Play / pause (Space or K)"
+                  aria-label="Toggle playback"
+                  :class="playerFullscreenButtonClass"
+                  @click="player.togglePlayback('player-btn')"
+                >
+                  <svg
+                    v-if="player.playerState === 'loading'"
+                    class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)] animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    />
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
+                  </svg>
+                  <svg
+                    v-else-if="player.playerState === 'playing'"
+                    class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                  </svg>
+                  <svg
+                    v-else
+                    class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  :title="`Next song (${mod}+→)`"
+                  aria-label="Next song"
+                  :class="playerFullscreenButtonClass"
+                  @click="player.playNext(undefined, undefined, 'player-btn')"
+                >
+                  <svg
+                    class="h-[clamp(1.6rem,4.5vw,2.35rem)] w-[clamp(1.6rem,4.5vw,2.35rem)]"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="absolute right-0 top-0">
+                <div class="flex items-center gap-2">
                   <div
-                    class="absolute inset-0"
-                    :style="{
-                      background:
-                        'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 3%, rgba(0, 0, 0, 0.94) 100%)',
-                    }"
-                  />
-                  <div
-                    class="absolute inset-x-0 bottom-0 flex justify-end p-3.5"
+                    class="group/volume relative flex items-center before:absolute before:bottom-full before:left-1/2 before:z-10 before:h-3 before:w-10 before:-translate-x-1/2 before:content-['']"
                   >
                     <div
-                      class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/30 ring-2 ring-white/25"
+                      class="pointer-events-none absolute right-1/2 bottom-full z-20 mb-3 flex w-10 translate-x-1/2 translate-y-1 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-surface/95 px-0.5 py-3 opacity-0 shadow-[0_18px_45px_rgb(0_0_0_/_0.28)] backdrop-blur-sm transition duration-150 group-hover/volume:pointer-events-auto group-hover/volume:translate-y-0 group-hover/volume:opacity-100 group-focus-within/volume:pointer-events-auto group-focus-within/volume:translate-y-0 group-focus-within/volume:opacity-100"
                     >
-                      <svg
-                        class="h-6 w-6 translate-x-[0.5px] text-white"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+                      <input
+                        :value="player.volumePercent"
+                        class="volume-slider accent-[color:var(--color-primary)]"
+                        :class="player.isMuted && 'opacity-60'"
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        aria-label="Volume"
+                        :title="volumeTooltipLabel"
+                        @keydown="handleVolumeInteraction"
+                        @pointerdown="handleVolumeInteraction"
+                        @input="handleVolumeInput"
+                      />
                     </div>
+
+                    <button
+                      type="button"
+                      :title="volumeButtonTitle"
+                      :aria-label="volumeButtonTitle"
+                      :class="playerFullscreenSubtleButtonClass"
+                      @click="player.toggleMute"
+                    >
+                      <VolumeX
+                        v-if="player.isMuted || player.volumePercent === 0"
+                        class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
+                      />
+                      <Volume1
+                        v-else-if="player.volumePercent < 50"
+                        class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
+                      />
+                      <Volume2
+                        v-else
+                        class="h-[clamp(1.2rem,3.4vw,1.8rem)] w-[clamp(1.2rem,3.4vw,1.8rem)]"
+                      />
+                    </button>
                   </div>
-                </button>
+
+                  <button
+                    type="button"
+                    :title="maxiPlayerCloseTitle"
+                    :aria-label="maxiPlayerCloseTitle"
+                    :class="playerFullscreenSubtleButtonClass"
+                    @click="closeMaxiPlayer"
+                  >
+                    <Minimize
+                      class="h-[clamp(1.35rem,4vw,2.1rem)] w-[clamp(1.35rem,4vw,2.1rem)]"
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
