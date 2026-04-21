@@ -167,6 +167,11 @@ const playerViewportClass = computed(() =>
     ? 'player-viewport-fullscreen bg-black'
     : 'player-viewport w-full min-h-[200px] bg-black',
 )
+const playerPosterImageClass = computed(() =>
+  shouldUseMaxiPlayer.value
+    ? 'player-poster-image player-poster-image-maxi h-full w-full object-cover object-top'
+    : 'player-poster-image player-poster-image-mini h-full w-full object-cover object-top',
+)
 const playerActionRowClass = computed(() =>
   shouldUseMaxiPlayer.value
     ? shouldUseDesktopFullscreenLayout.value
@@ -630,7 +635,7 @@ const closeMaxiPlayer = () => {
                     <img
                       :src="player.playingSong.thumbnailPath"
                       :alt="player.playingSong.title"
-                      class="player-poster-image h-full w-full object-cover object-top"
+                      :class="playerPosterImageClass"
                     />
                     <div
                       class="absolute inset-0"
@@ -1091,9 +1096,16 @@ const closeMaxiPlayer = () => {
 }
 
 .player-poster-image {
-  filter: blur(12px);
   transform: scale(1.04);
   transform-origin: center;
+}
+
+.player-poster-image-maxi {
+  filter: blur(18px);
+}
+
+.player-poster-image-mini {
+  filter: blur(9px);
 }
 
 .volume-slider {
