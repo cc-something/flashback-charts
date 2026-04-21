@@ -637,7 +637,7 @@ const closeMaxiPlayer = () => {
                     <img
                       :src="player.playingSong.thumbnailPath"
                       :alt="player.playingSong.title"
-                      class="h-full w-full object-cover"
+                      class="h-full w-full object-cover object-top"
                     />
                     <div
                       class="absolute inset-0"
