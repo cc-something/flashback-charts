@@ -575,8 +575,16 @@ export const usePlayerStore = defineStore('player', () => {
       return
     }
     if (stateCode === 1) {
-      playerState.value = 'playing'
       startProgressTimer()
+      if (
+        playbackHealth.value === 'starting' &&
+        currentStartupMode === 'play'
+      ) {
+        handleStartupHealthy()
+        return
+      }
+      playerState.value = 'playing'
+      scheduleSongPlayEvent()
       return
     }
     if (stateCode === 2) {
