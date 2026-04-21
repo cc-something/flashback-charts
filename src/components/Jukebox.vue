@@ -519,7 +519,7 @@ const closeMaxiPlayer = () => {
       <div ref="playerMaxiContentElement" :class="playerContentClass">
         <div
           v-if="shouldUseMaxiPlayer && player.playingSong"
-          class="mt-4 mb-3 flex w-full items-start justify-end gap-3 sm:mt-5 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
+          class="mx-auto mt-4 mb-3 flex w-full max-w-[1300px] items-start justify-end gap-3 sm:mt-5 sm:mb-4 sm:grid sm:items-center sm:[grid-template-columns:1fr_auto_1fr]"
         >
           <div
             v-if="player.playingYear !== null"
@@ -871,7 +871,7 @@ const closeMaxiPlayer = () => {
           <div
             v-else-if="player.playingSong && !shouldShowPlaybackStartCta"
             :class="playerActionRowClass"
-            class="relative mt-4 w-full"
+            class="relative mx-auto mt-4 w-full max-w-[1300px]"
           >
             <div class="flex items-center justify-center gap-3.5">
               <button
