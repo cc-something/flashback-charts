@@ -3,11 +3,19 @@ import { computed } from 'vue'
 import { SliderRoot, SliderThumb, SliderTrack } from 'reka-ui'
 import { usePlayerStore } from '@/stores/player'
 
-defineProps<{
-  rootClass?: string
-  trackClass?: string
-  disabled?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    rootClass?: string
+    trackClass?: string
+    disabled?: boolean
+    trackRounded?: boolean
+  }>(),
+  {
+    rootClass: '',
+    trackClass: '',
+    trackRounded: true,
+  },
+)
 
 const player = usePlayerStore()
 const progressPercent = computed(() => {
@@ -40,12 +48,16 @@ const progressPercent = computed(() => {
     <SliderTrack
       as="div"
       :class="[
-        'playback-seek-track relative h-1.5 w-full overflow-hidden rounded-full bg-black/20',
+        'playback-seek-track relative h-1.5 w-full overflow-hidden bg-black/20',
+        props.trackRounded ? 'rounded-full' : 'rounded-none',
         trackClass,
       ]"
     >
       <div
-        class="pointer-events-none absolute inset-y-0 left-0 rounded-full bg-primary"
+        :class="[
+          'pointer-events-none absolute inset-y-0 left-0 bg-primary',
+          props.trackRounded ? 'rounded-full' : 'rounded-none',
+        ]"
         :style="{ width: `${progressPercent}%` }"
       />
     </SliderTrack>

@@ -245,6 +245,7 @@ const primePlayback = () =>
       >
         <PlaybackSeekBar
           root-class="pointer-events-auto relative z-10"
+          :track-rounded="false"
           track-class="rounded-none"
         />
         <p
