@@ -581,7 +581,7 @@ const closeMaxiPlayer = () => {
         <div :class="playerMaxiBodyClass">
           <div
             v-if="shouldUseMaxiPlayer && player.playingSong"
-            class="mb-2 w-full"
+            class="mb-4 w-full sm:mb-5"
           >
             <div class="mx-auto min-w-0 max-w-[1300px]">
               <SongRow
