@@ -253,36 +253,17 @@ const syncPlayerContainer = async () => {
   })
   player.setPlayerContainer(playerViewportMountHost.value)
 }
-const getShellInnerSize = (element: HTMLDivElement) => {
-  const computedStyle = window.getComputedStyle(element)
-  const paddingX =
-    Number.parseFloat(computedStyle.paddingLeft) +
-    Number.parseFloat(computedStyle.paddingRight)
-  const paddingY =
-    Number.parseFloat(computedStyle.paddingTop) +
-    Number.parseFloat(computedStyle.paddingBottom)
-  return {
-    width: Math.max(element.clientWidth - paddingX, 0),
-    height: Math.max(element.clientHeight - paddingY, 0),
-  }
-}
 const syncMaxiPlayerViewport = () => {
   if (typeof window === 'undefined') return
   if (!shouldUseMaxiPlayer.value) {
     maxiPlayerViewportStyle.value = {}
     return
   }
-  const containerElement = playerDockContainerElement.value
-  const contentElement = playerMaxiContentElement.value
   const frameWrapElement = playerMaxiFrameWrapElement.value
-  if (!containerElement || !contentElement || !frameWrapElement) return
-  const { width: availableWidth, height: availableHeight } =
-    getShellInnerSize(containerElement)
-  const frameWrapWidth = frameWrapElement.clientWidth
-  const chromeHeight =
-    contentElement.offsetHeight - frameWrapElement.offsetHeight
-  const viewportHeight = Math.max(availableHeight - chromeHeight, 0)
-  const viewportWidth = Math.min(availableWidth, frameWrapWidth)
+  if (!frameWrapElement) return
+  const frameWrapRect = frameWrapElement.getBoundingClientRect()
+  const viewportWidth = Math.max(frameWrapRect.width, 0)
+  const viewportHeight = Math.max(frameWrapRect.height, 0)
   if (!viewportWidth || !viewportHeight) {
     maxiPlayerViewportStyle.value = { width: '0px', height: '0px' }
     return
