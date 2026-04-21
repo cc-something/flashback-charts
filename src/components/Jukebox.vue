@@ -132,11 +132,7 @@ const playerMaxiMediaStackClass = computed(() =>
     : '',
 )
 const playerFrameWrapClass = computed(() =>
-  shouldUseMaxiPlayer.value
-    ? shouldUseDesktopFullscreenLayout.value
-      ? 'flex min-h-0 flex-1 items-center justify-center'
-      : 'flex items-center justify-center'
-    : 'mb-1.5',
+  shouldUseMaxiPlayer.value ? 'flex items-center justify-center' : 'mb-1.5',
 )
 const playerDockContainerStyle = computed(() =>
   shouldUseMaxiPlayer.value ? { paddingTop: '0.5rem' } : undefined,
