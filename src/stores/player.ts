@@ -423,6 +423,11 @@ export const usePlayerStore = defineStore('player', () => {
     void youtubePlayer.stopVideo()
   }
 
+  const pausePlayerTransport = () => {
+    if (!youtubePlayer) return
+    void youtubePlayer.pauseVideo()
+  }
+
   const destroyPlayer = () => {
     activePlayerGeneration += 1
     clearProgressTimer()
@@ -446,6 +451,21 @@ export const usePlayerStore = defineStore('player', () => {
     }
     if (lastKnownYoutubeState === 2 || lastKnownYoutubeState === 5)
       playerState.value = 'paused'
+  }
+
+  const pausePlaybackSession = () => {
+    pausePlayerTransport()
+    cancelPendingPlaybackFailureAction()
+    clearProgressTimer()
+    clearStartupTimeout()
+    clearPendingSongPlayEventTimer()
+    clearOfflineHandler()
+    clearCurrentStartupAttempt()
+    isAwaitingPlaybackStart.value = false
+    shouldBootstrapPlaybackFromShell.value = false
+    startupSoftRecoveryCount = 0
+    startupRebuildCount = 0
+    playerState.value = 'paused'
   }
 
   const getStartupBaselineTimeSeconds = () => currentStartAtSeconds ?? 0
@@ -574,6 +594,10 @@ export const usePlayerStore = defineStore('player', () => {
           `Unable to play:\n(<b>${failedSong.title}</b> by <b>${failedSong.artist}</b>)`,
         )
       else toastStore.show(message)
+      if (reason === 'offline') {
+        pausePlaybackSession()
+        return
+      }
       stop()
       return
     }
@@ -587,7 +611,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (!shouldContinueFailureAction) return
     if (shouldStopAfterFailureBurst) {
       isPlaybackFailureBurstModalOpen.value = true
-      stop()
+      pausePlaybackSession()
       return
     }
     if (reason === 'embed-blocked' && failedSong)
@@ -834,7 +858,7 @@ export const usePlayerStore = defineStore('player', () => {
         void handleStartupFailure('offline', OFFLINE_PLAYBACK_STOPPED_MESSAGE)
       else {
         useToastStore().show(OFFLINE_PLAYBACK_STOPPED_MESSAGE)
-        stop()
+        pausePlaybackSession()
       }
     }
     window.addEventListener('offline', offlineHandler, { once: true })
