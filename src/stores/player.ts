@@ -24,8 +24,6 @@ const STARTUP_TIMEOUT_MS = 8_000
 const PLAYBACK_FAILURE_SKIP_DELAY_MS = 2_000
 const MAX_CONSECUTIVE_PLAYBACK_FAILURES = 5
 const SONG_PLAY_EVENT_DELAY_MS = 5_000
-const PLAYER_DEBUG_STORAGE_KEY = 'flashback-player-debug'
-const PLAYER_DEBUG_EVENT_LIMIT = 200
 const OFFLINE_PLAYBACK_MESSAGE = 'No internet connection. Cannot play.'
 const OFFLINE_PLAYBACK_STOPPED_MESSAGE =
   'No internet connection. Playback stopped.'
@@ -79,74 +77,6 @@ interface PlaybackFailure {
   videoId: string | null
   year: number | null
   youtubeUrl: string | null
-}
-
-interface PlayerDebugEvent {
-  at: string
-  details: Record<string, unknown>
-  event: string
-}
-
-interface PlayerDebugApi {
-  clear: () => void
-  dump: () => PlayerDebugEvent[]
-  events: PlayerDebugEvent[]
-}
-
-const getPlayerDebugWindow = () =>
-  typeof window === 'undefined'
-    ? null
-    : (window as Window & {
-        __FLASHBACK_PLAYER_DEBUG__?: PlayerDebugApi
-      })
-
-const getShouldLogPlayerDebug = () => {
-  const playerDebugWindow = getPlayerDebugWindow()
-  if (!playerDebugWindow) return false
-  try {
-    return (
-      playerDebugWindow.localStorage.getItem(PLAYER_DEBUG_STORAGE_KEY) ===
-      'true'
-    )
-  } catch {
-    return false
-  }
-}
-
-const getPlayerDebugApi = () => {
-  const playerDebugWindow = getPlayerDebugWindow()
-  if (!playerDebugWindow) return null
-  if (playerDebugWindow.__FLASHBACK_PLAYER_DEBUG__)
-    return playerDebugWindow.__FLASHBACK_PLAYER_DEBUG__
-  const playerDebugApi: PlayerDebugApi = {
-    clear: () => {
-      playerDebugApi.events.length = 0
-    },
-    dump: () => [...playerDebugApi.events],
-    events: [],
-  }
-  playerDebugWindow.__FLASHBACK_PLAYER_DEBUG__ = playerDebugApi
-  return playerDebugApi
-}
-
-const recordPlayerDebugEvent = (
-  event: string,
-  details: Record<string, unknown> = {},
-) => {
-  const playerDebugApi = getPlayerDebugApi()
-  if (!playerDebugApi) return
-  const playerDebugEvent: PlayerDebugEvent = {
-    at: new Date().toISOString(),
-    details,
-    event,
-  }
-  playerDebugApi.events.push(playerDebugEvent)
-  if (playerDebugApi.events.length > PLAYER_DEBUG_EVENT_LIMIT)
-    playerDebugApi.events.splice(
-      0,
-      playerDebugApi.events.length - PLAYER_DEBUG_EVENT_LIMIT,
-    )
-  if (getShouldLogPlayerDebug()) console.info('[player-debug]', event, details)
 }
 
 const loadSavedState = (): SavedPlayerState | null => {
@@ -518,14 +448,6 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const handleStartupHealthy = () => {
-    recordPlayerDebugEvent('startup:healthy', {
-      currentTimeSeconds: currentTimeSeconds.value,
-      hasObservedStartupSeekProgress,
-      lastKnownYoutubeState,
-      playerState: playerState.value,
-      startupAttemptId,
-      startupMode: currentStartupMode,
-    })
     clearStartupTimeout()
     cancelPendingPlaybackFailureAction()
     consecutivePlaybackFailureCount = 0
@@ -558,10 +480,6 @@ export const usePlayerStore = defineStore('player', () => {
   const getStartupBaselineTimeSeconds = () => currentStartAtSeconds ?? 0
 
   const cancelStartupRecovery = () => {
-    recordPlayerDebugEvent('startup-recovery:cancel', {
-      playbackFailureActionId,
-      startupAttemptId,
-    })
     clearStartupTimeout()
     cancelPendingPlaybackFailureAction()
   }
@@ -581,11 +499,6 @@ export const usePlayerStore = defineStore('player', () => {
     )
       return false
     hasObservedStartupSeekProgress = true
-    recordPlayerDebugEvent('startup-seek-progress:observed', {
-      attemptId,
-      currentTimeSeconds: nextCurrentTime,
-      startupBaselineTimeSeconds: getStartupBaselineTimeSeconds(),
-    })
     cancelStartupRecovery()
     return true
   }
@@ -757,16 +670,6 @@ export const usePlayerStore = defineStore('player', () => {
 
   const retryCurrentSong = async (strategy: 'reload' | 'rebuild') => {
     if (!currentPlaySong?.youtubeVideoId || playingYear.value === null) return
-    recordPlayerDebugEvent('startup-retry', {
-      currentStartAtSeconds: currentStartAtSeconds ?? null,
-      currentTimeSeconds: currentTimeSeconds.value,
-      playbackHealth: playbackHealth.value,
-      playerState: playerState.value,
-      startupAttemptId,
-      strategy,
-      videoId: currentPlaySong.youtubeVideoId,
-      year: playingYear.value,
-    })
     if (strategy === 'reload') startupSoftRecoveryCount += 1
     else startupRebuildCount += 1
     if (strategy === 'rebuild') {
@@ -787,17 +690,6 @@ export const usePlayerStore = defineStore('player', () => {
     message: string,
     attemptId = startupAttemptId,
   ) => {
-    recordPlayerDebugEvent('startup-failure', {
-      attemptId,
-      currentStartAtSeconds: currentStartAtSeconds ?? null,
-      currentTimeSeconds: currentTimeSeconds.value,
-      hasObservedStartupSeekProgress,
-      message,
-      playbackHealth: playbackHealth.value,
-      playerState: playerState.value,
-      reason,
-      startupAttemptId,
-    })
     if (cancelStartupFailureIfProgressObserved(attemptId)) return
     if (await recoverPlaybackIfAlreadyRunning(attemptId)) return
     if (cancelStartupFailureIfProgressObserved(attemptId)) return
@@ -821,22 +713,8 @@ export const usePlayerStore = defineStore('player', () => {
   const startStartupTimeout = (attemptId: number) => {
     if (typeof window === 'undefined') return
     clearStartupTimeout()
-    recordPlayerDebugEvent('startup-timeout:schedule', {
-      attemptId,
-      delayMs: STARTUP_TIMEOUT_MS,
-      videoId: currentPlaySong?.youtubeVideoId ?? null,
-    })
     startupTimeoutId = window.setTimeout(async () => {
       if (attemptId !== startupAttemptId) return
-      recordPlayerDebugEvent('startup-timeout:fire', {
-        attemptId,
-        currentTimeSeconds: currentTimeSeconds.value,
-        didReachPlayingState: lastKnownYoutubeState === 1,
-        hasObservedStartupSeekProgress,
-        lastKnownYoutubeState,
-        playbackHealth: playbackHealth.value,
-        playerState: playerState.value,
-      })
       if (cancelStartupFailureIfProgressObserved(attemptId)) return
       const didReachPlayingState = lastKnownYoutubeState === 1
       await handleStartupFailure(
@@ -851,15 +729,6 @@ export const usePlayerStore = defineStore('player', () => {
     if (generation !== activePlayerGeneration) return
     if (!currentPlaySong || !playingSong.value || playingYear.value === null)
       return
-    recordPlayerDebugEvent('player-state-change', {
-      currentTimeSeconds: currentTimeSeconds.value,
-      generation,
-      playbackHealth: playbackHealth.value,
-      playerState: playerState.value,
-      startupMode: currentStartupMode,
-      stateCode,
-      videoId: currentPlaySong.youtubeVideoId ?? null,
-    })
     lastKnownYoutubeState = stateCode
     if (stateCode === 0) {
       clearPendingSongPlayEventTimer()
@@ -944,12 +813,6 @@ export const usePlayerStore = defineStore('player', () => {
     mode: StartupMode,
     startAtSeconds?: number,
   ) => {
-    recordPlayerDebugEvent('startup-attempt:begin', {
-      mode,
-      startAtSeconds: startAtSeconds ?? null,
-      videoId: song.youtubeVideoId ?? null,
-      year,
-    })
     const player = await ensurePlayer()
     if (!player) {
       await handleStartupFailure(
@@ -1012,12 +875,6 @@ export const usePlayerStore = defineStore('player', () => {
     trigger: PlayTrigger,
     startAtSeconds?: number,
   ) => {
-    recordPlayerDebugEvent('playback-session:prepare', {
-      startAtSeconds: startAtSeconds ?? null,
-      trigger,
-      videoId: song.youtubeVideoId ?? null,
-      year,
-    })
     dismissPlaybackFailureBurstModal()
     cancelPendingPlaybackFailureAction()
     clearFailure()
@@ -1103,14 +960,6 @@ export const usePlayerStore = defineStore('player', () => {
     year: number,
     trigger: PlayTrigger = 'direct',
   ) => {
-    recordPlayerDebugEvent('play:request', {
-      currentTimeSeconds: currentTimeSeconds.value,
-      currentVideoId: playingSong.value?.youtubeVideoId ?? null,
-      playerState: playerState.value,
-      requestedVideoId: song.youtubeVideoId ?? null,
-      requestedYear: year,
-      trigger,
-    })
     if (typeof window === 'undefined' || !song.youtubeVideoId) return
     if (!getHasImmediateNetworkConnection()) {
       useToastStore().show(OFFLINE_PLAYBACK_MESSAGE)
@@ -1395,15 +1244,6 @@ export const usePlayerStore = defineStore('player', () => {
 
   const setPlayerContainer = (nextPlayerHostEl: HTMLDivElement | null) => {
     if (playerHostEl === nextPlayerHostEl) return
-    recordPlayerDebugEvent('player-container:set', {
-      currentTimeSeconds: currentTimeSeconds.value,
-      hadYoutubePlayer: !!youtubePlayer,
-      nextHostConnected: nextPlayerHostEl?.isConnected ?? false,
-      nextHostHeight: nextPlayerHostEl?.clientHeight ?? null,
-      nextHostWidth: nextPlayerHostEl?.clientWidth ?? null,
-      previousHostConnected: playerHostEl?.isConnected ?? false,
-      startAtSeconds: currentTimeSeconds.value || currentStartAtSeconds || null,
-    })
     playerHostEl = nextPlayerHostEl
     if (!playerHostEl) {
       destroyPlayer()

@@ -37,34 +37,6 @@ const isTinyViewport = useMediaQuery('(max-width: 839px)')
 const PLAYER_FULLSCREEN_TOGGLE_EVENT = 'player-fullscreen-toggle'
 const PLAYER_FULLSCREEN_OPEN_EVENT = 'player-fullscreen-open'
 const PLAYER_FULLSCREEN_CLOSE_EVENT = 'player-fullscreen-close'
-const getElementDebug = (el: Element | null | undefined) => {
-  if (!(el instanceof Element)) return null
-  return {
-    tagName: el.tagName,
-    className: el.className,
-    childElementCount: el.childElementCount,
-    isConnected: el.isConnected,
-    clientWidth: el instanceof HTMLElement ? el.clientWidth : undefined,
-    clientHeight: el instanceof HTMLElement ? el.clientHeight : undefined,
-  }
-}
-const logJukeboxDebug = (
-  eventLabel: string,
-  details: Record<string, unknown> = {},
-) =>
-  console.info('[jukebox]', eventLabel, {
-    playingVideoId: player.playingSong?.youtubeVideoId ?? null,
-    playingYear: player.playingYear,
-    playerState: player.playerState,
-    hasMountedPlayer: player.hasMountedPlayer,
-    isAwaitingPlaybackStart: player.isAwaitingPlaybackStart,
-    shouldBootstrapPlaybackFromShell: player.shouldBootstrapPlaybackFromShell,
-    isDesktopFullscreen: isDesktopFullscreen.value,
-    shouldUseMaxiPlayer: shouldUseMaxiPlayer.value,
-    mountHost: getElementDebug(playerViewportMountHost.value),
-    ...details,
-  })
-
 const isMac =
   typeof navigator !== 'undefined' &&
   navigator.platform.toUpperCase().includes('MAC')
@@ -231,34 +203,21 @@ const scrollToPlayingSongRow = async () => {
   const year = player.playingYear
   const song = player.playingSong
   if (typeof window === 'undefined' || year === null || !song) return
-  logJukeboxDebug('scroll-to-playing-song:start', {
-    targetVideoId: song.youtubeVideoId,
-    targetYear: year,
-  })
   await nextTick()
   requestAnimationFrame(async () => {
     document
       .getElementById(`song-${year}-${song.rank}`)
       ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     await waitForScrollSettle()
-    logJukeboxDebug('scroll-to-playing-song:highlight', {
-      targetVideoId: song.youtubeVideoId,
-      targetYear: year,
-    })
     player.flashSongHighlight(year, song.rank)
   })
 }
 const syncPlayerContainer = async () => {
-  logJukeboxDebug('container-sync:start')
   if (!playerViewportMountHost.value) {
-    logJukeboxDebug('container-sync:clear')
     player.setPlayerContainer(null)
     return
   }
   await nextTick()
-  logJukeboxDebug('container-sync:set', {
-    mountHost: getElementDebug(playerViewportMountHost.value),
-  })
   player.setPlayerContainer(playerViewportMountHost.value)
 }
 const syncMaxiPlayerViewport = () => {
@@ -316,12 +275,6 @@ watch(playerMaxiActionRowElement, (nextElement, previousElement) => {
 watch(playerViewportMountHost, () => void syncPlayerContainer(), {
   flush: 'post',
 })
-watch(playerViewportMountHost, (mountHost, previousMountHost) => {
-  logJukeboxDebug('mount-host:changed', {
-    previousMountHost: getElementDebug(previousMountHost),
-    nextMountHost: getElementDebug(mountHost),
-  })
-})
 watch(
   [
     () => player.shouldBootstrapPlaybackFromShell,
@@ -329,28 +282,20 @@ watch(
     playerViewportMountHost,
   ],
   async ([shouldBootstrapPlaybackFromShell, playingSongVideoId, mountHost]) => {
-    logJukeboxDebug('shell-bootstrap:watch', {
-      shouldBootstrapPlaybackFromShell,
-      playingSongVideoId: playingSongVideoId ?? null,
-      mountHost: getElementDebug(mountHost),
-    })
     if (!shouldBootstrapPlaybackFromShell || !playingSongVideoId || !mountHost)
       return
     await nextTick()
     await waitForNextFrame()
     await waitForNextFrame()
-    logJukeboxDebug('shell-bootstrap:complete')
     void player.completeShellPlaybackBootstrap()
   },
   { flush: 'post' },
 )
 watch(shouldShowPlayerDock, (shouldShow) => {
-  logJukeboxDebug('dock:visibility', { shouldShow })
   if (shouldShow) return
   isDesktopFullscreen.value = false
 })
 watch(shouldUseMaxiPlayer, (shouldShowMaxiPlayer) => {
-  logJukeboxDebug('viewport:maxi-toggle', { shouldShowMaxiPlayer })
   if (typeof document === 'undefined') return
   document.documentElement.dataset.playerFullscreen = shouldShowMaxiPlayer
     ? 'true'
@@ -370,7 +315,6 @@ watch(
   { flush: 'post' },
 )
 const handleFullscreenToggle = () => {
-  logJukeboxDebug('fullscreen:toggle')
   if (!player.playingSong || shouldShowPlaybackStartCta.value) return
   if (isTinyViewport.value) {
     closeMaxiPlayer()
@@ -383,12 +327,10 @@ const handleFullscreenToggle = () => {
   openMaxiPlayer()
 }
 const handleFullscreenOpen = () => {
-  logJukeboxDebug('fullscreen:open')
   if (!player.playingSong || isTinyViewport.value) return
   isDesktopFullscreen.value = true
 }
 const closeFullscreen = () => {
-  logJukeboxDebug('fullscreen:close')
   if (isTinyViewport.value) {
     player.stop()
     return
@@ -397,7 +339,6 @@ const closeFullscreen = () => {
   isDesktopFullscreen.value = false
 }
 onMounted(() => {
-  logJukeboxDebug('mounted')
   window.addEventListener(
     PLAYER_FULLSCREEN_TOGGLE_EVENT,
     handleFullscreenToggle,
@@ -424,7 +365,6 @@ onMounted(() =>
   window.addEventListener(PLAYER_FULLSCREEN_OPEN_EVENT, handleFullscreenOpen),
 )
 onUnmounted(() => {
-  logJukeboxDebug('unmounted')
   player.setPlayerContainer(null)
   maxiPlayerResizeObserver?.disconnect()
   maxiPlayerResizeObserver = null
@@ -466,10 +406,6 @@ const goToPlayingSong = async () => {
   const year = player.playingYear
   const song = player.playingSong
   if (year === null || !song) return
-  logJukeboxDebug('go-to-playing-song:start', {
-    targetVideoId: song.youtubeVideoId,
-    targetYear: year,
-  })
   const routeSong = Array.isArray(route.query.song)
     ? route.query.song[0]
     : route.query.song
@@ -489,22 +425,18 @@ const goToPlayingSong = async () => {
 }
 const resumePlayback = () => {
   if (!player.playingSong || player.playingYear === null) return
-  logJukeboxDebug('resume-playback')
   void player.play(player.playingSong, player.playingYear, 'player-btn')
 }
 const openReportModal = () => {
   if (!player.playingSong || player.playingYear === null) return
-  logJukeboxDebug('report-modal:open')
   isReportModalOpen.value = true
 }
 const openMaxiPlayer = () => {
   if (!player.playingSong) return
-  logJukeboxDebug('maxi-player:open')
   isDesktopFullscreen.value = true
 }
 const closeMaxiPlayer = () => {
   if (!player.playingSong) return
-  logJukeboxDebug('maxi-player:close')
   if (isTinyViewport.value) {
     player.stop()
     return
