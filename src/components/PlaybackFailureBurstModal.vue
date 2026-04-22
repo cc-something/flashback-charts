@@ -23,12 +23,12 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       @click.self="emit('close')"
     >
       <div
-        class="relative mx-4 mt-[14vh] w-full max-w-lg rounded-xl bg-surface p-8 shadow-2xl md:max-w-2xl xl:max-w-3xl"
+        class="relative mx-4 mt-[14vh] w-full max-w-lg rounded-xl bg-surface px-5 py-6 shadow-2xl sm:px-6 sm:py-7 md:max-w-2xl md:p-8 xl:max-w-3xl"
       >
         <button
           type="button"
           aria-label="Close"
-          class="absolute right-3 top-3 cursor-pointer rounded-full p-1.5 text-text-muted transition-colors hover:text-text"
+          class="absolute top-0 right-0 inline-flex h-8 w-8 translate-x-1/4 -translate-y-1/4 items-center justify-center rounded-full border border-white/15 bg-background/90 text-text/65 shadow-[0_10px_24px_rgb(0_0_0_/_0.2)] ring-1 ring-primary/15 transition-colors hover:bg-background hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-10 sm:w-10"
           @click="emit('close')"
         >
           <X class="h-5 w-5" />

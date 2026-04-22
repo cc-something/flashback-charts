@@ -42,12 +42,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       <div
         class="flex flex-col gap-6 text-center text-sm leading-relaxed text-text-muted"
       >
-        <p class="inline-flex items-center justify-center gap-2">
-          <Music class="h-4 w-4 text-primary" />
-          <span>Made by music lovers in Australia</span>
-          <Music class="h-4 w-4 text-primary" />
-        </p>
-
         <div class="flex flex-col items-center">
           <p>Source links are on each page. Summary:</p>
           <ul class="list-none">
@@ -67,7 +61,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
           <p>
             <span class="inline-flex items-center gap-2">
               <Heart class="h-4 w-4 text-primary" />
-              <span>Thanks to Matt &amp; Simon for the inspiration!</span>
+              <span>Thanks to Matt &amp; Simon for the inspiration</span>
             </span>
             <br />
             Credit to
@@ -80,9 +74,15 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
               Lucide
               <ExternalLink class="h-3.5 w-3.5" />
             </a>
-            for the icons.
+            for the icons
           </p>
         </div>
+
+        <p class="inline-flex items-center justify-center gap-2">
+          <Music class="h-4 w-4 text-primary" />
+          <span>Made by music lovers in Australia</span>
+          <Music class="h-4 w-4 text-primary" />
+        </p>
       </div>
     </div>
   </div>

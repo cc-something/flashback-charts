@@ -12,7 +12,7 @@ import {
 import { useHead } from '@unhead/vue'
 import { useElementSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
-import { Info, Keyboard, Link, Mail, Mailbox } from 'lucide-vue-next'
+import { ExternalLink, Info, Keyboard, Mail, Mailbox } from 'lucide-vue-next'
 import BrandWordmark from '@/components/BrandWordmark.vue'
 import ErrorToast from '@/components/ErrorToast.vue'
 import { useDecadeTheme } from '@/composables/useDecadeTheme'
@@ -322,9 +322,7 @@ onUnmounted(() => teardownKonamiListener())
       ref="footerElement"
       class="z-20 mt-16 mb-8 border-t border-primary/10 px-4 py-4"
     >
-      <div
-        class="flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-x-6"
-      >
+      <div class="flex flex-col items-center gap-3">
         <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
           <button
             type="button"
@@ -334,22 +332,6 @@ onUnmounted(() => teardownKonamiListener())
             <Mailbox class="h-3.5 w-3.5" />
             Newsletter
           </button>
-          <div class="flex items-center gap-4">
-            <a
-              v-for="{ href, label, network } in socialLinks"
-              :key="href"
-              :href="href"
-              target="_blank"
-              rel="noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
-              @click="handleSocialLinkClick(network)"
-            >
-              <Link class="h-3.5 w-3.5" />
-              {{ label }}
-            </a>
-          </div>
-        </div>
-        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <button
             type="button"
             class="hidden items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text sm:inline-flex"
@@ -375,6 +357,20 @@ onUnmounted(() => teardownKonamiListener())
             <Info class="h-3.5 w-3.5" />
             About
           </button>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <a
+            v-for="{ href, label, network } in socialLinks"
+            :key="href"
+            :href="href"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-1.5 text-sm text-text-muted underline underline-offset-4 transition-colors hover:text-text"
+            @click="handleSocialLinkClick(network)"
+          >
+            {{ label }}
+            <ExternalLink class="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </footer>
