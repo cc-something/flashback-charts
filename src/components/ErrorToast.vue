@@ -79,7 +79,6 @@ const getToastClass = (variant: string) => {
               by
               {{ getWarningToastParts(t.message).artist }}
             </p>
-            <p v-else class="whitespace-pre-line">{{ t.message }}</p>
           </div>
           <template v-else>
             {{ t.message }}

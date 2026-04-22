@@ -31,7 +31,6 @@ const PLAYER_LOAD_FAILED_MESSAGE =
   'Failed to load player. Check your connection.'
 const PLAYER_SKIP_FAILED_MESSAGE =
   'Playback failed to stabilise. Skipping to the next song.'
-const PLAYER_STOPPED_AFTER_FAILURE_BURST_MESSAGE = `Playback stopped after ${MAX_CONSECUTIVE_PLAYBACK_FAILURES} consecutive failures.`
 const SONG_ROW_HIGHLIGHT_DURATION_MS = 1_000
 const SONG_ROW_LOOKUP_ATTEMPTS = 24
 const SONG_ROW_SCROLL_SETTLE_MS = 350
@@ -160,6 +159,7 @@ export const usePlayerStore = defineStore('player', () => {
   const playerState = ref<PlayerState>('idle')
   const playbackHealth = ref<PlaybackHealth>('idle')
   const lastPlaybackFailure = ref<PlaybackFailure | null>(null)
+  const isPlaybackFailureBurstModalOpen = ref(false)
   const currentTimeSeconds = ref(0)
   const durationSeconds = ref(0)
   const isSeekDragging = ref(false)
@@ -321,6 +321,10 @@ export const usePlayerStore = defineStore('player', () => {
   const clearFailure = () => {
     lastPlaybackFailure.value = null
     if (playerState.value === 'idle') playbackHealth.value = 'idle'
+  }
+
+  const dismissPlaybackFailureBurstModal = () => {
+    isPlaybackFailureBurstModalOpen.value = false
   }
 
   const cancelPendingPlaybackFailureAction = () => {
@@ -582,7 +586,7 @@ export const usePlayerStore = defineStore('player', () => {
     )
     if (!shouldContinueFailureAction) return
     if (shouldStopAfterFailureBurst) {
-      toastStore.showWarning(PLAYER_STOPPED_AFTER_FAILURE_BURST_MESSAGE)
+      isPlaybackFailureBurstModalOpen.value = true
       stop()
       return
     }
@@ -801,6 +805,7 @@ export const usePlayerStore = defineStore('player', () => {
     trigger: PlayTrigger,
     startAtSeconds?: number,
   ) => {
+    dismissPlaybackFailureBurstModal()
     cancelPendingPlaybackFailureAction()
     clearFailure()
     clearPendingSongPlayEventTimer()
@@ -1231,9 +1236,11 @@ export const usePlayerStore = defineStore('player', () => {
     isActive,
     isAwaitingPlaybackStart,
     isMuted,
+    isPlaybackFailureBurstModalOpen,
     isSongActive,
     isSongHighlighted,
     lastPlaybackFailure,
+    dismissPlaybackFailureBurstModal,
     openSong,
     play,
     playbackHealth,

@@ -58,6 +58,9 @@ const ContactModal = defineAsyncComponent(
 const AboutModal = defineAsyncComponent(
   () => import('@/components/AboutModal.vue'),
 )
+const PlaybackFailureBurstModal = defineAsyncComponent(
+  () => import('@/components/PlaybackFailureBurstModal.vue'),
+)
 
 useDecadeTheme()
 const emailSignup = useEmailSignup()
@@ -389,6 +392,10 @@ onUnmounted(() => teardownKonamiListener())
       @reveal="revealContactEmail"
     />
     <AboutModal v-if="isAboutOpen" @close="isAboutOpen = false" />
+    <PlaybackFailureBurstModal
+      v-if="player.isPlaybackFailureBurstModalOpen"
+      @close="player.dismissPlaybackFailureBurstModal"
+    />
     <ErrorToast v-if="hasToasts" />
   </div>
 </template>
