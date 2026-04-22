@@ -422,6 +422,50 @@ export const usePlayerStore = defineStore('player', () => {
       playerState.value = 'paused'
   }
 
+  const getStartupBaselineTimeSeconds = () => currentStartAtSeconds ?? 0
+
+  const getHasMeaningfulPlaybackProgress = (nextCurrentTime: number) =>
+    Number.isFinite(nextCurrentTime) &&
+    nextCurrentTime - getStartupBaselineTimeSeconds() >=
+      STARTUP_POLL_ADVANCE_SECONDS
+
+  const recoverPlaybackIfAlreadyRunning = async (
+    attemptId = startupAttemptId,
+  ) => {
+    if (!youtubePlayer || !currentPlaySong?.youtubeVideoId) return false
+    try {
+      const [nextCurrentTime, nextPlayerState, nextVideoData] =
+        await Promise.all([
+          youtubePlayer.getCurrentTime(),
+          youtubePlayer.getPlayerState(),
+          youtubePlayer.getVideoData(),
+        ])
+      if (
+        attemptId !== startupAttemptId ||
+        !currentPlaySong?.youtubeVideoId ||
+        nextPlayerState !== 1 ||
+        nextVideoData?.video_id !== currentPlaySong.youtubeVideoId ||
+        !getHasMeaningfulPlaybackProgress(nextCurrentTime)
+      )
+        return false
+      lastKnownYoutubeState = nextPlayerState
+      if (Number.isFinite(nextCurrentTime))
+        currentTimeSeconds.value =
+          durationSeconds.value > 0
+            ? Math.min(nextCurrentTime, durationSeconds.value)
+            : nextCurrentTime
+      lastObservedTimeSeconds = nextCurrentTime
+      observedProgressTicks = Math.max(
+        observedProgressTicks,
+        STARTUP_PROGRESS_TICKS_REQUIRED,
+      )
+      handleStartupHealthy()
+      return true
+    } catch {
+      return false
+    }
+  }
+
   const syncPlaybackProgress = async (attemptId = startupAttemptId) => {
     if (startupPollInFlight || !youtubePlayer) return
     startupPollInFlight = true
@@ -528,7 +572,10 @@ export const usePlayerStore = defineStore('player', () => {
   const handleStartupFailure = async (
     reason: PlaybackFailureReason,
     message: string,
+    attemptId = startupAttemptId,
   ) => {
+    if (await recoverPlaybackIfAlreadyRunning(attemptId)) return
+    if (attemptId !== startupAttemptId) return
     if (!currentPlaySong?.youtubeVideoId || playingYear.value === null)
       return handleFatalPlaybackFailure(reason, message)
     if (reason === 'offline') return handleFatalPlaybackFailure(reason, message)
@@ -554,6 +601,7 @@ export const usePlayerStore = defineStore('player', () => {
       await handleStartupFailure(
         didReachPlayingState ? 'stalled' : 'startup-timeout',
         PLAYER_SKIP_FAILED_MESSAGE,
+        attemptId,
       )
     }, STARTUP_TIMEOUT_MS)
   }
@@ -678,6 +726,7 @@ export const usePlayerStore = defineStore('player', () => {
         await handleStartupFailure(
           'player-load-failed',
           PLAYER_LOAD_FAILED_MESSAGE,
+          attemptId,
         )
       }
       return
@@ -695,6 +744,7 @@ export const usePlayerStore = defineStore('player', () => {
       await handleStartupFailure(
         'player-load-failed',
         PLAYER_LOAD_FAILED_MESSAGE,
+        attemptId,
       )
     }
   }
