@@ -963,13 +963,13 @@ export const usePlayerStore = defineStore('player', () => {
     currentStartupMode = mode
     currentPlaySong = song
     currentStartAtSeconds = startAtSeconds
+    clearFailure()
     playbackHealth.value = 'starting'
     lastKnownYoutubeState = null
     lastObservedTimeSeconds = startAtSeconds ?? 0
     observedProgressTicks = 0
     hasObservedStartupSeekProgress = false
     resetPlaybackProgress()
-    clearFailure()
     startProgressTimer()
     if (mode === 'cue') {
       playerState.value = 'loading'

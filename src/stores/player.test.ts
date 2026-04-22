@@ -5,6 +5,11 @@ import { createPinia, setActivePinia } from 'pinia'
 import type { Song } from '@/types/song'
 
 const youtubePlayerMocks = vi.hoisted(() => {
+  const callbacks = {
+    onError: undefined as ((errorCode: number | null) => void) | undefined,
+    onReady: undefined as (() => void) | undefined,
+    onStateChange: undefined as ((stateCode: number) => void) | undefined,
+  }
   const state = {
     currentTime: 0,
     duration: 180,
@@ -28,10 +33,25 @@ const youtubePlayerMocks = vi.hoisted(() => {
     stopVideo: vi.fn(async () => undefined),
     unMute: vi.fn(async () => undefined),
   }
-  const createYouTubePlayerAdapter = vi.fn(() => adapter)
+  const createYouTubePlayerAdapter = vi.fn(
+    (
+      _mountEl: HTMLElement,
+      nextCallbacks?: {
+        onError?: (errorCode: number | null) => void
+        onReady?: () => void
+        onStateChange?: (stateCode: number) => void
+      },
+    ) => {
+      callbacks.onError = nextCallbacks?.onError
+      callbacks.onReady = nextCallbacks?.onReady
+      callbacks.onStateChange = nextCallbacks?.onStateChange
+      return adapter
+    },
+  )
 
   return {
     adapter,
+    callbacks,
     createYouTubePlayerAdapter,
     state,
   }
@@ -118,6 +138,9 @@ describe('usePlayerStore startup recovery', () => {
     youtubePlayerMocks.state.iframe = document.createElement('iframe')
     youtubePlayerMocks.state.playerState = 1
     youtubePlayerMocks.state.videoId = 'video-1'
+    youtubePlayerMocks.callbacks.onError = undefined
+    youtubePlayerMocks.callbacks.onReady = undefined
+    youtubePlayerMocks.callbacks.onStateChange = undefined
     Object.defineProperty(window.navigator, 'onLine', {
       configurable: true,
       value: true,
@@ -138,12 +161,17 @@ describe('usePlayerStore startup recovery', () => {
     await flushPromises()
 
     expect(youtubePlayerMocks.adapter.loadVideoById).toHaveBeenCalledTimes(1)
+    expect(player.playbackHealth).toBe('starting')
+
+    youtubePlayerMocks.callbacks.onStateChange?.(1)
+    await flushPromises()
 
     youtubePlayerMocks.state.currentTime = 0.1
     await vi.advanceTimersByTimeAsync(250)
     await flushPromises()
 
     expect(player.currentTimeSeconds).toBeCloseTo(0.1)
+    expect(player.playbackHealth).toBe('healthy')
 
     await vi.advanceTimersByTimeAsync(8_000)
     await flushPromises()
