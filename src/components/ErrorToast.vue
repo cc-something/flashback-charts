@@ -8,7 +8,7 @@ const topRightToasts = computed(() => toast.toasts)
 
 const getWarningToastParts = (message: string) => {
   const [headline, songLine = ''] = message.split('\n')
-  const match = songLine.match(/^(.+) by (.+)$/)
+  const match = songLine.match(/^\(<b>(.+)<\/b> by <b>(.+)<\/b>\)$/)
   if (!match)
     return {
       headline,

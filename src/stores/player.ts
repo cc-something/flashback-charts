@@ -571,7 +571,7 @@ export const usePlayerStore = defineStore('player', () => {
     if (!shouldSkipAfterFailure) {
       if (reason === 'embed-blocked' && failedSong)
         toastStore.showWarning(
-          `We couldn't embed this upload.\n${failedSong.title} by ${failedSong.artist}`,
+          `That video was unable to play\n(<b>${failedSong.title}</b> by <b>${failedSong.artist}</b>)`,
         )
       else toastStore.show(message)
       stop()
@@ -592,7 +592,7 @@ export const usePlayerStore = defineStore('player', () => {
     }
     if (reason === 'embed-blocked' && failedSong)
       toastStore.showWarning(
-        `We couldn't embed this upload.\n${failedSong.title} by ${failedSong.artist}`,
+        `That video was unable to play\n(<b>${failedSong.title}</b> by <b>${failedSong.artist}</b>)`,
       )
     else toastStore.show(message)
     if (failedSong && failedYear !== null && failedYear !== undefined) {
