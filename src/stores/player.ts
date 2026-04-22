@@ -21,6 +21,8 @@ const PROGRESS_POLL_INTERVAL_MS = 250
 const STARTUP_POLL_ADVANCE_SECONDS = 0.35
 const STARTUP_PROGRESS_TICKS_REQUIRED = 2
 const STARTUP_TIMEOUT_MS = 8_000
+const PLAYBACK_FAILURE_SKIP_DELAY_MS = 2_000
+const MAX_CONSECUTIVE_PLAYBACK_FAILURES = 5
 const SONG_PLAY_EVENT_DELAY_MS = 5_000
 const OFFLINE_PLAYBACK_MESSAGE = 'No internet connection. Cannot play.'
 const OFFLINE_PLAYBACK_STOPPED_MESSAGE =
@@ -29,6 +31,7 @@ const PLAYER_LOAD_FAILED_MESSAGE =
   'Failed to load player. Check your connection.'
 const PLAYER_SKIP_FAILED_MESSAGE =
   'Playback failed to stabilise. Skipping to the next song.'
+const PLAYER_STOPPED_AFTER_FAILURE_BURST_MESSAGE = `Playback stopped after ${MAX_CONSECUTIVE_PLAYBACK_FAILURES} consecutive failures.`
 const SONG_ROW_HIGHLIGHT_DURATION_MS = 1_000
 const SONG_ROW_LOOKUP_ATTEMPTS = 24
 const SONG_ROW_SCROLL_SETTLE_MS = 350
@@ -175,6 +178,8 @@ export const usePlayerStore = defineStore('player', () => {
   let currentPlaySong: Song | null = null
   let currentStartAtSeconds: number | undefined
   let currentStartupMode: StartupMode | null = null
+  let consecutivePlaybackFailureCount = 0
+  let playbackFailureActionId = 0
   let startupAttemptId = 0
   let lastObservedTimeSeconds = 0
   let observedProgressTicks = 0
@@ -318,6 +323,19 @@ export const usePlayerStore = defineStore('player', () => {
     if (playerState.value === 'idle') playbackHealth.value = 'idle'
   }
 
+  const cancelPendingPlaybackFailureAction = () => {
+    playbackFailureActionId += 1
+  }
+
+  const waitForPlaybackFailureSkipDelay = async (actionId: number) => {
+    if (typeof window === 'undefined')
+      return actionId === playbackFailureActionId
+    await new Promise<void>((resolve) =>
+      window.setTimeout(resolve, PLAYBACK_FAILURE_SKIP_DELAY_MS),
+    )
+    return actionId === playbackFailureActionId
+  }
+
   const setFailure = (
     reason: PlaybackFailureReason,
     message: string,
@@ -350,6 +368,7 @@ export const usePlayerStore = defineStore('player', () => {
   }
 
   const clearPlaybackSession = () => {
+    cancelPendingPlaybackFailureAction()
     clearSaveTimer()
     clearProgressTimer()
     clearStartupTimeout()
@@ -361,6 +380,7 @@ export const usePlayerStore = defineStore('player', () => {
     durationSeconds.value = 0
     currentPlaySong = null
     currentStartAtSeconds = undefined
+    consecutivePlaybackFailureCount = 0
     lastKnownYoutubeState = null
     startupSoftRecoveryCount = 0
     startupRebuildCount = 0
@@ -411,6 +431,8 @@ export const usePlayerStore = defineStore('player', () => {
 
   const handleStartupHealthy = () => {
     clearStartupTimeout()
+    cancelPendingPlaybackFailureAction()
+    consecutivePlaybackFailureCount = 0
     playbackHealth.value = 'healthy'
     clearFailure()
     if (currentStartupMode === 'play' || lastKnownYoutubeState === 1) {
@@ -529,23 +551,47 @@ export const usePlayerStore = defineStore('player', () => {
     song: Song | null = currentPlaySong,
     year: number | null = playingYear.value,
   ) => {
+    const toastStore = useToastStore()
     const failedSong = song
     const failedYear = year
+    const shouldSkipAfterFailure =
+      reason !== 'offline' &&
+      !!failedSong &&
+      failedYear !== null &&
+      failedYear !== undefined
+    if (shouldSkipAfterFailure) consecutivePlaybackFailureCount += 1
     setFailure(reason, message, failedSong, failedYear)
     clearStartupTimeout()
     clearPendingSongPlayEventTimer()
     clearProgressTimer()
+    if (!shouldSkipAfterFailure) {
+      if (reason === 'embed-blocked' && failedSong)
+        toastStore.showWarning(
+          `We couldn't embed this upload.\n${failedSong.title} by ${failedSong.artist}`,
+        )
+      else toastStore.show(message)
+      stop()
+      return
+    }
+    const shouldStopAfterFailureBurst =
+      consecutivePlaybackFailureCount >= MAX_CONSECUTIVE_PLAYBACK_FAILURES
+    playbackFailureActionId += 1
+    const currentFailureActionId = playbackFailureActionId
+    const shouldContinueFailureAction = await waitForPlaybackFailureSkipDelay(
+      currentFailureActionId,
+    )
+    if (!shouldContinueFailureAction) return
+    if (shouldStopAfterFailureBurst) {
+      toastStore.showWarning(PLAYER_STOPPED_AFTER_FAILURE_BURST_MESSAGE)
+      stop()
+      return
+    }
     if (reason === 'embed-blocked' && failedSong)
-      useToastStore().showWarning(
+      toastStore.showWarning(
         `We couldn't embed this upload.\n${failedSong.title} by ${failedSong.artist}`,
       )
-    else useToastStore().show(message)
-    if (
-      reason !== 'offline' &&
-      failedSong &&
-      failedYear !== null &&
-      failedYear !== undefined
-    ) {
+    else toastStore.show(message)
+    if (failedSong && failedYear !== null && failedYear !== undefined) {
       await playNext(failedSong, failedYear, 'skip')
       return
     }
@@ -755,6 +801,7 @@ export const usePlayerStore = defineStore('player', () => {
     trigger: PlayTrigger,
     startAtSeconds?: number,
   ) => {
+    cancelPendingPlaybackFailureAction()
     clearFailure()
     clearPendingSongPlayEventTimer()
     pendingSongPlayEventPayload = {
