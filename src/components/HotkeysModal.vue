@@ -72,7 +72,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
     class="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
     @click.self="emit('close')"
   >
-    <div class="relative w-full max-w-lg rounded-xl bg-surface p-6 shadow-xl">
+    <div
+      class="relative w-full max-w-lg rounded-xl border border-white/12 bg-surface p-6 shadow-xl"
+    >
       <button
         type="button"
         aria-label="Close"

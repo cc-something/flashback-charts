@@ -43,7 +43,7 @@ defineExpose({ focusInput })
       @keydown.escape="emit('dismiss')"
     >
       <div
-        class="relative mx-4 mt-[20vh] w-full max-w-md rounded-xl bg-surface p-8 shadow-2xl"
+        class="relative mx-4 mt-[20vh] w-full max-w-md rounded-xl border border-white/12 bg-surface p-8 shadow-2xl"
       >
         <button
           type="button"
