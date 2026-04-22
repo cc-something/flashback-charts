@@ -26,12 +26,12 @@ const getWarningToastParts = (message: string) => {
 
 const getToastClass = (variant: string) => {
   if (variant === 'success')
-    return 'pointer-events-auto flex items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-emerald-600 px-4 py-2.5 text-left text-sm font-medium text-white shadow-lg'
+    return 'pointer-events-auto flex w-fit max-w-full self-end items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-emerald-600 px-4 py-2.5 text-left text-sm font-medium text-white shadow-lg'
   if (variant === 'warning')
-    return 'pointer-events-auto flex items-start gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-left text-sm font-medium text-amber-950 shadow-lg ring-1 ring-amber-500/20'
+    return 'pointer-events-auto flex w-fit max-w-full self-end items-start gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-left text-sm font-medium text-amber-950 shadow-lg ring-1 ring-amber-500/20'
   if (variant === 'error')
-    return 'pointer-events-auto flex items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-red-600 px-4 py-2.5 text-left text-sm font-medium text-white shadow-lg'
-  return 'pointer-events-auto flex items-center gap-2 rounded-lg bg-surface px-4 py-2.5 text-left text-sm font-medium whitespace-pre-line text-text shadow-lg ring-1 ring-primary/25'
+    return 'pointer-events-auto flex w-fit max-w-full self-end items-center justify-center gap-2 whitespace-pre-line rounded-lg bg-red-600 px-4 py-2.5 text-left text-sm font-medium text-white shadow-lg'
+  return 'pointer-events-auto flex w-fit max-w-full self-end items-center gap-2 rounded-lg bg-surface px-4 py-2.5 text-left text-sm font-medium whitespace-pre-line text-text shadow-lg ring-1 ring-primary/25'
 }
 </script>
 
@@ -40,7 +40,7 @@ const getToastClass = (variant: string) => {
     <div
       role="status"
       aria-live="polite"
-      class="pointer-events-none fixed right-4 z-[9999] flex w-[calc(100vw-2rem)] flex-col items-stretch gap-2 sm:w-auto"
+      class="pointer-events-none fixed right-4 z-[9999] flex w-[calc(100vw-2rem)] flex-col items-end gap-2 sm:w-auto"
       :style="{ top: 'calc(var(--sticky-bar-height, 0px) + 1rem)' }"
     >
       <TransitionGroup name="toast-right">
@@ -77,7 +77,7 @@ const getToastClass = (variant: string) => {
             >
               <strong>{{ getWarningToastParts(t.message).title }}</strong>
               by
-              {{ getWarningToastParts(t.message).artist }}
+              <strong>{{ getWarningToastParts(t.message).artist }}</strong>
             </p>
           </div>
           <template v-else>
