@@ -369,7 +369,7 @@ onUnmounted(() => teardownKonamiListener())
             @click="handleSocialLinkClick(network)"
           >
             {{ label }}
-            <ExternalLink class="h-3.5 w-3.5" />
+            <ExternalLink class="h-3.5 w-3.5 text-primary" />
           </a>
         </div>
       </div>
