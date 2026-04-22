@@ -151,6 +151,13 @@ const saveVolumePreference = (nextVolume: number) => {
 
 const getYearSongs = async (year: number) => getYearData(year) ?? null
 
+export const getHasStartupSeekProgress = (
+  currentTimeSeconds: number,
+  startupBaselineTimeSeconds: number,
+) =>
+  Number.isFinite(currentTimeSeconds) &&
+  currentTimeSeconds > startupBaselineTimeSeconds
+
 export const usePlayerStore = defineStore('player', () => {
   const { deactivate, isRickRollActive } = useRickRollMode()
 
@@ -183,6 +190,7 @@ export const usePlayerStore = defineStore('player', () => {
   let startupAttemptId = 0
   let lastObservedTimeSeconds = 0
   let observedProgressTicks = 0
+  let hasObservedStartupSeekProgress = false
   let lastKnownYoutubeState: number | null = null
   let startupSoftRecoveryCount = 0
   let startupRebuildCount = 0
@@ -368,6 +376,7 @@ export const usePlayerStore = defineStore('player', () => {
     startupAttemptId += 1
     lastObservedTimeSeconds = currentStartAtSeconds ?? 0
     observedProgressTicks = 0
+    hasObservedStartupSeekProgress = false
     currentStartupMode = null
   }
 
@@ -470,10 +479,38 @@ export const usePlayerStore = defineStore('player', () => {
 
   const getStartupBaselineTimeSeconds = () => currentStartAtSeconds ?? 0
 
-  const getHasMeaningfulPlaybackProgress = (nextCurrentTime: number) =>
-    Number.isFinite(nextCurrentTime) &&
-    nextCurrentTime - getStartupBaselineTimeSeconds() >=
-      STARTUP_POLL_ADVANCE_SECONDS
+  const cancelStartupRecovery = () => {
+    clearStartupTimeout()
+    cancelPendingPlaybackFailureAction()
+  }
+
+  const noteStartupSeekProgress = (
+    nextCurrentTime: number,
+    attemptId = startupAttemptId,
+  ) => {
+    if (
+      attemptId !== startupAttemptId ||
+      playbackHealth.value !== 'starting' ||
+      hasObservedStartupSeekProgress ||
+      !getHasStartupSeekProgress(
+        nextCurrentTime,
+        getStartupBaselineTimeSeconds(),
+      )
+    )
+      return false
+    hasObservedStartupSeekProgress = true
+    cancelStartupRecovery()
+    return true
+  }
+
+  const cancelStartupFailureIfProgressObserved = (
+    attemptId = startupAttemptId,
+  ) => {
+    if (attemptId !== startupAttemptId || !hasObservedStartupSeekProgress)
+      return false
+    cancelStartupRecovery()
+    return true
+  }
 
   const recoverPlaybackIfAlreadyRunning = async (
     attemptId = startupAttemptId,
@@ -491,10 +528,14 @@ export const usePlayerStore = defineStore('player', () => {
         !currentPlaySong?.youtubeVideoId ||
         nextPlayerState !== 1 ||
         nextVideoData?.video_id !== currentPlaySong.youtubeVideoId ||
-        !getHasMeaningfulPlaybackProgress(nextCurrentTime)
+        !getHasStartupSeekProgress(
+          nextCurrentTime,
+          getStartupBaselineTimeSeconds(),
+        )
       )
         return false
       lastKnownYoutubeState = nextPlayerState
+      noteStartupSeekProgress(nextCurrentTime, attemptId)
       if (Number.isFinite(nextCurrentTime))
         currentTimeSeconds.value =
           durationSeconds.value > 0
@@ -535,6 +576,7 @@ export const usePlayerStore = defineStore('player', () => {
         Math.abs(currentTimeSeconds.value - seekPreviewSeconds.value) < 0.75
       )
         seekPreviewSeconds.value = null
+      noteStartupSeekProgress(nextCurrentTime, attemptId)
       if (playbackHealth.value !== 'starting' || lastKnownYoutubeState !== 1)
         return
       const hasConnectedPlayerFrame =
@@ -648,7 +690,9 @@ export const usePlayerStore = defineStore('player', () => {
     message: string,
     attemptId = startupAttemptId,
   ) => {
+    if (cancelStartupFailureIfProgressObserved(attemptId)) return
     if (await recoverPlaybackIfAlreadyRunning(attemptId)) return
+    if (cancelStartupFailureIfProgressObserved(attemptId)) return
     if (attemptId !== startupAttemptId) return
     if (!currentPlaySong?.youtubeVideoId || playingYear.value === null)
       return handleFatalPlaybackFailure(reason, message)
@@ -671,6 +715,7 @@ export const usePlayerStore = defineStore('player', () => {
     clearStartupTimeout()
     startupTimeoutId = window.setTimeout(async () => {
       if (attemptId !== startupAttemptId) return
+      if (cancelStartupFailureIfProgressObserved(attemptId)) return
       const didReachPlayingState = lastKnownYoutubeState === 1
       await handleStartupFailure(
         didReachPlayingState ? 'stalled' : 'startup-timeout',
@@ -785,6 +830,7 @@ export const usePlayerStore = defineStore('player', () => {
     lastKnownYoutubeState = null
     lastObservedTimeSeconds = startAtSeconds ?? 0
     observedProgressTicks = 0
+    hasObservedStartupSeekProgress = false
     resetPlaybackProgress()
     clearFailure()
     startProgressTimer()
