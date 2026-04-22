@@ -23,7 +23,7 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
       @click.self="emit('close')"
     >
       <div
-        class="relative mx-4 mt-[14vh] w-full max-w-lg rounded-xl bg-surface p-8 shadow-2xl"
+        class="relative mx-4 mt-[14vh] w-full max-w-lg rounded-xl bg-surface p-8 shadow-2xl md:max-w-2xl xl:max-w-3xl"
       >
         <button
           type="button"
